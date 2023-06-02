@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a32a89c54ad0f2355f7564be68a3a7a",
+    "content-hash": "f9ea2911a5af79034bf8d2b68e1630a8",
     "packages": [
         {
             "name": "brick/math",
@@ -1934,6 +1934,71 @@
             "time": "2023-02-06T13:46:10+00:00"
         },
         {
+            "name": "mudandstars/sync-enum-types",
+            "version": "v0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mudandstars/sync-enum-types.git",
+                "reference": "7f1fc69ba919916d319eee43d1fc06de7318c3ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mudandstars/sync-enum-types/zipball/7f1fc69ba919916d319eee43d1fc06de7318c3ed",
+                "reference": "7f1fc69ba919916d319eee43d1fc06de7318c3ed",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.10",
+                "nunomaduro/collision": "^7.2",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mudandstars\\SyncEnumTypes\\SyncEnumTypesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mudandstars\\SyncEnumTypes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Sochiera",
+                    "email": "paul@sochiera.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package sync-enum-types",
+            "homepage": "https://github.com/mudandstars/sync-enum-types",
+            "keywords": [
+                "laravel",
+                "mudandstars",
+                "sync-enum-types"
+            ],
+            "support": {
+                "issues": "https://github.com/mudandstars/sync-enum-types/issues",
+                "source": "https://github.com/mudandstars/sync-enum-types/tree/v0.8"
+            },
+            "time": "2023-05-03T07:24:35+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "2.67.0",
             "source": {
@@ -3065,6 +3130,66 @@
                 }
             ],
             "time": "2023-04-15T23:01:58+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "efab1844b8826443135201c4443690f032c3d533"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/efab1844b8826443135201c4443690f032c3d533",
+                "reference": "efab1844b8826443135201c4443690f032c3d533",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.15.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-27T08:09:01+00:00"
         },
         {
             "name": "symfony/console",
@@ -8966,7 +9091,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": "^8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
