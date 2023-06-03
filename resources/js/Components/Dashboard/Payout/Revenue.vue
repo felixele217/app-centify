@@ -12,7 +12,7 @@ import { highlightedText, subtleText } from '../styles'
                 <p :class="subtleText">ARR acquired</p>
                 <p :class="highlightedText">260.476€</p>
             </div>
-            <PrimaryButton>
+            <PrimaryButton padding="px-2 h-8">
                 QTD
                 <ChevronDownIcon
                     class="ml-2 h-5 w-5 text-gray-400"
