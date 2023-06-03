@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PayoutAmounts from '@/Components/Dashboard/Payout/PayoutAmounts/PayoutAmounts.vue.js'
+import PayoutAmounts from '@/Components/Dashboard/Payout/PayoutAmounts/PayoutAmounts.vue'
 import PayoutDates from '@/Components/Dashboard/Payout/PayoutDates.vue'
 import PayoutDeals from '@/Components/Dashboard/Payout/PayoutDeals.vue'
 import PayoutTotals from '@/Components/Dashboard/Payout/PayoutTotals.vue'
