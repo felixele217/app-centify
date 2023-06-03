@@ -281,12 +281,18 @@ const sidebarOpen = ref(false);
 									src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
 									alt=""
 								/>
-								<span class="hidden lg:flex lg:items-center">
-									<span
-										class="ml-4 text-sm font-semibold leading-6 text-gray-900"
-										aria-hidden="true"
-										>Tom Cook</span
-									>
+								<span class="ml-4 hidden lg:flex lg:items-center gap-2">
+									<div class="flex flex-col items-start">
+										<p
+											class="text-sm font-semibold text-gray-900"
+											aria-hidden="true"
+										>
+											Alex Dosse
+										</p>
+										<p class="text-xs text-gray-600">
+											alex.dosse@centify.com
+										</p>
+									</div>
 									<ChevronDownIcon
 										class="ml-2 h-5 w-5 text-gray-400"
 										aria-hidden="true"
