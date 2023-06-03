@@ -26,7 +26,7 @@ import { computed } from '@vue/reactivity'
 import { ref } from 'vue'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
+    { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: true },
     { name: 'Commission Plans', href: '#', icon: UsersIcon, current: false },
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
     { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
@@ -146,7 +146,7 @@ const sidebarOpen = ref(false)
                                         </li>
                                         <li class="mt-auto">
                                             <a
-                                                href="#"
+                                                :href="route('profile.edit')"
                                                 class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                                             >
                                                 <Cog6ToothIcon
@@ -211,7 +211,7 @@ const sidebarOpen = ref(false)
                         </li>
                         <li class="mt-auto">
                             <a
-                                href="#"
+                                :href="route('profile.edit')"
                                 class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                             >
                                 <Cog6ToothIcon
