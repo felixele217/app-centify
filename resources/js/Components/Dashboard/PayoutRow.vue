@@ -5,7 +5,7 @@ import { highlightedText, subtleText } from './styles'
 </script>
 
 <template>
-    <div class="flex gap-5">
+    <div class="flex gap-10">
         <Card class="w-1/3">
             <div class="mb-8">
                 <p :class="subtleText">Next payout date</p>

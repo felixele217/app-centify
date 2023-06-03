@@ -8,7 +8,7 @@ import { Head } from '@inertiajs/vue3'
     <Head title="Dashboard" />
 
     <MainLayout>
-        <h1 class="mb-4">Dashboard</h1>
+        <h1 class="mb-6">Dashboard</h1>
 
         <PayoutRow />
     </MainLayout>

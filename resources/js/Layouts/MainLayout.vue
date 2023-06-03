@@ -348,7 +348,7 @@ const sidebarOpen = ref(false)
             </div>
 
             <main class="py-10 bg-gray-100 h-fit grow">
-                <div class="px-4 sm:px-6 lg:px-8">
+                <div class="px-4 sm:px-6 lg:px-14">
                     <slot />
                 </div>
             </main>
