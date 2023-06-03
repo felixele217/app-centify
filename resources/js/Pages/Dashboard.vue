@@ -19,6 +19,7 @@ import { Head } from '@inertiajs/vue3'
 
             <PayoutAmounts class="w-1/3" />
 
+
             <Revenue class="w-1/3" />
         </div>
 

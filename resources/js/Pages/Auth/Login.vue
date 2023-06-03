@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Checkbox from '@/Components/Form/Checkbox.vue.js'
-import InputError from '@/Components/Form/InputError.vue.js'
-import InputLabel from '@/Components/Form/InputLabel.vue.js'
-import PrimaryButton from '@/Components/Button/PrimaryButton.vue.js'
-import TextInput from '@/Components/Form/TextInput.vue.js'
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+import Checkbox from '@/Components/Form/Checkbox.vue'
+import InputError from '@/Components/Form/InputError.vue'
+import InputLabel from '@/Components/Form/InputLabel.vue'
+import TextInput from '@/Components/Form/TextInput.vue'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 
@@ -13,8 +13,8 @@ defineProps<{
 }>()
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: 'alex.dosse@centify.com',
+    password: 'centify',
     remember: false,
 })
 

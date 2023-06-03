@@ -21,6 +21,8 @@ import {
     UsersIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
+import { usePage } from '@inertiajs/vue3'
+import { computed } from '@vue/reactivity'
 import { ref } from 'vue'
 
 const navigation = [
@@ -29,6 +31,8 @@ const navigation = [
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
     { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
 ]
+
+const user = computed(() => usePage().props.auth.user)
 
 const userNavigation = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -222,7 +226,7 @@ const sidebarOpen = ref(false)
             </div>
         </div>
 
-        <div class="lg:pl-72 h-screen flex flex-col">
+        <div class="flex h-screen flex-col lg:pl-72">
             <div
                 class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
             >
@@ -303,9 +307,9 @@ const sidebarOpen = ref(false)
                                             class="text-sm font-semibold text-gray-900"
                                             aria-hidden="true"
                                         >
-                                            Alex Dosse
+                                            {{ user.name }}
                                         </p>
-                                        <p class="text-xs text-gray-600">alex.dosse@centify.com</p>
+                                        <p class="text-xs text-gray-600">{{ user.email }}</p>
                                     </div>
                                     <ChevronDownIcon
                                         class="ml-2 h-5 w-5 text-gray-400"
@@ -347,7 +351,7 @@ const sidebarOpen = ref(false)
                 </div>
             </div>
 
-            <main class="py-10 bg-gray-100 h-fit grow">
+            <main class="h-fit grow bg-gray-100 py-10">
                 <div class="px-4 sm:px-6 lg:px-14">
                     <slot />
                 </div>

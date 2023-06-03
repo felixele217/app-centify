@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
+import { subtleText } from '../styles'
 </script>
 
 <template>
-    <Card> totals </Card>
+    <Card>
+        <p :class="subtleText">Current Payout by Commission Plan</p>
+    </Card>
 </template>
