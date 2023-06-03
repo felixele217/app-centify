@@ -2,22 +2,20 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
-    item: {
-        changeType: 'increase' | 'decrease'
-        change: number
-    }
+    type: 'increase' | 'decrease'
+    change: number
 }>()
 </script>
 
 <template>
     <div
         :class="[
-            item.changeType === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
+            props.type === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
             'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0',
         ]"
     >
         <ArrowUpIcon
-            v-if="item.changeType === 'increase'"
+            v-if="props.type === 'increase'"
             class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500"
             aria-hidden="true"
         />
@@ -26,7 +24,7 @@ const props = defineProps<{
             class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-red-500"
             aria-hidden="true"
         />
-        <span class="sr-only"> {{ item.changeType === 'increase' ? 'Increased' : 'Decreased' }} by </span>
-        {{ item.change }}%
+        <span class="sr-only"> {{ props.type === 'increase' ? 'Increased' : 'Decreased' }} by </span>
+        {{ props.change }}%
     </div>
 </template>
