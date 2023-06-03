@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Checkbox from '@/Components/Checkbox.vue'
-import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import Checkbox from '@/Components/Form/Checkbox.vue.js'
+import InputError from '@/Components/Form/InputError.vue.js'
+import InputLabel from '@/Components/Form/InputLabel.vue.js'
+import PrimaryButton from '@/Components/Button/PrimaryButton.vue.js'
+import TextInput from '@/Components/Form/TextInput.vue.js'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 

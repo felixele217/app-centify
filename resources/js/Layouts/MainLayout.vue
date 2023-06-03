@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DropdownLink from '@/Components/DropdownLink.vue'
+import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
 import {
     Dialog,
     DialogPanel,
