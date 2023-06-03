@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Card from '../Card.vue'
-import { highlightedText, subtleText } from './styles'
+import Card from '../../Card.vue'
+import { highlightedText, subtleText } from '../styles'
 </script>
 
 <template>
