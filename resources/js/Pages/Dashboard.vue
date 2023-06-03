@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PayoutRow from '@/Components/Dashboard/PayoutRow.vue'
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -6,5 +7,9 @@ import { Head } from '@inertiajs/vue3'
 <template>
     <Head title="Dashboard" />
 
-    <MainLayout />
+    <MainLayout>
+        <h1 class="mb-4">Dashboard</h1>
+
+        <PayoutRow />
+    </MainLayout>
 </template>
