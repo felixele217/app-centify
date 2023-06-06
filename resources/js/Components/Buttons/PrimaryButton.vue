@@ -11,7 +11,7 @@ const props = defineProps<{
     <Button
         :padding="props.padding"
         :text="props.text"
-        class="bg-gray-800 text-white hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-800"
+            :class="`bg-violet-700 text-white hover:bg-violet-600 focus:bg-violet-600 active:bg-violet-700`"
     >
         <slot />
     </Button>

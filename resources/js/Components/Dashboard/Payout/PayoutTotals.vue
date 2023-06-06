@@ -11,7 +11,6 @@ import BarChart from './BarChart/BarChart.vue'
             <p :class="subtleText">Total Payout by Commission Plan</p>
             <PrimaryButton
                 text="Details"
-                class="bg-violet-900"
             />
         </div>
 
