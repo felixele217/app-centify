@@ -175,7 +175,7 @@ const showingNavigationDropdown = ref(false)
 
             <!-- Page Content -->
             <main>
-                <slot name="cool" />
+                <slot />
             </main>
         </div>
     </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
+import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import {
     Dialog,
     DialogPanel,
@@ -105,11 +106,7 @@ const sidebarOpen = ref(false)
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10"
                             >
                                 <div class="flex h-16 shrink-0 items-center">
-                                    <img
-                                        class="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                        alt="Your Company"
-                                    />
+                                    <ApplicationLogo />
                                 </div>
                                 <nav class="flex flex-1 flex-col">
                                     <ul
@@ -168,13 +165,9 @@ const sidebarOpen = ref(false)
         <!-- Static sidebar for desktop -->
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
             <!-- Sidebar component, swap this element with another sidebar if you like -->
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
+            <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-violet-950 px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
-                    <img
-                        class="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                    />
+                    <ApplicationLogo />
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul
@@ -194,8 +187,8 @@ const sidebarOpen = ref(false)
                                         :href="item.href"
                                         :class="[
                                             item.current
-                                                ? 'bg-gray-800 text-white'
-                                                : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                                ? 'bg-violet-600 text-white'
+                                                : 'text-gray-300 hover:bg-violet-600 hover:text-white',
                                             'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                                         ]"
                                     >
