@@ -1,9 +1,9 @@
 <script lang="ts">
 import tailwindToHex from '@/Components/utils/tailwindToHex'
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
+import { ArcElement, Chart as ChartJS, Tooltip } from 'chart.js'
 import { Doughnut } from 'vue-chartjs'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(ArcElement, Tooltip)
 
 export default {
     name: 'App',
