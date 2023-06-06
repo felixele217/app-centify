@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import AnnualRevenue from '@/Components/Dashboard/Payout/AnnualRevenue.vue.js'
 import PayoutAmounts from '@/Components/Dashboard/Payout/PayoutAmounts/PayoutAmounts.vue'
 import PayoutDates from '@/Components/Dashboard/Payout/PayoutDates.vue'
 import PayoutDeals from '@/Components/Dashboard/Payout/PayoutDeals.vue'
 import PayoutTotals from '@/Components/Dashboard/Payout/PayoutTotals.vue'
-import Revenue from '@/Components/Dashboard/Payout/Revenue.vue'
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -19,8 +19,7 @@ import { Head } from '@inertiajs/vue3'
 
             <PayoutAmounts class="w-1/3" />
 
-
-            <Revenue class="w-1/3" />
+            <AnnualRevenue class="w-1/3" />
         </div>
 
         <div class="flex gap-10">

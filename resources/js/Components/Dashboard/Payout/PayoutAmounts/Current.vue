@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Trend from '../../Trend.vue'
 import { highlightedText, subtleText } from '../../styles'
 </script>
 
