@@ -13,7 +13,7 @@ const props = withDefaults(
 
 <template>
     <Button
-        class="border-violet-700 text-violet-700 hover:text-violet-600 hover:border-violet-600 focus:border-violet-600 active:border-violet-700"
+        class="border-violet-primary text-violet-primary hover:border-violet-600 hover:text-violet-600 focus:border-violet-600 active:border-violet-primary"
         :text="props.text"
     >
         <slot />

@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import Card from '@/Components/Card.vue'
-import { subtleText } from '../styles'
 import BarChart from './BarChart/BarChart.vue'
+import HeaderWithDetailButton from './HeaderWithDetailButton.vue'
 </script>
 
 <template>
     <Card>
-        <div class="flex justify-between">
-            <p :class="subtleText">Total Payout by Commission Plan</p>
-            <PrimaryButton
-                text="Details"
-            />
-        </div>
+        <HeaderWithDetailButton text="Total Payout by Commission Plan" />
 
         <BarChart />
     </Card>

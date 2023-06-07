@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { highlightedText } from '../../styles'
-import Plan from '../Plan.vue';
+import Plan from '../Plan.vue'
 </script>
 
 <template>
-    <div class="my-5 flex justify-between">
-        <p :class="highlightedText">10.748</p>
+    <div class="mb-5 flex justify-between">
+        <h2>10.748</h2>
         <div class="flex gap-2">
             <Plan
                 color="bg-violet-950"
@@ -16,7 +15,7 @@ import Plan from '../Plan.vue';
                 name="Plan B"
             />
             <Plan
-                color="bg-violet-700"
+                color="bg-violet-primary"
                 name="Plan C"
             />
         </div>

@@ -15,7 +15,7 @@ export default {
                 datasets: [
                     { data: [1800, 2500, 1500], label: 'Data One', backgroundColor: tailwindToHex['bg-violet-950'] },
                     { data: [700, 400, 200], label: 'Data Two', backgroundColor: tailwindToHex['bg-gray-950'] },
-                    { data: [200, 500], label: 'Data Three', backgroundColor: tailwindToHex['bg-violet-700'] },
+                    { data: [200, 500], label: 'Data Three', backgroundColor: tailwindToHex['bg-violet-primary'] },
                 ],
             },
             chartOptions: {
