@@ -2,6 +2,7 @@
 
 namespace App\Integrations\Pipedrive;
 
+use App\Encrypter;
 use App\Models\PipedriveToken as PipedriveTokenModel;
 use Carbon\Carbon;
 use Devio\Pipedrive\PipedriveToken;
@@ -14,8 +15,8 @@ class PipedriveTokenIO implements PipedriveTokenStorage
     {
         PipedriveTokenModel::create([
             'user_id' => Auth::user()->id,
-            'access_token' => $token->getAccessToken(),
-            'refresh_token' => $token->getRefreshToken(),
+            'access_token' => Encrypter::encrypt($token->getAccessToken()),
+            'refresh_token' => Encrypter::encrypt($token->getRefreshToken()),
             'expires_at' => Carbon::createFromTimestamp($token->expiresAt()),
         ]);
     }
@@ -26,8 +27,8 @@ class PipedriveTokenIO implements PipedriveTokenStorage
 
         if ($token) {
             return new PipedriveToken([
-                'accessToken' => $token->access_token,
-                'refreshToken' => $token->refresh_token,
+                'accessToken' => Encrypter::decrypt($token->access_token),
+                'refreshToken' => Encrypter::decrypt($token->refresh_token),
                 'expiresAt' => $token->expires_at->getTimestamp(),
             ]);
         } else {
