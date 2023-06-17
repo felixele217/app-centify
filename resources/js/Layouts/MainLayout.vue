@@ -31,6 +31,9 @@ const navigation = [
     { name: 'Commission Plans', href: '#', icon: UsersIcon, current: false },
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
     { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Authenticate Salesforce', href: route('authenticate.salesforce.create'), icon: false, current: false },
+    { name: 'Authenticate Pipedrive', href: route('authenticate.pipedrive.create'), icon: false, current: false },
+    { name: 'Pipedrive Test', href: route('pipedrive.test'), icon: false, current: false },
 ]
 
 const user = computed(() => usePage().props.auth.user)

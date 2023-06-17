@@ -1,5 +1,7 @@
 <?php
 
+use App\Facades\Pipedrive;
+use App\Providers\PipedriveServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -168,6 +170,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        PipedriveServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -182,7 +185,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'Pipedrive' => Pipedrive::class,
     ])->toArray(),
 
 ];
