@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +50,22 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function actingAs($user, string $driver = null)
+{
+    return test()->actingAs($user, $driver);
+}
+
+function signIn($user = null, $permission = null): User
+{
+    $user = $user ?: User::factory()->create();
+
+    // if ($permission) {
+    //     $user->givePermissionTo(Permission::create(['name' => $permission]));
+    // }
+
+    actingAs($user);
+
+    return $user;
 }

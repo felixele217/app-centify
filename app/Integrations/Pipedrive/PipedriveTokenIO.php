@@ -23,7 +23,7 @@ class PipedriveTokenIO implements PipedriveTokenStorage
 
     public function getToken(): PipedriveToken|null
     {
-        $token = PipedriveTokenModel::whereUserId(Auth::user()->id)->first();
+        $token = Auth::user()->pipedriveToken;
 
         if ($token) {
             return new PipedriveToken([
