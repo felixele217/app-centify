@@ -38,9 +38,6 @@ const navigation = [
         icon: PuzzlePieceIcon,
         current: route().current('integrations'),
     },
-    { name: 'Authenticate Salesforce', href: route('authenticate.salesforce.create'), icon: false, current: false },
-    { name: 'Authenticate Pipedrive', href: route('authenticate.pipedrive.create'), icon: false, current: false },
-    { name: 'Pipedrive Test', href: route('pipedrive.test'), icon: false, current: false },
 ]
 
 const user = computed(() => usePage().props.auth.user)
