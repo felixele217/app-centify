@@ -19,6 +19,7 @@ import {
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
+    PuzzlePieceIcon,
     UsersIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
@@ -27,10 +28,16 @@ import { computed } from '@vue/reactivity'
 import { ref } from 'vue'
 
 const navigation = [
-    { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: true },
+    { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
     { name: 'Commission Plans', href: '#', icon: UsersIcon, current: false },
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
     { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    {
+        name: 'Integrations',
+        href: route('integrations'),
+        icon: PuzzlePieceIcon,
+        current: route().current('integrations'),
+    },
     { name: 'Authenticate Salesforce', href: route('authenticate.salesforce.create'), icon: false, current: false },
     { name: 'Authenticate Pipedrive', href: route('authenticate.pipedrive.create'), icon: false, current: false },
     { name: 'Pipedrive Test', href: route('pipedrive.test'), icon: false, current: false },

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
-import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import Card from '../../Card.vue'
+import Trend from '../Trend.vue'
 import { subtleText } from '../styles'
 import DoughnutChart from './DoughnutChart/Content.vue'
-import Trend from '../Trend.vue'
 </script>
 
 <template>
@@ -27,9 +26,17 @@ import Trend from '../Trend.vue'
         <div class="flex justify-between">
             <DoughnutChart />
 
-            <div class="self-end flex flex-col items-end">
-                <p class="mb-1" :class="subtleText">vs last quarter</p>
-                <Trend type="increase" :change="10" />
+            <div class="flex flex-col items-end self-end">
+                <p
+                    class="mb-1"
+                    :class="subtleText"
+                >
+                    vs last quarter
+                </p>
+                <Trend
+                    type="increase"
+                    :change="10"
+                />
             </div>
         </div>
     </Card>
