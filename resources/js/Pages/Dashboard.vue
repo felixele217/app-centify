@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AnnualRevenue from '@/Components/Dashboard/Payout/AnnualRevenue.vue'
 import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
-import PayoutDeals from '@/Components/Dashboard/Payout/PayoutDeals.vue'
 import PayoutTotals from '@/Components/Dashboard/Payout/PayoutTotals.vue'
+import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { Head } from '@inertiajs/vue3'
 
@@ -33,7 +33,8 @@ const payoutRowObjects = [
                 <PayoutTotals />
             </div>
 
-            <PayoutDeals class="w-1/2" />
+            <!-- <PayoutDeals class="w-1/2" /> -->
+            <TotalPayoutByEmployee class="w-1/2" />
         </div>
     </MainLayout>
 </template>
