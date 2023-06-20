@@ -20,7 +20,6 @@ import {
     FolderIcon,
     HomeIcon,
     PuzzlePieceIcon,
-    UsersIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { usePage } from '@inertiajs/vue3'
@@ -29,9 +28,8 @@ import { ref } from 'vue'
 
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
-    { name: 'Commission Plans', href: '#', icon: UsersIcon, current: false },
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Plans', href: '#', icon: ChartPieIcon, current: false },
     {
         name: 'Integrations',
         href: route('integrations'),
@@ -351,10 +349,8 @@ const sidebarOpen = ref(false)
                 </div>
             </div>
 
-            <main class="h-fit grow bg-gray-100 py-10">
-                <div class="px-4 sm:px-6 lg:px-14">
-                    <slot />
-                </div>
+            <main class="h-full grow bg-gray-100 px-4 py-5 sm:px-6 lg:px-10">
+                <slot />
             </main>
         </div>
     </div>

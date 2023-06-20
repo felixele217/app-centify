@@ -6,7 +6,10 @@ import HeaderWithDetailButton from './HeaderWithDetailButton.vue'
 
 <template>
     <Card>
-        <HeaderWithDetailButton text="Total Payout by Commission Plan" />
+        <HeaderWithDetailButton
+            class="mb-2"
+            text="Total Payout by Commission Plan"
+        />
 
         <BarChart />
     </Card>

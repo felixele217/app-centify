@@ -4,7 +4,7 @@ import Legend from './Legend.vue'
 </script>
 
 <template>
-    <Legend />
+    <Legend class="mb-5" />
 
     <Content />
 </template>

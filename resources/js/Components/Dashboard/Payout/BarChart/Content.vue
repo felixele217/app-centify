@@ -51,9 +51,11 @@ export default {
 </script>
 
 <template>
-    <Bar
-        id="my-chart-id"
-        :options="chartOptions"
-        :data="chartData"
-    />
+    <div class="h-56">
+        <Bar
+            id="my-chart-id"
+            :options="chartOptions"
+            :data="chartData"
+        />
+    </div>
 </template>

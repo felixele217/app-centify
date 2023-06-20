@@ -16,7 +16,7 @@ export default {
                 datasets: [
                     {
                         backgroundColor: [tailwindToHex['bg-violet-950'], tailwindToHex['bg-gray-300']],
-                        data: [70, 30],
+                        data: [50, 50],
                     },
                 ],
             },
@@ -30,12 +30,12 @@ export default {
 </script>
 
 <template>
-    <div class="relative flex w-28 items-center justify-center">
+    <div class="relative flex w-40 items-center justify-center">
         <Doughnut
             :data="data"
             :options="chartOptions"
         />
 
-        <h3 class="absolute -mb-1.5">75%</h3>
+        <h2 class="absolute -mb-1">50%</h2>
     </div>
 </template>
