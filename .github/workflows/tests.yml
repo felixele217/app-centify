@@ -41,6 +41,11 @@ jobs:
               with:
                   node-version: 19.x
 
+            - name: Setup PHP with tools
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.2'
+
             - name: Install Vendor Dependencies
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
