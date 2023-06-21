@@ -9,14 +9,17 @@ const deals = [
 </script>
 
 <template>
-    <div class="grid grid-cols-10 mb-2 font-bold">
+    <div class="mb-2 grid grid-cols-10 font-bold">
         <p class="col-span-1"></p>
         <p class="col-span-4">Company</p>
         <p class="col-span-2 text-right">ARR</p>
         <p class="col-span-3 text-right">Commission</p>
     </div>
-    <div class="grid grid-cols-10 mb-2 items-center" v-for="deal in deals">
-        <p class="col-span-1 rounded-full bg-violet-primary text-white w-5 h-5 text-center text-sm">{{ deal.index }}</p>
+    <div
+        class="mb-2 grid grid-cols-10 items-center"
+        v-for="deal in deals"
+    >
+        <p class="col-span-1 h-5 w-5 rounded-full bg-violet-primary text-center text-sm text-white">{{ deal.index }}</p>
         <p class="col-span-4">{{ deal.company }}</p>
         <p class="col-span-2 text-right">{{ deal.arr }}€</p>
         <p class="col-span-3 text-right">{{ deal.commission }}€</p>

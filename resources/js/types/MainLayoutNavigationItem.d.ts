@@ -1,4 +1,4 @@
-import { FunctionalComponent } from "vue"
+import { FunctionalComponent } from 'vue'
 
 export type MainLayoutNavigationItem = {
     name: string

@@ -23,6 +23,6 @@ class PipedriveAuthController extends Controller
             Pipedrive::authorize($request->query('code'));
         }
 
-        return to_route('dashboard');
+        return to_route('integrations');
     }
 }

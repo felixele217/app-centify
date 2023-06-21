@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import Dropdown from '@/Components/Dropdown/Dropdown.vue'
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
+import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import NavLink from '@/Components/Navigation/NavLink.vue'
 import ResponsiveNavLink from '@/Components/Navigation/ResponsiveNavLink.vue'
 import { Link } from '@inertiajs/vue3'

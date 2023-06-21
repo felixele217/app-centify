@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import IntegrationCard from '@/Components/Integrations/IntegrationCard.vue'
 import MainLayout from '@/Layouts/MainLayout.vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, usePage } from '@inertiajs/vue3'
+console.log(usePage().props.auth.user)
 </script>
 
 <template>
     <Head title="Integrations" />
     <MainLayout>
-        <div class="flex flex-col gap-5">
+        <div class="flex gap-5">
             <IntegrationCard for="pipedrive" />
             <IntegrationCard for="salesforce" />
         </div>
