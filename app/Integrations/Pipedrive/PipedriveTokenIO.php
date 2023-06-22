@@ -13,12 +13,14 @@ class PipedriveTokenIO implements PipedriveTokenStorage
 {
     public function setToken(PipedriveToken $token): void
     {
-        PipedriveTokenModel::create([
-            'user_id' => Auth::user()->id,
-            'access_token' => Encrypter::encrypt($token->getAccessToken()),
-            'refresh_token' => Encrypter::encrypt($token->getRefreshToken()),
-            'expires_at' => Carbon::createFromTimestamp($token->expiresAt()),
-        ]);
+        PipedriveTokenModel::updateOrCreate(
+            ['user_id' => Auth::user()->id],
+            [
+                'access_token' => Encrypter::encrypt($token->getAccessToken()),
+                'refresh_token' => Encrypter::encrypt($token->getRefreshToken()),
+                'expires_at' => Carbon::createFromTimestamp($token->expiresAt()),
+            ],
+        );
     }
 
     public function getToken(): PipedriveToken|null
