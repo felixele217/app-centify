@@ -8,6 +8,7 @@ Route::get('/', fn () => to_route('dashboard'));
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/plans', fn () => Inertia::render('Plans'))->name('plans');
     Route::get('/integrations', fn () => Inertia::render('Integrations'))->name('integrations');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

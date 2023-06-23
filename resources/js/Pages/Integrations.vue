@@ -2,7 +2,6 @@
 import IntegrationCard from '@/Components/Integrations/IntegrationCard.vue'
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { Head, usePage } from '@inertiajs/vue3'
-console.log(usePage().props.auth.user)
 </script>
 
 <template>

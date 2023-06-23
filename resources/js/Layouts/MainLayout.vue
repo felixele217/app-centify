@@ -29,7 +29,7 @@ import { ref } from 'vue'
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
     { name: 'Teams & Users', href: '#', icon: FolderIcon, current: false },
-    { name: 'Plans', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Plans', href: route('plans'), icon: ChartPieIcon, current: route().current('plans') },
     {
         name: 'Integrations',
         href: route('integrations'),
