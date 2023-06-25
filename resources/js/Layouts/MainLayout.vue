@@ -349,7 +349,7 @@ const sidebarOpen = ref(false)
                 </div>
             </div>
 
-            <main class="h-full grow bg-gray-100 px-4 py-5 sm:px-6 lg:px-10">
+            <main class="grow p-5 sm:px-6 lg:px-10">
                 <slot />
             </main>
         </div>

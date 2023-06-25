@@ -15,26 +15,25 @@ const payoutRowObjects = [
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <MainLayout class="flex h-full flex-col">
-        <div class="mb-5 flex gap-5">
-            <PayoutCard
-                v-for="object in payoutRowObjects"
-                v-bind="object"
-                class="w-1/4"
-            />
-        </div>
-
-        <div class="flex grow gap-5">
-            <div class="flex w-1/2 flex-col gap-5">
-                <AnnualRevenue />
-
-                <PayoutTotals />
+    <div>
+        <Head title="Dashboard" />
+        <MainLayout>
+            <div class="mb-5 flex gap-5">
+                <PayoutCard
+                    v-for="object in payoutRowObjects"
+                    v-bind="object"
+                    class="w-1/4"
+                />
             </div>
+            <div class="flex gap-5">
+                <div class="flex w-1/2 flex-col gap-5">
+                    <AnnualRevenue />
+                    <PayoutTotals />
+                </div>
 
-            <!-- <PayoutDeals class="w-1/2" /> -->
-            <TotalPayoutByEmployee class="w-1/2" />
-        </div>
-    </MainLayout>
+                <!-- <PayoutDeals class="w-1/2" /> -->
+                <TotalPayoutByEmployee class="w-1/2" />
+            </div>
+        </MainLayout>
+    </div>
 </template>

@@ -2,14 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply m-0 bg-gray-100 p-0;
+}
+
 h1 {
-    @apply font-bold text-3xl;
+    @apply text-3xl font-bold;
 }
 
 h2 {
-    @apply font-bold text-2xl;
+    @apply text-2xl font-bold;
 }
 
 h3 {
-    @apply font-semibold text-xl;
+    @apply text-xl font-semibold;
 }
