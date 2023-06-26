@@ -3,7 +3,7 @@ name: Tests
 on: [push]
 
 jobs:
-    backend-dev-tests:
+    backend-tests:
         runs-on: ubuntu-latest
 
         steps:
@@ -30,7 +30,7 @@ jobs:
                   DB_DATABASE: database/database.sqlite
               run: vendor/bin/pest --group=feature,unit,architecture
 
-    build-frontend-assets:
+    frontend-tests:
         runs-on: ubuntu-latest
 
         steps:
