@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
-import DesktopSidebar from '@/Layouts/MainLayout/DesktopSidebar.vue'
-import MobileSidebar from '@/Layouts/MainLayout/MobileSidebar.vue'
+import DesktopSidebar from '@/Components/MainLayout/DesktopSidebar.vue'
+import MobileSidebar from '@/Components/MainLayout/MobileSidebar.vue'
 import {
     Dialog,
     DialogPanel,

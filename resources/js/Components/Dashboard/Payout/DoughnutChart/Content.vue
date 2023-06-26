@@ -1,5 +1,5 @@
 <script lang="ts">
-import tailwindToHex from '@/Components/utils/tailwindToHex'
+import tailwindToHex from '@/utils/tailwindToHex'
 import { ArcElement, Chart as ChartJS, Tooltip } from 'chart.js'
 import { Doughnut } from 'vue-chartjs'
 

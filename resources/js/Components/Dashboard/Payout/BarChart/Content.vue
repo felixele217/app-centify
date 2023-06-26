@@ -1,5 +1,5 @@
-<script>
-import tailwindToHex from '@/Components/utils/tailwindToHex'
+<script lang="ts">
+import tailwindToHex from '@/utils/tailwindToHex'
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip } from 'chart.js'
 import { Bar } from 'vue-chartjs'
 
@@ -37,7 +37,7 @@ export default {
                         max: 4000,
                         ticks: {
                             stepSize: 1000,
-                            callback: function (value, index, values) {
+                            callback: function (value: number, index: number, values: Array<number>) {
                                 return value !== 0 ? `${value / 1000}k` : 0
                             },
                         },
