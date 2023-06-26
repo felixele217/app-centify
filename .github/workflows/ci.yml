@@ -32,25 +32,54 @@ jobs:
 
     frontend-tests:
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v3
-
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 19.x
-
             - name: Setup PHP with tools
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.2'
+            - name: Copy .env
+              run: php -r "file_exists('.env') || copy('.env.dusk.actions', '.env');"
+            - name: Create Database
+              run: |
+                  set -a
+                  . ./.env
+                  set +a
+                  sudo systemctl start mysql
+                  mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" -e "CREATE DATABASE \`$DB_DATABASE\` character set UTF8mb4 collate utf8mb4_bin;"
+            - name: Install Composer Dependencies
+              run: composer install --no-progress --prefer-dist --optimize-autoloader
+            - name: Generate Application Key
+              run: php artisan key:generate
+            - name: Upgrade Chrome Driver
+              run: php artisan dusk:chrome-driver --detect
+            - name: Start Chrome Driver
+              run: ./vendor/laravel/dusk/bin/chromedriver-linux &
 
-            - name: Install Vendor Dependencies
-              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+            - name: Make console folder for logs
+              run: |
+                  mkdir tests/Browser/console
+                  chmod 777 tests/Browser/console
 
-            - name: Install dependencies
+            - name: Install Node.js dependencies
               run: npm ci
 
-            - name: Run Build
-              run: npm run build --if-present
+            - name: Build frontend assets with Vite
+              run: npm run build
+
+            - name: Run Laravel Server
+              run: php artisan serve --no-reload &
+            - name: Run Dusk Tests
+              run: php artisan dusk
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                  name: screenshots
+                  path: tests/Browser/screenshots
+            - name: Upload Console Logs
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                  name: console
+                  path: tests/Browser/console

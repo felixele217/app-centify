@@ -24,10 +24,8 @@ services:
             - sail
         depends_on:
             - mysql
-            - redis
-            - meilisearch
-            - mailpit
             - selenium
+            - mailpit
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -52,38 +50,6 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
-    redis:
-        image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
-        volumes:
-            - 'sail-redis:/data'
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - redis-cli
-                - ping
-            retries: 3
-            timeout: 5s
-    meilisearch:
-        image: 'getmeili/meilisearch:latest'
-        ports:
-            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-        volumes:
-            - 'sail-meilisearch:/meili_data'
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - wget
-                - '--no-verbose'
-                - '--spider'
-                - 'http://localhost:7700/health'
-            retries: 3
-            timeout: 5s
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
@@ -92,9 +58,7 @@ services:
         networks:
             - sail
     selenium:
-        image: seleniarm/standalone-chromium
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
+        image: 'seleniarm/standalone-chromium'
         volumes:
             - '/dev/shm:/dev/shm'
         networks:
