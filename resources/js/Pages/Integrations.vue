@@ -9,7 +9,7 @@ import { Head, usePage } from '@inertiajs/vue3'
     <MainLayout>
         <div class="flex gap-5">
             <IntegrationCard for="pipedrive" />
-            <IntegrationCard for="salesforce" />
+            <!-- <IntegrationCard for="salesforce" /> -->
         </div>
     </MainLayout>
 </template>

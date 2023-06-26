@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import type NavigationItem from '@/types/NavigationItem'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
@@ -10,13 +9,10 @@ const props = defineProps<{
 </script>
 
 <template>
-    <!-- Static sidebar for desktop -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-violet-950 px-6 pb-4">
-            <div class="flex h-16 shrink-0 items-center">
-                <ApplicationLogo />
-            </div>
+    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col border-r border-gray-200">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+            <ApplicationLogo class="flex h-16 shrink-0 items-center" />
+
             <nav class="flex flex-1 flex-col">
                 <ul
                     role="list"
@@ -35,9 +31,9 @@ const props = defineProps<{
                                     :href="item.href"
                                     :class="[
                                         item.current
-                                            ? 'bg-violet-600 text-white'
-                                            : 'text-gray-300 hover:bg-violet-600 hover:text-white',
-                                        'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                                            ? 'bg-gray-50 text-indigo-600'
+                                            : 'text-gray-800 hover:bg-gray-50 hover:text-indigo-600',
+                                        'group flex gap-x-3 rounded-md p-2 py-3.5 font-semibold leading-6',
                                     ]"
                                 >
                                     <component

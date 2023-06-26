@@ -1,6 +1,4 @@
 {
-    "vueCompilerOptions": {
-    },
     "compilerOptions": {
         "allowJs": false,
         "module": "ESNext",

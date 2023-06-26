@@ -1,3 +1,3 @@
 <template>
-    <h1 class="text-white">Centify.</h1>
+    <h1 class="text-black">Centify.</h1>
 </template>
