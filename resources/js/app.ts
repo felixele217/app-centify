@@ -7,7 +7,6 @@ import type { DefineComponent } from 'vue'
 import { createApp, h } from 'vue'
 // @ts-ignore
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m.js'
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Centify'
 
 createInertiaApp({
