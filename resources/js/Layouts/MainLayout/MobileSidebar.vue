@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
+import type NavigationItem from '@/types/NavigationItem'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps<{
-    navigation: Array<{
-        name: string
-        href: string
-        current: boolean
-        icon: any
-    }>
+    navigation: Array<NavigationItem>
 }>()
 </script>
 
@@ -29,7 +25,7 @@ const props = defineProps<{
                         class="-mx-2 space-y-1"
                     >
                         <li
-                            v-for="item in navigation"
+                            v-for="item in props.navigation"
                             :key="item.name"
                         >
                             <a
