@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import type NavigationItem from '@/types/NavigationItem'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
