@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('pipedrive-test', function () {
         $deals = Pipedrive::deals()->all();
 
+        dd($deals);
+
         if ($deals->isSuccess()) {
             return back();
         } else {
