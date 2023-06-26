@@ -56,11 +56,6 @@ jobs:
             - name: Start Chrome Driver
               run: ./vendor/laravel/dusk/bin/chromedriver-linux &
 
-            - name: Make console folder for logs
-              run: |
-                  mkdir tests/Browser/console
-                  chmod 777 tests/Browser/console
-
             - name: Install Node.js dependencies
               run: npm ci
 
