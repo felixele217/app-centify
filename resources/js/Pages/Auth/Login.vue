@@ -51,6 +51,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    name="email"
                 />
 
                 <InputError
@@ -72,6 +73,7 @@ const submit = () => {
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    name="password"
                 />
 
                 <InputError

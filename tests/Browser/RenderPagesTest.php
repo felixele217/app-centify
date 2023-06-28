@@ -1,0 +1,50 @@
+<?php
+
+namespace Tests\Browser;
+
+use App\Models\User;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
+
+class RenderPagesTest extends DuskTestCase
+{
+    public function testRenderLogin(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('login')
+                ->assertRouteIs('login')
+                ->waitForText('Remember me')
+                ->assertSee('Remember me');
+        });
+    }
+
+    public function testRender(): void
+    {
+        $user = $this->setupDatabase();
+
+        $urlsToText = [
+            route('dashboard') => 'Total Payout',
+            route('integrations') => 'pipedrive',
+        ];
+
+        foreach ($urlsToText as $url => $text) {
+            $this->browse(function (Browser $browser) use ($user, $url, $text) {
+                $browser->loginAs($user)
+                    ->visit($url)
+                    ->assertUrlIs($url)
+                    ->waitForText($text)
+                    ->assertSee($text);
+
+                echo 'successfully tested '.$url."\n";
+            });
+        }
+    }
+
+    private function setupDatabase(): User
+    {
+        $user = User::factory()
+            ->create();
+
+        return $user;
+    }
+}

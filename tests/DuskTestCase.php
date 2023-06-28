@@ -6,17 +6,14 @@ use Illuminate\Support\Collection;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use DatabaseTruncation;
 
-    /**
-     * Prepare for Dusk test execution.
-     *
-     * @beforeClass
-     */
     public static function prepare(): void
     {
         if (! static::runningInSail()) {
