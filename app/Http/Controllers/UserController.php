@@ -12,10 +12,7 @@ class UserController extends Controller
 {
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        User::create([
-            ...$request->validated(),
-            'password' => Hash::make(Str::password(12)),
-        ]);
+        User::create($request->validated())->assignRole('agent');
 
         return back();
     }

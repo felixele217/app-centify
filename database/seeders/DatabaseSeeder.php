@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        
         \App\Models\User::factory()->create([
             'name' => 'Alex Dosse',
             'email' => 'alex.dosse@centify.com',

@@ -6,9 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {
-    /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [

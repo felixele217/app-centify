@@ -16,8 +16,8 @@ function signIn($role = 'organization admin', $permission = '', $user = null): U
 {
     $user = $user ?: User::factory()
         ->create()
-        ->assignRole(Role::create(['name' => $role]))
-        ->givePermissionTo(Permission::create(['name' => $permission]));
+        ->assignRole(Role::firstOrCreate(['name' => $role]))
+        ->givePermissionTo(Permission::firstOrCreate(['name' => $permission]));
 
     test()->actingAs($user, null);
 

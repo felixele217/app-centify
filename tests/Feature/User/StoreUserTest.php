@@ -1,13 +1,10 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 it('can create an agent as an organization admin', function () {
-    // was mit agent?
-    // request stub return kommentar?
-    // salary etc in user tabelle?
-    // password mitschicken?
-    // directory structure?
+    Role::create(['name' => 'agent']);
     $user = signIn();
 
     $this->post(route('users.store'), [
@@ -21,4 +18,6 @@ it('can create an agent as an organization admin', function () {
     expect($user->email)->toBe($email);
     expect($user->base_salary)->toBe($baseSalary);
     expect($user->on_target_earning)->toBe($onTargetEarning);
+
+    expect($user->hasRole('agent'))->toBeTrue();
 });
