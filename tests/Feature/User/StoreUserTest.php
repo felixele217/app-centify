@@ -1,9 +1,13 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 it('can create an agent as an organization admin', function () {
+    // was mit agent?
+    // request stub return kommentar?
+    // salary etc in user tabelle?
+    // password mitschicken?
+    // directory structure?
     $user = signIn();
 
     $this->post(route('users.store'), [
