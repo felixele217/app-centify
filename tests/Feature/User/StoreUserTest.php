@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 it('can create an agent as an organization admin', function () {
     $user = signIn();
