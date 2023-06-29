@@ -9,13 +9,21 @@ import { useForm } from '@inertiajs/vue3'
 const form = useForm({
     name: '',
     email: '',
-    base_salary: '',
+    base_salary: null,
     on_target_earning: null,
 })
+
+const emit = defineEmits(['close-slide-over'])
 
 defineProps<{
     isOpen: boolean
 }>()
+
+function submit() {
+    form.post(route('agents.store'), {
+        onSuccess: () => emit('close-slide-over'),
+    })
+}
 </script>
 
 <template>
@@ -43,7 +51,10 @@ defineProps<{
                             leave-to="translate-x-full"
                         >
                             <DialogPanel class="pointer-events-auto w-screen max-w-md">
-                                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
+                                <form
+                                    class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
+                                    @submit.prevent="submit"
+                                >
                                     <div class="h-0 flex-1 overflow-y-auto">
                                         <div class="bg-indigo-700 px-4 py-6 sm:px-6">
                                             <div class="flex items-center justify-between">
@@ -124,12 +135,12 @@ defineProps<{
                                                             id="base_salary"
                                                             type="number"
                                                             class="mt-1 block w-full"
-                                                            v-model="form.email"
+                                                            v-model="form.base_salary"
                                                         />
 
                                                         <InputError
                                                             class="mt-2"
-                                                            :message="form.errors.email"
+                                                            :message="form.errors.base_salary"
                                                         />
                                                     </div>
                                                     <div>
@@ -142,12 +153,12 @@ defineProps<{
                                                             id="on_target_earning"
                                                             type="number"
                                                             class="mt-1 block w-full"
-                                                            v-model="form.email"
+                                                            v-model="form.on_target_earning"
                                                         />
 
                                                         <InputError
                                                             class="mt-2"
-                                                            :message="form.errors.email"
+                                                            :message="form.errors.on_target_earning"
                                                         />
                                                     </div>
                                                 </div>
@@ -163,7 +174,6 @@ defineProps<{
                                             Cancel
                                         </button>
                                         <button
-                                            type="submit"
                                             class="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                         >
                                             Create
