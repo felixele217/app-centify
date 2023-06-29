@@ -10,7 +10,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        
+        $this->call(PermissionSeeder::class);
+
         \App\Models\User::factory()->create([
             'name' => 'Alex Dosse',
             'email' => 'alex.dosse@centify.com',
