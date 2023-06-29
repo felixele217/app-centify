@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+import { ref } from 'vue'
+import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
 
 const plans = [
     {
@@ -21,9 +23,16 @@ const plans = [
         isCurrent: true,
     },
 ]
+
+const isOpen = ref(false)
 </script>
 
 <template>
+    <create-agent-slide-over
+        @close-slide-over="isOpen = false"
+        :is-open="isOpen"
+    />
+
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
@@ -31,7 +40,10 @@ const plans = [
                 <p class="mt-2 text-sm text-gray-700">List of all your agents.</p>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                <primary-button text="Create Agent" />
+                <primary-button
+                    @click="isOpen = true"
+                    text="Create Agent"
+                />
             </div>
         </div>
         <div class="-mx-4 mt-10 bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
