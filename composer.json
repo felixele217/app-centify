@@ -17,6 +17,7 @@
 		"laravel/tinker": "^2.8",
 		"mudandstars/sync-enum-types": "^0.8.0",
 		"omniphx/forrest": "^2.16",
+		"spatie/laravel-permission": "^5.10",
 		"tightenco/ziggy": "^1.0"
 	},
 	"require-dev": {
@@ -30,7 +31,8 @@
 		"nunomaduro/collision": "^7.0",
 		"pestphp/pest": "^2.0",
 		"pestphp/pest-plugin-laravel": "^2.0",
-		"spatie/laravel-ignition": "^2.0"
+		"spatie/laravel-ignition": "^2.0",
+		"worksome/request-factories": "^3.2"
 	},
 	"autoload": {
 		"psr-4": {
