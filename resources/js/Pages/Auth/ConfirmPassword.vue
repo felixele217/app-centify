@@ -1,17 +1,12 @@
-<script lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue'
-
-export default {
-    layout: GuestLayout,
-}
-</script>
-
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import GuestLayout from '@/Layouts/GuestLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
+
+defineOptions({ layout: GuestLayout })
 
 const form = useForm({
     password: '',

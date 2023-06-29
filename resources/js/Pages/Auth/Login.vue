@@ -1,18 +1,13 @@
-<script lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue'
-
-export default {
-    layout: GuestLayout,
-}
-</script>
-
 <script setup lang="ts">
+import GuestLayout from '@/Layouts/GuestLayout.vue'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
+
+defineOptions({ layout: GuestLayout })
 
 defineProps<{
     canResetPassword?: boolean

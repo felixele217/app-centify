@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -25,6 +26,7 @@ class RenderPagesTest extends DuskTestCase
         $urlsToText = [
             route('dashboard') => 'Total Payout',
             route('integrations') => 'pipedrive',
+            route('agents.index') => 'Dashboard',
         ];
 
         foreach ($urlsToText as $url => $text) {
@@ -42,6 +44,8 @@ class RenderPagesTest extends DuskTestCase
 
     private function setupDatabase(): User
     {
+        Artisan::call('db:seed --class=PermissionSeeder');
+
         $user = User::factory()
             ->create();
 

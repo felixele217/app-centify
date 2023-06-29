@@ -3,7 +3,6 @@ import AnnualRevenue from '@/Components/Dashboard/Payout/AnnualRevenue.vue'
 import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
 import PayoutTotals from '@/Components/Dashboard/Payout/PayoutTotals.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
-import MainLayout from '@/Layouts/MainLayout.vue'
 import { Head } from '@inertiajs/vue3'
 
 const payoutRowObjects = [
@@ -17,21 +16,21 @@ const payoutRowObjects = [
 <template>
     <div>
         <Head title="Dashboard" />
-            <div class="mb-5 flex gap-5">
-                <PayoutCard
-                    v-for="object in payoutRowObjects"
-                    v-bind="object"
-                    class="w-1/4"
-                />
+        <div class="mb-5 flex gap-5">
+            <PayoutCard
+                v-for="object in payoutRowObjects"
+                v-bind="object"
+                class="w-1/4"
+            />
+        </div>
+        <div class="flex gap-5">
+            <div class="flex w-1/2 flex-col gap-5">
+                <AnnualRevenue />
+                <PayoutTotals />
             </div>
-            <div class="flex gap-5">
-                <div class="flex w-1/2 flex-col gap-5">
-                    <AnnualRevenue />
-                    <PayoutTotals />
-                </div>
 
-                <!-- <PayoutDeals class="w-1/2" /> -->
-                <TotalPayoutByEmployee class="w-1/2" />
-            </div>
+            <!-- <PayoutDeals class="w-1/2" /> -->
+            <TotalPayoutByEmployee class="w-1/2" />
+        </div>
     </div>
 </template>
