@@ -7,7 +7,7 @@ it('can create an agent as an organization admin', function () {
     Role::create(['name' => 'agent']);
     $user = signIn();
 
-    $this->post(route('users.store'), [
+    $this->post(route('agents.store'), [
         'name' => $name = 'John Doe',
         'email' => $email = 'john.doe@gmail.com',
         'base_salary' => $baseSalary = 10000000,
