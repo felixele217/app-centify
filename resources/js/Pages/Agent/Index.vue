@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MainLayout from '@/Layouts/MainLayout.vue';
 import type User from '@/types/User'
 
 const props = defineProps<{
@@ -7,6 +6,4 @@ const props = defineProps<{
 }>()
 </script>
 
-<template>
-    <MainLayout />
-</template>
+<template></template>

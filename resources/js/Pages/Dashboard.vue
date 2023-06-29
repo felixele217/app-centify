@@ -17,7 +17,6 @@ const payoutRowObjects = [
 <template>
     <div>
         <Head title="Dashboard" />
-        <MainLayout>
             <div class="mb-5 flex gap-5">
                 <PayoutCard
                     v-for="object in payoutRowObjects"
@@ -34,6 +33,5 @@ const payoutRowObjects = [
                 <!-- <PayoutDeals class="w-1/2" /> -->
                 <TotalPayoutByEmployee class="w-1/2" />
             </div>
-        </MainLayout>
     </div>
 </template>
