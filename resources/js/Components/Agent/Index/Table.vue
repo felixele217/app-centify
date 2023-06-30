@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+import type User from '@/types/User'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
+
+defineProps<{
+    agents: Array<User>
+}>()
 
 const plans = [
     {
@@ -54,117 +59,86 @@ const isOpen = ref(false)
                             scope="col"
                             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                         >
-                            Plan
+                            Name
                         </th>
                         <th
                             scope="col"
                             class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                         >
-                            Memory
+                            E-Mail
                         </th>
                         <th
                             scope="col"
                             class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                         >
-                            CPU
+                            Base Salary
                         </th>
                         <th
                             scope="col"
                             class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                         >
-                            Storage
-                        </th>
-                        <th
-                            scope="col"
-                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                            Price
-                        </th>
-                        <th
-                            scope="col"
-                            class="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                        >
-                            <span class="sr-only">Select</span>
+                            On Target Earning
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
-                        v-for="(plan, planIdx) in plans"
-                        :key="plan.id"
+                        v-for="(agent, agentIdx) in agents"
+                        :key="agent.id"
                     >
                         <td
                             :class="[
-                                planIdx === 0 ? '' : 'border-t border-transparent',
+                                agentIdx === 0 ? '' : 'border-t border-transparent',
                                 'relative py-4 pl-4 pr-3 text-sm sm:pl-6',
                             ]"
                         >
                             <div class="font-medium text-gray-900">
-                                {{ plan.name }}
-                                <span
-                                    v-if="plan.isCurrent"
-                                    class="ml-1 text-indigo-600"
-                                    >(Current Plan)</span
-                                >
+                                {{ agent.name }}
                             </div>
-                            <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
-                                <span>{{ plan.memory }} / {{ plan.cpu }}</span>
-                                <span class="hidden sm:inline">·</span>
-                                <span>{{ plan.storage }}</span>
-                            </div>
+
                             <div
-                                v-if="planIdx !== 0"
+                                v-if="agentIdx !== 0"
                                 class="absolute -top-px left-6 right-0 h-px bg-gray-200"
                             />
                         </td>
                         <td
                             :class="[
-                                planIdx === 0 ? '' : 'border-t border-gray-200',
+                                agentIdx === 0 ? '' : 'border-t border-gray-200',
                                 'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
                             ]"
                         >
-                            {{ plan.memory }}
+                            {{ agent.email }}
                         </td>
                         <td
                             :class="[
-                                planIdx === 0 ? '' : 'border-t border-gray-200',
+                                agentIdx === 0 ? '' : 'border-t border-gray-200',
                                 'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
                             ]"
                         >
-                            {{ plan.cpu }}
+                            {{ agent.base_salary }}
                         </td>
                         <td
                             :class="[
-                                planIdx === 0 ? '' : 'border-t border-gray-200',
+                                agentIdx === 0 ? '' : 'border-t border-gray-200',
                                 'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
                             ]"
                         >
-                            {{ plan.storage }}
+                            {{ agent.on_target_earning }}
                         </td>
                         <td
                             :class="[
-                                planIdx === 0 ? '' : 'border-t border-gray-200',
-                                'px-3 py-3.5 text-sm text-gray-500',
-                            ]"
-                        >
-                            <div class="sm:hidden">{{ plan.price }}/mo</div>
-                            <div class="hidden sm:block">{{ plan.price }}/month</div>
-                        </td>
-                        <td
-                            :class="[
-                                planIdx === 0 ? '' : 'border-t border-transparent',
+                                agentIdx === 0 ? '' : 'border-t border-transparent',
                                 'relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6',
                             ]"
                         >
                             <button
                                 type="button"
                                 class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                :disabled="plan.isCurrent"
                             >
-                                Select<span class="sr-only">, {{ plan.name }}</span>
+                                Edit<span class="sr-only"></span>
                             </button>
                             <div
-                                v-if="planIdx !== 0"
+                                v-if="agentIdx !== 0"
                                 class="absolute -top-px left-0 right-6 h-px bg-gray-200"
                             />
                         </td>
