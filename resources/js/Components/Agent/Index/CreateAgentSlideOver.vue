@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
@@ -9,8 +10,8 @@ import { useForm } from '@inertiajs/vue3'
 const form = useForm({
     name: '',
     email: '',
-    base_salary: null,
-    on_target_earning: null,
+    base_salary: 0,
+    on_target_earning: 0,
 })
 
 const emit = defineEmits(['close-slide-over'])
@@ -133,12 +134,17 @@ function submit() {
                                                             value="Base Salary"
                                                         />
 
-                                                        <TextInput
+                                                        <!-- <TextInput
                                                             name="base_salary"
                                                             id="base_salary"
                                                             type="number"
                                                             class="mt-1 block w-full"
                                                             v-model="form.base_salary"
+                                                        /> -->
+
+                                                        <CurrencyInput
+                                                            :value="form.base_salary"
+                                                            @set-value="(value) => (form.base_salary = value)"
                                                         />
 
                                                         <InputError
@@ -152,11 +158,16 @@ function submit() {
                                                             value="On Target Earning (OTE)"
                                                         />
 
-                                                        <TextInput
+                                                        <!-- <TextInput
                                                             id="on_target_earning"
                                                             type="number"
                                                             class="mt-1 block w-full"
                                                             v-model="form.on_target_earning"
+                                                        /> -->
+
+                                                        <CurrencyInput
+                                                            :value="form.on_target_earning"
+                                                            @set-value="(value) => (form.on_target_earning = value)"
                                                         />
 
                                                         <InputError
