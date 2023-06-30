@@ -23,7 +23,7 @@ const navigation = [
 
         <div class="flex h-screen flex-col lg:pl-72">
             <div
-                class="flex h-16 self-stretch items-center gap-x-4 border-b border-gray-200 bg-white px-8 py-3 shadow-sm lg:gap-x-6"
+                class="flex self-stretch items-center gap-x-4 border-b border-gray-200 bg-white px-8 py-3 shadow-sm lg:gap-x-6"
             >
                 <SearchBar />
 

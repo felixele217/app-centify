@@ -1,4 +1,4 @@
-// TODO tailwindToHex und euroDisplay testen, searchbar resized bei dashboard und team
+// TODO tailwindToHex und euroDisplay testen
 
 export default function euroDisplay(number?: number): string {
     if (!number) {
