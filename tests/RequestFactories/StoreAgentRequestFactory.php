@@ -4,7 +4,7 @@ namespace Tests\RequestFactories;
 
 use Worksome\RequestFactories\RequestFactory;
 
-class StoreUserFactory extends RequestFactory
+class StoreAgentRequestFactory extends RequestFactory
 {
     public function definition(): array
     {

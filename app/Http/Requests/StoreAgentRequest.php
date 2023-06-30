@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class StoreAgentRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -20,10 +20,12 @@ class StoreUserRequest extends FormRequest
             ],
 
             'base_salary' => [
+                'nullable',
                 'integer',
             ],
 
             'on_target_earning' => [
+                'nullable',
                 'integer',
             ],
         ];

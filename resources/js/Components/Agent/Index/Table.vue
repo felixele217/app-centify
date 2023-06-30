@@ -8,27 +8,6 @@ defineProps<{
     agents: Array<User>
 }>()
 
-const plans = [
-    {
-        id: 1,
-        name: 'Hobby',
-        memory: '4 GB RAM',
-        cpu: '4 CPUs',
-        storage: '128 GB SSD disk',
-        price: '$40',
-        isCurrent: false,
-    },
-    {
-        id: 2,
-        name: 'Startup',
-        memory: '8 GB RAM',
-        cpu: '6 CPUs',
-        storage: '256 GB SSD disk',
-        price: '$80',
-        isCurrent: true,
-    },
-]
-
 const isOpen = ref(false)
 </script>
 
