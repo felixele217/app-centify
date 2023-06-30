@@ -6,10 +6,9 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { createApp, h } from 'vue'
 // @ts-ignore
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m.js'
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Centify'
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => 'Centify',
     resolve: (name) => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
         let page: any = pages[`./Pages/${name}.vue`]
