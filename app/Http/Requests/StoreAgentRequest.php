@@ -17,6 +17,7 @@ class StoreAgentRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
+                'unique:users,email',
             ],
 
             'base_salary' => [

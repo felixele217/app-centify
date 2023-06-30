@@ -32,12 +32,26 @@ it('can create an agent with nullable base_salary and on_target_earning', functi
         'on_target_earning' => null,
     ])->fake();
 
-    $this->post(route('agents.store'))->assertRedirect();
+    $this->post(route('agents.store'))->assertValid();
 
     expect($user = User::role($role)->first())->not()->toBeNull();
     expect($user->base_salary)->toBeNull();
     expect($user->on_target_earning)->toBeNull();
 });
 
+it('cannot create an agent with a duplicate mail', function () {
+    $user = signIn();
+    Role::create(['name' => $role = 'agent']);
+
+    StoreAgentRequest::factory()->state([
+        'email' => $user->email,
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertInvalid([
+        'email' => 'The email has already been taken.',
+    ]);
+
+    expect($user = User::role($role)->first())->toBeNull();
+});
+
 // felder clearen nach create
-// duplicate email
