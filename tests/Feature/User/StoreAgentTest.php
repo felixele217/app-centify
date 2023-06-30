@@ -53,5 +53,3 @@ it('cannot create an agent with a duplicate mail', function () {
 
     expect($user = User::role($role)->first())->toBeNull();
 });
-
-// felder clearen nach create

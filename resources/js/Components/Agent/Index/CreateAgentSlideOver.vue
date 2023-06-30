@@ -21,7 +21,10 @@ defineProps<{
 
 function submit() {
     form.post(route('agents.store'), {
-        onSuccess: () => emit('close-slide-over'),
+        onSuccess: () => {
+            emit('close-slide-over')
+            form.reset()
+        },
     })
 }
 </script>
