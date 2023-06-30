@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import type User from '@/types/User'
+import euroDisplay from '@/utils/euroDisplay'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
 
@@ -94,7 +95,7 @@ const isOpen = ref(false)
                                 'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
                             ]"
                         >
-                            {{ agent.base_salary }}
+                            {{ euroDisplay(agent.base_salary) }}
                         </td>
                         <td
                             :class="[
@@ -102,7 +103,7 @@ const isOpen = ref(false)
                                 'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
                             ]"
                         >
-                            {{ agent.on_target_earning }}
+                            {{ euroDisplay(agent.on_target_earning) }}
                         </td>
                         <td
                             :class="[
