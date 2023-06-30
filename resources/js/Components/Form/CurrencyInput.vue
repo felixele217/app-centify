@@ -43,7 +43,7 @@ function handleKeyDown(event: any) {
     }
 }
 
-function getCurrencyDisplay(valueInCents: number): string {
+function currencyDisplay(valueInCents: number): string {
     if (valueInCents.toString().length === 1) {
         return `00.0${valueInCents}€`
     }
@@ -77,6 +77,6 @@ function getCurrencyDisplay(valueInCents: number): string {
         :textColor="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
         @keydown.prevent="handleKeyDown"
         type="text"
-        :modelValue="getCurrencyDisplay(props.value)"
+        :modelValue="currencyDisplay(props.value)"
     />
 </template>

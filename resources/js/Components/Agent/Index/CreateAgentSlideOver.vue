@@ -134,14 +134,6 @@ function submit() {
                                                             value="Base Salary"
                                                         />
 
-                                                        <!-- <TextInput
-                                                            name="base_salary"
-                                                            id="base_salary"
-                                                            type="number"
-                                                            class="mt-1 block w-full"
-                                                            v-model="form.base_salary"
-                                                        /> -->
-
                                                         <CurrencyInput
                                                             :value="form.base_salary"
                                                             @set-value="(value) => (form.base_salary = value)"
@@ -157,13 +149,6 @@ function submit() {
                                                             for="on_target_earning"
                                                             value="On Target Earning (OTE)"
                                                         />
-
-                                                        <!-- <TextInput
-                                                            id="on_target_earning"
-                                                            type="number"
-                                                            class="mt-1 block w-full"
-                                                            v-model="form.on_target_earning"
-                                                        /> -->
 
                                                         <CurrencyInput
                                                             :value="form.on_target_earning"

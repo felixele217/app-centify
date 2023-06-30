@@ -23,13 +23,13 @@ it('can create an agent as an organization admin', function () {
     expect($user->hasRole('agent'))->toBeTrue();
 });
 
-it('can create an agent with nullable base_salary and on_target_earning', function () {
+it('can create an agent with casted nullable base_salary and on_target_earning', function () {
     $user = signIn();
     Role::create(['name' => $role = 'agent']);
 
     StoreAgentRequest::factory()->state([
-        'base_salary' => null,
-        'on_target_earning' => null,
+        'base_salary' => 0,
+        'on_target_earning' => 0,
     ])->fake();
 
     $this->post(route('agents.store'))->assertValid();
