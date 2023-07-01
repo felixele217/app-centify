@@ -7,7 +7,7 @@ import { BellIcon, ChartPieIcon, FolderIcon, HomeIcon, PuzzlePieceIcon } from '@
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
     { name: 'Teams & Users', href: route('agents.index'), icon: FolderIcon, current: route().current('agents.index') },
-    { name: 'Plans', href: route('plans'), icon: ChartPieIcon, current: route().current('plans') },
+    { name: 'Plans', href: route('plans.index'), icon: ChartPieIcon, current: route().current('plans') },
     {
         name: 'Integrations',
         href: route('integrations'),
