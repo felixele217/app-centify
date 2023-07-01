@@ -16,6 +16,7 @@ const isOpen = ref(false)
     <create-agent-slide-over
         @close-slide-over="isOpen = false"
         :is-open="isOpen"
+        dusk="slide-over-modal"
     />
 
     <page-header

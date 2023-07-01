@@ -18,6 +18,7 @@ const emit = defineEmits(['button-clicked'])
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <PrimaryButton
+                dusk="slide-over-button"
                 @click="emit('button-clicked')"
                 :text="props.buttonText"
             />
