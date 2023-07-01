@@ -31,7 +31,6 @@ const form = useForm({
 
             <TextInput
                 type="text"
-                class="mt-1 block w-full"
                 v-model="form.name"
                 :border="true"
                 name="name"
@@ -44,18 +43,18 @@ const form = useForm({
         </div>
 
         <div class="mt-6 w-1/2">
-            <!-- <InputLabel
+            <InputLabel
                 for="start_date"
                 value="Start Date"
                 required
-            /> -->
+            />
 
-            <DateInput />
+            <DateInput  class="mt-1"/>
 
-            <!-- <InputError
+            <InputError
                 class="mt-2"
                 :message="form.errors.start_date"
-            /> -->
+            />
         </div>
     </div>
 </template>

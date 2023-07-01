@@ -45,7 +45,6 @@ const submit = () => {
             <TextInput
                 id="email"
                 type="email"
-                class="mt-1 block w-full"
                 v-model="form.email"
                 required
                 autofocus
@@ -67,7 +66,6 @@ const submit = () => {
             <TextInput
                 id="password"
                 type="password"
-                class="mt-1 block w-full"
                 v-model="form.password"
                 required
                 autocomplete="new-password"
@@ -88,7 +86,6 @@ const submit = () => {
             <TextInput
                 id="password_confirmation"
                 type="password"
-                class="mt-1 block w-full"
                 v-model="form.password_confirmation"
                 required
                 autocomplete="new-password"

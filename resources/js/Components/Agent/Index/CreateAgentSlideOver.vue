@@ -99,7 +99,6 @@ function submit() {
 
                                                         <TextInput
                                                             type="text"
-                                                            class="mt-1 block w-full"
                                                             v-model="form.name"
                                                             :border="true"
                                                             name="name"
@@ -120,7 +119,6 @@ function submit() {
                                                         <TextInput
                                                             id="email"
                                                             type="text"
-                                                            class="mt-1 block w-full"
                                                             v-model="form.email"
                                                             name="email"
                                                         />

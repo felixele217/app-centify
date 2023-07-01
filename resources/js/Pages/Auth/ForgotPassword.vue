@@ -51,7 +51,6 @@ const submit = () => {
             <TextInput
                 id="email"
                 type="email"
-                class="mt-1 block w-full"
                 v-model="form.email"
                 required
                 autofocus
