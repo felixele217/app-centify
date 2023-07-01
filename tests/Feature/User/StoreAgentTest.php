@@ -1,11 +1,12 @@
 <?php
 
+use App\Enum\RoleEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
-it('can create an agent as an organization admin', function () {
-    Role::create(['name' => 'agent']);
+it('can create an agent as an admin', function () {
+    Role::create(['name' => RoleEnum::AGENT->value]);
     $user = signIn();
 
     $this->post(route('agents.store'), [
@@ -20,12 +21,12 @@ it('can create an agent as an organization admin', function () {
     expect($user->base_salary)->toBe($baseSalary);
     expect($user->on_target_earning)->toBe($onTargetEarning);
 
-    expect($user->hasRole('agent'))->toBeTrue();
+    expect($user->hasRole(RoleEnum::AGENT->value))->toBeTrue();
 });
 
 it('can create an agent with casted nullable base_salary and on_target_earning', function () {
     $user = signIn();
-    Role::create(['name' => $role = 'agent']);
+    Role::create(['name' => $role = RoleEnum::AGENT->value]);
 
     StoreAgentRequest::factory()->state([
         'base_salary' => 0,
@@ -41,7 +42,7 @@ it('can create an agent with casted nullable base_salary and on_target_earning',
 
 it('cannot create an agent with a duplicate mail', function () {
     $user = signIn();
-    Role::create(['name' => $role = 'agent']);
+    Role::create(['name' => $role = RoleEnum::AGENT->value]);
 
     StoreAgentRequest::factory()->state([
         'email' => $user->email,

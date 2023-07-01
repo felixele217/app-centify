@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\RoleEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -13,13 +14,13 @@ class AgentController extends Controller
     public function index(): Response
     {
         return Inertia::render('Agent/Index', [
-            'agents' => User::role('agent')->get(),
+            'agents' => User::role(RoleEnum::AGENT->value)->get(),
         ]);
     }
 
     public function store(StoreAgentRequest $request): RedirectResponse
     {
-        User::create($request->validated())->assignRole('agent');
+        User::create($request->validated())->assignRole(RoleEnum::AGENT->value);
 
         return back();
     }

@@ -8,14 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->date('start_date');
+            $table->integer('target_amount_per_month');
+            $table->string('target_variable');
+            $table->string('payout_frequency');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('plans');
     }
 };

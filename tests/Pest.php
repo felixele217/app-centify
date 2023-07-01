@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\RoleEnum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
@@ -12,7 +13,7 @@ uses(TestCase::class, RefreshDatabase::class)->in(
     'Integration',
 );
 
-function signIn($role = 'organization admin', $permission = '', $user = null): User
+function signIn($role = RoleEnum::ADMIN->value, $permission = '', $user = null): User
 {
     $user = $user ?: User::factory()
         ->create()

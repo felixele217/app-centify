@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\RoleEnum;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Role;
@@ -11,7 +12,7 @@ it('passes the correct props', function () {
 
     foreach ($agents as $agent) {
         $agent->assignRole(Role::firstOrCreate([
-            'name' => 'agent',
+            'name' => RoleEnum::AGENT->value,
         ]));
     }
 
