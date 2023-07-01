@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Organization;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,7 @@ return new class extends Migration
             $table->integer('target_amount_per_month');
             $table->string('target_variable');
             $table->string('payout_frequency');
+            $table->foreignIdFor(Organization::class);
             $table->timestamps();
         });
     }

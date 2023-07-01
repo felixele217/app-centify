@@ -1,13 +1,13 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Enum\TargetVariableEnum;
 use App\Enum\PayoutFrequencyEnum;
+use App\Enum\TargetVariableEnum;
 use App\Models\Plan;
+use App\Models\User;
+use Carbon\Carbon;
 
 it('can store a plan as an admin', function () {
-    signIn();
+    $user = signIn();
 
     $agents = User::factory(3)->agent()->create();
 
@@ -16,7 +16,7 @@ it('can store a plan as an admin', function () {
         'start_date' => $startDate = Carbon::tomorrow(),
         'target_amount_per_month' => $targetAmountPerMonth = 500000,
         'target_variable' => $targetVariable = TargetVariableEnum::ARR->value,
-        'payout_frequency' => $payoutFrequency =  PayoutFrequencyEnum::MONTHLY->value,
+        'payout_frequency' => $payoutFrequency = PayoutFrequencyEnum::MONTHLY->value,
         'assigned_agents' => $assignedAgents = $agents->pluck('id')->toArray(),
     ])->assertRedirect(route('plans.index'));
 
@@ -26,6 +26,5 @@ it('can store a plan as an admin', function () {
     expect($plan->target_variable->value)->toEqual($targetVariable);
     expect($plan->payout_frequency->value)->toEqual($payoutFrequency);
     expect($plan->agents->pluck('id')->toArray())->toEqual($assignedAgents);
+    expect($plan->organization->id)->toEqual($user->organization->id);
 });
-
-// auth"user also has the plan
