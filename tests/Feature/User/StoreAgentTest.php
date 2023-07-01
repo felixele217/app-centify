@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Role;
 
 it('can create an agent as an admin', function () {
     Role::create(['name' => RoleEnum::AGENT->value]);
-    $user = signIn();
+    $admin = signIn();
 
     $this->post(route('agents.store'), [
         'name' => $name = 'John Doe',
@@ -20,6 +20,7 @@ it('can create an agent as an admin', function () {
     expect($user->email)->toBe($email);
     expect($user->base_salary)->toBe($baseSalary);
     expect($user->on_target_earning)->toBe($onTargetEarning);
+    expect($user->organization->id)->toBe($admin->organization->id);
 
     expect($user->hasRole(RoleEnum::AGENT->value))->toBeTrue();
 });

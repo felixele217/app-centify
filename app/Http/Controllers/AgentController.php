@@ -6,6 +6,7 @@ use App\Enum\RoleEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,7 +21,10 @@ class AgentController extends Controller
 
     public function store(StoreAgentRequest $request): RedirectResponse
     {
-        User::create($request->validated())->assignRole(RoleEnum::AGENT->value);
+        User::create([
+            ...$request->validated(),
+            'organization_id' => Auth::user()->organization->id,
+        ])->assignRole(RoleEnum::AGENT->value);
 
         return back();
     }
