@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
+import MultiSelect from '@/Components/Form/MultiSelect.vue'
+import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import { useForm } from '@inertiajs/vue3'
 
@@ -13,6 +16,7 @@ const form = useForm({
     payout_frequency: '',
     assigned_agents: [],
 })
+function submit() {}
 </script>
 
 <template>
@@ -22,39 +26,122 @@ const form = useForm({
             Receive a fixed percentage of a certain variable such as ARR.
         </p>
 
-        <div class="mt-6 w-1/2">
-            <InputLabel
-                for="name"
-                value="Name"
-                required
-            />
+        <form
+            @submit.prevent="submit"
+        >
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="name"
+                    value="Name"
+                    required
+                />
 
-            <TextInput
-                type="text"
-                v-model="form.name"
-                :border="true"
-                name="name"
-            />
+                <TextInput
+                    type="text"
+                    v-model="form.name"
+                    :border="true"
+                    name="name"
+                />
 
-            <InputError
-                class="mt-2"
-                :message="form.errors.name"
-            />
-        </div>
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.name"
+                />
+            </div>
 
-        <div class="mt-6 w-1/2">
-            <InputLabel
-                for="start_date"
-                value="Start Date"
-                required
-            />
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="start_date"
+                    value="Start Date"
+                    required
+                />
 
-            <DateInput  class="mt-1"/>
+                <DateInput />
 
-            <InputError
-                class="mt-2"
-                :message="form.errors.start_date"
-            />
-        </div>
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.start_date"
+                />
+            </div>
+
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="target_amount_per_month"
+                    value="Target Amount (per month)"
+                    required
+                />
+
+                <CurrencyInput
+                    :value="form.target_amount_per_month"
+                    @set-value="(value: number) => (form.target_amount_per_month = value)"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.target_amount_per_month"
+                />
+            </div>
+
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="target_variable"
+                    value="Target Variable"
+                    required
+                />
+
+                <SelectWithDescription />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.target_variable"
+                />
+            </div>
+
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="payout_frequency"
+                    value="Payout Frequency"
+                    required
+                />
+
+                <SelectWithDescription />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.payout_frequency"
+                />
+            </div>
+
+            <div class="mt-6 w-1/2">
+                <InputLabel
+                    for="assigned_agents"
+                    value="Assigned Agents"
+                />
+
+                <MultiSelect />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.assigned_agents"
+                />
+            </div>
+
+            <div class="border border-gray-100 mt-5" />
+
+            <div class="flex flex-shrink-0 justify-end py-4">
+                <button
+                    type="button"
+                    class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    @click="$emit('close-slide-over')"
+                >
+                    Cancel
+                </button>
+                <button
+                    class="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                    Create
+                </button>
+            </div>
+        </form>
     </div>
 </template>

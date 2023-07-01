@@ -8,6 +8,7 @@ const date = ref()
 
 <template>
     <VueDatePicker
+    class="mt-1"
         v-model="date"
         :enable-time-picker="false"
     >
