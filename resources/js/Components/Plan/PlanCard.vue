@@ -7,5 +7,5 @@ const props = defineProps<{
 </script>
 
 <template>
-
+    <div>Hier soll der gleiche Abstand wie bei Agents zur Tabelle sein.</div>
 </template>

@@ -48,7 +48,7 @@ const navigation = [
                 </div>
             </div>
 
-            <main class="grow p-5 sm:px-6 lg:px-10">
+            <main class="grow p-5 sm:px-10 lg:py-10 lg:px-16">
                 <slot />
             </main>
         </div>
