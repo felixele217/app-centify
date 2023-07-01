@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePlanRequest;
 use App\Repositories\PlanRepository;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PlanController extends Controller
 {
     public function index()
     {
-        return 1;
+        return Inertia::render('Plan/Index', [
+            'plans' => Auth::user()->organization->plans
+        ]);
     }
 
     public function store(StorePlanRequest $request)
