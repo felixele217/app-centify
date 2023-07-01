@@ -13,7 +13,6 @@
         "strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */,
         "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
         "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
-        "verbatimModuleSyntax": true,
         "noEmit": true,
         "skipLibCheck": true,
         "paths": {
