@@ -136,7 +136,7 @@ function submit() {
 
                                                         <CurrencyInput
                                                             :value="form.base_salary"
-                                                            @set-value="(value) => (form.base_salary = value)"
+                                                            @set-value="(value: number) => (form.base_salary = value)"
                                                         />
 
                                                         <InputError
@@ -152,7 +152,7 @@ function submit() {
 
                                                         <CurrencyInput
                                                             :value="form.on_target_earning"
-                                                            @set-value="(value) => (form.on_target_earning = value)"
+                                                            @set-value="(value: number) => (form.on_target_earning = value)"
                                                         />
 
                                                         <InputError

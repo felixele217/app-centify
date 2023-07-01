@@ -14,8 +14,8 @@ class RenderPagesTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visitRoute('login')
                 ->assertRouteIs('login')
-                ->waitForText('Remember me')
-                ->assertSee('Remember me');
+                ->waitForText('Log in')
+                ->assertSee('Log in');
         });
     }
 
@@ -27,6 +27,7 @@ class RenderPagesTest extends DuskTestCase
             route('dashboard') => 'Total Payout',
             route('integrations') => 'pipedrive',
             route('agents.index') => 'Dashboard',
+            // TODO Modal Slide Over testen
         ];
 
         foreach ($urlsToText as $url => $text) {

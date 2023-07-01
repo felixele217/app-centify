@@ -21,7 +21,7 @@ class LoginTest extends DuskTestCase
                 ->waitForInput('password')
                 ->type('email', $user->email)
                 ->type('password', $password)
-                ->press('LOG IN')
+                ->press('Log in')
                 ->waitForRoute('dashboard')
                 ->assertRouteIs('dashboard');
         });

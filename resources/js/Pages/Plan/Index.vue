@@ -9,5 +9,5 @@ const props = defineProps<{
 </script>
 
 <template>
-
+    <PlanCard :plan="props.plans[0]"/>
 </template>
