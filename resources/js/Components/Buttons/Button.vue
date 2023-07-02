@@ -7,7 +7,7 @@ const props = defineProps<{
 
 <template>
     <button
-        class="inline-flex items-center text-center rounded-md border border-transparent text-sm font-semibold transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        class="inline-flex items-center text-center rounded-md border border-transparent text-sm font-semibold transition duration-150 ease-in-out"
         :class="props.padding ? props.padding : 'px-4 py-2'"
     >
         <p v-if="props.text">{{ props.text }}</p>
