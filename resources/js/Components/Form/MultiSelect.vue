@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteIcon from '@/Components/Icon/DeleteIcon.vue'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
@@ -13,6 +14,8 @@ const props = defineProps<{
 function isSelected(optionId: number) {
     return props.selectedIds.includes(optionId)
 }
+
+const selectedOptions = () => props.options.filter((option) => props.selectedIds.includes(option.id))
 </script>
 
 <template>
@@ -39,7 +42,7 @@ function isSelected(optionId: number) {
                 leave-to-class="opacity-0"
             >
                 <ListboxOptions
-                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 max-h-60 w-2/3 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 >
                     <ListboxOption
                         as="template"
@@ -76,6 +79,16 @@ function isSelected(optionId: number) {
                     </ListboxOption>
                 </ListboxOptions>
             </transition>
+
+            <div class="mt-2 space-y-1">
+                <div
+                    class="flex items-center justify-end gap-2 text-sm text-gray-600"
+                    v-for="option in selectedOptions()"
+                >
+                    <p>{{ option.name }}</p>
+                    <DeleteIcon />
+                </div>
+            </div>
         </div>
     </Listbox>
 </template>
