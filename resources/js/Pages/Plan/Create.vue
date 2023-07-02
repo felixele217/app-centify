@@ -7,6 +7,9 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
+import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
+import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
@@ -102,7 +105,14 @@ function submit() {
                     required
                 />
 
-                <SelectWithDescription :options="props.target_variable_options" />
+                <SelectWithDescription
+                    :options="
+                        enumOptionsToSelectOptionWithDescription(
+                            props.target_variable_options,
+                            targetVariableToDescription
+                        )
+                    "
+                />
 
                 <InputError
                     class="mt-2"
@@ -117,7 +127,14 @@ function submit() {
                     required
                 />
 
-                <SelectWithDescription />
+                <SelectWithDescription
+                    :options="
+                        enumOptionsToSelectOptionWithDescription(
+                            props.payout_frequency_options,
+                            payoutFrequencyToDescription
+                        )
+                    "
+                />
 
                 <InputError
                     class="mt-2"
