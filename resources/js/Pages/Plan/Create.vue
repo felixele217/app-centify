@@ -109,8 +109,6 @@ function submit() {
                 />
             </div>
 
-            <h1 class="bg-primary-color">HALLO</h1>
-
             <div class="mt-6 w-1/2">
                 <InputLabel
                     for="target_variable"

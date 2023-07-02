@@ -33,7 +33,8 @@ const selected = ref<null | {
             <ListboxButton class="inline-flex grow divide-x divide-gray-300">
                 <div class="inline-flex grow items-center gap-x-1.5 px-3 py-2">
                     <CheckIcon
-                        class="-ml-0.5 h-5 w-5"
+                        v-if="selected"
+                        class="-ml-0.5 h-4 w-4"
                         :class="selected ? 'text-gray-600' : 'text-gray-300'"
                         aria-hidden="true"
                     />
