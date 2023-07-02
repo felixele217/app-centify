@@ -3,6 +3,13 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
+const props = defineProps<{
+    options: Array<{
+        id: number
+        name: string
+    }>
+}>()
+
 const people = [
     { id: 1, name: 'Wade Cooper' },
     { id: 2, name: 'Arlene Mccoy' },
@@ -47,9 +54,9 @@ const selected = ref(people[3])
                 >
                     <ListboxOption
                         as="template"
-                        v-for="person in people"
-                        :key="person.id"
-                        :value="person"
+                        v-for="option in props.options"
+                        :key="option.id"
+                        :value="option"
                         v-slot="{ active, selected }"
                     >
                         <li
@@ -59,7 +66,7 @@ const selected = ref(people[3])
                             ]"
                         >
                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{
-                                person.name
+                                option.name
                             }}</span>
 
                             <span

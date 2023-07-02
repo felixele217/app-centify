@@ -148,7 +148,7 @@ function submit() {
                     value="Assigned Agents"
                 />
 
-                <MultiSelect />
+                <MultiSelect :options="props.agents" />
 
                 <InputError
                     class="mt-2"

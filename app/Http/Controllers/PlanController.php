@@ -21,6 +21,7 @@ class PlanController extends Controller
     public function create()
     {
         return Inertia::render('Plan/Create', [
+            'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
             'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
         ]);
