@@ -18,7 +18,6 @@ const selected = ref<null | {
     description: string
     current: boolean
 }>(null)
-
 </script>
 
 <template>
@@ -31,9 +30,7 @@ const selected = ref<null | {
         <div
             class="relative mt-1 flex w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
         >
-            <ListboxButton
-                class="inline-flex grow divide-x divide-gray-300"
-            >
+            <ListboxButton class="inline-flex grow divide-x divide-gray-300">
                 <div class="inline-flex grow items-center gap-x-1.5 px-3 py-2 focus:ring-2 focus:ring-inset">
                     <CheckIcon
                         class="-ml-0.5 h-5 w-5"
@@ -49,7 +46,7 @@ const selected = ref<null | {
                 </div>
 
                 <div
-                    class="hover:bg-i inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    class="hover:bg-i inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
                     <span class="sr-only">Change published status</span>
 
@@ -77,14 +74,14 @@ const selected = ref<null | {
                     >
                         <li
                             class="cursor-pointer select-none p-4 text-sm"
-                            :class="active ? 'bg-indigo-600 text-white' : 'text-gray-900'"
+                            :class="active ? 'bg-primary text-white' : 'text-gray-900'"
                         >
                             <div class="flex flex-col">
                                 <div class="flex justify-between">
                                     <p :class="selected ? 'font-semibold' : 'font-normal'">{{ option.title }}</p>
                                     <span
                                         v-if="selected"
-                                        :class="active ? 'text-white' : 'text-indigo-600'"
+                                        :class="active ? 'text-white' : 'text-primary'"
                                     >
                                         <CheckIcon
                                             class="h-5 w-5"

@@ -16,7 +16,10 @@ function isSelected(optionId: number) {
 </script>
 
 <template>
-    <Listbox as="div" multiple>
+    <Listbox
+        as="div"
+        multiple
+    >
         <div class="relative mt-2">
             <ListboxButton
                 class="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6"
@@ -48,7 +51,7 @@ function isSelected(optionId: number) {
                         <li
                             @click="$emit('agent-clicked', option.id)"
                             :class="[
-                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                active ? 'bg-primary text-white' : 'text-gray-900',
                                 'relative cursor-pointer select-none py-2 pl-8 pr-4',
                             ]"
                         >
@@ -60,7 +63,7 @@ function isSelected(optionId: number) {
                             <span
                                 v-if="isSelected(option.id)"
                                 :class="[
-                                    active ? 'text-white' : 'text-indigo-600',
+                                    active ? 'text-white' : 'text-primary',
                                     'absolute inset-y-0 left-0 flex items-center pl-1.5',
                                 ]"
                             >

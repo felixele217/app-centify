@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import GuestLayout from '@/Layouts/GuestLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 
 defineOptions({ layout: GuestLayout })
@@ -95,7 +95,7 @@ const submit = () => {
             <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
-                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-hover focus:ring-offset-2"
             >
                 Forgot your password?
             </Link>

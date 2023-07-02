@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col border-r border-gray-200">
+    <div class="hidden border-r border-gray-200 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
             <ApplicationLogo class="flex h-16 shrink-0 items-center" />
 
@@ -31,8 +31,8 @@ const props = defineProps<{
                                     :href="item.href"
                                     :class="[
                                         item.current
-                                            ? 'bg-gray-50 text-indigo-600'
-                                            : 'text-gray-800 hover:bg-gray-50 hover:text-indigo-600',
+                                            ? 'bg-gray-50 text-primary'
+                                            : 'text-gray-800 hover:bg-gray-50 hover:text-primary',
                                         'group flex gap-x-3 rounded-md p-2 py-3.5 font-semibold leading-6',
                                     ]"
                                 >
