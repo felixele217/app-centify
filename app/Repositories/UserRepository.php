@@ -11,13 +11,9 @@ class UserRepository
 {
     public static function create(StoreAgentRequest $request): User
     {
-        $user = User::create([
+        return User::create([
             ...$request->validated(),
             'organization_id' => Auth::user()->organization->id,
-        ]);
-
-        $user->assignRole(RoleEnum::AGENT->value);
-
-        return $user;
+        ])->assignRole(RoleEnum::AGENT->value);
     }
 }
