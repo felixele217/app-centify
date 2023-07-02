@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-import { computed } from 'vue'
 
 const props = defineProps<{
     options: Array<{
@@ -11,11 +10,13 @@ const props = defineProps<{
     selectedIds: Array<number>
 }>()
 
-const selectedLength = computed(() => props.selectedIds.length)
+function isSelected(optionId: number) {
+    return props.selectedIds.includes(optionId)
+}
 </script>
 
 <template>
-    <Listbox as="div">
+    <Listbox as="div" multiple>
         <div class="relative mt-2">
             <ListboxButton
                 class="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -42,21 +43,22 @@ const selectedLength = computed(() => props.selectedIds.length)
                         v-for="option in props.options"
                         :key="option.id"
                         :value="option"
-                        v-slot="{ active, selected }"
+                        v-slot="{ active }"
                     >
                         <li
                             @click="$emit('agent-clicked', option.id)"
                             :class="[
                                 active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-8 pr-4',
+                                'relative cursor-pointer select-none py-2 pl-8 pr-4',
                             ]"
                         >
-                            <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{
-                                option.name
-                            }}</span>
+                            <span
+                                :class="[isSelected(option.id) ? 'font-semibold' : 'font-normal', 'block truncate']"
+                                >{{ option.name }}</span
+                            >
 
                             <span
-                                v-if="selected"
+                                v-if="isSelected(option.id)"
                                 :class="[
                                     active ? 'text-white' : 'text-indigo-600',
                                     'absolute inset-y-0 left-0 flex items-center pl-1.5',
