@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
+import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
@@ -42,9 +43,7 @@ function submit() {
         >
             <div class="fixed inset-0" />
 
-            <div
-                class="fixed inset-0 overflow-hidden"
-            >
+            <div class="fixed inset-0 overflow-hidden">
                 <div class="absolute inset-0 overflow-hidden">
                     <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
                         <TransitionChild
@@ -164,20 +163,8 @@ function submit() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex flex-shrink-0 justify-end px-4 py-4">
-                                        <button
-                                            type="button"
-                                            class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                                            @click="$emit('close-slide-over')"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            class="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                        >
-                                            Create
-                                        </button>
-                                    </div>
+
+                                    <FormButtons class="pr-4" @cancel-button-clicked="$emit('close-slide-over')" />
                                 </form>
                             </DialogPanel>
                         </TransitionChild>
