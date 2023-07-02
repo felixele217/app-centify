@@ -39,11 +39,11 @@ class StorePlanRequest extends FormRequest
                 new Enum(PayoutFrequencyEnum::class),
             ],
 
-            'assigned_agents' => [
+            'assigned_agent_ids' => [
                 'array',
             ],
 
-            'assigned_agents.*' => [
+            'assigned_agent_ids.*' => [
                 'exists:users,id',
             ],
 

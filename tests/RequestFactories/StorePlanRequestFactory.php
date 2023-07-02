@@ -16,7 +16,7 @@ class StorePlanRequestFactory extends RequestFactory
             'target_amount_per_month' => fake()->randomElement([200000, 400000]),
             'target_variable' => fake()->randomElement(TargetVariableEnum::cases())->value,
             'payout_frequency' => fake()->randomElement(PayoutFrequencyEnum::cases())->value,
-            'assigned_agents' => [],
+            'assigned_agent_ids' => [],
         ];
     }
 }

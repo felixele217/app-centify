@@ -11,11 +11,11 @@ class PlanRepository
     public static function create(StorePlanRequest $request): Plan
     {
         $plan = Plan::create([
-            ...$request->safe()->except('assigned_agents'),
-            'organization_id' => Auth::user()->organization->id
+            ...$request->safe()->except('assigned_agent_ids'),
+            'organization_id' => Auth::user()->organization->id,
         ]);
 
-        $plan->users()->attach($request->validated('assigned_agents'));
+        $plan->users()->attach($request->validated('assigned_agent_ids'));
 
         return $plan;
     }

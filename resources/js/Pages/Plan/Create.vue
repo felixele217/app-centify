@@ -25,7 +25,7 @@ const form = useForm({
     target_amount_per_month: 0,
     target_variable: 0,
     payout_frequency: '',
-    assigned_agents: [] as Array<number>,
+    assigned_agent_ids: [] as Array<number>,
 })
 
 function handleDateChange(newDate: Date) {
@@ -33,10 +33,10 @@ function handleDateChange(newDate: Date) {
 }
 
 function handleAgentSelect(id: number) {
-    if (form.assigned_agents.includes(id)) {
-        form.assigned_agents = form.assigned_agents.filter((agentId) => agentId !== id)
+    if (form.assigned_agent_ids.includes(id)) {
+        form.assigned_agent_ids = form.assigned_agent_ids.filter((agentId) => agentId !== id)
     } else {
-        form.assigned_agents.push(id)
+        form.assigned_agent_ids.push(id)
     }
 }
 
@@ -154,18 +154,19 @@ function submit() {
 
             <div class="mt-6 w-1/2">
                 <InputLabel
-                    for="assigned_agents"
+                    for="assigned_agent_ids"
                     value="Assigned Agents"
                 />
 
                 <MultiSelect
                     @agent-clicked="handleAgentSelect"
                     :options="props.agents"
+                    :selected-ids="form.assigned_agent_ids"
                 />
 
                 <InputError
                     class="mt-2"
-                    :message="form.errors.assigned_agents"
+                    :message="form.errors.assigned_agent_ids"
                 />
             </div>
 

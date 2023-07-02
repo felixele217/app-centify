@@ -18,7 +18,7 @@ it('can store a plan as an admin', function () {
         'target_amount_per_month' => $targetAmountPerMonth = 500000,
         'target_variable' => $targetVariable = TargetVariableEnum::ARR->value,
         'payout_frequency' => $payoutFrequency = PayoutFrequencyEnum::MONTHLY->value,
-        'assigned_agents' => $assignedAgents = $agents->pluck('id')->toArray(),
+        'assigned_agent_ids' => $assignedAgents = $agents->pluck('id')->toArray(),
     ])->assertRedirect(route('plans.index'));
 
     expect($plan = Plan::whereName($name)->first())->not()->toBeNull();
