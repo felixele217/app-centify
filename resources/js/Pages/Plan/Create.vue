@@ -39,7 +39,6 @@ function submit() {}
                 <TextInput
                     type="text"
                     v-model="form.name"
-                    :border="true"
                     name="name"
                 />
 

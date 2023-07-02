@@ -3,7 +3,6 @@ import { onMounted, ref } from 'vue'
 
 const props = defineProps<{
     modelValue: string
-    border?: boolean
     textColor?: string
 }>()
 
