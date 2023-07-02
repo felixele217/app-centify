@@ -21,7 +21,7 @@ class AgentController extends Controller
 
     public function store(StoreAgentRequest $request): RedirectResponse
     {
-        UserRepository::create($request, RoleEnum::AGENT);
+        UserRepository::create($request);
 
         return back();
     }

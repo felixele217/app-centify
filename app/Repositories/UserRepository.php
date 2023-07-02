@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class UserRepository
 {
-    public static function create(StoreAgentRequest $request, RoleEnum $role = null): User
+    public static function create(StoreAgentRequest $request): User
     {
         $user = User::create([
             ...$request->validated(),
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        $user->assignRole($role->value);
+        $user->assignRole(RoleEnum::AGENT->value);
 
         return $user;
     }
