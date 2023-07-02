@@ -2,6 +2,7 @@
 
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
+use App\Http\Requests\StorePlanRequest;
 use App\Models\Plan;
 use App\Models\User;
 use Carbon\Carbon;
@@ -28,3 +29,18 @@ it('can store a plan as an admin', function () {
     expect($plan->agents->pluck('id')->toArray())->toEqual($assignedAgents);
     expect($plan->organization->id)->toEqual($user->organization->id);
 });
+
+it('throws a validation error if target_amount_per_month is smaller than 1', function ($targetAmountPerMonth) {
+    signIn();
+
+    StorePlanRequest::factory()->state([
+        'target_amount_per_month' => $targetAmountPerMonth,
+    ])->fake();
+
+    $this->post(route('plans.store'))->assertInvalid([
+        'target_amount_per_month' => 'The target amount per month field must be at least 1.',
+    ]);
+})->with([
+    0,
+    -1,
+]);

@@ -11,7 +11,7 @@ class StorePlanRequest extends FormRequest
 {
     public function rules(): array
     {
-       dd($this->all());
+    //    dd($this->all());
         return [
             'name' => [
                 'required',
@@ -26,6 +26,7 @@ class StorePlanRequest extends FormRequest
             'target_amount_per_month' => [
                 'required',
                 'integer',
+                'min:1'
             ],
 
             'target_variable' => [
@@ -39,7 +40,6 @@ class StorePlanRequest extends FormRequest
             ],
 
             'assigned_agents' => [
-                'required',
                 'array',
             ],
 
