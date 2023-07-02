@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const form = useForm({
     name: '',
-    start_date: new Date(), // first day of next month
+    start_date: null as Date | null, // first day of next month
     target_amount_per_month: 0,
     target_variable: 0,
     payout_frequency: '',

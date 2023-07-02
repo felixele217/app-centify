@@ -7,10 +7,12 @@ import Dropdown from '../Dropdown/Dropdown.vue'
 import TextInput from './TextInput.vue'
 
 const props = defineProps<{
-    date: Date
+    date: Date | null
 }>()
 
 const selectedColor = ref('indigo')
+console.log(props.date);
+const gc ='text-gray-300'
 </script>
 
 <template>
@@ -22,7 +24,8 @@ const selectedColor = ref('indigo')
         <template #trigger>
             <TextInput
                 class="hover:cursor-pointer"
-                :model-value="props.date.toLocaleDateString('DE-de')"
+                :class="props.date ? 'text-gray-900' : 'text-gray-300'"
+                :model-value="props.date ? props.date.toLocaleDateString('DE-de') : 'Select a Date...'"
             />
         </template>
 

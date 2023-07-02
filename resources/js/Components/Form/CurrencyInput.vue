@@ -74,7 +74,7 @@ function currencyDisplay(valueInCents: number): string {
 
 <template>
     <TextInput
-        :textColor="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
+        :class="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
         @keydown.prevent="handleKeyDown"
         type="text"
         :modelValue="currencyDisplay(props.value)"
