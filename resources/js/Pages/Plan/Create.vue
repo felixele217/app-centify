@@ -64,6 +64,7 @@ function submit() {
                     type="text"
                     v-model="form.name"
                     name="name"
+                    placeholder="SDR Commission Plan"
                 />
 
                 <InputError

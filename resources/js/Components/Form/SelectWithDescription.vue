@@ -63,7 +63,7 @@ const selected = ref<null | {
                 leave-to-class="opacity-0"
             >
                 <ListboxOptions
-                    class="absolute right-0 top-10 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    class="absolute left-0 top-10 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                     <ListboxOption
                         as="template"
