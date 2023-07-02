@@ -38,7 +38,7 @@ it('throws a validation error if target_amount_per_month is smaller than 1', fun
     ])->fake();
 
     $this->post(route('plans.store'))->assertInvalid([
-        'target_amount_per_month' => 'The target amount per month field must be at least 1.',
+        'target_amount_per_month' => 'The target amount per month must be at least 0,01€.',
     ]);
 })->with([
     0,
