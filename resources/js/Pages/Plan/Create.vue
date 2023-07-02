@@ -9,6 +9,11 @@ import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import { useForm } from '@inertiajs/vue3'
 
+const props = defineProps<{
+    target_variable_options: Array<string>
+    payout_frequency_options: Array<string>
+}>()
+
 const form = useForm({
     name: '',
     start_date: new Date(), // first day of next month
@@ -97,7 +102,7 @@ function submit() {
                     required
                 />
 
-                <SelectWithDescription />
+                <SelectWithDescription :options="props.target_variable_options" />
 
                 <InputError
                     class="mt-2"

@@ -3,10 +3,15 @@ import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } f
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
-const publishingOptions = [
-    { title: 'Published', description: 'This job posting can be viewed by anyone who has the link.', current: true },
-    { title: 'Draft', description: 'This job posting will no longer be publicly accessible.', current: false },
-]
+export type SelectOption = {
+    title: string
+    description: string
+    current: boolean
+}
+
+const props = defineProps<{
+    options: Array<SelectOption>
+}>()
 
 const selected = ref<null | {
     title: string
@@ -62,16 +67,14 @@ const selected = ref<null | {
                 >
                     <ListboxOption
                         as="template"
-                        v-for="option in publishingOptions"
+                        v-for="option in props.options"
                         :key="option.title"
                         :value="option"
                         v-slot="{ active, selected }"
                     >
                         <li
-                            :class="[
-                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                'cursor-default select-none p-4 text-sm',
-                            ]"
+                            class="cursor-pointer select-none p-4 text-sm"
+                            :class="active ? 'bg-indigo-600 text-white' : 'text-gray-900'"
                         >
                             <div class="flex flex-col">
                                 <div class="flex justify-between">
