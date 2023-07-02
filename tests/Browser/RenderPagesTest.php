@@ -27,7 +27,6 @@ class RenderPagesTest extends DuskTestCase
             route('dashboard') => 'Total Payout',
             route('integrations') => 'pipedrive',
             route('agents.index') => 'Dashboard',
-            // TODO Modal Slide Over testen
         ];
 
         foreach ($urlsToText as $url => $text) {
