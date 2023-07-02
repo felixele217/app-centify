@@ -17,7 +17,14 @@ const form = useForm({
     payout_frequency: '',
     assigned_agents: [],
 })
-function submit() {}
+
+function handleDateChange(newDate: any) {
+    form.start_date = newDate
+}
+
+function submit() {
+    form.post(route('plans.store'))
+}
 </script>
 
 <template>
@@ -27,9 +34,7 @@ function submit() {}
             Receive a fixed percentage of a certain variable such as ARR.
         </p>
 
-        <form
-            @submit.prevent="submit"
-        >
+        <form @submit.prevent="submit">
             <div class="mt-6 w-1/2">
                 <InputLabel
                     for="name"
@@ -56,7 +61,10 @@ function submit() {}
                     required
                 />
 
-                <DateInput />
+                <DateInput
+                    :date="form.start_date"
+                    @date-changed="handleDateChange"
+                />
 
                 <InputError
                     class="mt-2"
@@ -126,9 +134,9 @@ function submit() {}
                 />
             </div>
 
-            <div class="border border-gray-100 mt-5" />
+            <div class="mt-5 border border-gray-100" />
 
-            <FormButtons />
+            <FormButtons @create-button-clicked="submit" />
         </form>
     </div>
 </template>
