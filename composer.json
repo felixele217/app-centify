@@ -62,8 +62,11 @@
 		],
         "prettier": "npx prettier --write ./resources/js",
         "pint": "vendor/bin/pint",
-        "test": "vendor/bin/pest",
-        "format": "composer prettier && composer pint"
+        "format": "composer prettier && composer pint",
+        "test-local": "composer pest-local && composer vitest && composer dusk-local",
+        "pest-local": "vendor/bin/pest --group=feature,unit,architecture",
+        "vitest": "npm run test",
+        "dusk-local": "bash ./scripts/killViteProcess.sh && npm run build && sail dusk"
 	},
 	"extra": {
 		"laravel": {
