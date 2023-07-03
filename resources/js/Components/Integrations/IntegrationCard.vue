@@ -3,6 +3,7 @@ import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
 import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
+import Card from '../Card.vue'
 
 const props = defineProps<{
     for: 'pipedrive' | 'salesforce'
@@ -25,42 +26,40 @@ function testIntegration() {
 </script>
 
 <template>
-    <div class="flex w-60 flex-col gap-5 rounded-md bg-white p-5">
-        <div class="flex gap-5">
+    <Card class="w-60">
+        <div class="flex items-center gap-4">
             <PipedriveLogo v-if="props.for === 'pipedrive'" />
             <SalesforceLogo v-if="props.for === 'salesforce'" />
-
             <h3>{{ props.for }}</h3>
         </div>
 
-        <div
-            class="flex items-center justify-between"
-            v-if="!activeIntegrations[props.for]"
-        >
-            <div class="flex items-center gap-2 -mb-1">
-                <div class="h-2 w-2 rounded-full bg-gray-300" />
-                <p class="-mt-0.5 text-sm">inactive</p>
+        <div class="mt-5">
+            <div
+                class="flex items-center justify-between"
+                v-if="!activeIntegrations[props.for]"
+            >
+                <div class="-mb-1 flex items-center gap-2">
+                    <div class="h-2 w-2 rounded-full bg-gray-300" />
+                    <p class="-mt-0.5 text-sm">inactive</p>
+                </div>
+                <PrimaryButton
+                    text="Connect"
+                    @click="authenticate"
+                />
             </div>
-
-            <PrimaryButton
-                text="Connect"
-                @click="authenticate"
-            />
-        </div>
-
-        <div
-            class="flex items-center justify-between gap-5"
-            v-if="activeIntegrations[props.for]"
-        >
-            <div class="flex items-center gap-2 -mb-1">
-                <div class="h-2 w-2 rounded-full bg-green-500" />
-                <p class="-mt-0.5 text-sm">active</p>
+            <div
+                class="flex items-center justify-between gap-5"
+                v-if="activeIntegrations[props.for]"
+            >
+                <div class="-mb-1 flex items-center gap-3">
+                    <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
+                    <p class="-mt-0.5 text-sm font-semibold">active</p>
+                </div>
+                <PrimaryButton
+                    text="Test"
+                    @click="testIntegration"
+                />
             </div>
-
-            <PrimaryButton
-                text="Test"
-                @click="testIntegration"
-            />
         </div>
-    </div>
+    </Card>
 </template>
