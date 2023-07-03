@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Card from '@/Components/Card.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
@@ -46,14 +47,17 @@ function submit() {
 </script>
 
 <template>
-    <div class="mx-20 rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+    <Card class="w-144">
         <h2 class="text-base font-semibold leading-7 text-gray-900">Create Flatrate Commission Plan</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">
             Receive a fixed percentage of a certain variable such as ARR.
         </p>
 
-        <form @submit.prevent="submit">
-            <div class="mt-6 w-1/2">
+        <form
+            @submit.prevent="submit"
+            class="space-y-6"
+        >
+            <div>
                 <InputLabel
                     for="name"
                     value="Name"
@@ -73,7 +77,7 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-6 w-1/2">
+            <div>
                 <InputLabel
                     for="start_date"
                     value="Start Date"
@@ -91,7 +95,7 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-6 w-1/2">
+            <div>
                 <InputLabel
                     for="target_amount_per_month"
                     value="Target Amount (per month)"
@@ -109,7 +113,7 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-6 w-1/2">
+            <div>
                 <InputLabel
                     for="target_variable"
                     value="Target Variable"
@@ -132,7 +136,7 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-6 w-1/2">
+            <div>
                 <InputLabel
                     for="payout_frequency"
                     value="Payout Frequency"
@@ -155,7 +159,7 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-6 w-1/2">
+            <div>
                 <InputLabel
                     for="assigned_agent_ids"
                     value="Assigned Agents"
@@ -173,9 +177,10 @@ function submit() {
                 />
             </div>
 
-            <div class="mt-5 border border-gray-100" />
-
-            <FormButtons @create-button-clicked="submit" />
+            <div>
+                <div class="mt-5 border border-gray-100" />
+                <FormButtons @create-button-clicked="submit" />
+            </div>
         </form>
-    </div>
+    </Card>
 </template>
