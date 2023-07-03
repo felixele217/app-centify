@@ -107,45 +107,47 @@ function submit() {
                             :message="form.errors.target_amount_per_month"
                         />
                     </div>
-                    <div>
-                        <InputLabel
-                            for="target_variable"
-                            value="Target Variable"
-                            required
-                        />
-                        <SelectWithDescription
-                            :options="
-                                enumOptionsToSelectOptionWithDescription(
-                                    props.target_variable_options,
-                                    targetVariableToDescription
-                                )
-                            "
-                            @option-selected="(optionTitle: string) => form.target_variable = optionTitle"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.target_variable"
-                        />
-                    </div>
-                    <div>
-                        <InputLabel
-                            for="payout_frequency"
-                            value="Payout Frequency"
-                            required
-                        />
-                        <SelectWithDescription
-                            :options="
-                                enumOptionsToSelectOptionWithDescription(
-                                    props.payout_frequency_options,
-                                    payoutFrequencyToDescription
-                                )
-                            "
-                            @option-selected="(optionTitle: string) => form.payout_frequency = optionTitle"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.payout_frequency"
-                        />
+                    <div class="flex gap-5">
+                        <div class="w-1/2">
+                            <InputLabel
+                                for="target_variable"
+                                value="Target Variable"
+                                required
+                            />
+                            <SelectWithDescription
+                                :options="
+                                    enumOptionsToSelectOptionWithDescription(
+                                        props.target_variable_options,
+                                        targetVariableToDescription
+                                    )
+                                "
+                                @option-selected="(optionTitle: string) => form.target_variable = optionTitle"
+                            />
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.target_variable"
+                            />
+                        </div>
+                        <div class="w-1/2">
+                            <InputLabel
+                                for="payout_frequency"
+                                value="Payout Frequency"
+                                required
+                            />
+                            <SelectWithDescription
+                                :options="
+                                    enumOptionsToSelectOptionWithDescription(
+                                        props.payout_frequency_options,
+                                        payoutFrequencyToDescription
+                                    )
+                                "
+                                @option-selected="(optionTitle: string) => form.payout_frequency = optionTitle"
+                            />
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.payout_frequency"
+                            />
+                        </div>
                     </div>
                     <div>
                         <InputLabel
