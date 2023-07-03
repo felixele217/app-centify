@@ -8,7 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 it('can store a plan as an admin', function () {
-    $user = signIn();
+    $admin = signIn();
 
     $agents = User::factory(3)->agent()->create();
 
@@ -27,7 +27,8 @@ it('can store a plan as an admin', function () {
     expect($plan->target_variable->value)->toEqual($targetVariable);
     expect($plan->payout_frequency->value)->toEqual($payoutFrequency);
     expect($plan->agents->pluck('id')->toArray())->toEqual($assignedAgents);
-    expect($plan->organization->id)->toEqual($user->organization->id);
+    expect($plan->creator_id)->toEqual($admin->id);
+    expect($plan->organization->id)->toEqual($admin->organization->id);
 });
 
 it('throws a validation error if target_amount_per_month is smaller than 1', function ($targetAmountPerMonth) {
@@ -45,8 +46,8 @@ it('throws a validation error if target_amount_per_month is smaller than 1', fun
     -1,
 ]);
 
-it ('transforms start_date to a valid carbon object', function () {
-     signIn();
+it('transforms start_date to a valid carbon object', function () {
+    signIn();
 
     StorePlanRequest::factory()->state([
         'name' => $name = 'some name',

@@ -12,6 +12,7 @@ class PlanRepository
     {
         $plan = Plan::create([
             ...$request->safe()->except('assigned_agent_ids'),
+            'creator_id' => Auth::user()->id,
             'organization_id' => Auth::user()->organization->id,
         ]);
 

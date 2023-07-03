@@ -22,6 +22,11 @@ class Plan extends Model
         'start_date' => 'datetime',
     ];
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

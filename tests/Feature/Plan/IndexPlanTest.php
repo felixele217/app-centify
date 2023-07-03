@@ -5,10 +5,11 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
 it('passes the correct props', function () {
-    $user = signIn();
+    $admin = signIn();
 
     Plan::factory($planCount = 5)->create([
-        'organization_id' => $user->organization->id,
+        'organization_id' => $admin->organization->id,
+        'creator_id' => $admin->id,
     ])->first()->agents()->attach(User::factory($agentCount = 3)->agent()->create());
 
     Plan::factory(10)->create();
@@ -18,5 +19,6 @@ it('passes the correct props', function () {
             ->component('Plan/Index')
             ->has('plans', $planCount)
             ->where('plans.0.agents_count', $agentCount)
+            ->where('plans.0.creator.id', $admin->id)
     );
 });

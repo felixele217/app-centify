@@ -17,5 +17,11 @@ const props = defineProps<{
         @button-clicked="router.get(route('plans.create'))"
     />
 
-    <PlanCard :plan="props.plans[0]" class="w-1/2" />
+    <PlanCard
+        v-if="props.plans[0]"
+        :plan="props.plans[0]"
+        class="w-1/2"
+    />
+
+    <p v-else>You have no plans yet.</p>
 </template>
