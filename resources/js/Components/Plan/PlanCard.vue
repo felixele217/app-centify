@@ -2,6 +2,9 @@
 import type Plan from '@/types/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import Card from '../Card.vue'
+import CalendarIcon from '../Icon/CalendarIcon.vue'
+import RecurIcon from '../Icon/RecurIcon.vue'
+import TargetVariableIcon from '../Icon/TargetVariableIcon.vue'
 import TeamIcon from '../Icon/TeamIcon.vue'
 
 const props = defineProps<{
@@ -11,7 +14,7 @@ const props = defineProps<{
 
 <template>
     <Card>
-        <div class="flex items-center justify-between">
+        <div class="flex justify-between">
             <h3>{{ props.plan.name }}</h3>
             <div class="flex items-center gap-1 text-gray-600">
                 <p>{{ props.plan.agents_count }}</p>
@@ -19,15 +22,40 @@ const props = defineProps<{
             </div>
         </div>
 
-        <div>
-            <p>
-                {{ props.plan.start_date }}, <span class="text-sm">{{ props.plan.payout_frequency }}</span>
+        <div class="mt-4 flex items-center gap-1">
+            <CalendarIcon />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                starts
+                <span class="font-semibold text-gray-900">
+                    {{ props.plan.start_date }}
+                </span>
             </p>
         </div>
 
-        <h2 class="mt-8">{{ euroDisplay(props.plan.target_amount_per_month * 12) }}</h2>
-        <div class="flex justify-between text-sm text-gray-500">
-            <p>Commission</p>
+        <div class="mt-2 flex items-center gap-1">
+            <RecurIcon />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                occurs
+                <span class="font-semibold text-gray-900">
+                    {{ props.plan.payout_frequency }}
+                </span>
+            </p>
+        </div>
+
+        <div class="mt-2 flex items-center gap-1">
+            <TargetVariableIcon />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                targets
+                <span class="font-semibold text-gray-900">
+                    {{ props.plan.target_variable }}
+                </span>
+            </p>
+        </div>
+
+        <h2 class="mt-8">{{ euroDisplay(props.plan.target_amount_per_month) }}</h2>
+
+        <div class="flex justify-between text-sm text-gray-600">
+            <p>target amount per month</p>
             <p>Created by {{ props.plan.creator.name }}</p>
         </div>
     </Card>
