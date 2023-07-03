@@ -11,8 +11,6 @@ const props = defineProps<{
 }>()
 
 const selectedColor = ref('indigo')
-console.log(props.date);
-const gc ='text-gray-300'
 </script>
 
 <template>
@@ -23,7 +21,7 @@ const gc ='text-gray-300'
     >
         <template #trigger>
             <TextInput
-                class="hover:cursor-pointer"
+                class="hover:cursor-pointer focus:outline-transparent"
                 :class="props.date ? 'text-gray-900' : 'text-gray-300'"
                 :model-value="props.date ? props.date.toLocaleDateString('DE-de') : 'Select a Date...'"
             />
