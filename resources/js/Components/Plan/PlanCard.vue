@@ -52,7 +52,7 @@ const props = defineProps<{
             </p>
         </div>
 
-        <h2 class="mt-8">{{ euroDisplay(props.plan.target_amount_per_month) }}</h2>
+        <h2 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h2>
 
         <div class="flex justify-between text-sm text-gray-600">
             <p>target amount per month</p>
