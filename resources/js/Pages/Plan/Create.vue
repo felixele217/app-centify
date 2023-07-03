@@ -8,7 +8,6 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
-import PlanFeed from '@/Components/Plan/PlanFeed.vue'
 import User from '@/types/User'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
@@ -48,8 +47,8 @@ function submit() {
 </script>
 
 <template>
-    <div class="flex gap-20">
-        <PlanFeed />
+    <div class="flex justify-center gap-20">
+        <!-- <PlanFeed /> -->
 
         <Card class="w-144">
             <h2 class="text-base font-semibold leading-7 text-gray-900">Create Flatrate Commission Plan</h2>
@@ -153,11 +152,13 @@ function submit() {
                             for="assigned_agent_ids"
                             value="Assigned Agents"
                         />
+
                         <MultiSelect
                             @agent-clicked="handleAgentSelect"
                             :options="props.agents"
                             :selected-ids="form.assigned_agent_ids"
                         />
+
                         <InputError
                             class="mt-2"
                             :message="form.errors.assigned_agent_ids"

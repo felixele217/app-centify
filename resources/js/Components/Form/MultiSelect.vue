@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import DeleteIcon from '../Icon/DeleteIcon.vue'
 
 const props = defineProps<{
     options: Array<{
@@ -26,7 +27,31 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
             <ListboxButton
                 class="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6"
             >
-                <span class="block truncate text-gray-300">Assign to agents...</span>
+                <span
+                    v-if="!props.selectedIds.length"
+                    class="block truncate text-gray-300"
+                    >Assign to agents...</span
+                >
+
+                <div
+                    class="flex flex-wrap gap-2"
+                    v-else
+                >
+                    <div
+                        v-for="option in selectedOptions()"
+                        class="flex items-center gap-1 rounded-md bg-indigo-600 px-2 text-indigo-50"
+                    >
+                        <p>
+                            {{ option.name }}
+                        </p>
+
+                        <DeleteIcon
+                            class="h-3.5 w-3.5 text-indigo-50 hover:text-gray-300"
+                            @click.stop="$emit('agent-clicked', option.id)"
+                        />
+                    </div>
+                </div>
+
                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <ChevronUpDownIcon
                         class="h-5 w-5 text-gray-400"
@@ -41,7 +66,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
                 leave-to-class="opacity-0"
             >
                 <ListboxOptions
-                    class="absolute right-0 z-10 mt-1 max-h-60 w-2/3 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 max-h-60 w-2/3 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 >
                     <ListboxOption
                         as="template"
@@ -78,12 +103,6 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
                     </ListboxOption>
                 </ListboxOptions>
             </transition>
-
-            <div class="mt-2 space-y-1">
-                    <p v-for="option in selectedOptions()"
-                    class="flex items-center gap-2 text-sm text-gray-600"
-                    >{{ option.name }}</p>
-            </div>
         </div>
     </Listbox>
 </template>
