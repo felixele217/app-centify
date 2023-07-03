@@ -62,6 +62,9 @@ jobs:
             - name: Build frontend assets with Vite
               run: npm run build
 
+            - name: Run Vitests
+              run: npm run test
+
             - name: Run Laravel Server
               run: php artisan serve --no-reload &
             - name: Run Dusk Tests
