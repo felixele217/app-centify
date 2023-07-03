@@ -14,19 +14,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $agentDeals = [];
 
         foreach (self::agentEmails($deals) as $email) {
-            array_push($agentDeals, [
-                $email => collect($deals)->map(function ($deal) use ($email) {
-                    if ($email === $deal['creator_user_id']['email']) {
-                        return [
-                            'id' => $deal['id'],
-                            'title' => $deal['title'],
-                            'target_amount' => $deal['value'],
-                            'add_time' => $deal['add_time'],
-                            'status' => $deal['status'],
-                        ];
-                    }
-                }),
-            ]);
+            array_push($agentDeals, self::dealsForAgent($email, $deals));
         }
 
         return $agentDeals[0];
@@ -45,5 +33,22 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         }
 
         return $agentEmails;
+    }
+
+    public static function dealsForAgent(string $agentEmail, array $deals): array
+    {
+        return [
+            $agentEmail => collect($deals)->map(function ($deal) use ($agentEmail) {
+                if ($agentEmail === $deal['creator_user_id']['email']) {
+                    return [
+                        'id' => $deal['id'],
+                        'title' => $deal['title'],
+                        'target_amount' => $deal['value'],
+                        'add_time' => $deal['add_time'],
+                        'status' => $deal['status'],
+                    ];
+                }
+            }),
+        ];
     }
 }
