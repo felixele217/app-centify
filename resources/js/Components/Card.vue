@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="rounded-lg bg-white p-5">
+    <div class="rounded-lg shadow bg-white p-5">
         <slot />
     </div>
 </template>

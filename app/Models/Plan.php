@@ -19,7 +19,7 @@ class Plan extends Model
     protected $casts = [
         'target_variable' => TargetVariableEnum::class,
         'payout_frequency' => PayoutFrequencyEnum::class,
-        'start_date' => 'datetime',
+        'start_date' => 'datetime:Y-m-d',
     ];
 
     public function creator(): BelongsTo

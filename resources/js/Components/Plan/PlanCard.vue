@@ -18,7 +18,14 @@ const props = defineProps<{
                 <TeamIcon class="text-gray-600" />
             </div>
         </div>
-        <h2 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month * 12) }}</h2>
+
+        <div>
+            <p>
+                {{ props.plan.start_date }}, <span class="text-sm">{{ props.plan.payout_frequency }}</span>
+            </p>
+        </div>
+
+        <h2 class="mt-8">{{ euroDisplay(props.plan.target_amount_per_month * 12) }}</h2>
         <div class="flex justify-between text-sm text-gray-500">
             <p>Commission</p>
             <p>Created by {{ props.plan.creator.name }}</p>

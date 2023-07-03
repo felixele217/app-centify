@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
-use Carbon\Carbon;
+use App\Enum\PayoutFrequencyEnum;
+use App\Enum\TargetVariableEnum;
+use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\Organization;
-use App\Enum\TargetVariableEnum;
-use App\Enum\PayoutFrequencyEnum;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class PlanFactory extends Factory
 {
@@ -28,6 +29,8 @@ class PlanFactory extends Factory
 
     public function configure()
     {
+        Role::firstOrCreate(['name' => 'agent']);
+
         return $this->afterCreating(function (Plan $plan) {
             $plan->agents()->saveMany(User::role('agent')->take(fake()->numberBetween(1, 5))->get());
         });
