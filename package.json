@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vue-tsc && vite build",
-       "test": "vitest --run ./resources/js/tests/"
+        "test": "vitest --run ./resources/js/tests/"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
