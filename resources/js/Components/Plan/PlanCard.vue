@@ -55,7 +55,7 @@ const props = defineProps<{
         <h2 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h2>
 
         <div class="flex justify-between text-sm text-gray-600">
-            <p>target amount per month</p>
+            <p>monthly target</p>
             <p>Created by {{ props.plan.creator.name }}</p>
         </div>
     </Card>
