@@ -164,7 +164,10 @@ function submit() {
                                         </div>
                                     </div>
 
-                                    <FormButtons class="pr-4" @cancel-button-clicked="$emit('close-slide-over')" />
+                                    <FormButtons
+                                        class="pr-4"
+                                        @cancel-button-clicked="$emit('close-slide-over')"
+                                    />
                                 </form>
                             </DialogPanel>
                         </TransitionChild>

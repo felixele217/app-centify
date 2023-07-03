@@ -17,5 +17,5 @@ const props = defineProps<{
         @button-clicked="router.get(route('plans.create'))"
     />
 
-    <PlanCard :plan="props.plans[0]" />
+    <PlanCard :plan="props.plans[0]" class="w-1/2" />
 </template>

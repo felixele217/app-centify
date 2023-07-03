@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Models\Plan;
+use Inertia\Inertia;
 use App\Enum\TargetVariableEnum;
-use App\Http\Requests\StorePlanRequest;
+use App\Enum\PayoutFrequencyEnum;
 use App\Repositories\PlanRepository;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use App\Http\Requests\StorePlanRequest;
 
 class PlanController extends Controller
 {
     public function index()
     {
         return Inertia::render('Plan/Index', [
-            'plans' => Auth::user()->organization->plans,
+            'plans' => Plan::withCount('agents')->whereOrganizationId(Auth::user()->organization->id)->get(),
         ]);
     }
 

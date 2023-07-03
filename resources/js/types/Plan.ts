@@ -9,4 +9,5 @@ export default interface Plan {
     target_amount_per_month: number
     target_variable: TargetVariableEnum
     payout_frequency: PayoutFrequencyEnum
+    agents_count?: number
 }
