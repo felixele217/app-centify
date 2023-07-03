@@ -28,9 +28,9 @@ const selected = ref<null | {
         <ListboxLabel class="sr-only">Change published status</ListboxLabel>
 
         <div
-            class="relative mt-1 flex w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            class="ring-focus-inset relative mt-1 flex w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
         >
-            <ListboxButton class="inline-flex grow divide-x divide-gray-300">
+            <ListboxButton class="ring-focus-inset inline-flex grow rounded-md ">
                 <div class="inline-flex grow items-center gap-x-1.5 px-3 py-2">
                     <CheckIcon
                         v-if="selected"

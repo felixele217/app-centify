@@ -25,7 +25,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
     >
         <div class="relative mt-2">
             <ListboxButton
-                class="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6"
+                class="ring-focus-inset relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6"
             >
                 <span
                     v-if="!props.selectedIds.length"
@@ -47,6 +47,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
 
                         <DeleteIcon
                             class="h-3.5 w-3.5 text-indigo-50 hover:text-gray-300"
+                            version="mark"
                             @click.stop="$emit('agent-clicked', option.id)"
                         />
                     </div>
