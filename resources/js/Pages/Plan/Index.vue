@@ -17,11 +17,12 @@ const props = defineProps<{
         @button-clicked="router.get(route('plans.create'))"
     />
 
-    <PlanCard
-        v-if="props.plans[0]"
-        :plan="props.plans[0]"
-        class="w-1/2"
-    />
+    <div class="grid grid-cols-2 gap-5">
+        <PlanCard
+            v-for="plan in props.plans"
+            :plan="plan"
+        />
+    </div>
 
-    <p v-else>You have no plans yet.</p>
+    <p v-if="props.plans.length === 0">You have no plans yet.</p>
 </template>
