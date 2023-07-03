@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
             'organization_id' => $admin->organization->id,
         ]);
 
-        Plan::factory(5)->create()->first();
+        Plan::factory(3)->create([
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
+        ])->first();
     }
 }

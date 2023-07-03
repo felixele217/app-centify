@@ -9,7 +9,6 @@ use App\Models\Plan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class PlanFactory extends Factory
@@ -22,8 +21,8 @@ class PlanFactory extends Factory
             'target_amount_per_month' => 500000,
             'target_variable' => TargetVariableEnum::ARR->value,
             'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
-            'organization_id' => Auth::user() ? Auth::user()->organization->id : Organization::factory()->create(),
-            'creator_id' => Auth::user() ? Auth::user()->id : User::factory()->create(),
+            'organization_id' => Organization::factory()->create(),
+            'creator_id' => User::factory()->create(),
         ];
     }
 
