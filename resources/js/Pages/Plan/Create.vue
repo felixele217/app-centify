@@ -123,6 +123,7 @@ function submit() {
                             targetVariableToDescription
                         )
                     "
+                    @option-selected="title => form.target_variable = title"
                 />
 
                 <InputError
@@ -145,6 +146,7 @@ function submit() {
                             payoutFrequencyToDescription
                         )
                     "
+                    @option-selected="title => form.payout_frequency = title"
                 />
 
                 <InputError

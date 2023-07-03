@@ -44,3 +44,16 @@ it('throws a validation error if target_amount_per_month is smaller than 1', fun
     0,
     -1,
 ]);
+
+it ('transforms start_date to a valid carbon object', function () {
+     signIn();
+
+    StorePlanRequest::factory()->state([
+        'name' => $name = 'some name',
+        'start_date' => '2023-07-12T22:00:00.000Z',
+    ])->fake();
+
+    $this->post(route('plans.store'))->assertRedirect(route('plans.index'));
+
+    expect($plan = Plan::whereName($name)->first())->not()->toBeNull();
+})->skip();

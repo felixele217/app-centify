@@ -19,6 +19,7 @@ class Plan extends Model
     protected $casts = [
         'target_variable' => TargetVariableEnum::class,
         'payout_frequency' => PayoutFrequencyEnum::class,
+        'start_date' => 'datetime',
     ];
 
     public function users(): BelongsToMany

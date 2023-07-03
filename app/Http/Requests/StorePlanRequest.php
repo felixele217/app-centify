@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -11,7 +12,6 @@ class StorePlanRequest extends FormRequest
 {
     public function rules(): array
     {
-        //    dd($this->all());
         return [
             'name' => [
                 'required',
@@ -48,6 +48,15 @@ class StorePlanRequest extends FormRequest
             ],
 
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $data = $this->all();
+
+        $data['start_date'] = Carbon::createFromDate($data['start_date']);
+
+        $this->replace($data);
     }
 
    public function messages(): array
