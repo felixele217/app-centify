@@ -23,7 +23,7 @@ const form = useForm({
     name: '',
     start_date: null as Date | null, // first day of next month
     target_amount_per_month: 0,
-    target_variable: 0,
+    target_variable: '',
     payout_frequency: '',
     assigned_agent_ids: [] as Array<number>,
 })
@@ -123,7 +123,7 @@ function submit() {
                             targetVariableToDescription
                         )
                     "
-                    @option-selected="title => form.target_variable = title"
+                    @option-selected="(optionTitle: string) => form.target_variable = optionTitle"
                 />
 
                 <InputError
@@ -146,7 +146,7 @@ function submit() {
                             payoutFrequencyToDescription
                         )
                     "
-                    @option-selected="title => form.payout_frequency = title"
+                    @option-selected="(optionTitle: string) => form.payout_frequency = optionTitle"
                 />
 
                 <InputError
