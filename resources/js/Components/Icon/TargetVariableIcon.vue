@@ -3,5 +3,5 @@ import { BanknotesIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
-    <BanknotesIcon class="h-5 w-5 cursor-pointer text-gray-400" />
+    <BanknotesIcon class="h-5 w-5 cursor-default text-gray-400" />
 </template>

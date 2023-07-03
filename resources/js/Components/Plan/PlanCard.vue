@@ -15,7 +15,7 @@ const props = defineProps<{
 <template>
     <Card>
         <div class="flex justify-between">
-            <h3>{{ props.plan.name }}</h3>
+            <h2>{{ props.plan.name }}</h2>
             <div class="flex items-center gap-1 text-gray-600">
                 <p>{{ props.plan.agents_count }}</p>
                 <TeamIcon class="text-gray-600" />
@@ -52,7 +52,7 @@ const props = defineProps<{
             </p>
         </div>
 
-        <h2 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h2>
+        <h3 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h3>
 
         <div class="flex justify-between text-sm text-gray-600">
             <p>monthly target</p>
