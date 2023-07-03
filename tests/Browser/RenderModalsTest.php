@@ -19,7 +19,7 @@ class RenderModalsTest extends DuskTestCase
             route('agents.index') => [
                 'awaitedText' => 'Agents',
                 'elementPrefix' => 'slide-over',
-                'expectedText' => 'Create Agent',
+                'expectedText' => 'Create a new Agent',
             ],
         ];
 

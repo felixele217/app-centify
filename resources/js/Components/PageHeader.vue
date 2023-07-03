@@ -6,8 +6,6 @@ const props = defineProps<{
     description: string
     buttonText: string
 }>()
-
-const emit = defineEmits(['button-clicked'])
 </script>
 
 <template>
@@ -19,7 +17,7 @@ const emit = defineEmits(['button-clicked'])
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <PrimaryButton
                 dusk="slide-over-button"
-                @click="emit('button-clicked')"
+                @click="$emit('button-clicked')"
                 :text="props.buttonText"
             />
         </div>
