@@ -15,7 +15,7 @@ export default {
             data: {
                 datasets: [
                     {
-                        backgroundColor: [tailwindToHex['bg-violet-950'], tailwindToHex['bg-gray-300']],
+                        backgroundColor: [tailwindToHex['primary'], tailwindToHex['bg-gray-300']],
                         data: [50, 50],
                     },
                 ],
