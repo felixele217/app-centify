@@ -14,11 +14,11 @@ const props = withDefaults(
 <template>
     <XCircleIcon
         v-if="props.version === 'circle'"
-        class="h-5 w-5 cursor-pointer text-gray-400 hover:text-red-300"
+        class="h-5 w-5 cursor-pointer text-gray-400"
     />
 
     <XMarkIcon
         v-else
-        class="h-5 w-5 cursor-pointer text-gray-400 hover:text-red-300"
+        class="h-5 w-5 cursor-pointer text-gray-400"
     />
 </template>
