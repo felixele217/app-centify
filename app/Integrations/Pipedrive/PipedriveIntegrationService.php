@@ -2,8 +2,10 @@
 
 namespace App\Integrations\Pipedrive;
 
+use App\Enum\IntegrationEnum;
 use App\Facades\Pipedrive;
 use App\Integrations\IntegrationServiceContract;
+use App\Models\User;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
@@ -50,5 +52,22 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                 }
             }),
         ];
+    }
+
+    public static function syncAgentDeals(): void
+    {
+        $agentDeals = self::agentDeals();
+        foreach ($agentDeals as $email => $deals) {
+            foreach ($deals as $deal) {
+                User::whereEmail($email)->first()->deals()->create([
+                    'integration_id' => $deal['id'],
+                    'integration_type' => IntegrationEnum::PIPEDRIVE->value,
+                    'title' => $deal['title'],
+                    'target_amount' => $deal['target_amount'],
+                    'add_time' => $deal['add_time'],
+                    'status' => $deal['status'],
+                ]);
+            }
+        }
     }
 }
