@@ -14,7 +14,7 @@ class TodoController extends Controller
         return Inertia::render('Todo/Index', [
             'deals' => Deal::whereHas('agent.organization', function ($query) {
                 $query->where('id', Auth::user()->organization->id);
-            })->get(),
+            })->with('agent')->get(),
         ]);
     }
 }

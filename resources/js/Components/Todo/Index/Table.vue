@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Deal from '@/types/Deal'
+
+const props = defineProps<{
+    deals: Array<Deal>
+}>()
+</script>
 
 <template>
     <div class="px-4 sm:px-6 lg:px-8">
@@ -70,19 +76,21 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr>
+                                <tr v-for="deal in props.deals">
                                     <td
                                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
                                     >
                                         opportunity owner
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        opportunity creator
+                                        {{ deal.agent.name }}
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">opportunity name</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ deal.title }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">pipedrive link</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">pipedrive notes</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">deal value</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        {{ deal.target_amount }}
+                                    </td>
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
                                     >

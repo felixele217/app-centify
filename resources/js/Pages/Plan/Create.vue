@@ -8,14 +8,14 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
-import User from '@/types/User'
+import Agent from '@/types/Agent'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
-    agents: Array<Pick<User, 'id' | 'name'>>
+    agents: Array<Pick<Agent, 'id' | 'name'>>
     target_variable_options: Array<string>
     payout_frequency_options: Array<string>
 }>()

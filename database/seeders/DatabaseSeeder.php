@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         Agent::factory(1)->create([
             'email' => 'paul.sochiera@gmail.com',
+            'organization_id' => $admin->organization->id,
         ]);
 
         Agent::factory(5)->create([

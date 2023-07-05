@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PageHeader from '@/Components/PageHeader.vue'
-import type User from '@/types/User'
+import type User from '@/types/Admin'
 import euroDisplay from '@/utils/euroDisplay'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'

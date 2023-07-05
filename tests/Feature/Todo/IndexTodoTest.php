@@ -19,5 +19,6 @@ it('passes the correct props', function () {
         fn (AssertableInertia $page) => $page
             ->component('Todo/Index')
             ->has('deals', $dealCount)
+            ->has('deals.1.agent')
     );
 });

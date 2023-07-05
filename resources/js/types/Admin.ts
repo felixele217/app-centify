@@ -1,4 +1,4 @@
-export default interface User {
+export default interface Admin {
     id: number
     name: string
     email: string
@@ -9,6 +9,4 @@ export default interface User {
         pipedrive: boolean
         salesforce: boolean
     }
-    base_salary?: number
-    on_target_earning?: number
 }
