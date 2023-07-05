@@ -11,16 +11,18 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card>
+    <Card class="flex flex-col justify-between">
         <div class="mb-5 flex justify-between">
             <p class="font-semibold">{{ props.title }}</p>
             <component
+                class="h-8 w-8"
                 :is="props.icon"
             />
         </div>
 
-        <h2 class="mb-3">{{ props.amount }}</h2>
-
-        <p :class="subtleText">{{ props.subText }}</p>
+        <div>
+            <h2 class="mb-3">{{ props.amount }}</h2>
+            <p :class="subtleText">{{ props.subText }}</p>
+        </div>
     </Card>
 </template>
