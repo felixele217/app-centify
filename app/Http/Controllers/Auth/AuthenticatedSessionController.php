@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Admin;
+use App\Models\Agent;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,12 +39,14 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
+    //TODO test log out for both user groups
+    //TODO test all auth routes for both users
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        match (get_class($request->user())) {
+            Admin::class => Auth::guard('admin')->logout(),
+            Agent::class => Auth::guard('admin')->logout(),
+        };
 
         $request->session()->invalidate();
 
