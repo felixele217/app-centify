@@ -4,12 +4,13 @@ import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
+import Admin from '@/types/Admin'
 
 const props = defineProps<{
     for: 'pipedrive' | 'salesforce'
 }>()
 
-const activeIntegrations = usePage().props.auth.user.active_integrations
+const activeIntegrations = (usePage().props.auth.user as Admin).active_integrations
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.for}.create`))
 

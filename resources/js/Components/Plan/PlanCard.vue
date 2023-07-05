@@ -2,9 +2,9 @@
 import type Plan from '@/types/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import Card from '../Card.vue'
+import BanknotesIcon from '../Icon/BanknotesIcon.vue'
 import CalendarIcon from '../Icon/CalendarIcon.vue'
 import RecurIcon from '../Icon/RecurIcon.vue'
-import TargetVariableIcon from '../Icon/TargetVariableIcon.vue'
 import TeamIcon from '../Icon/TeamIcon.vue'
 
 const props = defineProps<{
@@ -43,7 +43,7 @@ const props = defineProps<{
         </div>
 
         <div class="mt-2 flex items-center gap-1">
-            <TargetVariableIcon />
+            <BanknotesIcon />
             <p class="-mb-0.5 text-sm text-gray-600">
                 targets
                 <span class="font-semibold text-gray-900">

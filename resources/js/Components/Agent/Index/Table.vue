@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import PageHeader from '@/Components/PageHeader.vue'
-import type User from '@/types/Admin'
+import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
 
 defineProps<{
-    agents: Array<User>
+    agents: Array<Agent>
 }>()
 
 const isOpen = ref(false)

@@ -83,7 +83,7 @@ const props = defineProps<{
                                         opportunity owner
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        {{ deal.agent.name }}
+                                        {{ deal.agent!.name }}
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ deal.title }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">pipedrive link</td>

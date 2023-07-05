@@ -1,4 +1,4 @@
-export default function euroDisplay(number?: number): string {
+export default function euroDisplay(number: number | null): string {
     if (!number) {
         return '-'
     }

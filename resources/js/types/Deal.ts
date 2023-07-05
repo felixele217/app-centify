@@ -1,3 +1,4 @@
+import Agent from './Agent'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
 import { IntegrationEnum } from './Enum/IntegrationEnum'
 
