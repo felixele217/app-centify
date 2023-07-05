@@ -19,5 +19,5 @@ it('synchronizes pipedrive data properly', function () {
 });
 
 it('executes the command daily', function () {
-    $this->artisan('schedule:list')->expectsOutputToContain('5 0 * * *  php artisan mail:send-reminder-after-deadline-expired-command');
-})->todo();
+    $this->artisan('schedule:list')->expectsOutputToContain('5 0 * * *  php artisan sync-integration-data');
+});
