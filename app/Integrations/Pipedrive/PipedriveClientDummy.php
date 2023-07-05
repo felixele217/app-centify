@@ -4,7 +4,6 @@ namespace App\Integrations\Pipedrive;
 
 use Illuminate\Support\Collection;
 
-
 class PipedriveClientDummy
 {
     public function deals(): Collection
@@ -322,5 +321,18 @@ class PipedriveClientDummy
                 ],
             ],
         ]);
+    }
+
+    public static function dealCount(string $email): int
+    {
+        $emailCount = 0;
+
+        foreach ((new PipedriveClientDummy())->deals()['data'] as $deal) {
+            if ($deal['creator_user_id']['email'] === $email) {
+                $emailCount++;
+            }
+        }
+
+        return $emailCount;
     }
 }
