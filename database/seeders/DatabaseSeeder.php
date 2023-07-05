@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Agent::factory(1)->create([
+            'name' => 'Paul Sochiera',
             'email' => 'paul.sochiera@gmail.com',
             'organization_id' => $admin->organization->id,
         ]);
