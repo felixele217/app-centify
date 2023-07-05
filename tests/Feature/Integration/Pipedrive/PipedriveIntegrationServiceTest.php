@@ -38,7 +38,7 @@ it('stores the data properly', function () {
     $expectedData = PipedriveIntegrationService::agentDeals();
 
     expect($agent->deals)->toHaveCount($emailCount);
-    expect($agent->deals->first()->integration_id)->toBe($expectedData[$email][0]['id']);
+    expect($agent->deals->first()->integration_deal_id)->toBe($expectedData[$email][0]['id']);
     expect($agent->deals->first()->title)->toBe($expectedData[$email][0]['title']);
     expect($agent->deals->first()->target_amount)->toBe($expectedData[$email][0]['target_amount']);
     expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);

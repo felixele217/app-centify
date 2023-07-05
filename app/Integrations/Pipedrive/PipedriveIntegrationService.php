@@ -62,7 +62,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         foreach ($agentDeals as $email => $deals) {
             foreach ($deals as $deal) {
                 Agent::whereEmail($email)->first()->deals()->create([
-                    'integration_id' => $deal['id'],
+                    'integration_deal_id' => $deal['id'],
                     'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                     'title' => $deal['title'],
                     'target_amount' => $deal['target_amount'],

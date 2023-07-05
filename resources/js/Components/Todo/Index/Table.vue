@@ -89,7 +89,7 @@
                                         <a
                                             href="#"
                                             class="text-indigo-600 hover:text-indigo-900"
-                                            >Edit<span class="sr-only">, {{ person.name }}</span></a
+                                            >Edit</a
                                         >
                                     </td>
                                 </tr>
