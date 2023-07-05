@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Admin;
-use App\Models\User;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,21 +9,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('start_date');
-            $table->integer('target_amount_per_month');
-            $table->string('target_variable');
-            $table->string('payout_frequency');
-            $table->foreignIdFor(Admin::class, 'creator_id');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password')->nullable();
             $table->foreignIdFor(Organization::class);
+            $table->rememberToken();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('admins');
     }
 };

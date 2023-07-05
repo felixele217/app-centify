@@ -3,14 +3,15 @@
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
+use App\Models\Agent;
 use App\Models\Plan;
 use App\Models\User;
 use Carbon\Carbon;
 
 it('can store a plan as an admin', function () {
-    $admin = signIn();
+    $admin = signInAdmin();
 
-    $agents = User::factory(3)->agent()->create();
+    $agents = Agent::factory(3)->create();
 
     $this->post(route('plans.store'), [
         'name' => $name = 'first commission plan',
@@ -32,7 +33,7 @@ it('can store a plan as an admin', function () {
 });
 
 it('throws a validation error if target_amount_per_month is smaller than 1', function ($targetAmountPerMonth) {
-    signIn();
+    signInAdmin();
 
     StorePlanRequest::factory()->state([
         'target_amount_per_month' => $targetAmountPerMonth,

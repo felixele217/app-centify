@@ -2,12 +2,10 @@
 
 namespace Tests\Browser;
 
-use App\Models\User;
-use App\Enum\RoleEnum;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Spatie\Permission\Models\Role;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class RenderModalsTest extends DuskTestCase
 {
@@ -41,10 +39,8 @@ class RenderModalsTest extends DuskTestCase
         }
     }
 
-    private function setupDatabase(): User
+    private function setupDatabase(): Admin
     {
-        Artisan::call('db:seed --class=PermissionSeeder');
-
-        return User::factory()->create()->assignRole(RoleEnum::ADMIN->value);
+        return Admin::factory()->create();
     }
 }

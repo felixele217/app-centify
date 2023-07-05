@@ -2,18 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Enum\RoleEnum;
 use App\Http\Requests\StoreAgentRequest;
-use App\Models\User;
+use App\Models\Agent;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository
+class AgentRepository
 {
-    public static function create(StoreAgentRequest $request): User
+    public static function create(StoreAgentRequest $request): Agent
     {
-        return User::create([
+        return Agent::create([
             ...$request->validated(),
             'organization_id' => Auth::user()->organization->id,
-        ])->assignRole(RoleEnum::AGENT->value);
+        ]);
     }
 }

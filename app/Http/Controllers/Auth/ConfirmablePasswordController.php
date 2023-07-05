@@ -21,12 +21,12 @@ class ConfirmablePasswordController extends Controller
         return Inertia::render('Auth/ConfirmPassword');
     }
 
-    /**
-     * Confirm the user's password.
-     */
     public function store(Request $request): RedirectResponse
     {
-        if (! Auth::guard('web')->validate([
+        if (! Auth::guard('admin')->validate([
+            'email' => $request->user()->email,
+            'password' => $request->password,
+        ]) && ! Auth::guard('agent')->validate([
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {

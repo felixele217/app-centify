@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
@@ -11,7 +12,7 @@ class LoginTest extends DuskTestCase
 {
     public function testUserCanLogin(): void
     {
-        $user = User::factory()->create([
+        $user = Admin::factory()->create([
             'password' => Hash::make($password = 'asodfno12'),
         ]);
 

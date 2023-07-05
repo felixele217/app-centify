@@ -1,13 +1,10 @@
 <?php
 
-use App\Enum\RoleEnum;
 use App\Http\Requests\StoreAgentRequest;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
+use App\Models\Agent;
 
-it('can create an agent as an admin', function () {
-    Role::create(['name' => RoleEnum::AGENT->value]);
-    $admin = signIn();
+it('can create an agent as an agent', function () {
+    signInAdmin();
 
     $this->post(route('agents.store'), [
         'name' => $name = 'John Doe',
@@ -16,18 +13,15 @@ it('can create an agent as an admin', function () {
         'on_target_earning' => $onTargetEarning = 20000000,
     ])->assertRedirect();
 
-    expect($user = User::whereName($name)->first())->not()->toBeNull();
-    expect($user->email)->toBe($email);
-    expect($user->base_salary)->toBe($baseSalary);
-    expect($user->on_target_earning)->toBe($onTargetEarning);
-    expect($user->organization->id)->toBe($admin->organization->id);
-
-    expect($user->hasRole(RoleEnum::AGENT->value))->toBeTrue();
+    expect($agent = Agent::whereName($name)->first())->not()->toBeNull();
+    expect($agent->email)->toBe($email);
+    expect($agent->base_salary)->toBe($baseSalary);
+    expect($agent->on_target_earning)->toBe($onTargetEarning);
+    expect($agent->organization->id)->toBe($agent->organization->id);
 });
 
 it('can create an agent with casted nullable base_salary and on_target_earning', function () {
-    $user = signIn();
-    Role::create(['name' => $role = RoleEnum::AGENT->value]);
+    $admin = signInAdmin();
 
     StoreAgentRequest::factory()->state([
         'base_salary' => 0,
@@ -36,22 +30,31 @@ it('can create an agent with casted nullable base_salary and on_target_earning',
 
     $this->post(route('agents.store'))->assertValid();
 
-    expect($user = User::role($role)->first())->not()->toBeNull();
-    expect($user->base_salary)->toBeNull();
-    expect($user->on_target_earning)->toBeNull();
+    expect($agent = Agent::first())->not()->toBeNull();
+    expect($agent->base_salary)->toBeNull();
+    expect($agent->on_target_earning)->toBeNull();
 });
 
-it('cannot create an agent with a duplicate mail', function () {
-    $user = signIn();
-    Role::create(['name' => $role = RoleEnum::AGENT->value]);
+it('cannot create an agent with a mail already taken by an admin', function () {
+    $admin = signInAdmin();
 
     StoreAgentRequest::factory()->state([
-        'email' => $user->email,
+        'email' => $admin->email,
     ])->fake();
 
     $this->post(route('agents.store'))->assertInvalid([
         'email' => 'The email has already been taken.',
     ]);
+});
 
-    expect($user = User::role($role)->first())->toBeNull();
+it('cannot create an agent with a mail already taken by an agent', function () {
+    $agent = signInAgent();
+
+    StoreAgentRequest::factory()->state([
+        'email' => $agent->email,
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertInvalid([
+        'email' => 'The email has already been taken.',
+    ]);
 });

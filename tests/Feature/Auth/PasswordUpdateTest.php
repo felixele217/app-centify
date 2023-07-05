@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 
 test('password can be updated', function () {
-    $user = User::factory()->create();
+    $user = Admin::factory()->create();
 
     $response = $this
         ->actingAs($user)
@@ -23,7 +23,7 @@ test('password can be updated', function () {
 });
 
 test('correct password must be provided to update password', function () {
-    $user = User::factory()->create();
+    $user = Admin::factory()->create();
 
     $response = $this
         ->actingAs($user)

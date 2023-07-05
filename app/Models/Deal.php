@@ -21,8 +21,8 @@ class Deal extends Model
         'status' => DealStatusEnum::class,
     ];
 
-    public function user(): BelongsTo
+    public function agent(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Agent::class);
     }
 }

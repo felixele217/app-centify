@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,16 +17,13 @@ class Organization extends Model
         return $this->hasMany(Plan::class);
     }
 
-    public function users(): HasMany
+    public function admins(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Admin::class);
     }
 
     public function agents(): HasMany
     {
-        return $this->users()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', RoleEnum::AGENT->value);
-            });
+        return $this->hasMany(Agent::class);
     }
 }

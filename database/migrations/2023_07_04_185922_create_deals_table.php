@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Agent;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->integer('target_amount');
             $table->timestampTz('add_time');
             $table->timestamps();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Agent::class);
         });
     }
 

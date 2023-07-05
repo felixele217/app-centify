@@ -1,10 +1,8 @@
 <?php
 
-use App\Enum\RoleEnum;
-use App\Models\User;
+use App\Models\Admin;
+use App\Models\Agent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class)->in(
@@ -13,14 +11,20 @@ uses(TestCase::class, RefreshDatabase::class)->in(
     'Integration',
 );
 
-function signIn($role = RoleEnum::ADMIN->value, $permission = '', $user = null): User
+function signInAdmin($admin = null): Admin
 {
-    $user = $user ?: User::factory()
-        ->create()
-        ->assignRole(Role::firstOrCreate(['name' => $role]))
-        ->givePermissionTo(Permission::firstOrCreate(['name' => $permission]));
+    $admin = $admin ?: Admin::factory()->create();
 
-    test()->actingAs($user, null);
+    test()->actingAs($admin, 'admin');
 
-    return $user;
+    return $admin;
+}
+
+function signInAgent($agent = null): Agent
+{
+    $agent = $agent ?: Agent::factory()->create();
+
+    test()->actingAs($agent, 'agent');
+
+    return $agent;
 }

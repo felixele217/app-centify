@@ -5,6 +5,8 @@ namespace App\Integrations\Pipedrive;
 use App\Enum\IntegrationEnum;
 use App\Facades\Pipedrive;
 use App\Integrations\IntegrationServiceContract;
+use App\Models\Admin;
+use App\Models\Agent;
 use App\Models\User;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
@@ -59,7 +61,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $agentDeals = self::agentDeals();
         foreach ($agentDeals as $email => $deals) {
             foreach ($deals as $deal) {
-                User::whereEmail($email)->first()->deals()->create([
+                Agent::whereEmail($email)->first()->deals()->create([
                     'integration_id' => $deal['id'],
                     'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                     'title' => $deal['title'],

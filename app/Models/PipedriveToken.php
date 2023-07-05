@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PipedriveToken extends Model
 {
@@ -12,8 +13,8 @@ class PipedriveToken extends Model
         'expires_at' => 'datetime',
     ];
 
-    public function user()
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class);
     }
 }

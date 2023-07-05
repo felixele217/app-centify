@@ -3,7 +3,7 @@
 use App\Enum\IntegrationEnum;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
-use App\Models\User;
+use App\Models\Agent;
 
 it('returns the correct structure for agentDeals', function () {
     $agentDeals = PipedriveIntegrationService::agentDeals();
@@ -29,7 +29,7 @@ it('stores the data properly', function () {
         }
     }
 
-    $agent = User::factory()->agent()->create([
+    $agent = Agent::factory()->create([
         'email' => $email,
     ]);
 

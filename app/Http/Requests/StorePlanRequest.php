@@ -44,7 +44,7 @@ class StorePlanRequest extends FormRequest
             ],
 
             'assigned_agent_ids.*' => [
-                'exists:users,id',
+                'exists:agents,id',
             ],
 
         ];

@@ -1,16 +1,17 @@
 <?php
 
+use App\Models\Agent;
 use App\Models\Plan;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
 it('passes the correct props', function () {
-    $admin = signIn();
+    $admin = signInAdmin();
 
     Plan::factory($planCount = 5)->create([
         'organization_id' => $admin->organization->id,
         'creator_id' => $admin->id,
-    ])->first()->agents()->attach(User::factory($agentCount = 3)->agent()->create());
+    ])->first()->agents()->attach(Agent::factory($agentCount = 3)->create());
 
     Plan::factory(10)->create();
 

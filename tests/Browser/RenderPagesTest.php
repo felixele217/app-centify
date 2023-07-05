@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
@@ -42,12 +43,9 @@ class RenderPagesTest extends DuskTestCase
         }
     }
 
-    private function setupDatabase(): User
+    private function setupDatabase(): Admin
     {
-        Artisan::call('db:seed --class=PermissionSeeder');
-
-        $user = User::factory()
-            ->create();
+        $user = Admin::factory()->create();
 
         return $user;
     }

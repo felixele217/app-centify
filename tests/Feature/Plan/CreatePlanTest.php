@@ -2,13 +2,13 @@
 
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
-use App\Models\User;
+use App\Models\Agent;
 use Inertia\Testing\AssertableInertia;
 
 it('passes the correct props', function () {
-    $admin = signIn();
+    $admin = signInAdmin();
 
-    User::factory($agentCount = 5)->agent()->create([
+    Agent::factory($agentCount = 5)->create([
         'organization_id' => $admin->organization->id,
     ]);
 

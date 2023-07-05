@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
+use App\Models\Admin;
+use App\Models\Agent;
 use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\User;
@@ -22,16 +24,14 @@ class PlanFactory extends Factory
             'target_variable' => TargetVariableEnum::ARR->value,
             'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
             'organization_id' => Organization::factory()->create(),
-            'creator_id' => User::factory()->create(),
+            'creator_id' => Admin::factory()->create(),
         ];
     }
 
     public function configure()
     {
-        Role::firstOrCreate(['name' => 'agent']);
-
         return $this->afterCreating(function (Plan $plan) {
-            $plan->agents()->saveMany(User::role('agent')->take(fake()->numberBetween(1, 5))->get());
+            $plan->agents()->saveMany(Agent::take(fake()->numberBetween(1, 5))->get());
         });
     }
 }

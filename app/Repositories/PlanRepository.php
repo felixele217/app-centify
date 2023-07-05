@@ -16,7 +16,7 @@ class PlanRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        $plan->users()->attach($request->validated('assigned_agent_ids'));
+        $plan->agents()->attach($request->validated('assigned_agent_ids'));
 
         return $plan;
     }
