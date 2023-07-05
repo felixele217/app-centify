@@ -1,6 +1,6 @@
 const tailwindToHex = {
-    'primary': '#4f46e5',
-    'bg-indigo-800' : '#3730a3',
+    primary: '#4f46e5',
+    'bg-indigo-800': '#3730a3',
 
     'bg-violet-950': '#2e1065',
     'bg-violet-primary': '#6d28d9',

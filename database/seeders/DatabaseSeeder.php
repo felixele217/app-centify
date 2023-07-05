@@ -8,7 +8,6 @@ use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -21,7 +20,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('centify'),
         ]);
 
-        Auth::login($admin);
+        Agent::factory(1)->create([
+            'email' => 'paul.sochiera@gmail.com',
+        ]);
 
         Agent::factory(5)->create([
             'organization_id' => $admin->organization->id,

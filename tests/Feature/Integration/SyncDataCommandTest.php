@@ -1,12 +1,11 @@
 <?php
 
-use App\Models\User;
 use App\Console\Commands\SyncIntegrationDataCommand;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Models\Agent;
 
 it('synchronizes pipedrive data properly', function () {
-    $email = (new PipedriveClientDummy())->deals()['data'][0]['creator_user_id']['email'];
+    $email = (new PipedriveClientDummy())->deals()->toArray()[0]['creator_user_id']['email'];
 
     $emailCount = PipedriveClientDummy::dealCount($email);
 

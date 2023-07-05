@@ -13,12 +13,12 @@ const activeIntegrations = usePage().props.auth.user.active_integrations
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.for}.create`))
 
-function testIntegration() {
+function syncIntegration() {
     router.get(
-        route(`${props.for}.test`),
+        route(`${props.for}.sync`),
         {},
         {
-            onSuccess: () => alert('Test successful'),
+            onSuccess: () => alert('Synchronization successful'),
             onError: () => alert('Not yet implemented'),
         }
     )
@@ -56,8 +56,8 @@ function testIntegration() {
                     <p class="-mt-0.5 text-sm font-semibold">active</p>
                 </div>
                 <PrimaryButton
-                    text="Test"
-                    @click="testIntegration"
+                    text="Sync"
+                    @click="syncIntegration"
                 />
             </div>
         </div>

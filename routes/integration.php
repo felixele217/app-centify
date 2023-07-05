@@ -1,8 +1,8 @@
 <?php
 
-use App\Facades\Pipedrive;
 use App\Http\Controllers\PipedriveAuthController;
 use App\Http\Controllers\SalesforceAuthController;
+use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -17,15 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::get('pipedrive-auth', [PipedriveAuthController::class, 'create'])->name('authenticate.pipedrive.create');
     Route::get('pipedrive-callback', [PipedriveAuthController::class, 'store'])->name('authenticate.pipedrive.store');
 
-    Route::get('pipedrive-test', function () {
-        $deals = Pipedrive::deals()->all();
+    Route::get('pipedrive-sync', function () {
+        PipedriveIntegrationService::syncAgentDeals();
 
-        dd($deals);
-
-        if ($deals->isSuccess()) {
-            return back();
-        } else {
-            throw new Exception('Error Processing Request', 1);
-        }
-    })->name('pipedrive.test');
+        return back();
+    })->name('pipedrive.sync');
 });

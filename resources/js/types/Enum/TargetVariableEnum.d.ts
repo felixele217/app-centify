@@ -1,1 +1,1 @@
-export type TargetVariableEnum = 'ARR';
+export type TargetVariableEnum = 'ARR'

@@ -1,6 +1,4 @@
 import { SelectOption } from '@/Components/Form/SelectWithDescription.vue'
-import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
-import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 
 export default function enumOptionsToSelectOptionWithDescription(
     titles: Array<string>,

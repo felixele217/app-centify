@@ -18,7 +18,7 @@ it('returns the correct structure for agentDeals', function () {
 });
 
 it('stores the data properly', function () {
-    $deals = (new PipedriveClientDummy())->deals()['data'];
+    $deals = (new PipedriveClientDummy())->deals()->toArray();
 
     $email = $deals[0]['creator_user_id']['email'];
     $emailCount = 0;

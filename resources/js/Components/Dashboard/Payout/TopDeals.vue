@@ -19,7 +19,7 @@ const deals = [
         class="mb-2 grid grid-cols-10 items-center"
         v-for="deal in deals"
     >
-        <p class="col-span-1 h-5 w-5 rounded-full bg-violet-primary text-center text-sm text-white">{{ deal.index }}</p>
+        <p class="bg-violet-primary col-span-1 h-5 w-5 rounded-full text-center text-sm text-white">{{ deal.index }}</p>
         <p class="col-span-4">{{ deal.company }}</p>
         <p class="col-span-2 text-right">{{ deal.arr }}€</p>
         <p class="col-span-3 text-right">{{ deal.commission }}€</p>

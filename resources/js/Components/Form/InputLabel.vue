@@ -12,6 +12,11 @@ const props = defineProps<{
             <span v-else><slot /></span>
         </label>
 
-        <p class="text-red-500 text-sm" v-if="props.required">*</p>
+        <p
+            class="text-sm text-red-500"
+            v-if="props.required"
+        >
+            *
+        </p>
     </div>
 </template>

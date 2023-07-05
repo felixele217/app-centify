@@ -5,15 +5,13 @@ namespace App\Integrations\Pipedrive;
 use App\Enum\IntegrationEnum;
 use App\Facades\Pipedrive;
 use App\Integrations\IntegrationServiceContract;
-use App\Models\Admin;
 use App\Models\Agent;
-use App\Models\User;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
     public static function agentDeals(array $deals = null): array
     {
-        $deals = Pipedrive::deals()['data'];
+        $deals = json_decode(json_encode(Pipedrive::deals()->all()->getData()), true);
 
         $agentDeals = [];
 
@@ -29,6 +27,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $agentEmails = [];
 
         foreach ($deals as $deal) {
+
             $email = $deal['creator_user_id']['email'];
 
             if (! in_array($email, $agentEmails)) {
@@ -59,6 +58,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     public static function syncAgentDeals(): void
     {
         $agentDeals = self::agentDeals();
+
         foreach ($agentDeals as $email => $deals) {
             foreach ($deals as $deal) {
                 Agent::whereEmail($email)->first()->deals()->create([

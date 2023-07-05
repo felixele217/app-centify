@@ -1,1 +1,1 @@
-export type RoleEnum = 'admin' | 'agent';
+export type RoleEnum = 'admin' | 'agent'
