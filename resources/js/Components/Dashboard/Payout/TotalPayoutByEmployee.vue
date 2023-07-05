@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
-import Agent from '@/types/Agent';
+import Agent from '@/types/Agent'
 
 const props = defineProps<{
     agents: Array<Agent>
 }>()
-
 </script>
 
 <template>
@@ -44,43 +43,20 @@ const props = defineProps<{
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
                             <tr
-                                v-for="person in props.agents"
-                                :key="person.email"
+                                v-for="agent in props.agents"
+                                :key="agent.email"
                             >
                                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="flex items-center">
-                                        <div class="h-11 w-11 flex-shrink-0">
-                                            <img
-                                                class="h-11 w-11 rounded-full"
-                                                :src="person.image"
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="font-medium text-gray-900">{{ person.name }}</div>
-                                            <div class="mt-1 text-gray-500">{{ person.email }}</div>
-                                        </div>
-                                    </div>
+                                    <div class="font-medium text-gray-900">{{ agent.name }}</div>
+                                    <div class="mt-1 text-gray-500">{{ agent.email }}</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">{{ person.title }}</div>
-                                    <div class="mt-1 text-gray-500">{{ person.department }}</div>
+                                    <div class="text-gray-900">Commission</div>
+                                    <div class="mt-1 text-gray-500">Change last month/quarter</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <span
-                                        class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-                                        >Active</span
-                                    >
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{{ person.role }}</td>
-                                <td
-                                    class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                                >
-                                    <a
-                                        href="#"
-                                        class="text-indigo-600 hover:text-indigo-900"
-                                        >Edit<span class="sr-only">, {{ person.name }}</span></a
-                                    >
+                                    <div class="text-gray-900">Quota Attainment</div>
+                                    <div class="mt-1 text-gray-500">Change last month/quarter</div>
                                 </td>
                             </tr>
                         </tbody>

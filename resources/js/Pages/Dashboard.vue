@@ -4,7 +4,11 @@ import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import TodoIcon from '@/Components/Icon/TodoIcon.vue'
+import Agent from '@/types/Agent'
 import { Head } from '@inertiajs/vue3'
+const props = defineProps<{
+    agents: Array<Agent>
+}>()
 
 const payoutRowObjects = [
     { title: 'Total Payout', icon: BanknotesIcon, amount: '38.163€', subText: 'Next payout: 01.08.2023' },
@@ -22,6 +26,6 @@ const payoutRowObjects = [
             />
             <AnnualRevenue class="col-span-2" />
         </div>
-        <TotalPayoutByEmployee />
+        <TotalPayoutByEmployee :agents="props.agents"/>
     </div>
 </template>
