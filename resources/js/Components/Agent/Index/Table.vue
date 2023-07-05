@@ -26,9 +26,9 @@ const isOpen = ref(false)
         @button-clicked="isOpen = true"
     />
 
-    <div class="-mx-4 bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+    <div class="-mx-4 overflow-hidden bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-300">
-            <thead>
+            <thead class="bg-gray-50">
                 <tr>
                     <th
                         scope="col"
@@ -54,6 +54,7 @@ const isOpen = ref(false)
                     >
                         On Target Earning
                     </th>
+                    <th />
                 </tr>
             </thead>
             <tbody>
