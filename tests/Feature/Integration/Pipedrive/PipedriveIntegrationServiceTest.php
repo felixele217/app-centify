@@ -14,7 +14,7 @@ it('returns the correct structure for agentDeals', function () {
         'value',
         'add_time',
         'status',
-        'owner_email'
+        'owner_email',
     ]);
 });
 
@@ -43,6 +43,7 @@ it('stores the data properly', function () {
     expect($agent->deals->first()->title)->toBe($expectedData[$email][0]['title']);
     expect($agent->deals->first()->value)->toBe($expectedData[$email][0]['value']);
     expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);
+    expect($agent->deals->first()->owner_email)->toBe($expectedData[$email][0]['owner_email']);
     expect($agent->deals->first()->integration_type->value)->toBe(IntegrationEnum::PIPEDRIVE->value);
 
     //! TODO

@@ -11,5 +11,6 @@ export default interface Deal {
     value: number
     add_time: Date
     agent_id: number
+    owner_email: string
     agent?: Agent
 }

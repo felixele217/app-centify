@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Deal from '@/types/Deal'
+import euroDisplay from '@/utils/euroDisplay'
 
 const props = defineProps<{
     deals: Array<Deal>
@@ -35,25 +36,19 @@ const props = defineProps<{
                                         scope="col"
                                         class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                     >
-                                        Opportunity Owner
+                                        Owner
                                     </th>
                                     <th
                                         scope="col"
                                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                     >
-                                        Opportunity Creator
+                                        Creator
                                     </th>
                                     <th
                                         scope="col"
                                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                     >
-                                        Opportunity Name
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                                    >
-                                        Pipedrive Link
+                                        Name
                                     </th>
                                     <th
                                         scope="col"
@@ -77,19 +72,26 @@ const props = defineProps<{
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="deal in props.deals">
-                                    <td
-                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                    >
-                                        opportunity owner
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
+                                        {{ deal.owner_email }}
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        {{ deal.agent!.name }}
+
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        <p class="text-gray-900">{{ deal.agent!.name }}</p>
+                                        <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ deal.title }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">pipedrive link</td>
+
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        <a
+                                            :href="`https://paul-sandbox11.pipedrive.com/deal/${deal.integration_deal_id}`"
+                                        >
+                                            {{ deal.title }}
+                                        </a>
+                                    </td>
+
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">pipedrive notes</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        {{ deal.value }}
+                                        {{ euroDisplay(deal.value) }}
                                     </td>
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"

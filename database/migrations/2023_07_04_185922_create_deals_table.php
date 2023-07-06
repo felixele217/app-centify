@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('integration_deal_id');
             $table->string('title');
             $table->string('status');
+            $table->string('owner_email');
             $table->integer('value');
             $table->timestampTz('add_time');
             $table->timestamps();
