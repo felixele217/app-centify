@@ -16,7 +16,7 @@ const totalPayout = computed(() => props.agents.map(agent => agent.commission!).
 
 const payoutRowObjects = [
     { title: 'Total Payout', icon: BanknotesIcon, amount: euroDisplay(totalPayout.value), subText: 'Next payout: 01.08.2023' },
-    { title: 'To-Dos', icon: TodoIcon, amount: '5', subText: 'need attention' },
+    { title: 'To-Dos', icon: TodoIcon, amount: '5', subText: 'need attention', link: route('todos.index') },
 ]
 
 </script>

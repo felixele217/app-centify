@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
+import { router } from '@inertiajs/vue3'
 import { subtleText } from '../styles'
 
 const props = defineProps<{
@@ -7,11 +8,16 @@ const props = defineProps<{
     icon: any
     amount: string
     subText: string
+    link?: string
 }>()
 </script>
 
 <template>
-    <Card class="flex flex-col justify-between">
+    <Card
+        @click="props.link ? router.get(props.link) : ''"
+        :class="props.link ? 'cursor-pointer hover:bg-gray-50' : ''"
+        class="flex flex-col justify-between"
+    >
         <div class="mb-5 flex justify-between">
             <p class="font-semibold">{{ props.title }}</p>
             <component
