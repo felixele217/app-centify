@@ -98,8 +98,8 @@ const props = defineProps<{
                                     </td>
                                     <td class="whitespace-nowrap px-3">
                                         <div class="flex gap-2 text-gray-500">
-                                            <thumbs-down-icon class="h-6 w-6 cursor-pointer hover:text-red-600" />
                                             <thumbs-up-icon class="h-6 w-6 cursor-pointer hover:text-green-500" />
+                                            <thumbs-down-icon class="h-6 w-6 cursor-pointer hover:text-red-600" />
                                         </div>
                                     </td>
                                 </tr>
