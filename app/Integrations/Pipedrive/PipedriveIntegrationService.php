@@ -65,7 +65,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     'integration_deal_id' => $deal['id'],
                     'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                     'title' => $deal['title'],
-                    'value' => $deal['value'],
+                    'value' => $deal['value'] * 100,
                     'add_time' => $deal['add_time'],
                     'status' => $deal['status'],
                 ]);

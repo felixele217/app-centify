@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('centify'),
         ]);
 
-        Agent::factory(1)->create([
+        $centifyAgent = Agent::factory()->create([
             'name' => 'Centify Agent',
             'email' => 'tech@centify.de',
             'organization_id' => $admin->organization->id,
@@ -35,6 +35,9 @@ class DatabaseSeeder extends Seeder
             'creator_id' => $admin->id,
         ])->first();
 
-        Plan::first()->agents()->attach($admin->organization->agents);
+        Plan::first()->agents()->attach([
+            ...$admin->organization->agents->pluck('id'),
+            $centifyAgent->id,
+        ]);
     }
 }
