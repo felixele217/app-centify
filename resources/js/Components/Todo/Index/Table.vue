@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
+import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
 import Deal from '@/types/Deal'
 import euroDisplay from '@/utils/euroDisplay'
 
@@ -83,6 +85,7 @@ const props = defineProps<{
 
                                     <td class="whitespace-nowrap px-3 py-4 text-sm">
                                         <a
+                                            class="link"
                                             :href="`https://paul-sandbox11.pipedrive.com/deal/${deal.integration_deal_id}`"
                                         >
                                             {{ deal.title }}
@@ -93,14 +96,11 @@ const props = defineProps<{
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                         {{ euroDisplay(deal.value) }}
                                     </td>
-                                    <td
-                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-                                    >
-                                        <a
-                                            href="#"
-                                            class="text-indigo-600 hover:text-indigo-900"
-                                            >Edit</a
-                                        >
+                                    <td class="whitespace-nowrap px-3">
+                                        <div class="flex gap-2 text-gray-500">
+                                            <thumbs-down-icon class="h-6 w-6 cursor-pointer hover:text-red-600" />
+                                            <thumbs-up-icon class="h-6 w-6 cursor-pointer hover:text-green-500" />
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
