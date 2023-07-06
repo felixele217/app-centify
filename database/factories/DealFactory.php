@@ -17,7 +17,7 @@ class DealFactory extends Factory
             'integration_deal_id' => 1,
             'title' => fake()->word(),
             'status' => fake()->randomElement(DealStatusEnum::cases())->value,
-            'target_amount' => 500000,
+            'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'agent_id' => Agent::factory()->create(),
         ];

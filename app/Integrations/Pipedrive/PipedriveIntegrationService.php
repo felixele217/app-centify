@@ -46,7 +46,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     return [
                         'id' => $deal['id'],
                         'title' => $deal['title'],
-                        'target_amount' => $deal['value'],
+                        'value' => $deal['value'],
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
                     ];
@@ -65,7 +65,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     'integration_deal_id' => $deal['id'],
                     'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                     'title' => $deal['title'],
-                    'target_amount' => $deal['target_amount'],
+                    'value' => $deal['value'],
                     'add_time' => $deal['add_time'],
                     'status' => $deal['status'],
                 ]);

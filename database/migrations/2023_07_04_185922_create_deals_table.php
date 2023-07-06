@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('integration_deal_id');
             $table->string('title');
             $table->string('status');
-            $table->integer('target_amount');
+            $table->integer('value');
             $table->timestampTz('add_time');
             $table->timestamps();
             $table->foreignIdFor(Agent::class);

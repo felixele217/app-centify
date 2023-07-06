@@ -8,7 +8,7 @@ export default interface Deal {
     integration_type: IntegrationEnum
     title: string
     status: DealStatusEnum
-    target_amount: number
+    value: number
     add_time: Date
     agent_id: number
     agent?: Agent

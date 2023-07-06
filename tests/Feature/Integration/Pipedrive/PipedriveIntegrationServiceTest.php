@@ -11,7 +11,7 @@ it('returns the correct structure for agentDeals', function () {
     expect($agentDeals[array_keys($agentDeals)[0]]->first())->toHaveKeys([
         'id',
         'title',
-        'target_amount',
+        'value',
         'add_time',
         'status',
     ]);
@@ -40,7 +40,7 @@ it('stores the data properly', function () {
     expect($agent->deals)->toHaveCount($emailCount);
     expect($agent->deals->first()->integration_deal_id)->toBe($expectedData[$email][0]['id']);
     expect($agent->deals->first()->title)->toBe($expectedData[$email][0]['title']);
-    expect($agent->deals->first()->target_amount)->toBe($expectedData[$email][0]['target_amount']);
+    expect($agent->deals->first()->value)->toBe($expectedData[$email][0]['value']);
     expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);
     expect($agent->deals->first()->integration_type->value)->toBe(IntegrationEnum::PIPEDRIVE->value);
 
