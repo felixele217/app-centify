@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Plan;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Agent extends Authenticatable
 {
@@ -49,6 +48,13 @@ class Agent extends Authenticatable
     {
         return Attribute::make(
             get: fn () => $this->deals->sum('value') / $this->plans->last()->target_amount_per_month
+        );
+    }
+
+    protected function commission(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 12
         );
     }
 }
