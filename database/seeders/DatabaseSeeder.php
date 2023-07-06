@@ -34,5 +34,7 @@ class DatabaseSeeder extends Seeder
             'organization_id' => $admin->organization->id,
             'creator_id' => $admin->id,
         ])->first();
+
+        Plan::first()->agents()->attach($admin->organization->agents);
     }
 }

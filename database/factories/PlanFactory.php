@@ -27,11 +27,4 @@ class PlanFactory extends Factory
             'creator_id' => Admin::factory()->create(),
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Plan $plan) {
-            $plan->agents()->saveMany(Agent::take(fake()->numberBetween(1, 5))->get());
-        });
-    }
 }

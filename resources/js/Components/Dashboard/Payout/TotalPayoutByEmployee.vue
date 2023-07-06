@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import Agent from '@/types/Agent'
+import euroDisplay from '@/utils/euroDisplay'
 
 const props = defineProps<{
     agents: Array<Agent>
 }>()
+
+function quotaDisplay(quotaAttainment: number) {
+    return quotaAttainment * 100 + '%'
+}
 </script>
 
 <template>
@@ -51,11 +56,11 @@ const props = defineProps<{
                                     <div class="mt-1 text-gray-500">{{ agent.email }}</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">Commission</div>
+                                    <div class="text-gray-900">{{ euroDisplay(agent.commission!) }}</div>
                                     <div class="mt-1 text-gray-500">Change last month/quarter</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">Quota Attainment</div>
+                                    <div class="text-gray-900">{{ quotaDisplay(agent.quota_attainment!) }}</div>
                                     <div class="mt-1 text-gray-500">Change last month/quarter</div>
                                 </td>
                             </tr>

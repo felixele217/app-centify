@@ -7,4 +7,6 @@ export default interface Agent {
     updated_at: Date
     base_salary: number | null
     on_target_earning: number | null
+    quota_attainment?: number
+    commission?: number
 }

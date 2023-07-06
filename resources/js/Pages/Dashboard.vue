@@ -26,6 +26,7 @@ const payoutRowObjects = [
             />
             <AnnualRevenue class="col-span-2" />
         </div>
+
         <TotalPayoutByEmployee :agents="props.agents"/>
     </div>
 </template>
