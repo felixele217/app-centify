@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Agent::factory(1)->create([
-            'name' => 'Paul Sochiera',
-            'email' => 'paul.sochiera@gmail.com',
+            'name' => 'Centify Agent',
+            'email' => 'tech@centify.de',
             'organization_id' => $admin->organization->id,
         ]);
 
