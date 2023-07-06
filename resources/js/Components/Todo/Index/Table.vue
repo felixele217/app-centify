@@ -74,7 +74,7 @@ const props = defineProps<{
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="deal in props.deals">
-                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
+                                    <td class="whitespace-nowrap py-4 border-t pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
                                         {{ deal.owner_email }}
                                     </td>
 
