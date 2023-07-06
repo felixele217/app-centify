@@ -49,6 +49,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'value' => $deal['value'],
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
+                        'owner_email' => 1,
                     ];
                 }
             }),

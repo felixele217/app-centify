@@ -14,6 +14,7 @@ it('returns the correct structure for agentDeals', function () {
         'value',
         'add_time',
         'status',
+        'owner_email'
     ]);
 });
 
