@@ -1,12 +1,12 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlanController;
-use App\Http\Controllers\TodoController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TodoController;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', fn () => to_route('dashboard'));
 
