@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $admin = Admin::factory()->create([
             'name' => 'Alex Dosse',
-            'email' => 'alex.dosse@centify.com',
+            'email' => 'product@centify.de',
             'password' => Hash::make('centify'),
         ]);
 
