@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type Plan from '@/types/Plan'
 import euroDisplay from '@/utils/euroDisplay'
+import formatDate from '@/utils/formatDate'
 import Card from '../Card.vue'
 import BanknotesIcon from '../Icon/BanknotesIcon.vue'
 import CalendarIcon from '../Icon/CalendarIcon.vue'
@@ -27,7 +28,7 @@ const props = defineProps<{
             <p class="-mb-0.5 text-sm text-gray-600">
                 starts
                 <span class="font-semibold text-gray-900">
-                    {{ props.plan.start_date }}
+                    {{ formatDate(props.plan.start_date) }}
                 </span>
             </p>
         </div>
