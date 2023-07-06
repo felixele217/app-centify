@@ -5,15 +5,20 @@ import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEm
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import TodoIcon from '@/Components/Icon/TodoIcon.vue'
 import Agent from '@/types/Agent'
+import euroDisplay from '@/utils/euroDisplay'
 import { Head } from '@inertiajs/vue3'
+import { computed } from 'vue'
 const props = defineProps<{
     agents: Array<Agent>
 }>()
 
+const totalPayout = computed(() => props.agents.map(agent => agent.commission!).reduce((accumulator, current) => accumulator + current, 0))
+
 const payoutRowObjects = [
-    { title: 'Total Payout', icon: BanknotesIcon, amount: '38.163€', subText: 'Next payout: 01.08.2023' },
+    { title: 'Total Payout', icon: BanknotesIcon, amount: euroDisplay(totalPayout.value), subText: 'Next payout: 01.08.2023' },
     { title: 'To-Dos', icon: TodoIcon, amount: '5', subText: 'need attention' },
 ]
+
 </script>
 
 <template>
