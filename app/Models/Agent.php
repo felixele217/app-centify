@@ -47,7 +47,7 @@ class Agent extends Authenticatable
     protected function quotaAttainment(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->deals->sum('value') / $this->plans->last()->target_amount_per_month
+            get: fn () => $this->deals->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month
         );
     }
 
