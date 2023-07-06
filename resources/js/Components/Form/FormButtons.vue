@@ -7,7 +7,7 @@ import SecondaryButton from '../Buttons/SecondaryButton.vue'
     <div class="flex flex-shrink-0 justify-end gap-3 py-4">
         <SecondaryButton
             text="Cancel"
-            @click="$emit('cancel-button-clicked')"
+            @click.prevent="$emit('cancel-button-clicked')"
         />
 
         <PrimaryButton

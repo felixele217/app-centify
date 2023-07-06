@@ -12,7 +12,7 @@ import Agent from '@/types/Agent'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
     agents: Array<Pick<Agent, 'id' | 'name'>>
@@ -168,7 +168,10 @@ function submit() {
                     </div>
                 </div>
 
-                <FormButtons @create-button-clicked="submit" />
+                <FormButtons
+                    @cancel-button-clicked="router.get(route('plans.index'))"
+                    @create-button-clicked="submit"
+                />
             </form>
         </Card>
     </div>
