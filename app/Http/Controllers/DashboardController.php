@@ -10,7 +10,10 @@ class DashboardController extends Controller
     public function __invoke()
     {
         return Inertia::render('Dashboard', [
-            'agents' => Auth::user()->organization->agents->load('deals'),
+            'agents' => Auth::user()->organization->agents->load('deals')->append([
+                'quota_attainment',
+                'commission',
+            ]),
         ]);
     }
 }
