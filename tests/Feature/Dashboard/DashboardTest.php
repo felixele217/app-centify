@@ -28,5 +28,14 @@ it('passes the correct props', function () {
 });
 
 it('does not send foreign agents', function () {
+    signInAdmin();
 
-})->todo();
+    Agent::factory(5)->create();
+
+    $this->get(route('dashboard'))
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dashboard')
+                ->has('agents', 0)
+        );
+});

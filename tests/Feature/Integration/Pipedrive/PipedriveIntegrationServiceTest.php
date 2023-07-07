@@ -55,7 +55,3 @@ it('does not create deal / throw error if no agent with the pipedrive email exis
 
     expect(Deal::count())->toBe(0);
 });
-
-it('returns no duplicates for duplicate emails', function () {
-
-})->todo();
