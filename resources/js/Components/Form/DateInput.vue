@@ -32,7 +32,11 @@ const selectedColor = ref('indigo')
             <DatePicker
                 :color="selectedColor"
                 :model-value="props.date"
-                @update:model-value="(newDate: Date) => $emit('date-changed', newDate)"
+                @update:model-value="(newDate: Date) => {
+                    newDate.setHours(15)
+
+                    $emit('date-changed', newDate)
+                }"
             />
         </template>
     </Dropdown>

@@ -31,7 +31,6 @@ const form = useForm({
 
 function handleDateChange(newDate: Date) {
     form.start_date = newDate
-    console.log(newDate)
 }
 
 function handleAgentSelect(id: number) {
