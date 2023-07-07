@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
             'organization_id' => $admin->organization->id,
         ]);
 
-        Agent::factory(5)->create([
-            'organization_id' => $admin->organization->id,
-        ]);
+        // Agent::factory(5)->create([
+        //     'organization_id' => $admin->organization->id,
+        // ]);
 
         Plan::factory(3)->create([
             'organization_id' => $admin->organization->id,
