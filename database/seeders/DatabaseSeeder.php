@@ -22,18 +22,24 @@ class DatabaseSeeder extends Seeder
             'name' => 'Centify Agent',
             'email' => 'tech@centify.de',
             'organization_id' => $admin->organization->id,
+            'on_target_earning' => 200_000_00,
+            'base_salary' => 100_000_00,
         ]);
 
         $pipedriveAgent1 = Agent::factory()->create([
             'name' => 'Pipedrive Agent 1',
             'email' => 'pipedrive1@centify.de',
             'organization_id' => $admin->organization->id,
+            'on_target_earning' => 200_000_00,
+            'base_salary' => 100_000_00,
         ]);
 
         $pipedriveAgent2 = Agent::factory()->create([
             'name' => 'Pipedrive Agent 2',
             'email' => 'pipedrive2@centify.de',
             'organization_id' => $admin->organization->id,
+            'on_target_earning' => 200_000_00,
+            'base_salary' => 100_000_00,
         ]);
 
         // Agent::factory(5)->create([
