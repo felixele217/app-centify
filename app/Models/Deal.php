@@ -15,8 +15,7 @@ class Deal extends Model
     protected $guarded = [];
 
     protected $casts = [
-        //! TODO
-        // 'add_time' => 'datetime',
+        'add_time' => 'datetime',
         'integration_type' => IntegrationEnum::class,
         'status' => DealStatusEnum::class,
     ];

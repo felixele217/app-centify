@@ -1,9 +1,11 @@
 <?php
 
 use App\Enum\IntegrationEnum;
+use App\Helper\DateHelper;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
+use App\Models\Deal;
 
 it('returns the correct structure for agentDeals', function () {
     $agentDeals = PipedriveIntegrationService::agentDeals();
@@ -45,9 +47,13 @@ it('stores the data properly', function () {
     expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);
     expect($agent->deals->first()->owner_email)->toBe($expectedData[$email][0]['owner_email']);
     expect($agent->deals->first()->integration_type->value)->toBe(IntegrationEnum::PIPEDRIVE->value);
+    expect(DateHelper::parsePipedriveTime($expectedData[$email][0]['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
+});
 
-    //! TODO
-    // dd($expectedData[$email][0]['add_time'], $agent->deals->first()->add_time);
+it('does not create deal / throw error if no agent with the pipedrive email exists', function () {
+    PipedriveIntegrationService::syncAgentDeals();
+
+    expect(Deal::count())->toBe(0);
 });
 
 it('returns no duplicates for duplicate emails', function () {

@@ -4,6 +4,7 @@ namespace App\Integrations\Pipedrive;
 
 use App\Enum\IntegrationEnum;
 use App\Facades\Pipedrive;
+use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
 
@@ -62,12 +63,12 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
         foreach ($agentDeals as $email => $deals) {
             foreach ($deals as $deal) {
-                Agent::whereEmail($email)->first()->deals()->create([
+                Agent::whereEmail($email)->first()?->deals()->create([
                     'integration_deal_id' => $deal['id'],
                     'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                     'title' => $deal['title'],
                     'value' => $deal['value'] * 100,
-                    'add_time' => $deal['add_time'],
+                    'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),
                     'status' => $deal['status'],
                     'owner_email' => $deal['owner_email'],
                 ]);
