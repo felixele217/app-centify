@@ -4,7 +4,7 @@ import PrimaryButton from './Buttons/PrimaryButton.vue'
 const props = defineProps<{
     title: string
     description: string
-    buttonText: string
+    buttonText?: string
 }>()
 </script>
 
@@ -14,7 +14,10 @@ const props = defineProps<{
             <h1 class="text-base font-semibold leading-6 text-gray-900">{{ props.title }}</h1>
             <p class="mt-2 text-sm text-gray-700">{{ props.description }}</p>
         </div>
-        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <div
+            class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
+            v-if="props.buttonText"
+        >
             <PrimaryButton
                 dusk="slide-over-button"
                 @click="$emit('button-clicked')"
