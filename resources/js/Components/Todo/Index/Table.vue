@@ -17,7 +17,7 @@ const props = defineProps<{
             title="Todos"
             description="A list of all opportunities that require manual action."
         />
-        <Table>
+        <Table :no-items-text="props.deals.length ? undefined : 'Currently, there are no opportunities for you to act on.'">
             <template #header>
                 <tr>
                     <th

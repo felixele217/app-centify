@@ -6,7 +6,7 @@ import euroDisplay from '@/utils/euroDisplay'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
 
-defineProps<{
+const props = defineProps<{
     agents: Array<Agent>
 }>()
 
@@ -27,7 +27,7 @@ const isOpen = ref(false)
         @button-clicked="isOpen = true"
     />
 
-    <Table>
+    <Table :no-items-text="props.agents.length ? undefined : 'You have no agents yet.'">
         <template #header>
             <tr>
                 <th
