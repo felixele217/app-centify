@@ -24,7 +24,7 @@ const props = defineProps<{
         </div>
 
         <div class="mt-4 flex items-center gap-1">
-            <CalendarIcon />
+            <CalendarIcon  class="text-gray-400"/>
             <p class="-mb-0.5 text-sm text-gray-600">
                 starts
                 <span class="font-semibold text-gray-900">
@@ -34,7 +34,7 @@ const props = defineProps<{
         </div>
 
         <div class="mt-2 flex items-center gap-1">
-            <RecurIcon />
+            <RecurIcon class="text-gray-400"/>
             <p class="-mb-0.5 text-sm text-gray-600">
                 occurs
                 <span class="font-semibold text-gray-900">
@@ -44,7 +44,7 @@ const props = defineProps<{
         </div>
 
         <div class="mt-2 flex items-center gap-1">
-            <BanknotesIcon />
+            <BanknotesIcon class="text-gray-400" />
             <p class="-mb-0.5 text-sm text-gray-600">
                 targets
                 <span class="font-semibold text-gray-900">
