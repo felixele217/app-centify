@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import { router } from '@inertiajs/vue3'
-import { subtleText } from '../styles'
 
 const props = defineProps<{
     title: string
