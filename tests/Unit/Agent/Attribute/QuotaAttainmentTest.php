@@ -4,7 +4,6 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 it('calculates the quota attainment properly', function () {
     $plan = Plan::factory()->create();
@@ -19,15 +18,14 @@ it('calculates the quota attainment properly', function () {
 it('calculates the quota attainment only for accepted deals', function () {
     $plan = Plan::factory()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()
-            ->count(10)
-            ->state(new Sequence(
-                ['accepted_at' => Carbon::now()],
-                ['accepted_at' => null],
-            ))
-    )
-        ->create());
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
+        'accepted_at' => Carbon::now(),
+    ])->create());
+
+    Deal::factory(3)->create([
+        'agent_id' => $agent->id,
+        'accepted_at' => null,
+    ]);
 
     expect($agent->quota_attainment)->toBe($agent->deals()->whereNotNull('accepted_at')->sum('value') / $plan->target_amount_per_month);
 });
