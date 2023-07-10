@@ -16,6 +16,7 @@ class Deal extends Model
 
     protected $casts = [
         'add_time' => 'datetime',
+        'accepted_at' => 'datetime',
         'integration_type' => IntegrationEnum::class,
         'status' => DealStatusEnum::class,
     ];

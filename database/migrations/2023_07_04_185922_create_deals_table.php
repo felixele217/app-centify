@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('owner_email');
             $table->integer('value');
             $table->timestampTz('add_time');
+            $table->timestampTz('accepted_at')->nullable();
             $table->timestamps();
             $table->foreignIdFor(Agent::class);
         });

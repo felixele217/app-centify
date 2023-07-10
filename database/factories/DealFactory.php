@@ -20,6 +20,7 @@ class DealFactory extends Factory
             'owner_email' => fake()->email(),
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
+            'accepted_at' => null,
             'agent_id' => Agent::factory()->create(),
         ];
     }
