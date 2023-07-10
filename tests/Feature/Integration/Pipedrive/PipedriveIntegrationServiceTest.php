@@ -43,6 +43,28 @@ it('stores the data properly', function () {
     expect(DateHelper::parsePipedriveTime($expectedData[$email][0]['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
 });
 
+it('updates the deal if it already existed and some data changed', function () {
+    $deals = (new PipedriveClientDummy())->deals()->toArray();
+
+    $email = $deals[0]['creator_user_id']['email'];
+
+    $agent = Agent::factory()->create([
+        'email' => $email,
+    ]);
+
+    PipedriveIntegrationService::syncAgentDeals();
+
+    $agentDeal = $agent->fresh()->deals()->whereIntegrationDealId($deals[0]['id'])->first();
+
+    $agentDeal->update([
+        'value' => $deals[0]['value'] + 5,
+    ]);
+
+    PipedriveIntegrationService::syncAgentDeals();
+
+    expect($agentDeal->fresh()->value)->toBe($deals[0]['value']);
+});
+
 it('does not create the same entry twice', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 

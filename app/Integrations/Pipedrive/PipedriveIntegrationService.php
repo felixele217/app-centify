@@ -7,7 +7,6 @@ use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
-use App\Models\Deal;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
@@ -64,12 +63,12 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
         foreach ($agentDeals as $email => $deals) {
             foreach ($deals as $deal) {
-                $dealExists = Deal::where('integration_deal_id', $deal['id'])
-                    ->where('integration_type', IntegrationEnum::PIPEDRIVE->value)
-                    ->exists();
-
-                if (! $dealExists) {
-                    Agent::whereEmail($email)->first()?->deals()->create([
+                Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
+                    [
+                        'integration_deal_id' => $deal['id'],
+                        'integration_type' => IntegrationEnum::PIPEDRIVE->value,
+                    ],
+                    [
                         'integration_deal_id' => $deal['id'],
                         'integration_type' => IntegrationEnum::PIPEDRIVE->value,
                         'title' => $deal['title'],
@@ -77,8 +76,8 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),
                         'status' => $deal['status'],
                         'owner_email' => $deal['owner_email'],
-                    ]);
-                }
+                    ]
+                );
             }
         }
     }
