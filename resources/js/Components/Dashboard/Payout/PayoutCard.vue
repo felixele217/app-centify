@@ -28,7 +28,7 @@ const props = defineProps<{
 
         <div>
             <h2 class="mb-3">{{ props.amount }}</h2>
-            <p :class="subtleText">{{ props.subText }}</p>
+            <p class="font-semibold text-gray-400">{{ props.subText }}</p>
         </div>
     </Card>
 </template>

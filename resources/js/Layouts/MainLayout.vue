@@ -8,9 +8,9 @@ import { BellIcon, ChartPieIcon, FolderIcon, HomeIcon, PuzzlePieceIcon } from '@
 
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
-    { name: 'To Dos', href: route('todos.index'), icon: TodoIcon, current: route().current('todos') },
-    { name: 'Plans', href: route('plans.index'), icon: ChartPieIcon, current: route().current('plans') },
-    { name: 'Teams & Users', href: route('agents.index'), icon: FolderIcon, current: route().current('agents') },
+    { name: 'To Dos', href: route('todos.index'), icon: TodoIcon, current: route().current('todos.index') },
+    { name: 'Plans', href: route('plans.index'), icon: ChartPieIcon, current: route().current('plans.index') },
+    { name: 'Teams & Users', href: route('agents.index'), icon: FolderIcon, current: route().current('agents.index') },
     {
         name: 'Integrations',
         href: route('integrations'),

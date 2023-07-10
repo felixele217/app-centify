@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { subtleText } from '../styles'
-
 const props = defineProps<{
     photo: any
     name: string
@@ -16,10 +14,7 @@ const props = defineProps<{
 
         <div class="col-span-3">
             <p class="font-semibold">{{ props.name }}</p>
-            <p
-                :class="subtleText"
-                class="-mt-1.5 text-sm"
-            >
+            <p class="-mt-1.5 text-sm font-semibold text-gray-400">
                 {{ props.role }}
             </p>
         </div>
