@@ -46,10 +46,8 @@ it('stores the data properly', function () {
 it('updates the deal if it already existed and some data changed', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
-    $email = $deals[0]['creator_user_id']['email'];
-
     $agent = Agent::factory()->create([
-        'email' => $email,
+        'email' => $deals[0]['creator_user_id']['email'],
     ]);
 
     PipedriveIntegrationService::syncAgentDeals();
