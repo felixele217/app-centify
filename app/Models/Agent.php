@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enum\TimeScopeEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,8 +48,12 @@ class Agent extends Authenticatable
 
     protected function quotaAttainment(): Attribute
     {
+        $timeScope = request()->query('time_scope');
+
         return Attribute::make(
-            get: fn () => $this->deals()->whereNotNull('accepted_at')->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month
+            get: fn () => match ($timeScope) {
+                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month,
+            }
         );
     }
 
