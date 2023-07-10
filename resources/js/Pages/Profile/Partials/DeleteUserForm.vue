@@ -4,7 +4,7 @@ import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
-import Modal from '@/Components/Modal.vue'
+import SettingsModal from '@/Components/SettingsModal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { nextTick, ref } from 'vue'
 
@@ -50,7 +50,7 @@ const closeModal = () => {
 
         <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
 
-        <Modal
+        <SettingsModal
             :show="confirmingUserDeletion"
             @close="closeModal"
         >
@@ -98,6 +98,6 @@ const closeModal = () => {
                     </DangerButton>
                 </div>
             </div>
-        </Modal>
+        </SettingsModal>
     </section>
 </template>

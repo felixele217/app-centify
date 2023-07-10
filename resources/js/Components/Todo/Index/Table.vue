@@ -1,25 +1,32 @@
 <script setup lang="ts">
 import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
 import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
+import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
 import Deal from '@/types/Deal'
 import euroDisplay from '@/utils/euroDisplay'
 import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const props = defineProps<{
     deals: Array<Deal>
 }>()
 
 function acceptDeal(dealId: number) {
+
     router.put(
         route('deals.update', dealId),
         {
             has_accepted_deal: true,
         },
-        {}
+        {
+            // onSuccess: () => console.log('gc'),
+        }
     )
 }
+
+const dealIdBeingAccepted = ref<number | null>()
 </script>
 
 <template>
@@ -98,7 +105,7 @@ function acceptDeal(dealId: number) {
                     <td class="whitespace-nowrap px-3">
                         <div class="flex gap-2 text-gray-500">
                             <thumbs-up-icon
-                                @click="acceptDeal(deal.id)"
+                                @click="dealIdBeingAccepted = deal.id"
                                 class="h-6 w-6 cursor-pointer hover:text-green-500"
                             />
                             <thumbs-down-icon class="h-6 w-6 cursor-pointer hover:text-red-600" />
@@ -107,5 +114,15 @@ function acceptDeal(dealId: number) {
                 </tr>
             </template>
         </Table>
+
+        <Modal
+            @modal-action="acceptDeal(dealIdBeingAccepted!)"
+            :is-negative-action="false"
+            :isOpen="!!dealIdBeingAccepted"
+            @close-modal="dealIdBeingAccepted = null"
+            button-text="Accept"
+            title="Accept Deal"
+            :description="'Are you sure you want to accept this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
+        />
     </div>
 </template>
