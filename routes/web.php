@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
@@ -26,6 +27,10 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('todos')->name('todos.')->controller(TodoController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+    });
+
+    Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
+        Route::put('/{deal}', 'update')->name('update');
     });
 
     Route::prefix('agents')->name('agents.')->controller(AgentController::class)->group(function () {
