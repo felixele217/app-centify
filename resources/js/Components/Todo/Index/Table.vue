@@ -6,8 +6,8 @@ import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
 import Deal from '@/types/Deal'
 import euroDisplay from '@/utils/euroDisplay'
+import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
-import { notify } from 'notiwind'
 import { ref } from 'vue'
 
 const props = defineProps<{
@@ -23,11 +23,7 @@ function acceptDeal(dealId: number) {
         {
             onSuccess: () => {
                 dealIdBeingAccepted.value = null
-                notify({
-                    group: 'centify',
-                    title: 'Deal accepted!',
-                    text: "It now counts towards this agent's commission metrics.",
-                }) // 4s
+                notify('Deal accepted!', "It now counts towards this agent's commission metrics.")
             },
         }
     )
