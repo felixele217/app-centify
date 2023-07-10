@@ -24,13 +24,6 @@ it('stores the data properly', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
     $email = $deals[0]['creator_user_id']['email'];
-    $emailCount = 0;
-
-    foreach ($deals as $deal) {
-        if ($deal['creator_user_id']['email'] === $email) {
-            $emailCount++;
-        }
-    }
 
     $agent = Agent::factory()->create([
         'email' => $email,
@@ -40,7 +33,7 @@ it('stores the data properly', function () {
 
     $expectedData = PipedriveIntegrationService::agentDeals();
 
-    expect($agent->deals)->toHaveCount($emailCount);
+    expect($agent->deals)->toHaveCount(emailCount($email, $deals));
     expect($agent->deals->first()->integration_deal_id)->toBe($expectedData[$email][0]['id']);
     expect($agent->deals->first()->title)->toBe($expectedData[$email][0]['title']);
     expect($agent->deals->first()->value)->toBe($expectedData[$email][0]['value']);
@@ -50,8 +43,36 @@ it('stores the data properly', function () {
     expect(DateHelper::parsePipedriveTime($expectedData[$email][0]['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
 });
 
+it('does not create the same entry twice', function () {
+    $deals = (new PipedriveClientDummy())->deals()->toArray();
+
+    $email = $deals[0]['creator_user_id']['email'];
+
+    $agent = Agent::factory()->create([
+        'email' => $email,
+    ]);
+
+    PipedriveIntegrationService::syncAgentDeals();
+    PipedriveIntegrationService::syncAgentDeals();
+
+    expect($agent->deals)->toHaveCount(emailCount($email, $deals));
+});
+
 it('does not create deal / throw error if no agent with the pipedrive email exists', function () {
     PipedriveIntegrationService::syncAgentDeals();
 
     expect(Deal::count())->toBe(0);
 });
+
+function emailCount($email, $deals): int
+{
+    $emailCount = 0;
+
+    foreach ($deals as $deal) {
+        if ($deal['creator_user_id']['email'] === $email) {
+            $emailCount++;
+        }
+    }
+
+    return $emailCount;
+}
