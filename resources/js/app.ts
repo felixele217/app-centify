@@ -4,6 +4,7 @@ import './bootstrap'
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { createApp, h } from 'vue'
+import Notifications from 'notiwind'
 // @ts-ignore
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m.js'
 
@@ -18,6 +19,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(Notifications)
             .use(ZiggyVue, Ziggy)
             .mount(el)
     },

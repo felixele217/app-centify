@@ -7,6 +7,7 @@ import Table from '@/Components/Table.vue'
 import Deal from '@/types/Deal'
 import euroDisplay from '@/utils/euroDisplay'
 import { router } from '@inertiajs/vue3'
+import { notify } from 'notiwind'
 import { ref } from 'vue'
 
 const props = defineProps<{
@@ -14,14 +15,20 @@ const props = defineProps<{
 }>()
 
 function acceptDeal(dealId: number) {
-
     router.put(
         route('deals.update', dealId),
         {
             has_accepted_deal: true,
         },
         {
-            // onSuccess: () => console.log('gc'),
+            onSuccess: () => {
+                dealIdBeingAccepted.value = null
+                notify({
+                    group: 'centify',
+                    title: 'Deal accepted!',
+                    text: "It now counts towards this agent's commission metrics.",
+                }) // 4s
+            },
         }
     )
 }

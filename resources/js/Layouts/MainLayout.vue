@@ -3,6 +3,7 @@ import TodoIcon from '@/Components/Icon/TodoIcon.vue'
 import ProfileDropdown from '@/Components/MainLayout/ProfileDropdown.vue'
 import SearchBar from '@/Components/MainLayout/SearchBar.vue'
 import Sidebar from '@/Components/MainLayout/Sidebar.vue'
+import Notification from '@/Components/Notification.vue'
 import { BellIcon, ChartPieIcon, FolderIcon, HomeIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 
 const navigation = [
@@ -55,4 +56,6 @@ const navigation = [
             </main>
         </div>
     </div>
+
+    <Notification />
 </template>

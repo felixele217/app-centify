@@ -30,6 +30,7 @@
         "@heroicons/vue": "^2.0.18",
         "@popperjs/core": "^2.11.8",
         "chart.js": "^4.3.0",
+        "notiwind": "^2.0.2",
         "v-calendar": "^3.0.3",
         "vue-chartjs": "^5.2.0"
     }
