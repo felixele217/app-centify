@@ -60,8 +60,6 @@ it('calculates the quota attainment for the current quarter if scoped', function
 
     $plan = Plan::factory()->create();
 
-    Carbon::now()->nthOfQuarter(10, 5);
-
     $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentQuarterDealCount = 2, [
         'accepted_at' => fake()->randomElement([
             Carbon::now()->nthOfQuarter(1, Carbon::MONDAY),
@@ -85,4 +83,34 @@ it('calculates the quota attainment for the current quarter if scoped', function
     expect($currentQuarterDealsQuery->count())->toBe($currentQuarterDealCount);
 
     expect($agent->quota_attainment)->toBe($currentQuarterDealsQuery->sum('value') / $plan->target_amount_per_month * 3);
+});
+
+it('calculates the quota attainment for the current year if scoped', function () {
+    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::ANNUALY->value);
+
+    $plan = Plan::factory()->create();
+
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentYearDealCount = 2, [
+        'accepted_at' => fake()->randomElement([
+            Carbon::now()->lastOfYear(),
+            Carbon::now()->firstOfYear(),
+            Carbon::now(),
+        ]),
+    ])->create());
+
+    Deal::factory(3)->create([
+        'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->lastOfYear()->addDay(1),
+    ]);
+
+    Deal::factory(3)->create([
+        'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->firstOfYear()->subDay(1),
+    ]);
+
+    $currentYearDealsQuery = $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()]);
+
+    expect($currentYearDealsQuery->count())->toBe($currentYearDealCount);
+
+    expect($agent->quota_attainment)->toBe($currentYearDealsQuery->sum('value') / $plan->target_amount_per_month * 12);
 });

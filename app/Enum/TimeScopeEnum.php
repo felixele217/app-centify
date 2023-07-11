@@ -6,4 +6,5 @@ enum TimeScopeEnum: string
 {
     case MONTHLY = 'monthly';
     case QUARTERLY = 'quarterly';
+    case ANNUALY = 'annualy';
 }

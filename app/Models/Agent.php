@@ -54,6 +54,7 @@ class Agent extends Authenticatable
             get: fn () => match ($timeScope) {
                 TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month,
                 TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 3,
+                TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 12,
             }
         );
     }
