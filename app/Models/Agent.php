@@ -53,6 +53,7 @@ class Agent extends Authenticatable
         return Attribute::make(
             get: fn () => match ($timeScope) {
                 TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month,
+                TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 3,
             }
         );
     }

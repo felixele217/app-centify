@@ -1,6 +1,6 @@
+import Admin from './Admin'
 import type { PayoutFrequencyEnum } from './Enum/PayoutFrequencyEnum'
 import type { TargetVariableEnum } from './Enum/TargetVariableEnum'
-import Admin from './Admin'
 
 export default interface Plan {
     id: number

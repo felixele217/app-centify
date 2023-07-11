@@ -12,13 +12,19 @@ const props = defineProps<{
     agents: Array<Agent>
 }>()
 
-const totalPayout = computed(() => props.agents.map(agent => agent.commission!).reduce((accumulator, current) => accumulator + current, 0))
+const totalPayout = computed(() =>
+    props.agents.map((agent) => agent.commission!).reduce((accumulator, current) => accumulator + current, 0)
+)
 
 const payoutRowObjects = [
-    { title: 'Total Payout', icon: BanknotesIcon, amount: euroDisplay(totalPayout.value), subText: 'Next payout: 01.08.2023' },
+    {
+        title: 'Total Payout',
+        icon: BanknotesIcon,
+        amount: euroDisplay(totalPayout.value),
+        subText: 'Next payout: 01.08.2023',
+    },
     { title: 'To-Dos', icon: TodoIcon, amount: '5', subText: 'need attention', link: route('todos.index') },
 ]
-
 </script>
 
 <template>
@@ -32,6 +38,6 @@ const payoutRowObjects = [
             <AnnualRevenue class="col-span-2" />
         </div>
 
-        <TotalPayoutByEmployee :agents="props.agents"/>
+        <TotalPayoutByEmployee :agents="props.agents" />
     </div>
 </template>

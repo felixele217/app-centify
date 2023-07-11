@@ -1,11 +1,11 @@
 <script setup lang="ts">
 // @ts-ignore
+import formatDate from '@/utils/formatDate'
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
 import { ref } from 'vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
 import TextInput from './TextInput.vue'
-import formatDate from '@/utils/formatDate'
 
 const props = defineProps<{
     date: Date | null

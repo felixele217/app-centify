@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
 import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
+import Admin from '@/types/Admin'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
-import Admin from '@/types/Admin'
 
 const props = defineProps<{
     for: 'pipedrive' | 'salesforce'

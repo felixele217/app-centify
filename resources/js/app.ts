@@ -3,8 +3,8 @@ import './bootstrap'
 
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { createInertiaApp } from '@inertiajs/vue3'
-import { createApp, h } from 'vue'
 import Notifications from 'notiwind'
+import { createApp, h } from 'vue'
 // @ts-ignore
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m.js'
 

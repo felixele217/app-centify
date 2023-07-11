@@ -1,4 +1,3 @@
-import euroDisplay from '@/utils/euroDisplay'
 import formatDate from '@/utils/formatDate'
 import { expect, test } from 'vitest'
 

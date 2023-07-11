@@ -11,12 +11,10 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card
-        :class="props.link ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'"
-    >
+    <Card :class="props.link ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'">
         <a
             :href="props.link || '#'"
-            class="flex flex-col justify-between h-full"
+            class="flex h-full flex-col justify-between"
         >
             <div class="mb-5 flex justify-between">
                 <p class="font-semibold">{{ props.title }}</p>
