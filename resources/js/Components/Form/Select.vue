@@ -3,11 +3,12 @@ import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import queryParamValue from '@/utils/queryParamValue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { usePage } from '@inertiajs/vue3'
 import { computed, inject } from 'vue'
 
 const props = defineProps<{}>()
 
-const sortOptions = inject<Array<TimeScopeEnum>>('timeScopes')!.map((timeScope) => {
+const sortOptions = usePage().props.time_scopes!.map((timeScope) => {
     return {
         name: timeScope,
         href: route('dashboard') + '?time_scope=' + timeScope,
