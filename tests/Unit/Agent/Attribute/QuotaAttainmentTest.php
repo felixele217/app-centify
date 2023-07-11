@@ -38,21 +38,25 @@ it('calculates the quota attainment only for accepted deals', function () {
 it('calculates the quota attainment for the current month if scoped', function () {
     $plan = Plan::factory()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => Carbon::now(),
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentMonthDealCount = 2, [
+        'accepted_at' => fake()->randomElement([
+            Carbon::now()->firstOfMonth(),
+            Carbon::now()->lastOfMonth(),
+        ]),
     ])->create());
 
     Deal::factory(3)->create([
         'agent_id' => $agent->id,
-        'accepted_at' => Carbon::parse('-1 month'),
+        'accepted_at' => fake()->randomElement([
+            Carbon::now()->firstOfMonth()->subDay(1),
+            Carbon::now()->lastOfMonth()->addDay(1),
+        ]),
     ]);
 
-    Deal::factory(3)->create([
-        'agent_id' => $agent->id,
-        'accepted_at' => Carbon::parse('+1 month'),
-    ]);
+    $currentMonthDealsQuery = $agent->deals()->whereMonth('accepted_at', Carbon::now()->month);
 
-    expect($agent->quota_attainment)->toBe($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $plan->target_amount_per_month);
+    expect($currentMonthDealsQuery->count())->toBe($currentMonthDealCount);
+    expect($agent->quota_attainment)->toBe($currentMonthDealsQuery->sum('value') / $plan->target_amount_per_month);
 });
 
 it('calculates the quota attainment for the current quarter if scoped', function () {

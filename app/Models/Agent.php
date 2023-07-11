@@ -61,8 +61,14 @@ class Agent extends Authenticatable
 
     protected function commission(): Attribute
     {
+        $timeScope = request()->query('time_scope');
+
         return Attribute::make(
-            get: fn () => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 12
+            get: fn () => match ($timeScope) {
+                TimeScopeEnum::MONTHLY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 12,
+                TimeScopeEnum::QUARTERLY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 4,
+                TimeScopeEnum::ANNUALY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary),
+            }
         );
     }
 }

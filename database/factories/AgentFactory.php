@@ -18,8 +18,8 @@ class AgentFactory extends Factory
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'organization_id' => Organization::factory()->create(),
-            'base_salary' => fake()->randomElement([5000000, 10000000]),
-            'on_target_earning' => fake()->randomElement([10000000, 20000000]),
+            'base_salary' => fake()->randomElement([50_000_00, 70_000_00]),
+            'on_target_earning' => fake()->randomElement([100_000_00, 150_000_00]),
         ];
     }
 
