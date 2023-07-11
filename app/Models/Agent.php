@@ -46,25 +46,17 @@ class Agent extends Authenticatable
         return $this->belongsToMany(Plan::class);
     }
 
-    public function activePlans(): BelongsToMany
-    {
-        return $this->plans()
-            ->where('start_date', '<', Carbon::now())
-            ->where(function ($query) {
-                $query->where('end_date', '>', Carbon::now())
-                    ->orWhereNull('end_date');
-            });
-    }
-
     protected function quotaAttainment(): Attribute
     {
         $timeScope = request()->query('time_scope');
 
+        $latestPlanTargetAmountPerMonth = $this->load('plans')->plans()->active()->first()->target_amount_per_month;
+
         return Attribute::make(
             get: fn () => match ($timeScope) {
-                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->first()->target_amount_per_month,
-                TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 3,
-                TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 12,
+                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
+                TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / $latestPlanTargetAmountPerMonth * 3,
+                TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / $latestPlanTargetAmountPerMonth * 12,
             }
         );
     }

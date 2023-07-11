@@ -6,6 +6,26 @@ use App\Models\Plan;
 use App\Models\Agent;
 use App\Enum\TimeScopeEnum;
 
+it('calculates the commission properly for the active plan with the most recent start_date', function () {
+    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
+
+    $agent = Agent::factory()->hasDeals([
+        'accepted_at' => Carbon::now(),
+    ])->create();
+
+    Plan::factory()->create([
+        'start_date' => Carbon::parse('-2 days'),
+    ]);
+
+    Plan::factory()->create([
+        'start_date' => Carbon::yesterday(),
+    ]);
+
+    $agent->plans()->attach(Plan::all());
+
+    expect($agent->commission)->toBe($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 12);
+});
+
 it('correctly calculates the commission for the current month if scoped', function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
 

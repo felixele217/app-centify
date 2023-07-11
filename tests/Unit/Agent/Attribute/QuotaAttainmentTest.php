@@ -10,14 +10,22 @@ beforeEach(function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
 });
 
-it('calculates the quota attainment properly', function () {
-    $plan = Plan::factory()->create();
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals([
+it('calculates the quota attainment properly for the active plan with the most recent start_date', function () {
+    $agent = Agent::factory()->hasDeals([
         'accepted_at' => Carbon::now(),
-    ])->create());
+    ])->create();
 
-    expect($agent->quota_attainment)->toBe($agent->deals->sum('value') / $plan->target_amount_per_month);
+    $oldPlan = Plan::factory()->create([
+        'start_date' => Carbon::parse('-2 days'),
+    ]);
+
+    $latestPlan = Plan::factory()->create([
+        'start_date' => Carbon::yesterday(),
+    ]);
+
+    $agent->plans()->attach(Plan::all());
+
+    expect($agent->quota_attainment)->toBe($agent->deals->sum('value') / $latestPlan->target_amount_per_month);
 });
 
 it('calculates the quota attainment only for accepted deals', function () {
