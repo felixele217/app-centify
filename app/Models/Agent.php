@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Models\Plan;
 use App\Enum\TimeScopeEnum;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Agent extends Authenticatable
 {
@@ -47,9 +46,14 @@ class Agent extends Authenticatable
         return $this->belongsToMany(Plan::class);
     }
 
-    public function currentPlan(): Plan
+    public function activePlans(): BelongsToMany
     {
-        return $this->plans()->orderBy('created_at', 'desc')->first();
+        return $this->plans()
+            ->where('start_date', '<', Carbon::now())
+            ->where(function ($query) {
+                $query->where('end_date', '>', Carbon::now())
+                    ->orWhereNull('end_date');
+            });
     }
 
     protected function quotaAttainment(): Attribute
