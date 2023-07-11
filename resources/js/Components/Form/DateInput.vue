@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-ignore
 import formatDate from '@/utils/formatDate'
 // @ts-ignore
 import { DatePicker } from 'v-calendar'
