@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // @ts-ignore
 import formatDate from '@/utils/formatDate'
+// @ts-ignore
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
 import { ref } from 'vue'
