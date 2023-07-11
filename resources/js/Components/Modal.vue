@@ -72,7 +72,7 @@ const props = defineProps<{
                                 </div>
 
                                 <div
-                                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100"
+                                    class="mx-auto flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-100"
                                     v-else
                                 >
                                     <CheckIcon
@@ -93,7 +93,8 @@ const props = defineProps<{
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+
+                            <div class="mt-6 sm:flex sm:flex-row-reverse">
                                 <button
                                     type="button"
                                     class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
