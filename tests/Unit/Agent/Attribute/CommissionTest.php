@@ -29,14 +29,20 @@ it('calculates the commission properly for the active plan with the most recent 
 it('correctly calculates the commission for the current month if scoped', function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
 
-    $plan = Plan::factory()->create();
+    $plan = Plan::factory()->create([
+        'target_amount_per_month' => 1_000_00
+    ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentMonthDealCount = 2, [
         'accepted_at' => fake()->randomElement([
             Carbon::now()->firstOfMonth(),
             Carbon::now()->lastOfMonth(),
         ]),
-    ])->create());
+        'value' => 1_000_00
+    ])->create([
+        'base_salary' => 80_000_00,
+        'on_target_earning' => 200_000_00,
+    ]));
 
     Deal::factory(3)->create([
         'agent_id' => $agent->id,
@@ -46,13 +52,15 @@ it('correctly calculates the commission for the current month if scoped', functi
         ]),
     ]);
 
-    expect($agent->commission)->toBe($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 12);
+    expect($agent->commission)->toBe(20_000_00);
 });
 
 it('correctly calculates the commission for the current quarter if scoped', function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::QUARTERLY->value);
 
-    $plan = Plan::factory()->create();
+    $plan = Plan::factory()->create([
+        'target_amount_per_month' => 2_000_00
+    ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
         'accepted_at' => fake()->randomElement([
@@ -60,7 +68,11 @@ it('correctly calculates the commission for the current quarter if scoped', func
             Carbon::now()->nthOfQuarter(6, Carbon::TUESDAY),
             Carbon::now()->nthOfQuarter(11, Carbon::SATURDAY),
         ]),
-    ])->create());
+        'value' => 1_500_00
+    ])->create([
+        'base_salary' => 80_000_00,
+        'on_target_earning' => 200_000_00,
+    ]));
 
     Deal::factory(3)->create([
         'agent_id' => $agent->id,
@@ -70,21 +82,27 @@ it('correctly calculates the commission for the current quarter if scoped', func
         ]),
     ]);
 
-    expect($agent->commission)->toBe($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 4);
+    expect(intval($agent->commission))->toBe(15_000_00);
 });
 
 it('correctly calculates the commission for the current year if scoped', function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::ANNUALY->value);
 
-    $plan = Plan::factory()->create();
+    $plan = Plan::factory()->create([
+        'target_amount_per_month' => 1_000_00
+    ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentYearDealCount = 2, [
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
         'accepted_at' => fake()->randomElement([
             Carbon::now()->lastOfYear(),
             Carbon::now()->firstOfYear(),
             Carbon::now(),
         ]),
-    ])->create());
+        'value' => 3_000_00
+    ])->create([
+        'base_salary' => 80_000_00,
+        'on_target_earning' => 200_000_00,
+    ]));
 
     Deal::factory(3)->create([
         'agent_id' => $agent->id,
@@ -94,5 +112,5 @@ it('correctly calculates the commission for the current year if scoped', functio
         ]),
     ]);
 
-    expect($agent->commission)->toBe($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary));
+    expect(intval($agent->commission))->toBe(60_000_00);
 });
