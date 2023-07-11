@@ -35,6 +35,7 @@ const payoutRowObjects = [
                 v-for="object in payoutRowObjects"
                 v-bind="object"
             />
+
             <AnnualRevenue class="col-span-2" />
         </div>
 

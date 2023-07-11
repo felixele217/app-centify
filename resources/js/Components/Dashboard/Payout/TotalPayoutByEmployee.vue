@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
+import Select from '@/Components/Form/Select.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 
@@ -19,6 +20,8 @@ function quotaDisplay(quotaAttainment: number) {
                 <h1 class="text-base font-semibold leading-6 text-gray-900">Total Payout by Employee</h1>
                 <p class="mt-2 text-sm text-gray-700">Gain a quick overview over your Agents' Performances.</p>
             </div>
+
+            <Select v-if="false" />
         </div>
         <div class="mt-8 flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
