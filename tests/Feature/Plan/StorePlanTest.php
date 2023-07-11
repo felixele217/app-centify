@@ -22,6 +22,7 @@ it('can store a plan as an admin', function () {
         'assigned_agent_ids' => $assignedAgents = $agents->pluck('id')->toArray(),
     ])->assertRedirect(route('plans.index'));
 
+    expect(Plan::count())->toBe(1);
     expect($plan = Plan::whereName($name)->first())->not()->toBeNull();
     expect($plan->start_date)->toEqual($startDate);
     expect($plan->target_amount_per_month)->toEqual($targetAmountPerMonth);

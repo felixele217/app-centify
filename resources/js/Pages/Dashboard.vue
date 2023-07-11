@@ -5,12 +5,16 @@ import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEm
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import TodoIcon from '@/Components/Icon/TodoIcon.vue'
 import Agent from '@/types/Agent'
+import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import { Head } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { computed, provide } from 'vue'
 const props = defineProps<{
     agents: Array<Agent>
+    time_scopes: Array<TimeScopeEnum>
 }>()
+
+provide('timeScopes', props.time_scopes)
 
 const totalPayout = computed(() =>
     props.agents.map((agent) => agent.commission!).reduce((accumulator, current) => accumulator + current, 0)

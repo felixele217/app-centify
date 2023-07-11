@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use App\Enum\TimeScopeEnum;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Plan;
+use App\Enum\TimeScopeEnum;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Agent extends Authenticatable
 {
@@ -43,7 +44,12 @@ class Agent extends Authenticatable
 
     public function plans(): BelongsToMany
     {
-        return $this->belongsToMany(Plan::class)->orderBy('created_at', 'desc');
+        return $this->belongsToMany(Plan::class);
+    }
+
+    public function currentPlan(): Plan
+    {
+        return $this->plans()->orderBy('created_at', 'desc')->first();
     }
 
     protected function quotaAttainment(): Attribute
@@ -52,7 +58,7 @@ class Agent extends Authenticatable
 
         return Attribute::make(
             get: fn () => match ($timeScope) {
-                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month,
+                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $this->load('plans')->plans->first()->target_amount_per_month,
                 TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 3,
                 TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / $this->load('plans')->plans->last()->target_amount_per_month * 12,
             }

@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
+import queryParamValue from '@/utils/queryParamValue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { computed, inject } from 'vue'
 
 const props = defineProps<{}>()
 
-const sortOptions = [
-    { name: 'monthly', href: '#' },
-    { name: 'quarterly', href: '#' },
-    { name: 'annualy', href: '#' },
-]
+const sortOptions = inject<Array<TimeScopeEnum>>('timeScopes')!.map((timeScope) => {
+    return {
+        name: timeScope,
+        href: route('dashboard') + '?time_scope=' + timeScope,
+    }
+})
 
-const currentTimeScope = ref<TimeScopeEnum>('monthly')
+const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthly')
 </script>
 
 <template>
@@ -44,10 +46,11 @@ const currentTimeScope = ref<TimeScopeEnum>('monthly')
                 <div class="py-1">
                     <MenuItem
                         v-for="option in sortOptions"
-                        :key="option"
+                        :key="option.name"
                         v-slot="{ active }"
                     >
                         <a
+                            @click="currentTimeScope = option.name"
                             :href="option.href"
                             :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm font-medium text-gray-900']"
                             >{{ option.name }}</a
