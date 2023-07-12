@@ -12,15 +12,21 @@ const props = defineProps<{
     available_integration_fields: Array<CustomIntegrationFieldEnum>
 }>()
 
-function customIntegrationFieldApiKey(integrationField: CustomIntegrationFieldEnum) {
-    return (
-        props.custom_integration_fields.filter(
-            (customIntegrationField) => customIntegrationField.name === integrationField
-        )[0]?.api_key || ''
-    )
+function customIntegrationField(integrationField: CustomIntegrationFieldEnum) {
+    return props.custom_integration_fields.filter(
+        (customIntegrationField) => customIntegrationField.name === integrationField
+    )[0]
 }
 
 function upsertCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
+    if (customIntegrationField(integrationField)) {
+        updateCustomIntegrationField(integrationField)
+    } else {
+        storeCustomIntegrationField(integrationField)
+    }
+}
+
+function storeCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
     router.post(
         route('custom-integration-fields.store'),
         {
@@ -30,13 +36,30 @@ function upsertCustomIntegrationField(integrationField: CustomIntegrationFieldEn
         },
         {
             onSuccess: () => {
-                notify('Api Key stored!', 'We can now access the value of your custom field.')
+                notify('Api key stored!', 'We can now access the value of your custom field.')
             },
         }
     )
 }
 
-const demoSetByApiKey = ref(customIntegrationFieldApiKey('demo_set_by'))
+function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
+    router.put(
+        route('custom-integration-fields.update', customIntegrationField(integrationField)),
+        {
+            api_key: demoSetByApiKey.value,
+        },
+        {
+            onSuccess: () => {
+                notify('Api key updated!', 'We can now access the value of your custom field.')
+            },
+            onError: () => {
+                notify('Update failed!', 'The format of the api key was invalid. It has to be 40 characters long.', false)
+            },
+        }
+    )
+}
+
+const demoSetByApiKey = ref(customIntegrationField('demo_set_by')?.api_key)
 </script>
 
 <template>

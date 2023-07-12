@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, ExclamationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Notification, NotificationGroup } from 'notiwind'
 </script>
 
@@ -30,7 +30,13 @@ import { Notification, NotificationGroup } from 'notiwind'
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0">
                                         <CheckCircleIcon
+                                            v-if="notification.wasSuccessful"
                                             class="h-6 w-6 text-green-400"
+                                            aria-hidden="true"
+                                        />
+                                        <ExclamationCircleIcon
+                                            v-else
+                                            class="h-6 w-6 text-red-500"
                                             aria-hidden="true"
                                         />
                                     </div>
