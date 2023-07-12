@@ -53,12 +53,6 @@ const dealIdBeingAccepted = ref<number | null>()
                         scope="col"
                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                        Creator
-                    </th>
-                    <th
-                        scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
                         Name
                     </th>
                     <th
@@ -83,11 +77,7 @@ const dealIdBeingAccepted = ref<number | null>()
             </template>
             <template #body>
                 <tr v-for="deal in props.deals">
-                    <td class="whitespace-nowrap border-t py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
-                        {{ deal.owner_email }}
-                    </td>
-
-                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                    <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>
                         <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
                     </td>
@@ -105,6 +95,7 @@ const dealIdBeingAccepted = ref<number | null>()
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {{ euroDisplay(deal.value) }}
                     </td>
+                    
                     <td class="whitespace-nowrap px-3">
                         <div class="flex gap-2 text-gray-500">
                             <thumbs-up-icon
