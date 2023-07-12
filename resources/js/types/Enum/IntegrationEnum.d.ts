@@ -1,1 +1,1 @@
-export type IntegrationEnum = 'pipedrive'
+export type IntegrationTypeEnum = 'pipedrive'

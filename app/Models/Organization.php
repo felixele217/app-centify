@@ -26,4 +26,9 @@ class Organization extends Model
     {
         return $this->hasMany(Agent::class);
     }
+
+    public function customIntegrationFields(): HasMany
+    {
+        return $this->hasMany(CustomIntegrationField::class);
+    }
 }

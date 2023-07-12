@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\IntegrationEnum;
+use App\Enum\IntegrationTypeEnum;
 use App\Helper\DateHelper;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
@@ -39,7 +39,7 @@ it('stores the data properly', function () {
     expect($agent->deals->first()->value)->toBe($expectedData[$email][0]['value']);
     expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);
     expect($agent->deals->first()->owner_email)->toBe($expectedData[$email][0]['owner_email']);
-    expect($agent->deals->first()->integration_type->value)->toBe(IntegrationEnum::PIPEDRIVE->value);
+    expect($agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
     expect(DateHelper::parsePipedriveTime($expectedData[$email][0]['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
 });
 

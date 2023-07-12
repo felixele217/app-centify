@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomIntegrationFieldController;
 use App\Http\Controllers\PipedriveAuthController;
 use App\Http\Controllers\SalesforceAuthController;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
@@ -16,6 +17,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('pipedrive-auth', [PipedriveAuthController::class, 'create'])->name('authenticate.pipedrive.create');
     Route::get('pipedrive-callback', [PipedriveAuthController::class, 'store'])->name('authenticate.pipedrive.store');
+
+    Route::post('custom-integration-fields', [CustomIntegrationFieldController::class, 'store'])->name('custom-integration-fields.store');
 
     Route::get('pipedrive-sync', function () {
         PipedriveIntegrationService::syncAgentDeals();

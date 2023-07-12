@@ -1,28 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Enum\DealStatusEnum;
+use App\Enum\CustomIntegrationFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Deal extends Model
+class CustomIntegrationField extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
     protected $casts = [
-        'add_time' => 'datetime',
-        'accepted_at' => 'datetime',
+        'name' => CustomIntegrationFieldEnum::class,
         'integration_type' => IntegrationTypeEnum::class,
-        'status' => DealStatusEnum::class,
     ];
 
-    public function agent(): BelongsTo
+    public function organization(): BelongsTo
     {
-        return $this->belongsTo(Agent::class);
+        return $this->belongsTo(Organization::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Integrations\Pipedrive;
 
-use App\Enum\IntegrationEnum;
+use App\Enum\IntegrationTypeEnum;
 use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
@@ -66,11 +66,11 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                 Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
                     [
                         'integration_deal_id' => $deal['id'],
-                        'integration_type' => IntegrationEnum::PIPEDRIVE->value,
+                        'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
                     ],
                     [
                         'integration_deal_id' => $deal['id'],
-                        'integration_type' => IntegrationEnum::PIPEDRIVE->value,
+                        'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
                         'title' => $deal['title'],
                         'value' => $deal['value'] * 100,
                         'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),

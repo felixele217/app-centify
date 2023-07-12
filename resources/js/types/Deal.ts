@@ -1,11 +1,11 @@
 import Agent from './Agent'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
-import { IntegrationEnum } from './Enum/IntegrationEnum'
+import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
 
 export default interface Deal {
     id: number
     integration_deal_id: number
-    integration_type: IntegrationEnum
+    integration_type: IntegrationTypeEnum
     title: string
     status: DealStatusEnum
     value: number
