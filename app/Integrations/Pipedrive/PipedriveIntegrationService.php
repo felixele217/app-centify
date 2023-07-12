@@ -62,8 +62,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'value' => $deal['value'],
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
-                        'owner_email' => $deal['person_id']['email'][0]['value'],
-                        'demo_set_by' => $demoSetBy,
+                        'owner_email' => $demoSetBy,
                     ], function ($value) {
                         return $value !== null;
                     });

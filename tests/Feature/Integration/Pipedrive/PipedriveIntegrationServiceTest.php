@@ -31,7 +31,6 @@ it('returns the correct structure for agentDeals', function () {
         'add_time',
         'status',
         'owner_email',
-        CustomIntegrationFieldEnum::DEMO_SET_BY->value,
     ]);
 });
 
