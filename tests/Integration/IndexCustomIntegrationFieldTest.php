@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\CustomIntegrationFieldEnum;
 use App\Models\CustomIntegrationField;
 use Inertia\Testing\AssertableInertia;
 
@@ -15,6 +16,7 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('CustomIntegrationField/Index')
                 ->has('custom_integration_fields', $customIntegrationFieldCount)
+                ->where('available_integration_fields', array_column(CustomIntegrationFieldEnum::cases(), 'value'))
         );
 });
 
