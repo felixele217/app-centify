@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Requests\StoreCustomIntegrationFieldRequest;
+use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
 use App\Models\CustomIntegrationField;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,5 +15,10 @@ class CustomIntegrationFieldRepository
             ...$request->validated(),
             'organization_id' => Auth::user()->organization->id,
         ]);
+    }
+
+    public static function update(CustomIntegrationField $customIntegrationField, UpdateCustomIntegrationFieldRequest $request): void
+    {
+        $customIntegrationField->update($request->validated());
     }
 }
