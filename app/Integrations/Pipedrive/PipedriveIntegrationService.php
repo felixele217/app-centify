@@ -22,7 +22,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
             array_push($agentDeals, self::dealsForAgent($email, $deals));
         }
 
-        return $agentDeals[0];
+        return $agentDeals;
     }
 
     private static function agentEmails(array $deals): array
@@ -51,7 +51,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         return [
             $agentEmail => collect($deals)
                 ->filter(function ($deal) use ($agentEmail, $demoSetByApiKey) {
-                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal) && isset($deal[$demoSetByApiKey]);
+                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $demoSetByApiKey) && isset($deal[$demoSetByApiKey]);
                 })
                 ->map(function ($deal) use ($demoSetByApiKey) {
                     $demoSetBy = $demoSetByApiKey ? $deal[$demoSetByApiKey]['email'][0]['value'] : null;
@@ -74,23 +74,25 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         $agentDeals = self::agentDeals();
 
-        foreach ($agentDeals as $email => $deals) {
-            foreach ($deals as $deal) {
-                Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
-                    [
-                        'integration_deal_id' => $deal['id'],
-                        'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
-                    ],
-                    [
-                        'integration_deal_id' => $deal['id'],
-                        'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
-                        'title' => $deal['title'],
-                        'value' => $deal['value'] * 100,
-                        'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),
-                        'status' => $deal['status'],
-                        'owner_email' => $deal['owner_email'],
-                    ]
-                );
+        foreach ($agentDeals as $agentDeals) {
+            foreach ($agentDeals as $email => $deals) {
+                foreach ($deals as $deal) {
+                    Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
+                        [
+                            'integration_deal_id' => $deal['id'],
+                            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
+                        ],
+                        [
+                            'integration_deal_id' => $deal['id'],
+                            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
+                            'title' => $deal['title'],
+                            'value' => $deal['value'] * 100,
+                            'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),
+                            'status' => $deal['status'],
+                            'owner_email' => $deal['owner_email'],
+                        ]
+                    );
+                }
             }
         }
     }

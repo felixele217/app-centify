@@ -4,10 +4,12 @@ namespace App\Integrations\Pipedrive;
 
 class PipedriveHelper
 {
-    public static function demoSetByEmail(array $deal): string|null
+    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): string|null
     {
-        return $deal[env('PIPEDRIVE_DEMO_SET_BY')]
-        ? $deal[env('PIPEDRIVE_DEMO_SET_BY')]['email'][0]['value']
+        $demoSetByApiKey = $demoSetByApiKey ?? env('PIPEDRIVE_DEMO_SET_BY');
+
+        return $deal[$demoSetByApiKey]
+        ? $deal[$demoSetByApiKey]['email'][0]['value']
         : null;
     }
 }

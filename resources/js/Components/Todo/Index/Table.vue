@@ -95,7 +95,7 @@ const dealIdBeingAccepted = ref<number | null>()
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {{ euroDisplay(deal.value) }}
                     </td>
-                    
+
                     <td class="whitespace-nowrap px-3">
                         <div class="flex gap-2 text-gray-500">
                             <thumbs-up-icon

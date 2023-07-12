@@ -25,7 +25,9 @@ beforeEach(function () {
 it('returns the correct structure for agentDeals', function () {
     $agentDeals = PipedriveIntegrationService::agentDeals();
 
-    expect($agentDeals[array_keys($agentDeals)[0]]->first())->toHaveKeys([
+    $firstDeal = $agentDeals[0][array_keys($agentDeals[0])[0]]->first();
+
+    expect($firstDeal)->toHaveKeys([
         'id',
         'title',
         'value',
@@ -47,16 +49,16 @@ it('stores the data properly', function () {
 
     PipedriveIntegrationService::syncAgentDeals();
 
-    $expectedData = PipedriveIntegrationService::agentDeals();
+    $expectedData = PipedriveIntegrationService::agentDeals()[0][$email][0];
 
     expect($agent->deals)->toHaveCount(expectedDealCount($email, $deals));
-    expect($agent->deals->first()->integration_deal_id)->toBe($expectedData[$email][0]['id']);
-    expect($agent->deals->first()->title)->toBe($expectedData[$email][0]['title']);
-    expect($agent->deals->first()->value)->toBe($expectedData[$email][0]['value']);
-    expect($agent->deals->first()->status->value)->toBe($expectedData[$email][0]['status']);
-    expect($agent->deals->first()->owner_email)->toBe($expectedData[$email][0]['owner_email']);
+    expect($agent->deals->first()->integration_deal_id)->toBe($expectedData['id']);
+    expect($agent->deals->first()->title)->toBe($expectedData['title']);
+    expect($agent->deals->first()->value)->toBe($expectedData['value']);
+    expect($agent->deals->first()->status->value)->toBe($expectedData['status']);
+    expect($agent->deals->first()->owner_email)->toBe($expectedData['owner_email']);
     expect($agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
-    expect(DateHelper::parsePipedriveTime($expectedData[$email][0]['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
+    expect(DateHelper::parsePipedriveTime($expectedData['add_time'])->toDateTimeString())->toBe($agent->deals->first()->add_time->toDateTimeString());
 });
 
 it('updates the deal if it already existed and some data changed', function () {
