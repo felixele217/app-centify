@@ -2,6 +2,7 @@
 import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
 import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
 import Admin from '@/types/Admin'
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
@@ -27,14 +28,18 @@ function syncIntegration() {
 </script>
 
 <template>
-    <Card class="w-60">
-        <div class="flex items-center gap-4">
-            <PipedriveLogo v-if="props.for === 'pipedrive'" />
-            <SalesforceLogo v-if="props.for === 'salesforce'" />
-            <h3>{{ props.for }}</h3>
+    <Card class="w-72">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <PipedriveLogo v-if="props.for === 'pipedrive'" />
+                <SalesforceLogo v-if="props.for === 'salesforce'" />
+                <h3>{{ props.for }}</h3>
+            </div>
+
+            <Cog6ToothIcon class="h-6 w-6 cursor-pointer hover:text-primary" />
         </div>
 
-        <div class="mt-5">
+        <div class="mt-10">
             <div
                 class="flex items-center justify-between"
                 v-if="!activeIntegrations[props.for]"
@@ -43,6 +48,7 @@ function syncIntegration() {
                     <div class="h-2 w-2 rounded-full bg-gray-300" />
                     <p class="-mt-0.5 text-sm">inactive</p>
                 </div>
+
                 <PrimaryButton
                     text="Connect"
                     @click="authenticate"
