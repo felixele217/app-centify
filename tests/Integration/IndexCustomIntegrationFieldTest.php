@@ -1,0 +1,23 @@
+<?php
+
+use App\Models\CustomIntegrationField;
+use Inertia\Testing\AssertableInertia;
+
+it('passes the correct props', function () {
+    $admin = signInAdmin();
+
+    CustomIntegrationField::factory($customIntegrationFieldCount = 5)->create([
+        'organization_id' => $admin->organization,
+    ]);
+
+    $this->get(route('custom-integration-fields.index'))
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('CustomIntegrationField/Index')
+                ->has('custom_integration_fields', $customIntegrationFieldCount)
+        );
+});
+
+it('does not send foreign fields', function () {
+
+})->todo();

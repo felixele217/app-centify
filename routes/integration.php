@@ -18,7 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::get('pipedrive-auth', [PipedriveAuthController::class, 'create'])->name('authenticate.pipedrive.create');
     Route::get('pipedrive-callback', [PipedriveAuthController::class, 'store'])->name('authenticate.pipedrive.store');
 
-    Route::post('custom-integration-fields', [CustomIntegrationFieldController::class, 'store'])->name('custom-integration-fields.store');
+    Route::prefix('custom-integration-fields')->name('custom-integration-fields.')->controller(CustomIntegrationFieldController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+    });
 
     Route::get('pipedrive-sync', function () {
         PipedriveIntegrationService::syncAgentDeals();

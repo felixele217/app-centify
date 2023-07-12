@@ -36,7 +36,10 @@ function syncIntegration() {
                 <h3>{{ props.for }}</h3>
             </div>
 
-            <Cog6ToothIcon class="h-6 w-6 cursor-pointer hover:text-primary" />
+            <Cog6ToothIcon
+                @click="router.get(route('custom-integration-fields.index'))"
+                class="h-6 w-6 cursor-pointer hover:text-primary"
+            />
         </div>
 
         <div class="mt-10">
