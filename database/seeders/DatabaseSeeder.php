@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enum\CustomIntegrationFieldEnum;
+use App\Enum\IntegrationTypeEnum;
 use App\Models\Admin;
 use App\Models\Agent;
+use App\Models\CustomIntegrationField;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -42,10 +45,6 @@ class DatabaseSeeder extends Seeder
             'base_salary' => 100_000_00,
         ]);
 
-        // Agent::factory(5)->create([
-        //     'organization_id' => $admin->organization->id,
-        // ]);
-
         Plan::factory(3)->create([
             'organization_id' => $admin->organization->id,
             'creator_id' => $admin->id,
@@ -56,6 +55,13 @@ class DatabaseSeeder extends Seeder
             $centifyAgent->id,
             $pipedriveAgent1->id,
             $pipedriveAgent2->id,
+        ]);
+
+        CustomIntegrationField::create([
+            'organization_id' => $admin->organization->id,
+            'name' => CustomIntegrationFieldEnum::DEMO_SET_BY->value,
+            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
+            'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
         ]);
     }
 }

@@ -109,6 +109,27 @@ class PipedriveClientDummy
                 'cc_email' => 'paul-sandbox11deal1@pipedrivemail.com',
                 'org_hidden' => false,
                 'person_hidden' => false,
+                env('PIPEDRIVE_DEMO_SET_BY') => [
+                    'active_flag' => true,
+                    'name' => 'Hashim Hardy',
+                    'email' => [
+                        0 => [
+                            'label' => 'work',
+                            'value' => 'phyllis.yang@gmial.com',
+                            'primary' => true,
+                        ],
+                    ],
+                    'phone' => [
+                        0 => [
+                            'label' => 'work',
+                            'value' => '313-428-3135',
+                            'primary' => true,
+                        ],
+                    ],
+                    'owner_id' => 17524624,
+                    'value' => 2,
+                ],
+
             ],
             1 => [
                 'id' => 2,
@@ -212,6 +233,26 @@ class PipedriveClientDummy
                 'cc_email' => 'paul-sandbox11deal2@pipedrivemail.com',
                 'org_hidden' => false,
                 'person_hidden' => false,
+                env('PIPEDRIVE_DEMO_SET_BY') => [
+                    'active_flag' => true,
+                    'name' => 'Hashim Hardy',
+                    'email' => [
+                        0 => [
+                            'label' => 'work',
+                            'value' => 'phyllis.yang@gmial.com',
+                            'primary' => true,
+                        ],
+                    ],
+                    'phone' => [
+                        0 => [
+                            'label' => 'work',
+                            'value' => '313-428-3135',
+                            'primary' => true,
+                        ],
+                    ],
+                    'owner_id' => 17524624,
+                    'value' => 2,
+                ],
             ],
             2 => [
                 'id' => 3,
@@ -315,6 +356,7 @@ class PipedriveClientDummy
                 'cc_email' => 'paul-sandbox11deal3@pipedrivemail.com',
                 'org_hidden' => false,
                 'person_hidden' => false,
+                env('PIPEDRIVE_DEMO_SET_BY') => null,
             ],
         ];
 

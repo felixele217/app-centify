@@ -2,11 +2,13 @@
 
 namespace App\Integrations\Pipedrive;
 
+use App\Enum\CustomIntegrationFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
+use Illuminate\Support\Facades\Auth;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
@@ -41,19 +43,31 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
     public static function dealsForAgent(string $agentEmail, array $deals): array
     {
+        $demoSetByApiKey = Auth::user()->organization->customIntegrationFields()
+            ->whereIntegrationType(IntegrationTypeEnum::PIPEDRIVE->value)
+            ->whereName(CustomIntegrationFieldEnum::DEMO_SET_BY->value)
+            ->first()?->api_key;
+
         return [
-            $agentEmail => collect($deals)->map(function ($deal) use ($agentEmail) {
-                if ($agentEmail === $deal['creator_user_id']['email']) {
-                    return [
+            $agentEmail => collect($deals)
+                ->filter(function ($deal) use ($agentEmail, $demoSetByApiKey) {
+                    return $agentEmail === $deal['creator_user_id']['email'] && isset($deal[$demoSetByApiKey]);
+                })
+                ->map(function ($deal) use ($demoSetByApiKey) {
+                    $demoSetBy = $demoSetByApiKey ? $deal[$demoSetByApiKey]['email'][0]['value'] : null;
+
+                    return array_filter([
                         'id' => $deal['id'],
                         'title' => $deal['title'],
                         'value' => $deal['value'],
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
                         'owner_email' => $deal['person_id']['email'][0]['value'],
-                    ];
-                }
-            }),
+                        'demo_set_by' => $demoSetBy,
+                    ], function ($value) {
+                        return $value !== null;
+                    });
+                }),
         ];
     }
 
