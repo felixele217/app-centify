@@ -31,9 +31,9 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
         foreach ($deals as $deal) {
 
-            $email = $deal['creator_user_id']['email'];
+            $email = PipedriveHelper::demoSetByEmail($deal);
 
-            if (! in_array($email, $agentEmails)) {
+            if ($email && ! in_array($email, $agentEmails)) {
                 array_push($agentEmails, $email);
             }
         }
@@ -51,7 +51,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         return [
             $agentEmail => collect($deals)
                 ->filter(function ($deal) use ($agentEmail, $demoSetByApiKey) {
-                    return $agentEmail === $deal['creator_user_id']['email'] && isset($deal[$demoSetByApiKey]);
+                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal) && isset($deal[$demoSetByApiKey]);
                 })
                 ->map(function ($deal) use ($demoSetByApiKey) {
                     $demoSetBy = $demoSetByApiKey ? $deal[$demoSetByApiKey]['email'][0]['value'] : null;

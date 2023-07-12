@@ -4,6 +4,7 @@ use App\Enum\CustomIntegrationFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Helper\DateHelper;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
+use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
 use App\Models\CustomIntegrationField;
@@ -11,10 +12,10 @@ use App\Models\Deal;
 use Illuminate\Support\Facades\Auth;
 
 beforeEach(function () {
-    $admin = signInAdmin();
+    $this->admin = signInAdmin();
 
     CustomIntegrationField::create([
-        'organization_id' => $admin->organization->id,
+        'organization_id' => $this->admin->organization->id,
         'name' => CustomIntegrationFieldEnum::DEMO_SET_BY->value,
         'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
         'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
@@ -37,10 +38,11 @@ it('returns the correct structure for agentDeals', function () {
 it('stores the data properly', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
-    $email = $deals[0]['creator_user_id']['email'];
+    $email = PipedriveHelper::demoSetByEmail($deals[0]);
 
     $agent = Agent::factory()->create([
         'email' => $email,
+        'organization_id' => $this->admin->organization->id,
     ]);
 
     PipedriveIntegrationService::syncAgentDeals();
@@ -61,7 +63,8 @@ it('updates the deal if it already existed and some data changed', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
     $agent = Agent::factory()->create([
-        'email' => $deals[0]['creator_user_id']['email'],
+        'email' => PipedriveHelper::demoSetByEmail($deals[0]),
+        'organization_id' => $this->admin->organization->id,
     ]);
 
     PipedriveIntegrationService::syncAgentDeals();
@@ -80,10 +83,11 @@ it('updates the deal if it already existed and some data changed', function () {
 it('does not create the same entry twice', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
-    $email = $deals[0]['creator_user_id']['email'];
+    $email = PipedriveHelper::demoSetByEmail($deals[0]);
 
     $agent = Agent::factory()->create([
-        'email' => $email,
+        'email' => PipedriveHelper::demoSetByEmail($deals[0]),
+        'organization_id' => $this->admin->organization->id,
     ]);
 
     PipedriveIntegrationService::syncAgentDeals();
@@ -101,7 +105,7 @@ it('does not create deal if no agent with the pipedrive email exists', function 
 it('does not create deal if demo_set_by has a value assigned to it', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
-    $email = $deals[0]['creator_user_id']['email'];
+    $email = PipedriveHelper::demoSetByEmail($deals[0]);
 
     Agent::factory()->create([
         'email' => $email,
@@ -123,7 +127,7 @@ function emailCount($email, $deals): int
     $emailCount = 0;
 
     foreach ($deals as $deal) {
-        if ($deal['creator_user_id']['email'] === $email) {
+        if (PipedriveHelper::demoSetByEmail($deal) === $email) {
             $emailCount++;
         }
     }
