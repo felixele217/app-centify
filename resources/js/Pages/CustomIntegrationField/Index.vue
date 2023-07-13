@@ -53,7 +53,11 @@ function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEn
                 notify('Api key updated!', 'We can now access the value of your custom field.')
             },
             onError: () => {
-                notify('Update failed!', 'The format of the api key was invalid. It has to be 40 characters long.', false)
+                notify(
+                    'Update failed!',
+                    'The format of the api key was invalid. It has to be 40 characters long.',
+                    false
+                )
             },
         }
     )
@@ -75,7 +79,8 @@ const demoSetByApiKey = ref(customIntegrationField('demo_set_by')?.api_key)
             type="text"
             v-model="demoSetByApiKey"
             name="name"
-            class="ml-5 mt-0"
+            class="ml-5"
+            no-top-margin
         />
 
         <PrimaryButton
