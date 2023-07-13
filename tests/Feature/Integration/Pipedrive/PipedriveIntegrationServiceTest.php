@@ -23,7 +23,7 @@ beforeEach(function () {
 });
 
 it('returns the correct structure for agentDeals', function () {
-    $agentDeals = PipedriveIntegrationService::agentDeals();
+    $agentDeals = (new PipedriveIntegrationService())->agentDeals();
 
     $firstDeal = $agentDeals[0][array_keys($agentDeals[0])[0]]->first();
 
@@ -47,9 +47,9 @@ it('stores the data properly', function () {
         'organization_id' => $this->admin->organization->id,
     ]);
 
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
-    $expectedData = PipedriveIntegrationService::agentDeals()[0][$email][0];
+    $expectedData = (new PipedriveIntegrationService())->agentDeals()[0][$email][0];
 
     expect($agent->deals)->toHaveCount(expectedDealCount($email, $deals));
     expect($agent->deals->first()->integration_deal_id)->toBe($expectedData['id']);
@@ -69,7 +69,7 @@ it('updates the deal if it already existed and some data changed', function () {
         'organization_id' => $this->admin->organization->id,
     ]);
 
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
     $agentDeal = $agent->fresh()->deals()->whereIntegrationDealId($deals[0]['id'])->first();
 
@@ -77,7 +77,7 @@ it('updates the deal if it already existed and some data changed', function () {
         'value' => $deals[0]['value'] + 5,
     ]);
 
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
     expect($agentDeal->fresh()->value)->toBe($deals[0]['value']);
 });
@@ -92,14 +92,14 @@ it('does not create the same entry twice', function () {
         'organization_id' => $this->admin->organization->id,
     ]);
 
-    PipedriveIntegrationService::syncAgentDeals();
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
     expect($agent->deals)->toHaveCount(expectedDealCount($email, $deals));
 });
 
 it('does not create deal if no agent with the pipedrive email exists', function () {
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
     expect(Deal::count())->toBe(0);
 });
@@ -114,7 +114,7 @@ it('does not create deal if demo_set_by has a value assigned to it', function ()
         'organization_id' => Auth::user()->organization->id,
     ]);
 
-    PipedriveIntegrationService::syncAgentDeals();
+    (new PipedriveIntegrationService())->syncAgentDeals();
 
     expect(Deal::count())->toBe(demoSetByCount($deals));
 });

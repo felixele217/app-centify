@@ -12,26 +12,36 @@ use Illuminate\Support\Facades\Auth;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
-    public static function agentDeals(array $deals = null): array
+    private string $demoSetByApiKey;
+
+    public function __construct()
+    {
+        $this->demoSetByApiKey = Auth::user()->organization->customIntegrationFields()
+            ->whereIntegrationType(IntegrationTypeEnum::PIPEDRIVE->value)
+            ->whereName(CustomIntegrationFieldEnum::DEMO_SET_BY->value)
+            ->first()?->api_key;
+    }
+
+    public function agentDeals(array $deals = null): array
     {
         $deals = json_decode(json_encode(Pipedrive::deals()->all()->getData()), true);
 
         $agentDeals = [];
 
-        foreach (self::agentEmails($deals) as $email) {
-            array_push($agentDeals, self::dealsForAgent($email, $deals));
+        foreach ($this->agentEmails($deals) as $email) {
+            array_push($agentDeals, $this->dealsForAgent($email, $deals));
         }
 
         return $agentDeals;
     }
 
-    private static function agentEmails(array $deals): array
+    private function agentEmails(array $deals): array
     {
         $agentEmails = [];
 
         foreach ($deals as $deal) {
 
-            $email = PipedriveHelper::demoSetByEmail($deal);
+            $email = PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey);
 
             if ($email && ! in_array($email, $agentEmails)) {
                 array_push($agentEmails, $email);
@@ -41,20 +51,15 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         return $agentEmails;
     }
 
-    public static function dealsForAgent(string $agentEmail, array $deals): array
+    public function dealsForAgent(string $agentEmail, array $deals): array
     {
-        $demoSetByApiKey = Auth::user()->organization->customIntegrationFields()
-            ->whereIntegrationType(IntegrationTypeEnum::PIPEDRIVE->value)
-            ->whereName(CustomIntegrationFieldEnum::DEMO_SET_BY->value)
-            ->first()?->api_key;
-
         return [
             $agentEmail => collect($deals)
-                ->filter(function ($deal) use ($agentEmail, $demoSetByApiKey) {
-                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $demoSetByApiKey) && isset($deal[$demoSetByApiKey]);
+                ->filter(function ($deal) use ($agentEmail) {
+                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
                 })
-                ->map(function ($deal) use ($demoSetByApiKey) {
-                    $demoSetBy = $demoSetByApiKey ? $deal[$demoSetByApiKey]['email'][0]['value'] : null;
+                ->map(function ($deal) {
+                    $demoSetBy = $this->demoSetByApiKey ? $deal[$this->demoSetByApiKey]['email'][0]['value'] : null;
 
                     return array_filter([
                         'id' => $deal['id'],
@@ -70,9 +75,9 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         ];
     }
 
-    public static function syncAgentDeals(): void
+    public function syncAgentDeals(): void
     {
-        $agentDeals = self::agentDeals();
+        $agentDeals = $this->agentDeals();
 
         foreach ($agentDeals as $agentDeals) {
             foreach ($agentDeals as $email => $deals) {

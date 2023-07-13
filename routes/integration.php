@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('pipedrive-sync', function () {
-        PipedriveIntegrationService::syncAgentDeals();
+        (new PipedriveIntegrationService())->syncAgentDeals();
 
         return back();
     })->name('pipedrive.sync');
