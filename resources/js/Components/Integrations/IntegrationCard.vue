@@ -2,11 +2,11 @@
 import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
 import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
 import Admin from '@/types/Admin'
+import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
-import notify from '@/utils/notify'
 
 const props = defineProps<{
     for: 'pipedrive' | 'salesforce'
@@ -21,8 +21,10 @@ function syncIntegration() {
         route(`${props.for}.sync`),
         {},
         {
-            onSuccess: () => notify('Sychronization successful', 'Our application now uses your latest integration data.') ,
-            onError: () => notify('Sychronization failed', 'There was an error while trying to synchronize your data.', false) ,
+            onSuccess: () =>
+                notify('Sychronization successful', 'Our application now uses your latest integration data.'),
+            onError: () =>
+                notify('Sychronization failed', usePage().props.errors[Object.keys(usePage().props.errors)[0]], false),
         }
     )
 }
