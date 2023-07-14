@@ -3,7 +3,7 @@
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\Agent;
 
-it('can create an agent as an agent', function () {
+it('can create an agent as an admin', function () {
     signInAdmin();
 
     $this->post(route('agents.store'), [

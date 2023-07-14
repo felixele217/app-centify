@@ -24,4 +24,13 @@ class AgentController extends Controller
 
         return back();
     }
+
+    public function destroy(Agent $agent): RedirectResponse
+    {
+        $this->authorize($agent);
+
+        $agent->delete();
+
+        return back();
+    }
 }
