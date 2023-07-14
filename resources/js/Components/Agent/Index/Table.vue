@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TertiaryButton from '@/Components/Buttons/TertiaryButton.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -111,19 +112,13 @@ const agentIdBeingDeleted = ref<number | null>()
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
                 <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
-                    <button
-                        type="button"
-                        class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                    >
-                        Edit
-                    </button>
-                    <button
-                        type="button"
-                        class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                    <TertiaryButton text="Edit" />
+
+                    <TertiaryButton
+                        text="Delete"
                         @click="agentIdBeingDeleted = agent.id"
-                    >
-                        Delete
-                    </button>
+                    />
+                   
                     <div
                         v-if="agentId !== 0"
                         class="absolute -top-px left-0 right-6 h-px bg-gray-200"
