@@ -27,7 +27,7 @@ it('can update an agent as an admin', function () {
 });
 
 it('cannot update a foreign agent as an admin', function () {
-    $admin = signInAdmin();
+   signInAdmin();
 
     $agent = Agent::factory()->create();
 

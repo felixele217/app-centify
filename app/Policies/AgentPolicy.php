@@ -9,12 +9,7 @@ use App\Models\Agent;
 
 class AgentPolicy
 {
-    public function delete(Admin $admin, Agent $agent): bool
-    {
-        return $admin->organization->id === $agent->organization->id;
-    }
-
-    public function update(Admin $admin, Agent $agent): bool
+    public function any(Admin $admin, Agent $agent): bool
     {
         return $admin->organization->id === $agent->organization->id;
     }

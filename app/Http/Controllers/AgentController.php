@@ -28,7 +28,7 @@ class AgentController extends Controller
 
     public function update(UpdateAgentRequest $request, Agent $agent): RedirectResponse
     {
-        $this->authorize($agent);
+        $this->authorize('any', $agent);
 
         AgentRepository::update($agent, $request);
 
@@ -37,7 +37,7 @@ class AgentController extends Controller
 
     public function destroy(Agent $agent): RedirectResponse
     {
-        $this->authorize($agent);
+        $this->authorize('any', $agent);
 
         $agent->delete();
 

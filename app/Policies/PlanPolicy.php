@@ -10,7 +10,7 @@ use App\Models\Plan;
 
 class PlanPolicy
 {
-    public function delete(Admin $admin, Plan $plan): bool
+    public function any(Admin $admin, Plan $plan): bool
     {
         return $admin->organization->id === $plan->organization->id;
     }
