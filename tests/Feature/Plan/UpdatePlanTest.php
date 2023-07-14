@@ -19,7 +19,7 @@ it('can update a plan as an admin', function () {
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'payout_frequency' => $payoutFrequency = fake()->randomElement(PayoutFrequencyEnum::cases())->value,
-    ])->assertRedirect();
+    ])->assertRedirect(route('plans.index'));
 
     $plan->refresh();
 

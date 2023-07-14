@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan;
-use Inertia\Inertia;
-use Inertia\Response;
-use App\Enum\TargetVariableEnum;
 use App\Enum\PayoutFrequencyEnum;
-use App\Repositories\PlanRepository;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
+use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
 use App\Http\Requests\UpdatePlanRequest;
+use App\Models\Plan;
+use App\Repositories\PlanRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class PlanController extends Controller
 {
@@ -40,13 +40,23 @@ class PlanController extends Controller
         return to_route('plans.index');
     }
 
+    public function edit(Plan $plan): Response
+    {
+        return Inertia::render('Plan/Edit', [
+            'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
+            'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
+            'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
+            'plan' => $plan->load('agents'),
+        ]);
+    }
+
     public function update(UpdatePlanRequest $request, Plan $plan): RedirectResponse
     {
         $this->authorize('any', $plan);
 
         PlanRepository::update($plan, $request);
 
-        return back();
+        return to_route('plans.index');
     }
 
     public function destroy(Plan $plan): RedirectResponse

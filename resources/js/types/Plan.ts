@@ -1,4 +1,5 @@
 import Admin from './Admin'
+import Agent from './Agent'
 import type { PayoutFrequencyEnum } from './Enum/PayoutFrequencyEnum'
 import type { TargetVariableEnum } from './Enum/TargetVariableEnum'
 
@@ -11,5 +12,6 @@ export default interface Plan {
     target_variable: TargetVariableEnum
     payout_frequency: PayoutFrequencyEnum
     agents_count?: number
+    agents?: Array<Agent>
     creator: Admin
 }

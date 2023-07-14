@@ -79,6 +79,11 @@ const planIdBeingDeleted = ref<number | null>()
                     text="Delete"
                     class="invisible group-hover:visible"
                 />
+                <TertiaryButton
+                    @click="router.get(route('plans.update', props.plan.id))"
+                    text="Edit"
+                    class="invisible group-hover:visible"
+                />
             </div>
 
             <p>Created by {{ props.plan.creator.name }}</p>

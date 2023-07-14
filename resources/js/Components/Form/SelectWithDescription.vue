@@ -11,13 +11,14 @@ export type SelectOption = {
 
 const props = defineProps<{
     options: Array<SelectOption>
+    default?: SelectOption
 }>()
 
 const selected = ref<null | {
     title: string
     description: string
     current: boolean
-}>(null)
+}>(props.default || null)
 </script>
 
 <template>
