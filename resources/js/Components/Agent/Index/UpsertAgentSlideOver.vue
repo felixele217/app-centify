@@ -45,7 +45,7 @@ function submit() {
                 form.reset()
                 notify(
                     'Agent updated',
-                    "Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email."
+                    'Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email.'
                 )
             },
         })
@@ -96,9 +96,9 @@ function submit() {
                                     <div class="h-0 flex-1 overflow-y-auto">
                                         <div class="bg-indigo-700 px-4 py-6 sm:px-6">
                                             <div class="flex items-center justify-between">
-                                                <DialogTitle class="text-base font-semibold leading-6 text-white"
-                                                    >Create Agent</DialogTitle
-                                                >
+                                                <DialogTitle class="text-base font-semibold leading-6 text-white">{{
+                                                    props.agent ? 'Update Agent' : 'Create Agent'
+                                                }}</DialogTitle>
                                                 <div class="ml-3 flex h-7 items-center">
                                                     <button
                                                         type="button"
@@ -113,9 +113,14 @@ function submit() {
                                                     </button>
                                                 </div>
                                             </div>
+
                                             <div class="mt-1">
                                                 <p class="text-sm text-indigo-300">
-                                                    Create a new Agent for your Organization.
+                                                    {{
+                                                        props.agent
+                                                            ? 'Update an existing agent\s data (this will change our calculations).'
+                                                            : 'Create a new Agent for your Organization.'
+                                                    }}
                                                 </p>
                                             </div>
                                         </div>
@@ -198,6 +203,7 @@ function submit() {
                                     </div>
 
                                     <FormButtons
+                                        :positiveButtonText="props.agent ? 'Save' : 'Create'"
                                         class="pr-4"
                                         @cancel-button-clicked="$emit('close-slide-over')"
                                     />

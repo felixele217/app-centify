@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import SecondaryButton from '../Buttons/SecondaryButton.vue'
+
+const props = defineProps<{
+    positiveButtonText: string
+}>()
 </script>
 
 <template>
@@ -11,7 +15,7 @@ import SecondaryButton from '../Buttons/SecondaryButton.vue'
         />
 
         <PrimaryButton
-            text="Create"
+            :text="props.positiveButtonText"
             @click="$emit('create-button-clicked')"
         />
     </div>

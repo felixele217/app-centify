@@ -192,6 +192,7 @@ function submit() {
                 </div>
 
                 <FormButtons
+                    :positiveButtonText="props.plan ? 'Save' : 'Create'"
                     @cancel-button-clicked="router.get(route('plans.index'))"
                     @create-button-clicked="submit"
                 />

@@ -52,9 +52,6 @@ class DatabaseSeeder extends Seeder
 
         Plan::first()->agents()->attach([
             ...$admin->organization->agents->pluck('id'),
-            $centifyAgent->id,
-            $pipedriveAgent1->id,
-            $pipedriveAgent2->id,
         ]);
 
         CustomIntegrationField::create([
