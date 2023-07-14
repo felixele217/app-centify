@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
-import Filter from '@/Components/Form/Filter.vue';
-import Select from '@/Components/Form/Filter.vue'
+import Filter from '@/Components/Form/Filter.vue'
 import Agent from '@/types/Agent'
-import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum';
 import euroDisplay from '@/utils/euroDisplay'
 
 const props = defineProps<{
@@ -13,6 +11,9 @@ const props = defineProps<{
 function quotaDisplay(quotaAttainment: number) {
     return quotaAttainment * 100 + '%'
 }
+
+const src =
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 </script>
 
 <template>
@@ -56,9 +57,18 @@ function quotaDisplay(quotaAttainment: number) {
                                 v-for="agent in props.agents"
                                 :key="agent.email"
                             >
-                                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="font-medium text-gray-900">{{ agent.name }}</div>
-                                    <div class="mt-1 text-gray-500">{{ agent.email }}</div>
+                                <td class="flex gap-5 whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                    <div class="h-11 w-11 flex-shrink-0">
+                                        <img
+                                            class="h-11 w-11 rounded-full"
+                                            :src="src"
+                                            alt="Profile Photo"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">{{ agent.name }}</div>
+                                        <div class="mt-1 text-gray-500">{{ agent.email }}</div>
+                                    </div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">{{ euroDisplay(agent.commission!) }}</div>
