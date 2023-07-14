@@ -2,7 +2,9 @@
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
+use App\Models\Deal;
 use App\Models\Plan;
+use Illuminate\Contracts\Database\Query\Builder;
 use Inertia\Testing\AssertableInertia;
 
 it('passes the correct props', function () {
@@ -13,7 +15,7 @@ it('passes the correct props', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plan->agents()->attach(Agent::factory($agentCount = 10)
+    $plan->agents()->attach(Agent::factory($agentCount = 3)
         ->hasDeals(3)
         ->create(['organization_id' => $admin->organization->id]));
 
@@ -26,6 +28,27 @@ it('passes the correct props', function () {
                 ->has('agents.1.quota_attainment')
                 ->has('agents.1.commission')
                 ->where('time_scopes', array_column(TimeScopeEnum::cases(), 'value'))
+        );
+});
+
+it('sends correct todo count for this organization', function () {
+    $admin = signInAdmin();
+
+    $plan = Plan::factory()->create([
+        'creator_id' => $admin,
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $plan->agents()->attach(Agent::factory()->hasDeals(3)->create(['organization_id' => $admin->organization->id]));
+    $plan->agents()->attach(Agent::factory()->hasDeals(3)->create());
+
+    $this->get(route('dashboard'))
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dashboard')
+                ->where('todo_count', Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) use ($admin) {
+                    $query->whereOrganizationId($admin->organization->id);
+                })->count())
         );
 });
 
