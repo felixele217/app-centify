@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAgentRequest;
+use Inertia\Inertia;
 use App\Models\Agent;
+use Inertia\Response;
 use App\Repositories\AgentRepository;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Http\Requests\StoreAgentRequest;
+use App\Http\Requests\UpdateAgentRequest;
 
 class AgentController extends Controller
 {
@@ -21,6 +22,15 @@ class AgentController extends Controller
     public function store(StoreAgentRequest $request): RedirectResponse
     {
         AgentRepository::create($request);
+
+        return back();
+    }
+
+    public function update(UpdateAgentRequest $request, Agent $agent): RedirectResponse
+    {
+        $this->authorize($agent);
+
+        AgentRepository::update($agent, $request);
 
         return back();
     }

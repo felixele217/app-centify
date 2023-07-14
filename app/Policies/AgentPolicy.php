@@ -13,4 +13,9 @@ class AgentPolicy
     {
         return $admin->organization->id === $agent->organization->id;
     }
+
+    public function update(Admin $admin, Agent $agent): bool
+    {
+        return $admin->organization->id === $agent->organization->id;
+    }
 }
