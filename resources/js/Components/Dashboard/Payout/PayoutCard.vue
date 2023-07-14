@@ -4,7 +4,7 @@ import Card from '@/Components/Card.vue'
 const props = defineProps<{
     title: string
     icon: any
-    amount: string
+    amount: string |number
     subText: string
     link?: string
 }>()

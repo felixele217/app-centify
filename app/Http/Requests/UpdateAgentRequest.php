@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAgentRequest extends FormRequest
@@ -17,8 +18,8 @@ class UpdateAgentRequest extends FormRequest
             'email' => [
                 'nullable',
                 'email',
-                'unique:admins,email',
-                'unique:agents,email',
+                Rule::unique('admins', 'email'),
+                Rule::unique('agents', 'email')->ignore(request()->route('agent')->id),
             ],
 
             'base_salary' => [

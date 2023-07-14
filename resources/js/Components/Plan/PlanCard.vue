@@ -30,7 +30,7 @@ const planIdBeingDeleted = ref<number | null>()
 </script>
 
 <template>
-    <Card class="group flex cursor-pointer justify-between hover:bg-gray-50">
+    <Card class="group flex justify-between hover:bg-gray-50">
         <div>
             <h2>{{ props.plan.name }}</h2>
 
@@ -69,20 +69,19 @@ const planIdBeingDeleted = ref<number | null>()
         </div>
 
         <div class="flex flex-col items-end justify-between">
-            <div class="flex items-center gap-1 text-gray-600">
-                <p>{{ props.plan.agents_count }}</p>
-                <TeamIcon class="text-gray-600" />
-            </div>
-
             <div class="flex flex-col items-end gap-2">
+                <div class="flex items-center gap-1 text-gray-600">
+                    <p>{{ props.plan.agents_count }}</p>
+                    <TeamIcon class="text-gray-600" />
+                </div>
                 <TertiaryButton
                     @click="planIdBeingDeleted = props.plan.id"
                     text="Delete"
                     class="invisible group-hover:visible"
                 />
-
-                <p>Created by {{ props.plan.creator.name }}</p>
             </div>
+
+            <p>Created by {{ props.plan.creator.name }}</p>
         </div>
 
         <Modal

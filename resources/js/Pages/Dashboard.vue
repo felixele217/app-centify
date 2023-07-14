@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AnnualRevenue from '@/Components/Dashboard/Payout/AnnualRevenue.vue'
 import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
+import QuotaAttainment from '@/Components/Dashboard/Payout/QuotaAttainment.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import TodoIcon from '@/Components/Icon/TodoIcon.vue'
@@ -16,7 +16,13 @@ const props = defineProps<{
 
 const totalComission = euroDisplay(sum(props.agents.map((agent) => agent.commission!)))
 
-const payoutRowObjects = [
+const payoutRowObjects: Array<{
+    title: string
+    icon: any
+    amount: number | string
+    subText: string
+    link?: string
+}> = [
     {
         title: 'Total Payout',
         icon: BanknotesIcon,
@@ -26,7 +32,7 @@ const payoutRowObjects = [
     {
         title: 'To-Dos',
         icon: TodoIcon,
-        amount: props.todo_count,
+        amount: props.todo_count || 0,
         subText: 'need attention',
         link: route('todos.index'),
     },
@@ -42,7 +48,7 @@ const payoutRowObjects = [
                 v-bind="object"
             />
 
-            <AnnualRevenue
+            <QuotaAttainment
                 :agents="props.agents"
                 class="col-span-2"
             />

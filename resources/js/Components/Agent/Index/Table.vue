@@ -8,7 +8,7 @@ import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
+import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -23,15 +23,22 @@ function deleteAgent(agentId: number): void {
     })
 }
 
+function closeModal(): void {
+    isOpen.value = false
+    agentBeingEdited.value = undefined
+}
+
 const isOpen = ref(false)
 const agentIdBeingDeleted = ref<number | null>()
+const agentBeingEdited = ref<Agent>()
 </script>
 
 <template>
-    <create-agent-slide-over
-        @close-slide-over="isOpen = false"
-        :is-open="isOpen"
+    <upsert-agent-slide-over
+        @close-slide-over="closeModal"
+        :is-open="!!(isOpen || agentBeingEdited)"
         dusk="slide-over-modal"
+        :agent="agentBeingEdited"
     />
 
     <page-header
@@ -112,13 +119,16 @@ const agentIdBeingDeleted = ref<number | null>()
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
                 <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
-                    <TertiaryButton text="Edit" />
+                    <TertiaryButton
+                        text="Edit"
+                        @click="agentBeingEdited = agent"
+                    />
 
                     <TertiaryButton
                         text="Delete"
                         @click="agentIdBeingDeleted = agent.id"
                     />
-                   
+
                     <div
                         v-if="agentId !== 0"
                         class="absolute -top-px left-0 right-6 h-px bg-gray-200"

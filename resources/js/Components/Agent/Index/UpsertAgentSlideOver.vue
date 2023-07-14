@@ -4,9 +4,19 @@ import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import Agent from '@/types/Agent'
+import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
+import { watch } from 'vue'
+
+const emit = defineEmits(['close-slide-over'])
+
+const props = defineProps<{
+    isOpen: boolean
+    agent?: Agent
+}>()
 
 const form = useForm({
     name: '',
@@ -15,19 +25,42 @@ const form = useForm({
     on_target_earning: 0,
 })
 
-const emit = defineEmits(['close-slide-over'])
-
-defineProps<{
-    isOpen: boolean
-}>()
+watch(
+    () => props.agent,
+    async (agent) => {
+        if (agent) {
+            form.name = agent.name
+            form.email = agent.email
+            form.base_salary = agent.base_salary ?? 0
+            form.on_target_earning = agent.on_target_earning ?? 0
+        }
+    }
+)
 
 function submit() {
-    form.post(route('agents.store'), {
-        onSuccess: () => {
-            emit('close-slide-over')
-            form.reset()
-        },
-    })
+    if (props.agent) {
+        form.put(route('agents.update', props.agent.id), {
+            onSuccess: () => {
+                emit('close-slide-over')
+                form.reset()
+                notify(
+                    'Agent updated',
+                    "Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email."
+                )
+            },
+        })
+    } else {
+        form.post(route('agents.store'), {
+            onSuccess: () => {
+                emit('close-slide-over')
+                form.reset()
+                notify(
+                    'Agent created',
+                    "This agent's metrics now count towards your totals.\n You should assign this agent a plan now."
+                )
+            },
+        })
+    }
 }
 </script>
 

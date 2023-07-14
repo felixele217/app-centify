@@ -25,6 +25,7 @@ it('can update an agent as an admin', function () {
     expect($agent->on_target_earning)->toBe($onTargetEarning);
     expect($agent->organization->id)->toBe($agent->organization->id);
 });
+
 it('cannot update a foreign agent as an admin', function () {
     $admin = signInAdmin();
 
@@ -86,4 +87,18 @@ it('cannot update an agent with a mail already taken by an agent', function () {
     $this->put(route('agents.update', $agent))->assertInvalid([
         'email' => 'The email has already been taken.',
     ]);
+});
+
+it('can update an agent with his same email', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    StoreAgentRequest::factory()->state([
+        'email' => $agent->email,
+    ])->fake();
+
+    $this->put(route('agents.update', $agent))->assertValid()->assertRedirect();
 });
