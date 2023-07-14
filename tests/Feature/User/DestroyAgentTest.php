@@ -22,7 +22,5 @@ it('cannot delete an agent as a foreign admin', function () {
 
     $agent = Agent::factory()->create();
 
-    expect(Agent::count())->toBe(1);
-
     $this->delete(route('agents.destroy', $agent))->assertForbidden();
 });

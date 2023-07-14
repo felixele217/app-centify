@@ -7,12 +7,14 @@ use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Plan;
 use App\Repositories\PlanRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PlanController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('Plan/Index', [
             'plans' => Plan::withCount('agents')
@@ -21,7 +23,7 @@ class PlanController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Plan/Create', [
             'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
@@ -30,10 +32,19 @@ class PlanController extends Controller
         ]);
     }
 
-    public function store(StorePlanRequest $request)
+    public function store(StorePlanRequest $request): RedirectResponse
     {
         PlanRepository::create($request);
 
         return to_route('plans.index');
+    }
+
+    public function destroy(Plan $plan): RedirectResponse
+    {
+        $this->authorize($plan);
+
+        $plan->delete();
+
+        return back();
     }
 }
