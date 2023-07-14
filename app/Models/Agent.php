@@ -48,15 +48,21 @@ class Agent extends Authenticatable
 
     protected function quotaAttainment(): Attribute
     {
-        $timeScope = request()->query('time_scope');
-
-        $latestPlanTargetAmountPerMonth = $this->load('plans')->plans()->active()->first()->target_amount_per_month;
-
         return Attribute::make(
-            get: fn () => match ($timeScope) {
-                TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
-                TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestPlanTargetAmountPerMonth * 3),
-                TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestPlanTargetAmountPerMonth * 12),
+            get: function () {
+                $timeScope = request()->query('time_scope');
+
+                $latestPlanTargetAmountPerMonth = $this->load('plans')->plans()->active()->first()?->target_amount_per_month;
+
+                if (! $latestPlanTargetAmountPerMonth) {
+                    return 0;
+                }
+
+                return match ($timeScope) {
+                    TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
+                    TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestPlanTargetAmountPerMonth * 3),
+                    TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestPlanTargetAmountPerMonth * 12),
+                };
             }
         );
     }

@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
+import notify from '@/utils/notify'
+import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CreateAgentSlideOver from './CreateAgentSlideOver.vue'
 
@@ -10,7 +13,17 @@ const props = defineProps<{
     agents: Array<Agent>
 }>()
 
+function deleteAgent(agentId: number): void {
+    router.delete(route('agents.destroy', agentId), {
+        onSuccess: () => {
+            notify('Agent deleted', 'This agent does not exist in your organization any more now.')
+            agentIdBeingDeleted.value = null
+        },
+    })
+}
+
 const isOpen = ref(false)
+const agentIdBeingDeleted = ref<number | null>()
 </script>
 
 <template>
@@ -97,12 +110,19 @@ const isOpen = ref(false)
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
-                <td class="'relative sm:pr-6', py-3.5 pl-3 pr-4 text-right text-sm font-medium">
+                <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
                     >
-                        Edit<span class="sr-only"></span>
+                        Edit
+                    </button>
+                    <button
+                        type="button"
+                        class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                        @click="agentIdBeingDeleted = agent.id"
+                    >
+                        Delete
                     </button>
                     <div
                         v-if="agentId !== 0"
@@ -112,4 +132,14 @@ const isOpen = ref(false)
             </tr>
         </template>
     </Table>
+
+    <Modal
+        @modal-action="deleteAgent(agentIdBeingDeleted!)"
+        :is-negative-action="true"
+        :isOpen="!!agentIdBeingDeleted"
+        @close-modal="agentIdBeingDeleted = null"
+        button-text="Delete"
+        title="Delete Agent"
+        :description="'Are you sure you want to delete this Agent? \nThis will affect organization\'s metrics and is currently irreversible.'"
+    />
 </template>
