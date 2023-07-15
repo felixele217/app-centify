@@ -4,6 +4,7 @@ import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
 import Agent from '@/types/Agent'
+import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
@@ -12,6 +13,7 @@ import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
+    possibleStatuses: Array<AgentStatusEnum>
 }>()
 
 function deleteAgent(agentId: number): void {
@@ -39,6 +41,7 @@ const agentBeingEdited = ref<Agent>()
         :is-open="!!(isOpen || agentBeingEdited)"
         dusk="slide-over-modal"
         :agent="agentBeingEdited"
+        :possible-statuses="props.possibleStatuses"
     />
 
     <page-header

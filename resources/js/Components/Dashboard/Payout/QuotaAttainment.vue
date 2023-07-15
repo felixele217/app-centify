@@ -11,7 +11,8 @@ const props = defineProps<{
 }>()
 
 const percentageOfMonthCompleted = new Date().getDate() / daysInMonth()
-const averageAchievedQuotaAttainment = (sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length) / percentageOfMonthCompleted
+const averageAchievedQuotaAttainment =
+    sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / percentageOfMonthCompleted
 
 const rollingQuota = roundFloat(percentageOfMonthCompleted * 100, 0)
 </script>

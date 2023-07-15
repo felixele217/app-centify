@@ -1,3 +1,5 @@
+import { AgentStatusEnum } from "./Enum/AgentStatusEnum"
+
 export default interface Agent {
     id: number
     name: string
@@ -9,4 +11,5 @@ export default interface Agent {
     on_target_earning: number | null
     quota_attainment?: number
     commission?: number
+    status: AgentStatusEnum
 }

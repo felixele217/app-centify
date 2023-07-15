@@ -4,7 +4,9 @@ import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import RadioCards from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
+import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -16,6 +18,7 @@ const emit = defineEmits(['close-slide-over'])
 const props = defineProps<{
     isOpen: boolean
     agent?: Agent
+    possibleStatuses: Array<AgentStatusEnum>
 }>()
 
 const form = useForm({
@@ -23,6 +26,7 @@ const form = useForm({
     email: '',
     base_salary: 0,
     on_target_earning: 0,
+    status: 'active' satisfies AgentStatusEnum,
 })
 
 watch(
@@ -33,6 +37,7 @@ watch(
             form.email = agent.email
             form.base_salary = agent.base_salary ?? 0
             form.on_target_earning = agent.on_target_earning ?? 0
+            form.status = agent.status
         }
     }
 )
@@ -195,6 +200,26 @@ function submit() {
                                                         <InputError
                                                             class="mt-2"
                                                             :message="form.errors.on_target_earning"
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <RadioCards
+                                                            label="Status"
+                                                            :options="
+                                                                props.possibleStatuses.map((status) => {
+                                                                    return {
+                                                                        title: status,
+                                                                    }
+                                                                })
+                                                            "
+                                                            @radio-clicked="(option) => (form.status = option)"
+                                                            :default="form.status"
+                                                        />
+
+                                                        <InputError
+                                                            class="mt-2"
+                                                            :message="form.errors.status"
                                                         />
                                                     </div>
                                                 </div>

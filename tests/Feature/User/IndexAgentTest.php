@@ -1,8 +1,8 @@
 <?php
 
+use App\Enum\AgentStatusEnum;
 use App\Models\Agent;
 use Inertia\Testing\AssertableInertia;
-use Spatie\Permission\Models\Role;
 
 it('passes the correct props', function () {
     signInAdmin();
@@ -13,5 +13,6 @@ it('passes the correct props', function () {
         fn (AssertableInertia $page) => $page
             ->component('Agent/Index')
             ->has('agents', $agents->count())
+            ->where('possible_statuses', array_column(AgentStatusEnum::cases(), 'value'))
     );
 });

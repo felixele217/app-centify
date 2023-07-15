@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Agent;
-use Inertia\Response;
-use App\Repositories\AgentRepository;
-use Illuminate\Http\RedirectResponse;
+use App\Enum\AgentStatusEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
+use App\Models\Agent;
+use App\Repositories\AgentRepository;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AgentController extends Controller
 {
@@ -16,6 +17,7 @@ class AgentController extends Controller
     {
         return Inertia::render('Agent/Index', [
             'agents' => Agent::all(),
+            'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
         ]);
     }
 
