@@ -5,8 +5,10 @@ import formatDate from '@/utils/formatDate'
 import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import TertiaryButton from '../Buttons/TertiaryButton.vue'
 import Card from '../Card.vue'
+import Dropdown from '../Dropdown/Dropdown.vue'
+import DropdownBox from '../Dropdown/DropdownBox.vue'
+import DropdownLink from '../Dropdown/DropdownLink.vue'
 import BanknotesIcon from '../Icon/BanknotesIcon.vue'
 import CalendarIcon from '../Icon/CalendarIcon.vue'
 import RecurIcon from '../Icon/RecurIcon.vue'
@@ -69,24 +71,30 @@ const planIdBeingDeleted = ref<number | null>()
         </div>
 
         <div class="flex flex-col items-end justify-between">
-            <div class="flex flex-col items-end gap-2">
                 <div class="flex items-center gap-1 text-gray-600">
                     <p>{{ props.plan.agents_count }}</p>
                     <TeamIcon class="text-gray-600" />
                 </div>
-                <TertiaryButton
-                    @click="planIdBeingDeleted = props.plan.id"
-                    text="Delete"
-                    class="invisible group-hover:visible"
-                />
-                <TertiaryButton
-                    @click="router.get(route('plans.update', props.plan.id))"
-                    text="Edit"
-                    class="invisible group-hover:visible"
-                />
-            </div>
 
+            <div class="flex items-center">
+                <Dropdown>
+                    <template #trigger>
+                        <p class="invisible rotate-90 cursor-pointer text-2xl text-gray-700 group-hover:visible">...</p>
+                    </template>
+
+                    <template #content>
+                        <DropdownLink
+                            text="Edit"
+                            :href="route('plans.update', props.plan.id)"
+                        />
+                        <DropdownBox
+                            text="Delete"
+                            @click="planIdBeingDeleted = props.plan.id"
+                        />
+                    </template>
+                </Dropdown>
             <p>Created by {{ props.plan.creator.name }}</p>
+            </div>
         </div>
 
         <Modal

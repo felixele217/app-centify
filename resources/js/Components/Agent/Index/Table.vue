@@ -128,7 +128,7 @@ const agentBeingEdited = ref<Agent>()
                 <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
                     <Dropdown>
                         <template #trigger>
-                            <p class="invisible rotate-90 cursor-pointer text-lg text-gray-700 group-hover:visible">
+                            <p class="invisible rotate-90 cursor-pointer text-2xl text-gray-700 group-hover:visible">
                                 ...
                             </p>
                         </template>
