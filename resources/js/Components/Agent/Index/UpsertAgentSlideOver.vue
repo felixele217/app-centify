@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
+import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
+import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import RadioCards from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
@@ -12,7 +15,7 @@ import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const emit = defineEmits(['close-slide-over'])
 
@@ -28,7 +31,14 @@ const form = useForm({
     base_salary: 0,
     on_target_earning: 0,
     status: 'active' satisfies AgentStatusEnum,
+
+    start_date: null as Date | null,
+    end_date: null as Date | null,
+    continuation_of_pay_based_on: '',
+    sum_of_commissions_earned: 0,
 })
+
+const employed28OrMoreDays = ref<boolean>(true)
 
 watch(
     () => props.agent,
@@ -82,8 +92,8 @@ function submit() {
         >
             <div class="fixed inset-0" />
 
-            <div class="fixed inset-0 overflow-hidden">
-                <div class="absolute inset-0 overflow-hidden">
+            <div class="fixed inset-0 overflow-auto">
+                <div class="absolute inset-0 overflow-auto">
                     <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
                         <TransitionChild
                             as="template"
@@ -131,7 +141,7 @@ function submit() {
                                             </div>
                                         </div>
                                         <div class="flex flex-1 flex-col justify-between">
-                                            <div class="divide-y divide-gray-200 px-4 sm:px-6">
+                                            <div class="divide-y divide-gray-200 overflow-y-scroll px-6">
                                                 <div class="space-y-6 pb-5 pt-6">
                                                     <div class="leading-6">
                                                         <InputLabel
@@ -143,7 +153,6 @@ function submit() {
                                                         <TextInput
                                                             type="text"
                                                             v-model="form.name"
-                                                            :border="true"
                                                             name="name"
                                                         />
 
@@ -223,6 +232,108 @@ function submit() {
                                                             class="mt-2"
                                                             :message="form.errors.status"
                                                         />
+                                                    </div>
+
+                                                    <div v-if="form.status === 'sick'">
+                                                        <Checkbox
+                                                            :label="`Employee has been employed for more than 28 calendar days
+                                                                ${
+                                                                    employed28OrMoreDays
+                                                                        ? ''
+                                                                        : '\nInfo: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any payment by the company (continuation of pay). Instead, has to contact the health insurance provider for payment.'
+                                                                }`"
+                                                            name="employed_long_enough"
+                                                            v-model:checked="employed28OrMoreDays"
+                                                        />
+                                                    </div>
+
+                                                    <div
+                                                        v-if="
+                                                            (form.status === 'sick' && employed28OrMoreDays) ||
+                                                            form.status === 'on vacation'
+                                                        "
+                                                        class="space-y-4"
+                                                    >
+                                                        <div>
+                                                            <InputLabel
+                                                                for="start_date"
+                                                                value="Start Date"
+                                                                required
+                                                            />
+                                                            <DateInput
+                                                                :date="form.start_date"
+                                                                @date-changed="(newDate) => (form.start_date = newDate)"
+                                                            />
+                                                            <InputError
+                                                                class="mt-2"
+                                                                :message="form.errors.start_date"
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <InputLabel
+                                                                for="end_date"
+                                                                value="End Date"
+                                                            />
+                                                            <DateInput
+                                                                :date="form.end_date"
+                                                                @date-changed="(newDate) => (form.end_date = newDate)"
+                                                            />
+                                                            <InputError
+                                                                class="mt-2"
+                                                                :message="form.errors.end_date"
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <InputLabel
+                                                                value="Continuation of pay based on.."
+                                                                required
+                                                            />
+
+                                                            <SelectWithDescription
+                                                                :options="[
+                                                                    {
+                                                                        title: 'last 13 weeks',
+                                                                        description: 'test description',
+                                                                        current: false,
+                                                                    },
+                                                                    {
+                                                                        title: 'test 2',
+                                                                        description: 'test description 2',
+                                                                        current: false,
+                                                                    },
+                                                                ]"
+                                                                @option-selected="(optionTitle: string) => form.continuation_of_pay_based_on = optionTitle"
+                                                                :default="{
+                                                                    title: 'last 13 weeks',
+                                                                    description: 'test description',
+                                                                    current: false,
+                                                                }"
+                                                            />
+
+                                                            <InputError
+                                                                class="mt-2"
+                                                                :message="form.errors.continuation_of_pay_based_on"
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <InputLabel
+                                                                value="Sum of commissions earned during this time.."
+                                                                required
+                                                            />
+
+                                                            <CurrencyInput
+                                                                :value="form.sum_of_commissions_earned"
+                                                                @set-value="(value: number) => (form.sum_of_commissions_earned = value)"
+                                                            />
+
+                                                            <InputError
+                                                                class="mt-2"
+                                                                :message="form.errors.sum_of_commissions_earned"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
