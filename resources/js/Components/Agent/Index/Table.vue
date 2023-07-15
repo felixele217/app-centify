@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import TertiaryButton from '@/Components/Buttons/TertiaryButton.vue'
+import Dropdown from '@/Components/Dropdown/Dropdown.vue'
+import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -10,6 +12,7 @@ import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
+import DropdownBox from '@/Components/Dropdown/DropdownBox.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -83,6 +86,7 @@ const agentBeingEdited = ref<Agent>()
         </template>
         <template #body>
             <tr
+                class="group"
                 v-for="(agent, agentId) in agents"
                 :key="agent.id"
                 :class="agentId === 0 ? '' : 'border-t'"
@@ -122,15 +126,18 @@ const agentBeingEdited = ref<Agent>()
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
                 <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
-                    <TertiaryButton
-                        text="Edit"
-                        @click="agentBeingEdited = agent"
-                    />
+                    <Dropdown>
+                        <template #trigger>
+                            <p class="invisible rotate-90 cursor-pointer text-lg text-gray-700 group-hover:visible">
+                                ...
+                            </p>
+                        </template>
 
-                    <TertiaryButton
-                        text="Delete"
-                        @click="agentIdBeingDeleted = agent.id"
-                    />
+                        <template #content>
+                            <DropdownBox text="Edit" @click="agentBeingEdited = agent" />
+                            <DropdownBox text="Delete" @click="agentIdBeingDeleted = agent.id" />
+                        </template>
+                    </Dropdown>
 
                     <div
                         v-if="agentId !== 0"
