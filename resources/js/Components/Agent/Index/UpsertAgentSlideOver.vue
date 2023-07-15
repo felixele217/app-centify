@@ -213,7 +213,7 @@ function submit() {
                                                                     }
                                                                 })
                                                             "
-                                                            @radio-clicked="(option) => (form.status = option)"
+                                                            @radio-clicked="(option: AgentStatusEnum) => (form.status = option)"
                                                             :default="form.status"
                                                         />
 
