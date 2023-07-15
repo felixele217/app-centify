@@ -51,7 +51,7 @@ const employed28OrMoreDays = ref<boolean>(false)
             />
             <DateInput
                 :date="props.form.start_date"
-                @date-changed="(newDate) => (props.form.start_date = newDate)"
+                @date-changed="(newDate: Date) => (props.form.start_date = newDate)"
             />
             <InputError
                 class="mt-2"
@@ -66,7 +66,7 @@ const employed28OrMoreDays = ref<boolean>(false)
             />
             <DateInput
                 :date="props.form.end_date"
-                @date-changed="(newDate) => (props.form.end_date = newDate)"
+                @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
             />
             <InputError
                 class="mt-2"
