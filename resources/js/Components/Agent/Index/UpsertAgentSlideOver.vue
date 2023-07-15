@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
-import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import RadioCards from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
@@ -15,7 +12,8 @@ import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
+import SicknessAndVacationForm from './SicknessAndVacationForm.vue'
 
 const emit = defineEmits(['close-slide-over'])
 
@@ -30,15 +28,13 @@ const form = useForm({
     email: '',
     base_salary: 0,
     on_target_earning: 0,
-    status: 'active' satisfies AgentStatusEnum,
+    status: 'active' as AgentStatusEnum,
 
     start_date: null as Date | null,
     end_date: null as Date | null,
     continuation_of_pay_based_on: '',
     sum_of_commissions_earned: 0,
 })
-
-const employed28OrMoreDays = ref<boolean>(true)
 
 watch(
     () => props.agent,
@@ -234,107 +230,7 @@ function submit() {
                                                         />
                                                     </div>
 
-                                                    <div v-if="form.status === 'sick'">
-                                                        <Checkbox
-                                                            :label="`Employee has been employed for more than 28 calendar days
-                                                                ${
-                                                                    employed28OrMoreDays
-                                                                        ? ''
-                                                                        : '\nInfo: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any payment by the company (continuation of pay). Instead, has to contact the health insurance provider for payment.'
-                                                                }`"
-                                                            name="employed_long_enough"
-                                                            v-model:checked="employed28OrMoreDays"
-                                                        />
-                                                    </div>
-
-                                                    <div
-                                                        v-if="
-                                                            (form.status === 'sick' && employed28OrMoreDays) ||
-                                                            form.status === 'on vacation'
-                                                        "
-                                                        class="space-y-4"
-                                                    >
-                                                        <div>
-                                                            <InputLabel
-                                                                for="start_date"
-                                                                value="Start Date"
-                                                                required
-                                                            />
-                                                            <DateInput
-                                                                :date="form.start_date"
-                                                                @date-changed="(newDate) => (form.start_date = newDate)"
-                                                            />
-                                                            <InputError
-                                                                class="mt-2"
-                                                                :message="form.errors.start_date"
-                                                            />
-                                                        </div>
-
-                                                        <div>
-                                                            <InputLabel
-                                                                for="end_date"
-                                                                value="End Date"
-                                                            />
-                                                            <DateInput
-                                                                :date="form.end_date"
-                                                                @date-changed="(newDate) => (form.end_date = newDate)"
-                                                            />
-                                                            <InputError
-                                                                class="mt-2"
-                                                                :message="form.errors.end_date"
-                                                            />
-                                                        </div>
-
-                                                        <div>
-                                                            <InputLabel
-                                                                value="Continuation of pay based on.."
-                                                                required
-                                                            />
-
-                                                            <SelectWithDescription
-                                                                :options="[
-                                                                    {
-                                                                        title: 'last 13 weeks',
-                                                                        description: 'test description',
-                                                                        current: false,
-                                                                    },
-                                                                    {
-                                                                        title: 'test 2',
-                                                                        description: 'test description 2',
-                                                                        current: false,
-                                                                    },
-                                                                ]"
-                                                                @option-selected="(optionTitle: string) => form.continuation_of_pay_based_on = optionTitle"
-                                                                :default="{
-                                                                    title: 'last 13 weeks',
-                                                                    description: 'test description',
-                                                                    current: false,
-                                                                }"
-                                                            />
-
-                                                            <InputError
-                                                                class="mt-2"
-                                                                :message="form.errors.continuation_of_pay_based_on"
-                                                            />
-                                                        </div>
-
-                                                        <div>
-                                                            <InputLabel
-                                                                value="Sum of commissions earned during this time.."
-                                                                required
-                                                            />
-
-                                                            <CurrencyInput
-                                                                :value="form.sum_of_commissions_earned"
-                                                                @set-value="(value: number) => (form.sum_of_commissions_earned = value)"
-                                                            />
-
-                                                            <InputError
-                                                                class="mt-2"
-                                                                :message="form.errors.sum_of_commissions_earned"
-                                                            />
-                                                        </div>
-                                                    </div>
+                                                    <SicknessAndVacationForm :form="form" />
                                                 </div>
                                             </div>
                                         </div>

@@ -1,0 +1,127 @@
+<script setup lang="ts">
+import Checkbox from '@/Components/Form/Checkbox.vue'
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
+import DateInput from '@/Components/Form/DateInput.vue'
+import InputError from '@/Components/Form/InputError.vue'
+import InputLabel from '@/Components/Form/InputLabel.vue'
+import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
+import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import { InertiaForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+const props = defineProps<{
+    form: InertiaForm<{
+        name: string
+        email: string
+        base_salary: number
+        on_target_earning: number
+        status: AgentStatusEnum
+        start_date: Date | null
+        end_date: Date | null
+        continuation_of_pay_based_on: string
+        sum_of_commissions_earned: number
+    }>
+}>()
+
+const employed28OrMoreDays = ref<boolean>(false)
+</script>
+
+<template>
+    <div v-if="props.form.status === 'sick'">
+        <Checkbox
+            :label="`Employee has been employed for more than 28 calendar days ${
+                employed28OrMoreDays
+                    ? ''
+                    : '\nInfo: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any payment by the company (continuation of pay). Instead, has to contact the health insurance provider for payment.'
+            }`"
+            name="employed_long_enough"
+            v-model:checked="employed28OrMoreDays"
+        />
+    </div>
+
+    <div
+        v-if="(props.form.status === 'sick' && employed28OrMoreDays) || props.form.status === 'on vacation'"
+        class="space-y-4"
+    >
+        <div>
+            <InputLabel
+                for="start_date"
+                value="Start Date"
+                required
+            />
+            <DateInput
+                :date="props.form.start_date"
+                @date-changed="(newDate) => (props.form.start_date = newDate)"
+            />
+            <InputError
+                class="mt-2"
+                :message="props.form.errors.start_date"
+            />
+        </div>
+
+        <div>
+            <InputLabel
+                for="end_date"
+                value="End Date"
+            />
+            <DateInput
+                :date="props.form.end_date"
+                @date-changed="(newDate) => (props.form.end_date = newDate)"
+            />
+            <InputError
+                class="mt-2"
+                :message="props.form.errors.end_date"
+            />
+        </div>
+
+        <div>
+            <InputLabel
+                value="Continuation of pay based on.."
+                required
+            />
+
+            <SelectWithDescription
+                :options="[
+                    {
+                        title: 'last 13 weeks',
+                        description: 'test description',
+                        current: false,
+                    },
+                    {
+                        title: 'test 2',
+                        description: 'test description 2',
+                        current: false,
+                    },
+                ]"
+                @option-selected="(optionTitle: string) => props.form.continuation_of_pay_based_on = optionTitle"
+                :default="{
+                    title: 'last 13 weeks',
+                    description: 'test description',
+                    current: false,
+                }"
+            />
+
+            <InputError
+                class="mt-2"
+                :message="props.form.errors.continuation_of_pay_based_on"
+            />
+        </div>
+
+        <div>
+            <InputLabel
+                value="Sum of commissions earned during this time.."
+                required
+            />
+
+            <CurrencyInput
+                :value="props.form.sum_of_commissions_earned"
+                @set-value="(value: number) => (props.form.sum_of_commissions_earned = value)"
+            />
+
+            <InputError
+                class="mt-2"
+                :message="props.form.errors.sum_of_commissions_earned"
+            />
+        </div>
+    </div>
+</template>
