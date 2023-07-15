@@ -91,6 +91,7 @@ const dealIdBeingAccepted = ref<number | null>()
                         <a
                             class="link"
                             :href="`https://paul-sandbox11.pipedrive.com/deal/${deal.integration_deal_id}`"
+                            target="_blank"
                         >
                             {{ deal.title }}
                         </a>
