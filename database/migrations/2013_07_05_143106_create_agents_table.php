@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->bigInteger('base_salary')->nullable();
             $table->bigInteger('on_target_earning')->nullable();
+            $table->string('status');
             $table->foreignIdFor(Organization::class);
             $table->rememberToken();
             $table->timestamps();

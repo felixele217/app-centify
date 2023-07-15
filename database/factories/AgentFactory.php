@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\AgentStatusEnum;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class AgentFactory extends Factory
             'organization_id' => Organization::factory()->create(),
             'base_salary' => fake()->randomElement([50_000_00, 70_000_00]),
             'on_target_earning' => fake()->randomElement([100_000_00, 150_000_00]),
+            'status' => AgentStatusEnum::ACTIVE->value,
         ];
     }
 

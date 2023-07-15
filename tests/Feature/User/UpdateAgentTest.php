@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\AgentStatusEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\Agent;
 
@@ -15,6 +16,7 @@ it('can update an agent as an admin', function () {
         'email' => $email = 'john.doe@gmail.com',
         'base_salary' => $baseSalary = 10000000,
         'on_target_earning' => $onTargetEarning = 20000000,
+        'status' => $status = AgentStatusEnum::SICK->value,
     ])->assertRedirect();
 
     $agent->refresh();
@@ -24,10 +26,11 @@ it('can update an agent as an admin', function () {
     expect($agent->base_salary)->toBe($baseSalary);
     expect($agent->on_target_earning)->toBe($onTargetEarning);
     expect($agent->organization->id)->toBe($agent->organization->id);
+    expect($agent->status->value)->toBe($status);
 });
 
 it('cannot update a foreign agent as an admin', function () {
-   signInAdmin();
+    signInAdmin();
 
     $agent = Agent::factory()->create();
 

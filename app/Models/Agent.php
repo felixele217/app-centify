@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\AgentStatusEnum;
 use App\Enum\TimeScopeEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -29,6 +30,7 @@ class Agent extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'status' => AgentStatusEnum::class,
     ];
 
     public function organization(): BelongsTo
