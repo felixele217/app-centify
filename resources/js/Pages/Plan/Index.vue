@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
     <PageHeader
         title="Plans"
-        description="List of all your plans."
+        description="Overview of all your commission plans."
         button-text="Create Plan"
         @button-clicked="router.get(route('plans.create'))"
     />

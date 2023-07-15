@@ -27,7 +27,7 @@ const payoutRowObjects: Array<{
         title: 'Total Payout',
         icon: BanknotesIcon,
         amount: totalComission,
-        subText: 'Next payout: 01.08.2023',
+        subText: 'next payout: 01.08.2023',
     },
     {
         title: 'To-Dos',

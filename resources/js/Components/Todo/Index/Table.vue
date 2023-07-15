@@ -37,8 +37,9 @@ const dealIdBeingAccepted = ref<number | null>()
     <div>
         <page-header
             title="Todos"
-            description="A list of all opportunities that require manual action."
+            description="All opportunities that need to be reviewed."
         />
+
         <Table
             :no-items-text="props.deals.length ? undefined : 'Currently, there are no opportunities for you to act on.'"
         >

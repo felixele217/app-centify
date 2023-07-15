@@ -1,4 +1,4 @@
-import { AgentStatusEnum } from "./Enum/AgentStatusEnum"
+import { AgentStatusEnum } from './Enum/AgentStatusEnum'
 
 export default interface Agent {
     id: number

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import TertiaryButton from '@/Components/Buttons/TertiaryButton.vue'
 import Dropdown from '@/Components/Dropdown/Dropdown.vue'
-import DropdownLink from '@/Components/Dropdown/DropdownLink.vue'
+import DropdownBox from '@/Components/Dropdown/DropdownBox.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -12,7 +11,6 @@ import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
-import DropdownBox from '@/Components/Dropdown/DropdownBox.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -49,7 +47,7 @@ const agentBeingEdited = ref<Agent>()
 
     <page-header
         title="Agents"
-        description="List of all your agents."
+        description="Overview of all your agents."
         button-text="Create Agent"
         @button-clicked="isOpen = true"
     />
@@ -134,8 +132,14 @@ const agentBeingEdited = ref<Agent>()
                         </template>
 
                         <template #content>
-                            <DropdownBox text="Edit" @click="agentBeingEdited = agent" />
-                            <DropdownBox text="Delete" @click="agentIdBeingDeleted = agent.id" />
+                            <DropdownBox
+                                text="Edit"
+                                @click="agentBeingEdited = agent"
+                            />
+                            <DropdownBox
+                                text="Delete"
+                                @click="agentIdBeingDeleted = agent.id"
+                            />
                         </template>
                     </Dropdown>
 

@@ -21,7 +21,7 @@ const rollingQuota = roundFloat(percentageOfMonthCompleted * 100, 0)
     <Card class="flex justify-between">
         <div>
             <p class="mb-3 font-semibold">Average Quota Attainment</p>
-            <h1 class="mb-8">All Teams</h1>
+            <h2 class="mb-8">All Teams</h2>
             <p class="font-semibold text-gray-400">rolling quota: {{ rollingQuota }}%</p>
         </div>
 

@@ -71,10 +71,10 @@ const planIdBeingDeleted = ref<number | null>()
         </div>
 
         <div class="flex flex-col items-end justify-between">
-                <div class="flex items-center gap-1 text-gray-600">
-                    <p>{{ props.plan.agents_count }}</p>
-                    <TeamIcon class="text-gray-600" />
-                </div>
+            <div class="flex items-center gap-1 text-gray-600">
+                <p>{{ props.plan.agents_count }}</p>
+                <TeamIcon class="text-gray-600" />
+            </div>
 
             <div class="flex items-center">
                 <Dropdown>
@@ -93,7 +93,7 @@ const planIdBeingDeleted = ref<number | null>()
                         />
                     </template>
                 </Dropdown>
-            <p>Created by {{ props.plan.creator.name }}</p>
+                <p>Created by {{ props.plan.creator.name }}</p>
             </div>
         </div>
 

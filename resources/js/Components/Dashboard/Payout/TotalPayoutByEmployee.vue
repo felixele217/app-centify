@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
+import PageHeader from '@/Components/PageHeader.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 
@@ -18,14 +19,15 @@ const src =
 
 <template>
     <Card>
-        <div class="sm:flex sm:items-center">
-            <div class="sm:flex-auto">
-                <h1 class="text-base font-semibold leading-6 text-gray-900">Total Payout by Employee</h1>
-                <p class="mt-2 text-sm text-gray-700">Gain a quick overview over your Agents' Performances.</p>
-            </div>
+        <PageHeader
+            title="Total Payout by Employee"
+            description="Overview of your agents' performances."
+        >
+            <template #custom-button>
+                <Filter />
+            </template>
+        </PageHeader>
 
-            <Filter />
-        </div>
         <div class="mt-8 flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
