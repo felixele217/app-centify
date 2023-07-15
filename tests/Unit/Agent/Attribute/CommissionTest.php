@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
+use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TimeScopeEnum;
+use Carbon\Carbon;
 
 it('calculates the commission properly for the active plan with the most recent start_date', function () {
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
@@ -30,7 +30,7 @@ it('correctly calculates the commission for the current month if scoped', functi
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
 
     $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00
+        'target_amount_per_month' => 1_000_00,
     ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentMonthDealCount = 2, [
@@ -38,7 +38,7 @@ it('correctly calculates the commission for the current month if scoped', functi
             Carbon::now()->firstOfMonth(),
             Carbon::now()->lastOfMonth(),
         ]),
-        'value' => 1_000_00
+        'value' => 1_000_00,
     ])->create([
         'base_salary' => 80_000_00,
         'on_target_earning' => 200_000_00,
@@ -59,7 +59,7 @@ it('correctly calculates the commission for the current quarter if scoped', func
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::QUARTERLY->value);
 
     $plan = Plan::factory()->create([
-        'target_amount_per_month' => 2_000_00
+        'target_amount_per_month' => 2_000_00,
     ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
@@ -68,7 +68,7 @@ it('correctly calculates the commission for the current quarter if scoped', func
             Carbon::now()->nthOfQuarter(6, Carbon::TUESDAY),
             Carbon::now()->nthOfQuarter(11, Carbon::SATURDAY),
         ]),
-        'value' => 1_500_00
+        'value' => 1_500_00,
     ])->create([
         'base_salary' => 80_000_00,
         'on_target_earning' => 200_000_00,
@@ -89,7 +89,7 @@ it('correctly calculates the commission for the current year if scoped', functio
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::ANNUALY->value);
 
     $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00
+        'target_amount_per_month' => 1_000_00,
     ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
@@ -98,7 +98,7 @@ it('correctly calculates the commission for the current year if scoped', functio
             Carbon::now()->firstOfYear(),
             Carbon::now(),
         ]),
-        'value' => 3_000_00
+        'value' => 3_000_00,
     ])->create([
         'base_salary' => 80_000_00,
         'on_target_earning' => 200_000_00,

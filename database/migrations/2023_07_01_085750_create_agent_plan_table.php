@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Plan;
 use Illuminate\Database\Migrations\Migration;

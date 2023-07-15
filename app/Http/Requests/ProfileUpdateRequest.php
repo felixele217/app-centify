@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Models\Admin;
 use App\Models\Agent;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(Admin::class)->ignore($this->user()->id),
-                Rule::unique(Agent::class)->ignore($this->user()->id)
+                Rule::unique(Agent::class)->ignore($this->user()->id),
             ],
         ];
     }

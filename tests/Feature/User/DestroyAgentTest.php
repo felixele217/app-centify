@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Requests\StoreAgentRequest;
 use App\Models\Agent;
 
 it('can delete an agent as an admin', function () {

@@ -102,7 +102,7 @@ return [
     |
     */
 
-     'passwords' => [
+    'passwords' => [
         'admins' => [
             'provider' => 'admins',
             'table' => 'password_reset_tokens',

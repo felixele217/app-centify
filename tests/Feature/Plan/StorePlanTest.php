@@ -5,7 +5,6 @@ use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Agent;
 use App\Models\Plan;
-use App\Models\User;
 use Carbon\Carbon;
 
 it('can store a plan as an admin', function () {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Deal;
-use Inertia\Inertia;
 use App\Enum\TimeScopeEnum;
+use App\Models\Deal;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {

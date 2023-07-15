@@ -5,13 +5,9 @@ namespace Database\Factories;
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
 use App\Models\Admin;
-use App\Models\Agent;
 use App\Models\Organization;
-use App\Models\Plan;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Spatie\Permission\Models\Role;
 
 class PlanFactory extends Factory
 {

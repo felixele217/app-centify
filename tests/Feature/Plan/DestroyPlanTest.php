@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Requests\StoreAgentRequest;
-use App\Models\Agent;
 use App\Models\Plan;
 
 it('can delete a plan as an admin', function () {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FunctionalComponent } from 'vue'
 import PrimaryButton from './Buttons/PrimaryButton.vue'
 
 const props = defineProps<{

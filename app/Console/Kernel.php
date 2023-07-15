@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sync-integration-data')
             ->dailyAt('00:05')
-            ->emailOutputOnFailure(env('TECH_MAIL', 'tech@centify.de'));;
+            ->emailOutputOnFailure(env('TECH_MAIL', 'tech@centify.de'));
     }
 
     protected function commands(): void

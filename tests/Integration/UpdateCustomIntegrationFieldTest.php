@@ -2,7 +2,6 @@
 
 use App\Models\CustomIntegrationField;
 use Illuminate\Support\Str;
-
 use function Pest\Laravel\withoutExceptionHandling;
 
 it('can store an api key for demo set by field for the pipedrive integration as an admin', function () {

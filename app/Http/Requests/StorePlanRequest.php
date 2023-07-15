@@ -59,10 +59,10 @@ class StorePlanRequest extends FormRequest
         $this->replace($data);
     }
 
-   public function messages(): array
-   {
-       return [
-           'target_amount_per_month.min' => 'The :attribute must be at least 0,01€.',
-       ];
-   }
+    public function messages(): array
+    {
+        return [
+            'target_amount_per_month.min' => 'The :attribute must be at least 0,01€.',
+        ];
+    }
 }

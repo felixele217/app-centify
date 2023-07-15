@@ -2,8 +2,6 @@
 
 use App\Models\Admin;
 
-use function Pest\Laravel\withoutExceptionHandling;
-
 test('confirm password screen can be rendered', function () {
     $user = Admin::factory()->create();
 

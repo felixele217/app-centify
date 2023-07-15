@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enum\AgentStatusEnum;
-use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreAgentRequest extends FormRequest
 {
@@ -35,8 +35,8 @@ class StoreAgentRequest extends FormRequest
 
             'status' => [
                 'required',
-                new Enum(AgentStatusEnum::class)
-            ]
+                new Enum(AgentStatusEnum::class),
+            ],
         ];
     }
 

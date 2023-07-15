@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Enum\AgentStatusEnum;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAgentRequest extends FormRequest
 {

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use App\Models\CustomIntegrationField;
 use App\Enum\CustomIntegrationFieldEnum;
-use App\Repositories\CustomIntegrationFieldRepository;
 use App\Http\Requests\StoreCustomIntegrationFieldRequest;
 use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
+use App\Models\CustomIntegrationField;
+use App\Repositories\CustomIntegrationFieldRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CustomIntegrationFieldController extends Controller
 {
