@@ -7,6 +7,7 @@ import TextInput from '@/Components/Form/TextInput.vue'
 import RadioCards from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import { agentStatusToColor } from '@/utils/Descriptions/agentStatusToColor'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -210,6 +211,7 @@ function submit() {
                                                                 props.possibleStatuses.map((status) => {
                                                                     return {
                                                                         title: status,
+                                                                        color: agentStatusToColor[status],
                                                                     }
                                                                 })
                                                             "
