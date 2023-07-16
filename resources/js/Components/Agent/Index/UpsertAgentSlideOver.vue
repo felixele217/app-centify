@@ -4,7 +4,7 @@ import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
-import RadioCards from '@/Components/RadioCards.vue'
+import RadioCards, { RadioCardOption } from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { agentStatusToColor } from '@/utils/Descriptions/agentStatusToColor'
@@ -220,7 +220,7 @@ function submit() {
                                                                     }
                                                                 })
                                                             "
-                                                            @radio-clicked="(option: AgentStatusEnum) => (form.status = option)"
+                                                            @radio-clicked="(option: RadioCardOption<AgentStatusEnum>) => (form.status = option.title)"
                                                             :default="form.status"
                                                         />
 

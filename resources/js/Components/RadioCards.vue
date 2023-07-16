@@ -4,26 +4,26 @@ import { ref } from 'vue'
 const requiredColorsDeclaration =
     'bg-green-50 bg-yellow-50 bg-indigo-50 ring-indigo-600 ring-green-600 ring-yellow-600 border-indigo-600 border-yellow-600 border-green-600'
 
-type Option = {
-    title: string
+export type RadioCardOption<T = string> = {
+    title: T
     description?: string
     color?: string
 }
 
 const props = defineProps<{
     label: string
-    options: Array<Option>
+    options: Array<RadioCardOption>
     default: string
 }>()
 
 const currentOption = ref(props.options.filter((option) => option.title === props.default)[0])
 
-const selected = (option: Option) =>
+const selected = (option: RadioCardOption) =>
     currentOption.value.title === option.title && currentOption.value.description === option.description
 </script>
 
 <template>
-    <RadioGroup v-on:update:model-value="$emit('radio-clicked', currentOption.title)">
+    <RadioGroup v-on:update:model-value="$emit('radio-clicked', currentOption)">
         <RadioGroupLabel class="block text-sm font-medium text-gray-700">{{ props.label }}</RadioGroupLabel>
         <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
             <RadioGroupOption
