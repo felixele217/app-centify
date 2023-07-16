@@ -24,7 +24,8 @@ import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 export interface AdditionalField {
     id: number
     type: AdditionalFieldTypes
-    value: number
+    value?: number
+    text?: string
 }
 
 const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Dependency', 'Trigger']
@@ -72,19 +73,13 @@ function submit() {
 }
 
 function addAdditionalField(type: AdditionalFieldTypes): void {
-    switch (type) {
-        case 'Cliff':
-        case 'Cap':
-            form.additionalFields.push({
-                type: type,
-                id: form.additionalFields.length,
-                value: 0,
-            })
-            break
+    const specialField = ['Cliff', 'Cap'].includes(type) ? { value: 0 } : { text: '' }
 
-        default:
-            break
-    }
+    form.additionalFields.push({
+        type: type,
+        id: form.additionalFields.length,
+        ...specialField,
+    })
 }
 
 function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
@@ -206,6 +201,24 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                         </div>
                     </div>
 
+                    <div>
+                        <InputLabel
+                            for="assigned_agent_ids"
+                            value="Assigned Agents"
+                        />
+
+                        <MultiSelect
+                            @agent-clicked="handleAgentSelect"
+                            :options="props.agents"
+                            :selected-ids="form.assigned_agent_ids"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.assigned_agent_ids"
+                        />
+                    </div>
+
                     <div class="">
                         <InputLabel value="Need more complexity? Add one of the following.." />
 
@@ -235,24 +248,6 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                         :field="field"
                         :key="field.id"
                     />
-
-                    <div>
-                        <InputLabel
-                            for="assigned_agent_ids"
-                            value="Assigned Agents"
-                        />
-
-                        <MultiSelect
-                            @agent-clicked="handleAgentSelect"
-                            :options="props.agents"
-                            :selected-ids="form.assigned_agent_ids"
-                        />
-
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.assigned_agent_ids"
-                        />
-                    </div>
                 </div>
 
                 <FormButtons

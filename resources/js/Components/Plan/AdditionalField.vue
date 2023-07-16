@@ -6,6 +6,7 @@ import { ref } from 'vue'
 import CurrencyInput from '../Form/CurrencyInput.vue'
 import InputError from '../Form/InputError.vue'
 import InputLabel from '../Form/InputLabel.vue'
+import SelectWithDescription from '../Form/SelectWithDescription.vue'
 import { AdditionalField } from './UpsertPlanCard.vue'
 
 const props = defineProps<{
@@ -22,11 +23,15 @@ const props = defineProps<{
 }>()
 
 const value = ref(0)
+const text = ref('')
 </script>
 
 <template>
     <div>
-        <InputLabel :value="props.field.type" />
+        <InputLabel
+            :value="props.field.type"
+            required
+        />
 
         <div v-if="props.field.type === 'Cap' || props.field.type === 'Cliff'">
             <CurrencyInput
@@ -36,5 +41,20 @@ const value = ref(0)
 
             <InputError />
         </div>
+
+        <div v-if="props.field.type === 'Trigger'">
+            <SelectWithDescription
+                :options="[
+                    {
+                        title: 'Demo set',
+                        description: 'The deal\'s demo_set_by field has a user assigned to it.',
+                        current: true,
+                    },
+                ]"
+                @option-selected="(optionTitle: 'Demo set') => text = optionTitle"
+            />
+        </div>
+
+        <InputError />
     </div>
 </template>
