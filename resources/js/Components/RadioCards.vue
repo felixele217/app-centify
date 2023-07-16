@@ -4,6 +4,8 @@ import { ref } from 'vue'
 const requiredColorsDeclaration =
     'bg-green-50 bg-yellow-50 bg-indigo-50 ring-indigo-600 ring-green-600 ring-yellow-600 border-indigo-600 border-yellow-600 border-green-600'
 
+defineEmits(['option-clicked'])
+
 export type RadioCardOption<T = string> = {
     title: T
     description?: string

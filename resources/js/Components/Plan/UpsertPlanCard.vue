@@ -8,15 +8,26 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import AdditionalField from '@/Components/Plan/AdditionalField.vue'
 import Agent from '@/types/Agent'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import Plan from '@/types/Plan'
+import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import notify from '@/utils/notify'
 import { router, useForm } from '@inertiajs/vue3'
+import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
+
+export interface AdditionalField {
+    id: number
+    type: AdditionalFieldTypes
+    value: number
+}
+
+const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Dependency', 'Trigger']
 
 const props = defineProps<{
     plan?: Plan
@@ -29,9 +40,11 @@ const form = useForm({
     name: props.plan?.name || '',
     start_date: props.plan?.start_date || (null as Date | null), // first day of next month
     target_amount_per_month: props.plan?.target_amount_per_month || 0,
-    target_variable: props.plan?.target_variable || '',
-    payout_frequency: props.plan?.payout_frequency || '',
+    target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
+    payout_frequency: props.plan?.payout_frequency || ('' as PayoutFrequencyEnum),
     assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
+
+    additionalFields: [] as Array<AdditionalField>,
 })
 
 function handleDateChange(newDate: Date) {
@@ -55,6 +68,21 @@ function submit() {
         form.post(route('plans.store'), {
             onSuccess: () => notify('Plan stored', 'Your plan is now available for use.'),
         })
+    }
+}
+
+function addAdditionalField(type: AdditionalFieldTypes): void {
+    switch (type) {
+        case 'Cap':
+            form.additionalFields.push({
+                type: type,
+                id: form.additionalFields.length,
+                value: 0,
+            })
+            break
+
+        default:
+            break
     }
 }
 </script>
@@ -134,7 +162,7 @@ function submit() {
                                         targetVariableToDescription
                                     )
                                 "
-                                @option-selected="(optionTitle: string) => form.target_variable = optionTitle"
+                                @option-selected="(optionTitle: TargetVariableEnum) => form.target_variable = optionTitle"
                                 :default="props.plan ? {
                                     title: form.target_variable,
                                     description: targetVariableToDescription[form.target_variable as TargetVariableEnum],
@@ -159,7 +187,7 @@ function submit() {
                                         payoutFrequencyToDescription
                                     )
                                 "
-                                @option-selected="(optionTitle: string) => form.payout_frequency = optionTitle"
+                                @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
                                 :default="props.plan ? {
                                     title: form.payout_frequency,
                                     description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
@@ -172,6 +200,31 @@ function submit() {
                             />
                         </div>
                     </div>
+
+                    <div class="">
+                        <InputLabel value="Need more complexity? Add one of the following.." />
+
+                        <CardOptions
+                            :options-per-row="5"
+                            :options="
+                                possibleAdditionalFields.map((type) => {
+                                    return {
+                                        title: type,
+                                        disabled: form.additionalFields.map((field) => field.type).includes(type),
+                                    }
+                                })
+                            "
+                            @option-clicked="(option: CardOptionsOption<AdditionalFieldTypes>) => addAdditionalField(option.title)"
+                        />
+                    </div>
+
+                    <AdditionalField
+                        v-for="field in form.additionalFields"
+                        :form="form"
+                        :field="field"
+                        :key="field.id"
+                    />
+
                     <div>
                         <InputLabel
                             for="assigned_agent_ids"
