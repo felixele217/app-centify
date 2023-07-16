@@ -73,6 +73,7 @@ function submit() {
 
 function addAdditionalField(type: AdditionalFieldTypes): void {
     switch (type) {
+        case 'Cliff':
         case 'Cap':
             form.additionalFields.push({
                 type: type,
@@ -84,6 +85,10 @@ function addAdditionalField(type: AdditionalFieldTypes): void {
         default:
             break
     }
+}
+
+function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
+    return form.additionalFields.map((field) => field.type).includes(additionalFieldType)
 }
 </script>
 
@@ -210,11 +215,17 @@ function addAdditionalField(type: AdditionalFieldTypes): void {
                                 possibleAdditionalFields.map((type) => {
                                     return {
                                         title: type,
-                                        disabled: form.additionalFields.map((field) => field.type).includes(type),
+                                        selected: isSelected(type),
                                     }
                                 })
                             "
-                            @option-clicked="(option: CardOptionsOption<AdditionalFieldTypes>) => addAdditionalField(option.title)"
+                            @option-clicked="(option: CardOptionsOption<AdditionalFieldTypes>) => {
+                                if (isSelected(option.title)) {
+                                    form.additionalFields = form.additionalFields.filter(field => field.type !== option.title)
+                                } else {
+                                    addAdditionalField(option.title)
+                                }
+                            }"
                         />
                     </div>
 

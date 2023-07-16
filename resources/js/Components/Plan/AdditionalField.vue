@@ -28,7 +28,7 @@ const value = ref(0)
     <div>
         <InputLabel :value="props.field.type" />
 
-        <div v-if="props.field.type === 'Cap'">
+        <div v-if="props.field.type === 'Cap' || props.field.type === 'Cliff'">
             <CurrencyInput
                 :value="value"
                 @set-value="(newValue: number) => value = newValue"
