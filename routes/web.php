@@ -13,7 +13,6 @@ use Inertia\Inertia;
 Route::get('/', fn () => to_route('dashboard'));
 
 Route::middleware('auth')->group(function () {
-    // TODO maybe test
     Route::middleware(AppendTimeScopeQuery::class)->get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/integrations', fn () => Inertia::render('Integrations'))->name('integrations');
 

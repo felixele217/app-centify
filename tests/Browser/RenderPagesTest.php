@@ -26,10 +26,14 @@ class RenderPagesTest extends DuskTestCase
         $urlsToText = [
             route('dashboard') => 'Total Payout',
             route('todos.index') => 'Users',
-            route('plans.index') => 'Plans',
             route('agents.index') => 'Dashboard',
             route('integrations') => 'pipedrive',
             route('profile.edit') => 'Profile Information',
+            route('custom-integration-fields.index') => 'Custom Integration Fields',
+
+            route('plans.index') => 'Plans',
+            route('plans.create') => 'Create Flatrate Commission Plan',
+            route('plans.edit', $user->organization->plans->first()) => 'Update Flatrate Commission Plan',
         ];
 
         foreach ($urlsToText as $url => $text) {

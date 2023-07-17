@@ -67,8 +67,8 @@ const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.c
 <template>
     <div class="">
         <PageHeader
-            title="Custom API Keys"
-            :description="'This needs to be set to the API key for this data field. Go to Pipedrive > Company Settings > Company > Datafields.\nYou can hover over the data field of concern and click on the options symbol to copy the key.'"
+            title="Custom Integration Fields"
+            :description="'To streamline all integration processes, we require you to create and use the custom fields you see below.\n\nThey need to be set to the respective API keys for the custom data field. Go to Pipedrive > Company Settings > Company > Datafields to see your custom fields and their API keys.\nYou can hover over a data field and click on the option dots to copy the key. Then you can paste it here and voilá, we will automatically integrate all your data.'"
         />
         <div
             class="mr-96 flex items-center gap-5 rounded-md py-2"
