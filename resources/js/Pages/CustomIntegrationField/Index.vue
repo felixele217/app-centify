@@ -1,26 +1,21 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+import useFieldsRef from '@/Components/CustomIntegrationField/Composables/useFieldsRef'
 import TextInput from '@/Components/Form/TextInput.vue'
 import CustomIntegrationField from '@/types/CustomIntegrationField'
 import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
+import customIntegrationField from '@/utils/CustomIntegrationField/customIntegrationField'
 import notify from '@/utils/notify'
 import { InformationCircleIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
-import { ref } from 'vue'
 
 const props = defineProps<{
     custom_integration_fields: Array<CustomIntegrationField>
-    available_integration_fields: Array<CustomIntegrationFieldEnum>
+    available_integration_field_names: Array<CustomIntegrationFieldEnum>
 }>()
 
-function customIntegrationField(integrationField: CustomIntegrationFieldEnum) {
-    return props.custom_integration_fields.filter(
-        (customIntegrationField) => customIntegrationField.name === integrationField
-    )[0]
-}
-
 function upsertCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
-    if (customIntegrationField(integrationField)) {
+    if (customIntegrationField(props.custom_integration_fields, integrationField)) {
         updateCustomIntegrationField(integrationField)
     } else {
         storeCustomIntegrationField(integrationField)
@@ -32,7 +27,7 @@ function storeCustomIntegrationField(integrationField: CustomIntegrationFieldEnu
         route('custom-integration-fields.store'),
         {
             name: integrationField,
-            api_key: demoSetByApiKey.value,
+            api_key: apiKeyRefs.value[integrationField],
             integration_type: 'pipedrive',
         },
         {
@@ -45,9 +40,12 @@ function storeCustomIntegrationField(integrationField: CustomIntegrationFieldEnu
 
 function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
     router.put(
-        route('custom-integration-fields.update', customIntegrationField(integrationField)),
+        route(
+            'custom-integration-fields.update',
+            customIntegrationField(props.custom_integration_fields, integrationField)
+        ),
         {
-            api_key: demoSetByApiKey.value,
+            api_key: apiKeyRefs.value[integrationField],
         },
         {
             onSuccess: () => {
@@ -63,17 +61,17 @@ function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEn
         }
     )
 }
-
-const demoSetByApiKey = ref(customIntegrationField('demo_set_by')?.api_key)
+const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.custom_integration_fields)
 </script>
 
 <template>
     <div
         class="group relative mx-40 flex items-center gap-5 rounded-md p-4"
-        v-for="integrationField in props.available_integration_fields"
+        v-for="(integrationFieldName, index) in props.available_integration_field_names"
+        :key="index"
     >
         <div class="flex items-center gap-2">
-            <p>{{ integrationField }}</p>
+            <p>{{ integrationFieldName }}</p>
             <InformationCircleIcon class="h-5 w-5" />
         </div>
 
@@ -84,14 +82,13 @@ const demoSetByApiKey = ref(customIntegrationField('demo_set_by')?.api_key)
 
         <TextInput
             type="text"
-            v-model="demoSetByApiKey"
-            name="name"
+            v-model="apiKeyRefs[integrationFieldName]"
             class="ml-5"
             no-top-margin
         />
 
         <PrimaryButton
-            @click="upsertCustomIntegrationField(integrationField)"
+            @click="upsertCustomIntegrationField(integrationFieldName)"
             text="Save"
         />
     </div>

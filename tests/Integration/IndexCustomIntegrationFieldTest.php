@@ -16,7 +16,7 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('CustomIntegrationField/Index')
                 ->has('custom_integration_fields', $customIntegrationFieldCount)
-                ->where('available_integration_fields', array_column(CustomIntegrationFieldEnum::cases(), 'value'))
+                ->where('available_integration_field_names', array_column(CustomIntegrationFieldEnum::cases(), 'value'))
         );
 });
 

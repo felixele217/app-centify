@@ -23,7 +23,9 @@ const props = defineProps<{
             :key="option.title"
             @click="$emit('option-clicked', option)"
             :class="[
-                option.selected ? 'bg-indigo-100 border-indigo-200 hover:bg-indigo-50' : 'border-gray-300 bg-white hover:bg-indigo-50',
+                option.selected
+                    ? 'border-indigo-200 bg-indigo-100 hover:bg-indigo-50'
+                    : 'border-gray-300 bg-white hover:bg-indigo-50',
                 'relative flex cursor-pointer justify-center rounded-md border py-2 shadow-sm focus:outline-none',
             ]"
         >

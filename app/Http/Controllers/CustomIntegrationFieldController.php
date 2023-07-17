@@ -20,7 +20,7 @@ class CustomIntegrationFieldController extends Controller
     {
         return Inertia::render('CustomIntegrationField/Index', [
             'custom_integration_fields' => Auth::user()->organization->customIntegrationFields,
-            'available_integration_fields' => array_column(CustomIntegrationFieldEnum::cases(), 'value'),
+            'available_integration_field_names' => array_column(CustomIntegrationFieldEnum::cases(), 'value'),
         ]);
     }
 
