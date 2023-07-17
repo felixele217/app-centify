@@ -4,6 +4,7 @@ import TextInput from '@/Components/Form/TextInput.vue'
 import CustomIntegrationField from '@/types/CustomIntegrationField'
 import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
 import notify from '@/utils/notify'
+import { InformationCircleIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
@@ -68,11 +69,17 @@ const demoSetByApiKey = ref(customIntegrationField('demo_set_by')?.api_key)
 
 <template>
     <div
-        class="mx-40 flex items-center gap-5 rounded-md p-4"
+        class="group relative mx-40 flex items-center gap-5 rounded-md p-4"
         v-for="integrationField in props.available_integration_fields"
     >
-        <p>
-            {{ integrationField }}
+        <div class="flex items-center gap-2">
+            <p>{{ integrationField }}</p>
+            <InformationCircleIcon class="h-5 w-5" />
+        </div>
+
+        <p class="invisible absolute left-20 top-16 w-80 rounded-lg bg-white px-4 py-1.5 text-sm group-hover:visible">
+            This needs to be set to the API key for this data field. Go to Pipedrive > Company Settings > Company > Data
+            fields. Then hover over the data field and click on the options symbol to copy the key.
         </p>
 
         <TextInput

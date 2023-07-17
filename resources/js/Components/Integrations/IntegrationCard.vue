@@ -46,20 +46,6 @@ function syncIntegration() {
 
         <div class="mt-10">
             <div
-                class="flex items-center justify-between"
-                v-if="!activeIntegrations[props.for]"
-            >
-                <div class="-mb-1 flex items-center gap-2">
-                    <div class="h-2 w-2 rounded-full bg-gray-300" />
-                    <p class="-mt-0.5 text-sm">inactive</p>
-                </div>
-
-                <PrimaryButton
-                    text="Connect"
-                    @click="authenticate"
-                />
-            </div>
-            <div
                 class="flex items-center justify-between gap-5"
                 v-if="activeIntegrations[props.for]"
             >
@@ -70,6 +56,21 @@ function syncIntegration() {
                 <PrimaryButton
                     text="Sync"
                     @click="syncIntegration"
+                />
+            </div>
+
+            <div
+                class="flex items-center justify-between"
+                v-else
+            >
+                <div class="-mb-1 flex items-center gap-2">
+                    <div class="h-2 w-2 rounded-full bg-gray-300" />
+                    <p class="-mt-0.5 text-sm">inactive</p>
+                </div>
+
+                <PrimaryButton
+                    text="Connect"
+                    @click="authenticate"
                 />
             </div>
         </div>
