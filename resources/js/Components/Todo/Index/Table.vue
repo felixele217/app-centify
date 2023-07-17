@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
 import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
-import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
+import Logo from '@/Components/Logos/Logo.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -81,7 +81,7 @@ const dealIdBeingAccepted = ref<number | null>()
             <template #body>
                 <tr v-for="deal in props.deals">
                     <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm">
-                        <PipedriveLogo v-if="deal.integration_type === 'pipedrive'" />
+                        <Logo :for="deal.integration_type" />
                     </td>
                     <td class="whitespace-nowrap py-4 pr-3 text-sm">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>

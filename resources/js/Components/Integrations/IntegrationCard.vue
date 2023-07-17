@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import PipedriveLogo from '@/Components/Logos/PipedriveLogo.vue'
-import SalesforceLogo from '@/Components/Logos/SalesforceLogo.vue'
 import Admin from '@/types/Admin'
+import { IntegrationTypeEnum } from '@/types/Enum/IntegrationTypeEnum'
 import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
+import Logo from '../Logos/Logo.vue'
 
 const props = defineProps<{
-    for: 'pipedrive' | 'salesforce'
+    for: IntegrationTypeEnum
 }>()
 
 const activeIntegrations = (usePage().props.auth.user as Admin).active_integrations
@@ -34,8 +34,7 @@ function syncIntegration() {
     <Card class="w-72">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <PipedriveLogo v-if="props.for === 'pipedrive'" />
-                <SalesforceLogo v-if="props.for === 'salesforce'" />
+                <Logo :for="props.for" />
                 <h3>{{ props.for }}</h3>
             </div>
 
