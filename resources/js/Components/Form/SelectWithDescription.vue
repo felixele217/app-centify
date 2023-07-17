@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 export type SelectOption = {
     title: string
-    description: string
+    description?: string
     current: boolean
 }
 
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const selected = ref<null | {
     title: string
-    description: string
+    description?: string
     current: boolean
 }>(props.default || null)
 </script>

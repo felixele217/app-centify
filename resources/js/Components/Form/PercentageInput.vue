@@ -27,7 +27,12 @@ function handleKeyDown(event: any) {
         return
     }
 
-    if (props.value.toString().length > 8) {
+    if (props.value >= 100) {
+        return
+    }
+
+    if (Number(props.value.toString() + event.key) >= 100) {
+        emit('set-value', 100)
         return
     }
 
@@ -38,33 +43,7 @@ function handleKeyDown(event: any) {
     }
 }
 
-function currencyDisplay(valueInCents: number): string {
-    if (valueInCents.toString().length === 1) {
-        return `00.0${valueInCents}€`
-    }
-
-    if (valueInCents.toString().length === 2) {
-        return `00.${valueInCents}€`
-    }
-
-    if (valueInCents.toString().length === 3) {
-        const firstDigit = valueInCents.toString().slice(0, 1)
-        const lastTwoDigits = valueInCents.toString().slice(1)
-        return `0${firstDigit}.${lastTwoDigits}€`
-    }
-
-    if (valueInCents.toString().length === 4) {
-        const firstDigits = valueInCents.toString().slice(0, 2)
-        const lastTwoDigits = valueInCents.toString().slice(2)
-        return `${firstDigits}.${lastTwoDigits}€`
-    }
-
-    const options = {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }
-    return `${Number(valueInCents / 100).toLocaleString('de', options)}€`
-}
+const percentageDisplay = (percentage: number) => `${Number(percentage)}%`
 </script>
 
 <template>
@@ -72,6 +51,6 @@ function currencyDisplay(valueInCents: number): string {
         :class="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
         @keydown.prevent="handleKeyDown"
         type="text"
-        :modelValue="currencyDisplay(props.value)"
+        :modelValue="percentageDisplay(props.value)"
     />
 </template>

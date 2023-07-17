@@ -7,6 +7,7 @@ import CurrencyInput from '../Form/CurrencyInput.vue'
 import InputError from '../Form/InputError.vue'
 import InputLabel from '../Form/InputLabel.vue'
 import SelectWithDescription from '../Form/SelectWithDescription.vue'
+import KickerForm from './KickerForm.vue'
 import { AdditionalField } from './UpsertPlanCard.vue'
 
 const props = defineProps<{
@@ -29,6 +30,7 @@ const text = ref('')
 <template>
     <div>
         <InputLabel
+            v-if="props.field.type !== 'Kicker'"
             :value="props.field.type"
             required
         />
@@ -53,6 +55,10 @@ const text = ref('')
                 ]"
                 @option-selected="(optionTitle: 'Demo set') => text = optionTitle"
             />
+        </div>
+
+        <div v-if="props.field.type === 'Kicker'">
+            <KickerForm />
         </div>
 
         <InputError />
