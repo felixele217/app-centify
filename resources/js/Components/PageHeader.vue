@@ -12,7 +12,7 @@ const props = defineProps<{
     <div class="mb-10 sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h3 class="leading-6 text-gray-900">{{ props.title }}</h3>
-            <p class="mt-2 text-sm text-gray-700">{{ props.description }}</p>
+            <p class="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{{ props.description }}</p>
         </div>
 
         <div
