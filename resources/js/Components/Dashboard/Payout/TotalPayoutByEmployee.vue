@@ -4,13 +4,14 @@ import Filter from '@/Components/Form/Filter.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
+import roundFloat from '@/utils/roundFloat'
 
 const props = defineProps<{
     agents: Array<Agent>
 }>()
 
 function quotaDisplay(quotaAttainment: number) {
-    return quotaAttainment * 100 + '%'
+    return roundFloat(quotaAttainment * 100) + '%'
 }
 
 const src =
