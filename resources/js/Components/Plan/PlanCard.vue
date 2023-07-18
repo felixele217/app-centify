@@ -3,6 +3,7 @@ import type Plan from '@/types/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import formatDate from '@/utils/formatDate'
 import notify from '@/utils/notify'
+import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import Card from '../Card.vue'
@@ -79,7 +80,9 @@ const planIdBeingDeleted = ref<number | null>()
             <div class="flex items-center">
                 <Dropdown>
                     <template #trigger>
-                        <p class="invisible rotate-90 cursor-pointer text-2xl text-gray-700 group-hover:visible">...</p>
+                        <EllipsisVerticalIcon
+                            class="invisible h-5 w-5 cursor-pointer text-gray-700 group-hover:visible"
+                        />
                     </template>
 
                     <template #content>

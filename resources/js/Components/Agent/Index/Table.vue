@@ -8,6 +8,7 @@ import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
+import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
@@ -130,12 +131,12 @@ const src =
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
-                <td class="'relative sm:pr-6', flex gap-5 py-3.5 pl-3 pr-4 text-right text-sm font-medium">
+                <td class="relative py-3.5 pr-5">
                     <Dropdown>
                         <template #trigger>
-                            <p class="invisible rotate-90 cursor-pointer text-2xl text-gray-700 group-hover:visible">
-                                ...
-                            </p>
+                            <EllipsisVerticalIcon
+                                class="invisible h-6 w-6 cursor-pointer text-gray-700 group-hover:visible"
+                            />
                         </template>
 
                         <template #content>
