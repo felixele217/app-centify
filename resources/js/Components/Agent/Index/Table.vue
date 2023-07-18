@@ -34,6 +34,9 @@ function closeModal(): void {
 const isOpen = ref(false)
 const agentIdBeingDeleted = ref<number | null>()
 const agentBeingEdited = ref<Agent>()
+
+const src =
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 </script>
 
 <template>
@@ -57,7 +60,7 @@ const agentBeingEdited = ref<Agent>()
             <tr>
                 <th
                     scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                    class="py-3.5 pl-5 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                     Name
                 </th>
@@ -89,10 +92,14 @@ const agentBeingEdited = ref<Agent>()
                 :key="agent.id"
                 :class="agentId === 0 ? '' : 'border-t'"
             >
-                <td class="relative py-4 pl-4 text-sm sm:pl-6">
-                    <div class="font-medium text-gray-900">
-                        {{ agent.name }}
-                    </div>
+                <td class="flex items-center gap-5 whitespace-nowrap py-5 pl-5 pr-3 text-sm">
+                    <img
+                        class="h-10 w-10 rounded-full"
+                        :src="src"
+                        alt="Profile Photo"
+                    />
+
+                    <div class="font-medium text-gray-900">{{ agent.name }}</div>
 
                     <div
                         v-if="agentId !== 0"
