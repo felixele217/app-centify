@@ -36,7 +36,7 @@ const dealIdBeingAccepted = ref<number | null>()
 <template>
     <div>
         <page-header
-            title="Todos"
+            title="To-Dos"
             description="All opportunities that need to be reviewed."
         />
 

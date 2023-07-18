@@ -2,6 +2,7 @@
 import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import type NavigationItem from '@/types/NavigationItem'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
+import SidebarLink from './SidebarLink.vue'
 
 const props = defineProps<{
     navigation: Array<NavigationItem>
@@ -27,36 +28,17 @@ const props = defineProps<{
                                 v-for="item in props.navigation"
                                 :key="item.name"
                             >
-                                <a
-                                    :href="item.href"
-                                    :class="[
-                                        item.current
-                                            ? 'bg-gray-50 text-primary'
-                                            : 'text-gray-800 hover:bg-gray-50 hover:text-primary',
-                                        'group flex gap-x-3 rounded-md p-2 py-3.5 font-semibold leading-6',
-                                    ]"
-                                >
-                                    <component
-                                        :is="item.icon"
-                                        class="h-6 w-6 shrink-0"
-                                        aria-hidden="true"
-                                    />
-                                    {{ item.name }}
-                                </a>
+                                <SidebarLink v-bind="item" />
                             </li>
                         </ul>
                     </li>
                     <li class="mt-auto">
-                        <a
+                        <SidebarLink
+                            name="Settings"
                             :href="route('profile.edit')"
-                            class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-800 hover:bg-gray-50 hover:text-primary"
-                        >
-                            <Cog6ToothIcon
-                                class="h-6 w-6 shrink-0"
-                                aria-hidden="true"
-                            />
-                            Settings
-                        </a>
+                            :icon="Cog6ToothIcon"
+                            :current="route().current('profile.edit')"
+                        />
                     </li>
                 </ul>
             </nav>

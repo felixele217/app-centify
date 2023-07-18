@@ -19,10 +19,12 @@ const rollingQuota = roundFloat(percentageOfMonthCompleted * 100, 0)
 
 <template>
     <Card class="flex justify-between">
-        <div>
-            <p class="mb-3 font-semibold">Average Quota Attainment</p>
-            <h2 class="mb-8">All Teams</h2>
-            <p class="font-semibold text-gray-400">rolling quota: {{ rollingQuota }}%</p>
+        <div class="flex h-full flex-col justify-between">
+            <p class=" font-semibold">Average Quota Attainment</p>
+            <div>
+                <h2 class="mb-3">All Teams</h2>
+                <p class="font-semibold text-gray-400">rolling quota: {{ rollingQuota }}%</p>
+            </div>
         </div>
 
         <DoughnutChart :averageAchievedQuotaAttainment="averageAchievedQuotaAttainment * 100" />
