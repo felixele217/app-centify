@@ -220,7 +220,7 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                     </div>
 
                     <div class="">
-                        <InputLabel value="Need more complexity? Add one of the following.." />
+                        <InputLabel value="Need more complexity? Add one of the following..." />
 
                         <CardOptions
                             :options-per-row="5"
