@@ -2,7 +2,7 @@
 
 use App\Encrypter;
 
-it('encryption encrypts and decrypts properly', function () {
+it('encrypts and decrypts properly', function () {
     $value = 'some4token4to4be4encrypted';
 
     $encryptedValue = Encrypter::encrypt($value);
