@@ -3,13 +3,10 @@ import type Plan from '@/types/Plan'
 import formatDate from '@/utils/Date/formatDate'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
+import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import Card from '../Card.vue'
-import Dropdown from '../Dropdown/Dropdown.vue'
-import DropdownBox from '../Dropdown/DropdownBox.vue'
-import DropdownLink from '../Dropdown/DropdownLink.vue'
 import EditAndDeleteOptions from '../Dropdown/EditAndDeleteOptions.vue'
 import BanknotesIcon from '../Icon/BanknotesIcon.vue'
 import CalendarIcon from '../Icon/CalendarIcon.vue'
@@ -36,7 +33,15 @@ const planIdBeingDeleted = ref<number | null>()
 <template>
     <Card class="group flex justify-between hover:bg-gray-50">
         <div>
-            <h2>{{ props.plan.name }}</h2>
+            <div class="flex items-center gap-3">
+                <h2>{{ props.plan.name }}</h2>
+
+                <EditAndDeleteOptions
+                    :edit-action="() => router.get(route('plans.update', props.plan.id))"
+                    :delete-action="() => (planIdBeingDeleted = props.plan.id)"
+                    :icon="PencilSquareIcon"
+                />
+            </div>
 
             <div class="mt-4 flex items-center gap-1">
                 <CalendarIcon class="text-gray-400" />
@@ -79,10 +84,10 @@ const planIdBeingDeleted = ref<number | null>()
             </div>
 
             <div class="flex items-center">
-                <EditAndDeleteOptions
+                <!-- <EditAndDeleteOptions
                     :edit-action="() => router.get(route('plans.update', props.plan.id))"
                     :delete-action="() => (planIdBeingDeleted = props.plan.id)"
-                />
+                /> -->
 
                 <p>Created by {{ props.plan.creator.name }}</p>
             </div>
