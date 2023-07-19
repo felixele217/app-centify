@@ -37,8 +37,8 @@ const planIdBeingDeleted = ref<number | null>()
                 <h2>{{ props.plan.name }}</h2>
 
                 <EditAndDeleteOptions
-                    :edit-action="() => router.get(route('plans.update', props.plan.id))"
-                    :delete-action="() => (planIdBeingDeleted = props.plan.id)"
+                    @edit-action="() => router.get(route('plans.update', props.plan.id))"
+                    @delete-action="() => (planIdBeingDeleted = props.plan.id)"
                     :icon="PencilSquareIcon"
                 />
             </div>
@@ -84,11 +84,6 @@ const planIdBeingDeleted = ref<number | null>()
             </div>
 
             <div class="flex items-center">
-                <!-- <EditAndDeleteOptions
-                    :edit-action="() => router.get(route('plans.update', props.plan.id))"
-                    :delete-action="() => (planIdBeingDeleted = props.plan.id)"
-                /> -->
-
                 <p>Created by {{ props.plan.creator.name }}</p>
             </div>
         </div>

@@ -5,7 +5,7 @@ import Dropdown from './Dropdown.vue'
 import DropdownBox from './DropdownBox.vue'
 
 const props = defineProps<{
-    icon: FunctionalComponent
+    icon?: FunctionalComponent
 }>()
 
 defineEmits(['edit-action', 'delete-action'])
