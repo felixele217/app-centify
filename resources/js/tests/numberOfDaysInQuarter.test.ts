@@ -1,4 +1,4 @@
-import numberOfDaysInQuarter from '@/utils/numberOfDaysInQuarter'
+import numberOfDaysInQuarter from '@/utils/Date/numberOfDaysInQuarter'
 import { describe, expect, test } from 'vitest'
 
 describe('correctly returns number of days for each quarter', () => {

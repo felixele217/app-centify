@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Agent from '@/types/Agent'
-import numberOfDaysInMonth from '@/utils/numberOfDaysInMonth'
+import numberOfDaysInMonth from '@/utils/Date/numberOfDaysInMonth'
 import roundFloat from '@/utils/roundFloat'
 import sum from '@/utils/sum'
 import Card from '../../Card.vue'

@@ -1,4 +1,4 @@
-import formatDate from '@/utils/formatDate'
+import formatDate from '@/utils/Date/formatDate'
 import { expect, test } from 'vitest'
 
 test('formats dates correctly', () => {

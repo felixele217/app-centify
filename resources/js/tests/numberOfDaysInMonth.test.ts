@@ -1,4 +1,4 @@
-import numberOfDaysInMonth from '@/utils/numberOfDaysInMonth'
+import numberOfDaysInMonth from '@/utils/Date/numberOfDaysInMonth'
 import { expect, test } from 'vitest'
 
 test('returns correct number of days of the month', () => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type Plan from '@/types/Plan'
 import euroDisplay from '@/utils/euroDisplay'
-import formatDate from '@/utils/formatDate'
+import formatDate from '@/utils/Date/formatDate'
 import notify from '@/utils/notify'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'

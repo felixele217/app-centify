@@ -1,5 +1,5 @@
-import numberOfDaysInMonth from '@/utils/numberOfDaysInMonth'
-import numberOfDaysInQuarter from '@/utils/numberOfDaysInQuarter'
+import numberOfDaysInMonth from '@/utils/Date/numberOfDaysInMonth'
+import numberOfDaysInQuarter from '@/utils/Date/numberOfDaysInQuarter'
 import roundFloat from '@/utils/roundFloat'
 import { expect, test } from 'vitest'
 

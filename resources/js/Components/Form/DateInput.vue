@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import formatDate from '@/utils/formatDate'
+import formatDate from '@/utils/Date/formatDate'
 // @ts-ignore
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
