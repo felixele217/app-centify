@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -128,13 +129,11 @@ const src =
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
-                <td class="relative py-3.5 pr-5 text-sm">
-                    <p
-                        @click="agentBeingEdited = agent"
-                        class="link hover:no-underline"
-                    >
-                        Edit
-                    </p>
+                <td class="lg:table-cell">
+                    <EditAndDeleteOptions
+                        @edit-action="agentBeingEdited = agent"
+                        @delete-action="agentIdBeingDeleted = agent.id"
+                    />
 
                     <div
                         v-if="agentId !== 0"

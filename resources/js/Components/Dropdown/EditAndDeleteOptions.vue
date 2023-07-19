@@ -9,7 +9,7 @@ defineEmits(['edit-action', 'delete-action'])
 <template>
     <Dropdown>
         <template #trigger>
-            <EllipsisVerticalIcon class="invisible h-5 w-5 cursor-pointer text-gray-700 group-hover:visible" />
+            <EllipsisVerticalIcon class="h-5 w-5 cursor-pointer text-gray-700" />
         </template>
 
         <template #content>
