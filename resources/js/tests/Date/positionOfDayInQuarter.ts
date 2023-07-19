@@ -1,4 +1,4 @@
-import dayPositionInQuarter from '@/utils/Date/dayPositionInQuarter'
+import dayPositionInQuarter from '@/utils/Date/positionOfDayInQuarter'
 import { expect, test } from 'vitest'
 
 test('correctly returns number', () => {

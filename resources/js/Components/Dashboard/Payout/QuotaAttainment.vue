@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import Agent from '@/types/Agent'
-import numberOfDaysInMonth from '@/utils/Date/numberOfDaysInMonth'
-import roundFloat from '@/utils/roundFloat'
+import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
+import getRollingQuota from '@/utils/Date/rollingQuota'
+import queryParamValue from '@/utils/queryParamValue'
 import sum from '@/utils/sum'
 import Card from '../../Card.vue'
 import DoughnutChart from './DoughnutChart/Content.vue'
+import roundFloat from '@/utils/roundFloat'
 
 const props = defineProps<{
     agents: Array<Agent>
 }>()
 
-const percentageOfMonthCompleted = new Date().getDate() / numberOfDaysInMonth()
-const averageAchievedQuotaAttainment =
-    sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / percentageOfMonthCompleted
+const rollingQuota = getRollingQuota(queryParamValue('time_scope') as TimeScopeEnum)
 
-const rollingQuota = roundFloat(percentageOfMonthCompleted * 100, 0)
+const averageAchievedQuotaAttainment =
+    sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / rollingQuota
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const rollingQuota = roundFloat(percentageOfMonthCompleted * 100, 0)
             <p class="font-semibold">Average Quota Attainment</p>
             <div>
                 <h2 class="mb-3">All Teams</h2>
-                <p class="font-semibold text-gray-400">rolling quota: {{ rollingQuota }}%</p>
+                <p class="font-semibold text-gray-400">rolling quota: {{ roundFloat(rollingQuota * 100) }}%</p>
             </div>
         </div>
 
