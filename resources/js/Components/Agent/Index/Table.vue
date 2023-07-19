@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Dropdown from '@/Components/Dropdown/Dropdown.vue'
-import DropdownBox from '@/Components/Dropdown/DropdownBox.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -8,7 +6,6 @@ import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
@@ -131,25 +128,13 @@ const src =
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
-                <td class="relative py-3.5 pr-5">
-                    <Dropdown>
-                        <template #trigger>
-                            <EllipsisVerticalIcon
-                                class="invisible h-6 w-6 cursor-pointer text-gray-700 group-hover:visible"
-                            />
-                        </template>
-
-                        <template #content>
-                            <DropdownBox
-                                text="Edit"
-                                @click="agentBeingEdited = agent"
-                            />
-                            <DropdownBox
-                                text="Delete"
-                                @click="agentIdBeingDeleted = agent.id"
-                            />
-                        </template>
-                    </Dropdown>
+                <td class="relative py-3.5 pr-5 text-sm">
+                    <p
+                        @click="agentBeingEdited = agent"
+                        class="link hover:no-underline"
+                    >
+                        Edit
+                    </p>
 
                     <div
                         v-if="agentId !== 0"

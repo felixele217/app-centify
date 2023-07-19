@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type Plan from '@/types/Plan'
-import euroDisplay from '@/utils/euroDisplay'
 import formatDate from '@/utils/Date/formatDate'
+import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
@@ -10,6 +10,7 @@ import Card from '../Card.vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
 import DropdownBox from '../Dropdown/DropdownBox.vue'
 import DropdownLink from '../Dropdown/DropdownLink.vue'
+import EditAndDeleteOptions from '../Dropdown/EditAndDeleteOptions.vue'
 import BanknotesIcon from '../Icon/BanknotesIcon.vue'
 import CalendarIcon from '../Icon/CalendarIcon.vue'
 import RecurIcon from '../Icon/RecurIcon.vue'
@@ -78,24 +79,11 @@ const planIdBeingDeleted = ref<number | null>()
             </div>
 
             <div class="flex items-center">
-                <Dropdown>
-                    <template #trigger>
-                        <EllipsisVerticalIcon
-                            class="invisible h-5 w-5 cursor-pointer text-gray-700 group-hover:visible"
-                        />
-                    </template>
+                <EditAndDeleteOptions
+                    :edit-action="() => router.get(route('plans.update', props.plan.id))"
+                    :delete-action="() => (planIdBeingDeleted = props.plan.id)"
+                />
 
-                    <template #content>
-                        <DropdownLink
-                            text="Edit"
-                            :href="route('plans.update', props.plan.id)"
-                        />
-                        <DropdownBox
-                            text="Delete"
-                            @click="planIdBeingDeleted = props.plan.id"
-                        />
-                    </template>
-                </Dropdown>
                 <p>Created by {{ props.plan.creator.name }}</p>
             </div>
         </div>
