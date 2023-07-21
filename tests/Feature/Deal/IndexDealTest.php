@@ -40,9 +40,9 @@ it('passes the correct props for scope=all', function (string $query) {
             ->has('deals.1.agent')
     );
 })->with([
-    '?scope='.DealScopeEnum::ALL->value,
     '',
-])->skip();
+    '?scope='.DealScopeEnum::ALL->value,
+]);
 
 it('passes the correct props for scope=open', function () {
     $this->get(route('deals.index') . '?scope=1' . DealScopeEnum::OPEN->value)->assertInertia(
