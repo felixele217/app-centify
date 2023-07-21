@@ -4,11 +4,11 @@ import ProfileDropdown from '@/Components/MainLayout/ProfileDropdown.vue'
 import SearchBar from '@/Components/MainLayout/SearchBar.vue'
 import Sidebar from '@/Components/MainLayout/Sidebar.vue'
 import Notification from '@/Components/Notification.vue'
-import { BellIcon, ChartPieIcon, FolderIcon, HomeIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+import { BellIcon, ChartPieIcon, ClipboardDocumentCheckIcon, FolderIcon, HomeIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
-    { name: 'Deals', href: route('deals.index'), icon: DealIcon, current: route().current('deals.index') },
+    { name: 'Deals', href: route('deals.index'), icon: ClipboardDocumentCheckIcon, current: route().current('deals.index') },
     { name: 'Plans', href: route('plans.index'), icon: ChartPieIcon, current: route().current('plans.index') },
     { name: 'Teams & Users', href: route('agents.index'), icon: FolderIcon, current: route().current('agents.index') },
     {
