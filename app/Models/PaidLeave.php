@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Enum\AgentStatusEnum;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PaidLeave extends Model
 {
@@ -26,5 +28,15 @@ class PaidLeave extends Model
     public function agent(): BelongsTo
     {
         return $this->belongsTo(Agent::class);
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('start_date', '<', Carbon::now())
+            ->where(function ($query) {
+                $query->where('end_date', '>', Carbon::now())
+                    ->orWhereNull('end_date');
+            })
+            ->orderBy('start_date', 'desc');
     }
 }
