@@ -11,10 +11,16 @@ class AgentRepository
 {
     public static function create(StoreAgentRequest $request): Agent
     {
-        return Agent::create([
-            ...$request->validated(),
+        $agent = Agent::create([
+            ...$request->safe()->except('paid_leave'),
             'organization_id' => Auth::user()->organization->id,
         ]);
+
+        if ($request->validated('paid_leave')) {
+            PaidLeaveRepository::create($agent, $request);
+        }
+
+        return $agent;
     }
 
     public static function update(Agent $agent, UpdateAgentRequest $request): void

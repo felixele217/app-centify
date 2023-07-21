@@ -48,6 +48,11 @@ class Agent extends Authenticatable
         return $this->belongsToMany(Plan::class);
     }
 
+    public function paidLeaves(): HasMany
+    {
+        return $this->hasMany(PaidLeave::class);
+    }
+
     protected function quotaAttainment(): Attribute
     {
         return Attribute::make(
