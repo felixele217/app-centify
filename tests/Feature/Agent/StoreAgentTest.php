@@ -38,6 +38,19 @@ it('can create an agent with casted nullable base_salary and on_target_earning',
     expect($agent->on_target_earning)->toBeNull();
 });
 
+it('has required fields', function () {
+    signInAdmin();
+
+    $this->post(route('agents.store'), [])->assertInvalid([
+        'name' => 'The name field is required.',
+        'email' => 'The email field is required.',
+        'base_salary' => 'The base salary field is required.',
+        'on_target_earning' => 'The on target earning field is required.',
+        'status' => 'The status field is required.',
+    ]);
+});
+
+
 it('cannot create an agent with a mail already taken by an admin', function () {
     $admin = signInAdmin();
 

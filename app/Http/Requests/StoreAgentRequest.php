@@ -25,12 +25,12 @@ class StoreAgentRequest extends FormRequest
             ],
 
             'base_salary' => [
-                'nullable',
+                'required',
                 'integer',
             ],
 
             'on_target_earning' => [
-                'nullable',
+                'required',
                 'integer',
             ],
 
@@ -70,6 +70,10 @@ class StoreAgentRequest extends FormRequest
         $data = $this->all();
 
         foreach (['base_salary', 'on_target_earning'] as $field) {
+            if (! isset($data[$field])) {
+                continue;
+            }
+
             $data[$field] = $data[$field] === 0 ? null : $data[$field];
         }
 

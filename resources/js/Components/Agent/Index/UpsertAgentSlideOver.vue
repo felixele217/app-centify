@@ -180,6 +180,7 @@ function submit() {
                                                         <InputLabel
                                                             for="base_salary"
                                                             value="Base Salary"
+                                                            required
                                                         />
 
                                                         <CurrencyInput
@@ -196,6 +197,7 @@ function submit() {
                                                         <InputLabel
                                                             for="on_target_earning"
                                                             value="On Target Earning (OTE)"
+                                                            required
                                                         />
 
                                                         <CurrencyInput
