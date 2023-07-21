@@ -16,7 +16,7 @@ const props = defineProps<{
             :href="props.link || '#'"
             class="flex h-full flex-col justify-between"
         >
-            <div class=" flex justify-between">
+            <div class="flex justify-between">
                 <p class="font-semibold">{{ props.title }}</p>
                 <component
                     class="h-8 w-8"

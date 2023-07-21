@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import Navigation from '@/Components/Deal/Index/Navigation.vue'
 import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
 import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
-import Logo from '@/Components/Logos/Logo.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
@@ -35,20 +35,23 @@ const dealIdBeingAccepted = ref<number | null>()
 
 <template>
     <div>
-        <page-header
-            title="To-Dos"
-            description="All opportunities that need to be reviewed."
-        />
+        <div class="mb-10 flex justify-between">
+            <page-header
+                class="mb-0"
+                title="To-Dos"
+                description="All opportunities that need to be reviewed."
+            />
+            <Navigation />
+        </div>
 
         <Table
             :no-items-text="props.deals.length ? undefined : 'Currently, there are no opportunities for you to act on.'"
         >
             <template #header>
                 <tr>
-                    <th />
                     <th
                         scope="col"
-                        class="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
+                        class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900"
                     >
                         Owner
                     </th>
@@ -81,9 +84,6 @@ const dealIdBeingAccepted = ref<number | null>()
             <template #body>
                 <tr v-for="deal in props.deals">
                     <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm">
-                        <Logo :for="deal.integration_type" />
-                    </td>
-                    <td class="whitespace-nowrap py-4 pr-3 text-sm">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>
                         <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
                     </td>

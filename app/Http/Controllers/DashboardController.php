@@ -18,7 +18,7 @@ class DashboardController extends Controller
                 'commission',
             ]),
             'time_scopes' => array_column(TimeScopeEnum::cases(), 'value'),
-            'todo_count' => Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) {
+            'open_deal_count' => Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) {
                 $query->whereOrganizationId(Auth::user()->organization->id);
             })->count(),
         ]);

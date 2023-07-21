@@ -46,7 +46,7 @@ it('sends correct todo count for this organization', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Dashboard')
-                ->where('todo_count', Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) use ($admin) {
+                ->where('open_deal_count', Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) use ($admin) {
                     $query->whereOrganizationId($admin->organization->id);
                 })->count())
         );

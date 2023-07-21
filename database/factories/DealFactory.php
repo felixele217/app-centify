@@ -21,6 +21,7 @@ class DealFactory extends Factory
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'accepted_at' => null,
+            'declined_at' => null,
             'agent_id' => Agent::factory()->create(),
         ];
     }

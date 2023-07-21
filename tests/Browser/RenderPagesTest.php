@@ -25,7 +25,7 @@ class RenderPagesTest extends DuskTestCase
 
         $urlsToText = [
             route('dashboard') => 'Total Payout',
-            route('todos.index') => 'Users',
+            route('deals.index') => 'Users',
             route('agents.index') => 'Dashboard',
             route('integrations') => 'pipedrive',
             route('profile.edit') => 'Profile Information',

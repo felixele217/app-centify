@@ -5,7 +5,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TodoController;
 use App\Http\Middleware\AppendTimeScopeQuery;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,7 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{plan}', 'destroy')->name('destroy');
     });
 
-    Route::prefix('todos')->name('todos.')->controller(TodoController::class)->group(function () {
+    Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
 

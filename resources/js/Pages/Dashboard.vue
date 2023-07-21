@@ -11,7 +11,7 @@ import { Head } from '@inertiajs/vue3'
 
 const props = defineProps<{
     agents: Array<Agent>
-    todo_count: number
+    open_deal_count: number
 }>()
 
 const totalComission = euroDisplay(sum(props.agents.map((agent) => agent.commission! / 100)))
@@ -32,9 +32,9 @@ const payoutRowObjects: Array<{
     {
         title: 'To-Dos',
         icon: TodoIcon,
-        amount: props.todo_count || 0,
+        amount: props.open_deal_count || 0,
         subText: 'need attention',
-        link: route('todos.index'),
+        link: route('deals.index'),
     },
 ]
 </script>

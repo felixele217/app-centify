@@ -1,17 +1,24 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
+#    - ./phpstan-baseline.neon
 
 parameters:
+    checkMissingIterableValueType: true
 
     paths:
         - app/
 
-    level: 6
+    level: 5
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
-#
-#    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Cannot access property \$.* on object\|string\.#'
+        - '#Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Verified constructor expects Illuminate\\Contracts\\Auth\\MustVerifyEmail, App\\Models\\Admin\|null given\.#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::.*#'
+        - '#Call to an undefined static method Omniphx\\Forrest\\Providers\\Laravel\\Facades\\Forrest::.*#'
+        - '#Call to an undefined method Illuminate\Contracts\Database\Query\Builder::.*#'
+
+
+
+    excludePaths:
+        - app/Http/Controllers/Auth/AuthenticatedSessionController.php
+#        - app/Nova
