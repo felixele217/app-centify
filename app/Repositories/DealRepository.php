@@ -19,6 +19,7 @@ class DealRepository
             null, DealScopeEnum::ALL => $baseQuery->get(),
             DealScopeEnum::OPEN => $baseQuery->whereNull('accepted_at')->whereNull('declined_at')->get(),
             DealScopeEnum::ACCEPTED => $baseQuery->whereNotNull('accepted_at')->whereNull('declined_at')->get(),
+            DealScopeEnum::DECLINED => $baseQuery->whereNull('accepted_at')->whereNotNull('declined_at')->get(),
         };
     }
 }

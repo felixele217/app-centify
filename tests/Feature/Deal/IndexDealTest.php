@@ -62,40 +62,11 @@ it('passes the correct props for scope=accepted', function () {
     );
 });
 
-// it('passes the correct props for scope=declined', function () {
-
-// });
-
-// it('does not send foreign deals', function () {
-//     signInAdmin();
-
-//     Deal::factory(5)->create();
-
-//     $this->get(route('deals.index'))->assertInertia(
-//         fn (AssertableInertia $page) => $page
-//             ->component('Deal/Index')
-//             ->has('deals', 0)
-//     );
-// });
-
-// it('only sends not accepted deals', function () {
-//     $admin = signInAdmin();
-
-//     Deal::factory(4)->create([
-//         'agent_id' => $agent = Agent::factory()->create([
-//             'organization_id' => $admin->organization->id,
-//         ]),
-//         'accepted_at' => Carbon::now(),
-//     ]);
-
-//     Deal::factory($notAcceptedDealsCount = 2)->create([
-//         'agent_id' => $agent->id,
-//         'accepted_at' => null,
-//     ]);
-
-//     $this->get(route('deals.index'))->assertInertia(
-//         fn (AssertableInertia $page) => $page
-//             ->component('Deal/Index')
-//             ->has('deals', $notAcceptedDealsCount)
-//     );
-// });
+it('passes the correct props for scope=declined', function () {
+    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::DECLINED->value)->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Deal/Index')
+            ->has('deals', $this->declinedDealCount)
+            ->has('deals.1.agent')
+    );
+});
