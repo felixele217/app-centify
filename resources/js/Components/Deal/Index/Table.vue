@@ -114,7 +114,7 @@ const noDealsText = computed(() => {
             <template #body>
                 <tr
                     v-for="deal in props.deals"
-                    class="grid grid-cols-11 whitespace-nowrap text-sm items-center"
+                    class="grid grid-cols-11 items-center whitespace-nowrap text-sm"
                 >
                     <td class="col-span-3 py-4 pl-6 pr-3">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>
@@ -136,7 +136,10 @@ const noDealsText = computed(() => {
                         {{ euroDisplay(deal.value) }}
                     </td>
 
-                    <td class="px-3">
+                    <td
+                        class="px-3"
+                        v-if="queryParamValue('scope') === '' || queryParamValue('scope') === 'open'"
+                    >
                         <div class="flex gap-2 text-gray-500">
                             <thumbs-up-icon
                                 @click="dealIdBeingAccepted = deal.id"
