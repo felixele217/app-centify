@@ -11,13 +11,14 @@ class DealRepository
 {
     public static function get(DealScopeEnum|null $scope): Collection
     {
-        $baseQuery = Deal::whereHas('agent.organization', function ($query) {
+        $baseQuery = Deal::with('agent')->whereHas('agent.organization', function ($query) {
             $query->where('id', Auth::user()->organization->id);
         });
 
         return match ($scope) {
-            null, DealScopeEnum::ALL => $baseQuery->with('agent')->get(),
-            DealScopeEnum::OPEN => $baseQuery->whereNull('accepted_at')->whereNull('declined_at')->with('agent')->get(),
+            null, DealScopeEnum::ALL => $baseQuery->get(),
+            DealScopeEnum::OPEN => $baseQuery->whereNull('accepted_at')->whereNull('declined_at')->get(),
+            DealScopeEnum::ACCEPTED => $baseQuery->whereNotNull('accepted_at')->whereNull('declined_at')->get(),
         };
     }
 }

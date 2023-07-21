@@ -45,7 +45,7 @@ it('passes the correct props for scope=all', function (string $query) {
 ]);
 
 it('passes the correct props for scope=open', function () {
-    $this->get(route('deals.index') . '?scope=1' . DealScopeEnum::OPEN->value)->assertInertia(
+    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::OPEN->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', $this->openDealCount)
@@ -53,9 +53,14 @@ it('passes the correct props for scope=open', function () {
     );
 });
 
-// it('passes the correct props for scope=accepted', function () {
-
-// });
+it('passes the correct props for scope=accepted', function () {
+    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::ACCEPTED->value)->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Deal/Index')
+            ->has('deals', $this->acceptedDealCount)
+            ->has('deals.1.agent')
+    );
+});
 
 // it('passes the correct props for scope=declined', function () {
 
