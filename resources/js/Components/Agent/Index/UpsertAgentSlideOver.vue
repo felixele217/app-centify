@@ -46,6 +46,12 @@ watch(
             form.base_salary = agent.base_salary ?? 0
             form.on_target_earning = agent.on_target_earning ?? 0
             form.status = agent.status
+            form.paid_leave = {
+                start_date: agent.active_paid_leave?.start_date ?? null,
+                end_date: agent.active_paid_leave?.end_date ?? null,
+                continuation_of_pay_time_scope: agent.active_paid_leave?.continuation_of_pay_time_scope ?? '',
+                sum_of_commissions: agent.active_paid_leave?.sum_of_commissions ?? 0,
+            }
         }
     }
 )

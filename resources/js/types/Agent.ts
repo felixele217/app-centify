@@ -1,4 +1,5 @@
 import { AgentStatusEnum } from './Enum/AgentStatusEnum'
+import PaidLeave from './PaidLeave'
 
 export default interface Agent {
     id: number
@@ -12,4 +13,5 @@ export default interface Agent {
     quota_attainment?: number
     commission?: number
     status: AgentStatusEnum
+    active_paid_leave?: PaidLeave | null
 }

@@ -25,7 +25,7 @@ const props = defineProps<{
     }>
 }>()
 
-const employed28OrMoreDays = ref<boolean>(false)
+const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
 </script>
 
 <template>
