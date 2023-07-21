@@ -7,12 +7,12 @@ use App\Models\Agent;
 use App\Models\PaidLeave;
 use Carbon\Carbon;
 
-it('stores the paid leave when an agent is stored on vacation', function () {
+it('stores the paid leave when an agent is stored on vacation or sick', function (string $status) {
     signInAdmin();
 
     StoreAgentRequest::factory()->state([
         'name' => $name = 'Felix Doe',
-        'status' => AgentStatusEnum::VACATION->value,
+        'status' => $status,
         'paid_leave' => [
             'start_date' => $startDate = Carbon::today(),
             'end_date' => $endDate = Carbon::parse('+1 week'),
@@ -30,4 +30,7 @@ it('stores the paid leave when an agent is stored on vacation', function () {
     expect($paidLeave->end_date->toDateString())->toBe($endDate->toDateString());
     expect($paidLeave->continuation_of_pay_time_scope->value)->toBe($continuationOfPayTimeScope);
     expect($paidLeave->sum_of_commissions)->toBe($sumOfCommissions);
-});
+})->with([
+    AgentStatusEnum::VACATION->value,
+    AgentStatusEnum::SICK->value,
+]);
