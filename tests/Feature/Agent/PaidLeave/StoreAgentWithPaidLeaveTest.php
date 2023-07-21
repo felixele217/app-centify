@@ -34,3 +34,35 @@ it('stores the paid leave when an agent is stored on vacation or sick', function
     AgentStatusEnum::VACATION->value,
     AgentStatusEnum::SICK->value,
 ]);
+
+it('does requires an end date for a vacation', function () {
+    signInAdmin();
+
+    StoreAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::VACATION->value,
+        'paid_leave' => [
+            'start_date' => Carbon::today(),
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ],
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertInvalid([
+        'paid_leave.end_date',
+    ]);
+});
+
+it('does not require an end date for a sickness', function () {
+    signInAdmin();
+
+    StoreAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::SICK->value,
+        'paid_leave' => [
+            'start_date' => Carbon::today(),
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ],
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertValid();
+});

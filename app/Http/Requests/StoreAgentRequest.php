@@ -49,7 +49,7 @@ class StoreAgentRequest extends FormRequest
             ],
 
             'paid_leave.end_date' => [
-                'required_with:paid_leave',
+                'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'date',
             ],
 
