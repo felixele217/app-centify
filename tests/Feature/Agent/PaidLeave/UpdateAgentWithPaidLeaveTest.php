@@ -11,7 +11,7 @@ it('updates the paid leave when an agent is updated on vacation or sick', functi
     $admin = signInAdmin();
 
     $agent = Agent::factory()->create([
-        'organization_id' => $admin->organization->id
+        'organization_id' => $admin->organization->id,
     ]);
 
     UpdateAgentRequest::factory()->state([
@@ -37,3 +37,43 @@ it('updates the paid leave when an agent is updated on vacation or sick', functi
     AgentStatusEnum::VACATION->value,
     AgentStatusEnum::SICK->value,
 ]);
+
+it('does requires an end date for a vacation', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    UpdateAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::VACATION->value,
+        'paid_leave' => [
+            'start_date' => $startDate = Carbon::today(),
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+        ],
+    ])->fake();
+
+    $this->put(route('agents.update', $agent->id))->assertInvalid([
+        'paid_leave.end_date',
+    ]);
+});
+
+it('does not require an end date for a sickness', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    UpdateAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::SICK->value,
+        'paid_leave' => [
+            'start_date' => $startDate = Carbon::today(),
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+        ],
+    ])->fake();
+
+    $this->put(route('agents.update', $agent->id))->assertValid();
+});

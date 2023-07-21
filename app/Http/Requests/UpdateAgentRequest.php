@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Enum\AgentStatusEnum;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
 
 class UpdateAgentRequest extends FormRequest
 {
@@ -50,7 +50,7 @@ class UpdateAgentRequest extends FormRequest
             ],
 
             'paid_leave.end_date' => [
-                'required_with:paid_leave',
+                'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'date',
             ],
 
