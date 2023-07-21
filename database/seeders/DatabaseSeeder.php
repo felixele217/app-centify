@@ -45,9 +45,25 @@ class DatabaseSeeder extends Seeder
             'base_salary' => 100_000_00,
         ]);
 
-        Plan::factory(3)->create([
+        Plan::factory()->create([
             'organization_id' => $admin->organization->id,
             'creator_id' => $admin->id,
+            'name' => 'Jr. Account Executive Plan',
+            'target_amount_per_month' => 35_000_00,
+        ])->first();
+
+        Plan::factory()->create([
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
+            'name' => 'Sr. Account Executive Plan',
+            'target_amount_per_month' => 50_000_00,
+        ])->first();
+
+        Plan::factory()->create([
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
+            'name' => 'SDR Plan',
+            'target_amount_per_month' => 15_000_00,
         ])->first();
 
         Plan::first()->agents()->attach([
