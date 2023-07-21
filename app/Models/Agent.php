@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use App\Enum\AgentStatusEnum;
-use App\Enum\TimeScopeEnum;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\PaidLeave;
+use App\Enum\TimeScopeEnum;
+use App\Enum\AgentStatusEnum;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Agent extends Authenticatable
 {
@@ -51,6 +53,11 @@ class Agent extends Authenticatable
     public function paidLeaves(): HasMany
     {
         return $this->hasMany(PaidLeave::class);
+    }
+
+    public function activePaidLeave(): HasOne
+    {
+        return $this->hasOne(PaidLeave::class)->active();
     }
 
     protected function quotaAttainment(): Attribute

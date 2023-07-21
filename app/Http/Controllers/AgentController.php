@@ -16,7 +16,7 @@ class AgentController extends Controller
     public function index(): Response
     {
         return Inertia::render('Agent/Index', [
-            'agents' => Agent::with('paidLeaves')->get(),
+            'agents' => Agent::with('activePaidLeave')->get(),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
         ]);
     }
