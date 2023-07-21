@@ -6,10 +6,12 @@ import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Table from '@/Components/Table.vue'
 import Deal from '@/types/Deal'
+import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
+import queryParamValue from '@/utils/queryParamValue'
 import { router } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
     deals: Array<Deal>
@@ -31,6 +33,21 @@ function acceptDeal(dealId: number) {
 }
 
 const dealIdBeingAccepted = ref<number | null>()
+
+const noDealsText = computed(() => {
+    if (props.deals.length > 0) {
+        return ''
+    }
+
+    switch (queryParamValue('scope') as DealScopeEnum) {
+        case 'open':
+            return 'Open Text'
+        case 'accepted':
+            return 'Accepted Text'
+        case 'declined':
+            return 'Declined Text'
+    }
+})
 </script>
 
 <template>
@@ -43,12 +60,10 @@ const dealIdBeingAccepted = ref<number | null>()
                 no-bottom-margin
             />
 
-            <Navigation v-if="props.deals.length" />
+            <Navigation />
         </div>
 
-        <Table
-            :no-items-text="props.deals.length ? undefined : 'Currently, there are no opportunities for you to act on.'"
-        >
+        <Table :no-items-text="noDealsText">
             <template #header>
                 <tr>
                     <th

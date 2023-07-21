@@ -1,9 +1,27 @@
 <script setup lang="ts">
+import queryParamValue from '@/utils/queryParamValue'
+
 const tabs = [
-    { name: 'All', href: route('deals.index'), current: false },
-    { name: 'Open', href: route('deals.index') + '?scope=open', current: true },
-    { name: 'Accepted', href: route('deals.index') + '?scope=accepted', current: false },
-    { name: 'Declined', href: route('deals.index') + '?scope=declined', current: false },
+    {
+        name: 'All',
+        href: route('deals.index'),
+        current: queryParamValue('scope') === '',
+    },
+    {
+        name: 'Open',
+        href: route('deals.index') + '?scope=open',
+        current: window.location.href.includes('open'),
+    },
+    {
+        name: 'Accepted',
+        href: route('deals.index') + '?scope=accepted',
+        current: window.location.href.includes('accepted'),
+    },
+    {
+        name: 'Declined',
+        href: route('deals.index') + '?scope=declined',
+        current: window.location.href.includes('declined'),
+    },
 ]
 </script>
 
