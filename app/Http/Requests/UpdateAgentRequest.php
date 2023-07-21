@@ -14,29 +14,29 @@ class UpdateAgentRequest extends FormRequest
     {
         return [
             'name' => [
-                'nullable',
+                'required',
                 'string',
             ],
 
             'email' => [
-                'nullable',
+                'required',
                 'email',
                 Rule::unique('admins', 'email'),
                 Rule::unique('agents', 'email')->ignore(request()->route('agent')->id),
             ],
 
             'base_salary' => [
-                'nullable',
+                'required',
                 'integer',
             ],
 
             'on_target_earning' => [
-                'nullable',
+                'required',
                 'integer',
             ],
 
             'status' => [
-                'nullable',
+                'required',
                 new Enum(AgentStatusEnum::class),
             ],
 
@@ -71,6 +71,10 @@ class UpdateAgentRequest extends FormRequest
         $data = $this->all();
 
         foreach (['base_salary', 'on_target_earning'] as $field) {
+            if (! isset($data[$field])) {
+                continue;
+            }
+
             $data[$field] = $data[$field] === 0 ? null : $data[$field];
         }
 

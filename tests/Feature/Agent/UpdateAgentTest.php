@@ -60,6 +60,22 @@ it('can update an agent with casted nullable base_salary and on_target_earning',
     expect($agent->on_target_earning)->toBeNull();
 });
 
+it('has required fields', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $this->put(route('agents.update', $agent), [])->assertInvalid([
+        'name' => 'The name field is required.',
+        'email' => 'The email field is required.',
+        'base_salary' => 'The base salary field is required.',
+        'on_target_earning' => 'The on target earning field is required.',
+        'status' => 'The status field is required.',
+    ]);
+});
+
 it('cannot update an agent with a mail already taken by an admin', function () {
     $admin = signInAdmin();
 
@@ -72,7 +88,7 @@ it('cannot update an agent with a mail already taken by an admin', function () {
     ])->fake();
 
     $this->put(route('agents.update', $agent))->assertInvalid([
-        'email' => 'The email has already been taken.',
+        'email' => 'The field is required.',
     ]);
 });
 
@@ -88,7 +104,7 @@ it('cannot update an agent with a mail already taken by an agent', function () {
     ])->fake();
 
     $this->put(route('agents.update', $agent))->assertInvalid([
-        'email' => 'The email has already been taken.',
+        'email' => 'The field is required.',
     ]);
 });
 
