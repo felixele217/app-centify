@@ -32,20 +32,17 @@ beforeEach(function () {
     Deal::factory($this->foreignDealCount = 1)->create();
 });
 
-it('passes the correct props for scope=all', function (string $query) {
-    $this->get(route('deals.index').$query)->assertInertia(
+it('passes the correct props for all deals if no scope is specified', function () {
+    $this->get(route('deals.index'))->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', $this->openDealCount + $this->acceptedDealCount + $this->declinedDealCount)
             ->has('deals.1.agent')
     );
-})->with([
-    '',
-    '?scope='.DealScopeEnum::ALL->value,
-]);
+});
 
 it('passes the correct props for scope=open', function () {
-    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::OPEN->value)->assertInertia(
+    $this->get(route('deals.index').'?scope='.DealScopeEnum::OPEN->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', $this->openDealCount)
@@ -54,7 +51,7 @@ it('passes the correct props for scope=open', function () {
 });
 
 it('passes the correct props for scope=accepted', function () {
-    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::ACCEPTED->value)->assertInertia(
+    $this->get(route('deals.index').'?scope='.DealScopeEnum::ACCEPTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', $this->acceptedDealCount)
@@ -63,7 +60,7 @@ it('passes the correct props for scope=accepted', function () {
 });
 
 it('passes the correct props for scope=declined', function () {
-    $this->get(route('deals.index') . '?scope=' . DealScopeEnum::DECLINED->value)->assertInertia(
+    $this->get(route('deals.index').'?scope='.DealScopeEnum::DECLINED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', $this->declinedDealCount)

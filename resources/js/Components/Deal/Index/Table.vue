@@ -35,13 +35,15 @@ const dealIdBeingAccepted = ref<number | null>()
 
 <template>
     <div>
-        <div class="mb-10 flex justify-between">
+        <div class="flex justify-between">
             <page-header
                 class="mb-0"
                 title="To-Dos"
                 description="All opportunities that need to be reviewed."
+                no-bottom-margin
             />
-            <Navigation />
+
+            <Navigation v-if="props.deals.length" />
         </div>
 
         <Table

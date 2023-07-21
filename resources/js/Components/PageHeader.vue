@@ -5,11 +5,15 @@ const props = defineProps<{
     title: string
     description: string
     buttonText?: string
+    noBottomMargin?: boolean
 }>()
 </script>
 
 <template>
-    <div class="mb-10 sm:flex sm:items-center">
+    <div
+        class="sm:flex sm:items-center"
+        :class="props.noBottomMargin ? 'mb-0' : 'mb-10'"
+    >
         <div class="sm:flex-auto">
             <h3 class="leading-6 text-gray-900">{{ props.title }}</h3>
             <p class="mt-2 whitespace-pre-wrap text-sm text-gray-700">{{ props.description }}</p>
