@@ -26,7 +26,11 @@ class AgentRepository
     public static function update(Agent $agent, UpdateAgentRequest $request): void
     {
         $agent->update([
-            ...$request->validated(),
+            ...$request->safe()->except('paid_leave'),
         ]);
+
+        if ($request->validated('paid_leave')) {
+            PaidLeaveRepository::create($agent, $request);
+        }
     }
 }

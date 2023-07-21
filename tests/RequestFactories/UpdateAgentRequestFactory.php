@@ -1,14 +1,12 @@
 <?php
 
-
-
 namespace Tests\RequestFactories;
 
 use App\Enum\AgentStatusEnum;
 use Illuminate\Support\Facades\Auth;
 use Worksome\RequestFactories\RequestFactory;
 
-class StoreAgentRequestFactory extends RequestFactory
+class UpdateAgentRequestFactory extends RequestFactory
 {
     public function definition(): array
     {

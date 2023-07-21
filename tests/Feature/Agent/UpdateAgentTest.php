@@ -1,7 +1,7 @@
 <?php
 
 use App\Enum\AgentStatusEnum;
-use App\Http\Requests\StoreAgentRequest;
+use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
 
 it('can update an agent as an admin', function () {
@@ -34,7 +34,7 @@ it('cannot update a foreign agent as an admin', function () {
 
     $agent = Agent::factory()->create();
 
-    StoreAgentRequest::fake();
+    UpdateAgentRequest::fake();
 
     $this->put(route('agents.update', $agent))->assertForbidden();
 });
@@ -46,7 +46,7 @@ it('can update an agent with casted nullable base_salary and on_target_earning',
         'organization_id' => $admin->organization->id,
     ]);
 
-    StoreAgentRequest::factory()->state([
+    UpdateAgentRequest::factory()->state([
         'base_salary' => 0,
         'on_target_earning' => 0,
     ])->fake();
@@ -67,7 +67,7 @@ it('cannot update an agent with a mail already taken by an admin', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    StoreAgentRequest::factory()->state([
+    UpdateAgentRequest::factory()->state([
         'email' => $admin->email,
     ])->fake();
 
@@ -83,7 +83,7 @@ it('cannot update an agent with a mail already taken by an agent', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    StoreAgentRequest::factory()->state([
+    UpdateAgentRequest::factory()->state([
         'email' => Agent::factory()->create()->email,
     ])->fake();
 
@@ -99,7 +99,7 @@ it('can update an agent with his same email', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    StoreAgentRequest::factory()->state([
+    UpdateAgentRequest::factory()->state([
         'email' => $agent->email,
     ])->fake();
 
