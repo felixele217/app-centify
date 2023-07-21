@@ -78,3 +78,7 @@ it('can set end date to null if status is sick', function () {
 
     $this->put(route('agents.update', $agent->id))->assertValid();
 });
+
+it ('does not create a new paid leave if the time frame already exists', function () {
+
+})->todo();
