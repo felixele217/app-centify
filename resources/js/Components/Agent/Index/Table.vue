@@ -2,7 +2,7 @@
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
-import Table from '@/Components/Table.vue'
+import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
@@ -54,7 +54,7 @@ const src =
         @button-clicked="isOpen = true"
     />
 
-    <Table :no-items-text="props.agents.length ? undefined : 'You have no agents yet.'">
+    <TableWrapper :no-items-text="props.agents.length ? undefined : 'You have no agents yet.'">
         <template #header>
             <tr>
                 <th
@@ -142,7 +142,7 @@ const src =
                 </td>
             </tr>
         </template>
-    </Table>
+    </TableWrapper>
 
     <Modal
         @modal-action="deleteAgent(agentIdBeingDeleted!)"
