@@ -63,11 +63,14 @@ const employed28OrMoreDays = ref<boolean>(false)
             <InputLabel
                 for="end_date"
                 value="End Date"
+                :required="props.form.status === 'on vacation'"
             />
+
             <DateInput
                 :date="props.form.end_date"
                 @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
             />
+
             <InputError
                 class="mt-2"
                 :message="props.form.errors.end_date"

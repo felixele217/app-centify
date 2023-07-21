@@ -13,7 +13,7 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
-import SicknessAndVacationForm from './SicknessAndVacationForm.vue'
+import PaidLeaveForm from './PaidLeaveForm.vue'
 
 const emit = defineEmits(['close-slide-over'])
 
@@ -230,7 +230,7 @@ function submit() {
                                                         />
                                                     </div>
 
-                                                    <SicknessAndVacationForm :form="form" />
+                                                    <PaidLeaveForm :form="form" />
                                                 </div>
                                             </div>
                                         </div>
