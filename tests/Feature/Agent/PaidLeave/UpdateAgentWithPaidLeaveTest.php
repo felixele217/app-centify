@@ -59,7 +59,7 @@ it('does requires an end date for a vacation', function () {
     ]);
 });
 
-it('does not require an end date for a sickness', function () {
+it('can set end date to null if status is sick', function () {
     $admin = signInAdmin();
 
     $agent = Agent::factory()->create([
@@ -70,6 +70,7 @@ it('does not require an end date for a sickness', function () {
         'status' => AgentStatusEnum::SICK->value,
         'paid_leave' => [
             'start_date' => Carbon::today(),
+            'end_date' => null,
             'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
             'sum_of_commissions' => 10_000_00,
         ],

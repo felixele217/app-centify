@@ -16,10 +16,12 @@ const props = defineProps<{
         base_salary: number
         on_target_earning: number
         status: AgentStatusEnum
-        start_date: Date | null
-        end_date: Date | null
-        continuation_of_pay_based_on: string
-        sum_of_commissions_earned: number
+        paid_leave: {
+            start_date: Date | null
+            end_date: Date | null
+            continuation_of_pay_time_scope: string
+            sum_of_commissions: number
+        }
     }>
 }>()
 
@@ -50,12 +52,12 @@ const employed28OrMoreDays = ref<boolean>(false)
                 required
             />
             <DateInput
-                :date="props.form.start_date"
-                @date-changed="(newDate: Date) => (props.form.start_date = newDate)"
+                :date="props.form.paid_leave.start_date"
+                @date-changed="(newDate: Date) => (props.form.paid_leave.start_date = newDate)"
             />
             <InputError
                 class="mt-2"
-                :message="props.form.errors.start_date"
+                :message="(props.form.errors as Record<string, string>)['paid_leave.start_date']"
             />
         </div>
 
@@ -67,13 +69,13 @@ const employed28OrMoreDays = ref<boolean>(false)
             />
 
             <DateInput
-                :date="props.form.end_date"
-                @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
+                :date="props.form.paid_leave.end_date"
+                @date-changed="(newDate: Date) => (props.form.paid_leave.end_date = newDate)"
             />
 
             <InputError
                 class="mt-2"
-                :message="props.form.errors.end_date"
+                :message="(props.form.errors as Record<string, string>)['paid_leave.end_date']"
             />
         </div>
 
@@ -96,7 +98,7 @@ const employed28OrMoreDays = ref<boolean>(false)
                         current: false,
                     },
                 ]"
-                @option-selected="(optionTitle: string) => props.form.continuation_of_pay_based_on = optionTitle"
+                @option-selected="(optionTitle: string) => props.form.paid_leave.continuation_of_pay_time_scope = optionTitle"
                 :default="{
                     title: 'last 13 weeks',
                     description: 'test description',
@@ -106,7 +108,7 @@ const employed28OrMoreDays = ref<boolean>(false)
 
             <InputError
                 class="mt-2"
-                :message="props.form.errors.continuation_of_pay_based_on"
+                :message="(props.form.errors as Record<string, string>)['paid_leave.continuation_of_pay_time_scope']"
             />
         </div>
 
@@ -117,13 +119,13 @@ const employed28OrMoreDays = ref<boolean>(false)
             />
 
             <CurrencyInput
-                :value="props.form.sum_of_commissions_earned"
-                @set-value="(value: number) => (props.form.sum_of_commissions_earned = value)"
+                :value="props.form.paid_leave.sum_of_commissions"
+                @set-value="(value: number) => (props.form.paid_leave.sum_of_commissions = value)"
             />
 
             <InputError
                 class="mt-2"
-                :message="props.form.errors.sum_of_commissions_earned"
+                :message="(props.form.errors as Record<string, string>)['paid_leave.sum_of_commissions']"
             />
         </div>
     </div>

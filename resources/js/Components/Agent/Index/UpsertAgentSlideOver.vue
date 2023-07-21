@@ -29,11 +29,12 @@ const form = useForm({
     base_salary: 0,
     on_target_earning: 0,
     status: 'active' as AgentStatusEnum,
-
-    start_date: null as Date | null,
-    end_date: null as Date | null,
-    continuation_of_pay_based_on: '',
-    sum_of_commissions_earned: 0,
+    paid_leave: {
+        start_date: null as Date | null,
+        end_date: null as Date | null,
+        continuation_of_pay_time_scope: '',
+        sum_of_commissions: 0,
+    },
 })
 
 watch(

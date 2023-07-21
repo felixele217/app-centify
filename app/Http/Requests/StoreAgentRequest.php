@@ -50,6 +50,7 @@ class StoreAgentRequest extends FormRequest
             ],
 
             'paid_leave.end_date' => [
+                'nullable',
                 'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'date',
             ],
