@@ -25,9 +25,9 @@ function updateDeal() {
         },
         {
             onSuccess: () => {
+                notifyUpdate()
                 dealIdBeingAccepted.value = null
                 dealIdBeingDeclined.value = null
-                notifyUpdate()
             },
         }
     )
