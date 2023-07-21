@@ -39,27 +39,6 @@ it('cannot update a foreign agent as an admin', function () {
     $this->put(route('agents.update', $agent))->assertForbidden();
 });
 
-it('can update an agent with casted nullable base_salary and on_target_earning', function () {
-    $admin = signInAdmin();
-
-    $agent = Agent::factory()->create([
-        'organization_id' => $admin->organization->id,
-    ]);
-
-    UpdateAgentRequest::factory()->state([
-        'base_salary' => 0,
-        'on_target_earning' => 0,
-    ])->fake();
-
-    $this->put(route('agents.update', $agent))->assertValid()->assertRedirect();
-
-    $agent->refresh();
-
-    expect($agent = Agent::first())->not()->toBeNull();
-    expect($agent->base_salary)->toBeNull();
-    expect($agent->on_target_earning)->toBeNull();
-});
-
 it('has required fields', function () {
     $admin = signInAdmin();
 
@@ -67,7 +46,10 @@ it('has required fields', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $this->put(route('agents.update', $agent), [])->assertInvalid([
+    $this->put(route('agents.update', $agent), [
+        'base_salary' => 0,
+        'on_target_earning' => 0,
+    ])->assertInvalid([
         'name' => 'The name field is required.',
         'email' => 'The email field is required.',
         'base_salary' => 'The base salary field is required.',
@@ -88,7 +70,7 @@ it('cannot update an agent with a mail already taken by an admin', function () {
     ])->fake();
 
     $this->put(route('agents.update', $agent))->assertInvalid([
-        'email' => 'The field is required.',
+        'email' => 'The email has already been taken.',
     ]);
 });
 
@@ -104,7 +86,7 @@ it('cannot update an agent with a mail already taken by an agent', function () {
     ])->fake();
 
     $this->put(route('agents.update', $agent))->assertInvalid([
-        'email' => 'The field is required.',
+        'email' => 'The email has already been taken.',
     ]);
 });
 

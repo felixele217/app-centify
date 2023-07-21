@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Actions\NullZeroNumbersAction;
 use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -67,16 +68,6 @@ class StoreAgentRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $data = $this->all();
-
-        foreach (['base_salary', 'on_target_earning'] as $field) {
-            if (! isset($data[$field])) {
-                continue;
-            }
-
-            $data[$field] = $data[$field] === 0 ? null : $data[$field];
-        }
-
-        $this->replace($data);
+        $this->replace(NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']));
     }
 }
