@@ -3,7 +3,7 @@ import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
 import QuotaAttainment from '@/Components/Dashboard/Payout/QuotaAttainment.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
-import TodoIcon from '@/Components/Icon/TodoIcon.vue'
+import DealIcon from '@/Components/Icon/DealIcon.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import sum from '@/utils/sum'
@@ -31,10 +31,10 @@ const payoutRowObjects: Array<{
     },
     {
         title: 'To-Dos',
-        icon: TodoIcon,
+        icon: DealIcon,
         amount: props.open_deal_count || 0,
         subText: 'need attention',
-        link: route('deals.index'),
+        link: route('deals.index') + '?scope=open',
     },
 ]
 </script>
