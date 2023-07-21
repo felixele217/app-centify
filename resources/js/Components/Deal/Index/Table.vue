@@ -34,12 +34,12 @@ function updateDeal() {
 }
 
 function notifyUpdate() {
-    const notifyTitle = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
-    const notifyDescription = dealIdBeingAccepted.value
+    const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
+    const description = dealIdBeingAccepted.value
         ? "It now counts towards this agent's commission metrics."
         : "This deal will not affect this agent's commission metrics."
 
-    notify(notifyTitle, notifyDescription)
+    notify(title, description)
 }
 
 const dealIdBeingAccepted = ref<number | null>()
