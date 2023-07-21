@@ -7,7 +7,7 @@ const props = defineProps<{
     title: string
     description: string
     buttonText: string
-    isNegativeAction: boolean
+    isNegativeAction?: boolean
 }>()
 </script>
 

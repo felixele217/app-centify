@@ -17,22 +17,33 @@ const props = defineProps<{
     deals: Array<Deal>
 }>()
 
-function acceptDeal(dealId: number) {
+function updateDeal() {
     router.put(
-        route('deals.update', dealId),
+        route('deals.update', (dealIdBeingAccepted.value || dealIdBeingDeclined.value)!),
         {
-            has_accepted_deal: true,
+            has_accepted_deal: !!dealIdBeingAccepted.value,
         },
         {
             onSuccess: () => {
                 dealIdBeingAccepted.value = null
-                notify('Deal accepted!', "It now counts towards this agent's commission metrics.")
+                dealIdBeingDeclined.value = null
+                notifyUpdate()
             },
         }
     )
 }
 
+function notifyUpdate() {
+    const notifyTitle = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
+    const notifyDescription = dealIdBeingAccepted.value
+        ? "It now counts towards this agent's commission metrics."
+        : "This deal will not affect this agent's commission metrics."
+
+    notify(notifyTitle, notifyDescription)
+}
+
 const dealIdBeingAccepted = ref<number | null>()
+const dealIdBeingDeclined = ref<number | null>()
 
 const noDealsText = computed(() => {
     if (props.deals.length > 0) {
@@ -126,7 +137,10 @@ const noDealsText = computed(() => {
                                 @click="dealIdBeingAccepted = deal.id"
                                 class="h-6 w-6 cursor-pointer hover:text-green-500"
                             />
-                            <thumbs-down-icon class="h-6 w-6 cursor-pointer hover:text-red-600" />
+                            <thumbs-down-icon
+                                @click="dealIdBeingDeclined = deal.id"
+                                class="h-6 w-6 cursor-pointer hover:text-red-600"
+                            />
                         </div>
                     </td>
                 </tr>
@@ -134,13 +148,22 @@ const noDealsText = computed(() => {
         </Table>
 
         <Modal
-            @modal-action="acceptDeal(dealIdBeingAccepted!)"
-            :is-negative-action="false"
+            @modal-action="updateDeal"
             :isOpen="!!dealIdBeingAccepted"
             @close-modal="dealIdBeingAccepted = null"
             button-text="Accept"
             title="Accept Deal"
             :description="'Are you sure you want to accept this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
+        />
+
+        <Modal
+            @modal-action="updateDeal"
+            is-negative-action
+            :isOpen="!!dealIdBeingDeclined"
+            @close-modal="dealIdBeingDeclined = null"
+            button-text="Decline"
+            title="Decline Deal"
+            :description="'Are you sure you want to decline this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
         />
     </div>
 </template>
