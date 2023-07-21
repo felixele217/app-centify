@@ -50,13 +50,15 @@ const noDealsText = computed(() => {
         return ''
     }
 
-    switch (queryParamValue('scope') as DealScopeEnum) {
+    switch (queryParamValue('scope') as DealScopeEnum | '') {
+        case '':
+            return 'You have no deals yet. You might want to sync your integrations to load your deals into centify.'
         case 'open':
-            return 'Open Text'
+            return 'Currently, there are no deals that require your manual action.'
         case 'accepted':
-            return 'Accepted Text'
+            return 'You do not have any accepted deals yet.'
         case 'declined':
-            return 'Declined Text'
+            return 'You do not have any declined deals yet.'
     }
 })
 </script>
@@ -66,8 +68,8 @@ const noDealsText = computed(() => {
         <div class="flex justify-between">
             <page-header
                 class="mb-0"
-                title="To-Dos"
-                description="All opportunities that need to be reviewed."
+                title="Deals"
+                description="All of your deals."
                 no-bottom-margin
             />
 
@@ -76,28 +78,28 @@ const noDealsText = computed(() => {
 
         <Table :no-items-text="noDealsText">
             <template #header>
-                <tr>
+                <tr class="grid grid-cols-11 items-center">
                     <th
                         scope="col"
-                        class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900"
+                        class="col-span-3 py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900"
                     >
                         Owner
                     </th>
                     <th
                         scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        class="col-span-3 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                         Name
                     </th>
                     <th
                         scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                         Description
                     </th>
                     <th
                         scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                         Deal Value
                     </th>
@@ -110,13 +112,16 @@ const noDealsText = computed(() => {
                 </tr>
             </template>
             <template #body>
-                <tr v-for="deal in props.deals">
-                    <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm">
+                <tr
+                    v-for="deal in props.deals"
+                    class="grid grid-cols-11 whitespace-nowrap text-sm items-center"
+                >
+                    <td class="col-span-3 py-4 pl-6 pr-3">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>
                         <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
                     </td>
 
-                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                    <td class="col-span-3 px-3 py-4">
                         <a
                             class="link"
                             :href="`https://paul-sandbox11.pipedrive.com/deal/${deal.integration_deal_id}`"
@@ -126,12 +131,12 @@ const noDealsText = computed(() => {
                         </a>
                     </td>
 
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">description...</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="col-span-2 px-3 py-4 text-gray-500">description...</td>
+                    <td class="col-span-2 px-3 py-4 text-gray-500">
                         {{ euroDisplay(deal.value) }}
                     </td>
 
-                    <td class="whitespace-nowrap px-3">
+                    <td class="px-3">
                         <div class="flex gap-2 text-gray-500">
                             <thumbs-up-icon
                                 @click="dealIdBeingAccepted = deal.id"
