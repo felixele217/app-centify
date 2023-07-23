@@ -27,3 +27,71 @@ it('calculates the commission with the additional paid leave value for the curre
 
     expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
+
+it('calculates the commission with the additional paid leave value for the current quarter', function () {
+    $agent = Agent::factory()->create();
+
+    $agent->paidLeaves()->create([
+        'reason' => AgentStatusEnum::SICK->value,
+        'start_date' => $firstPaidLeaveStartDate = Carbon::now()->firstOfQuarter()->subDay(3),
+        'end_date' => $firstPaidLeaveEndDate = Carbon::now()->firstOfQuarter(),
+        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+        'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+    ]);
+
+    $agent->paidLeaves()->create([
+        'reason' => AgentStatusEnum::SICK->value,
+        'start_date' => $secondPaidLeaveStartDate = Carbon::now()->lastOfQuarter()->subDay(3),
+        'end_date' => $secondPaidLeaveEndDate = Carbon::now()->lastOfQuarter(),
+        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+        'sum_of_commissions' => $sumOfCommissions,
+    ]);
+
+    $paidLeaveDays = $firstPaidLeaveEndDate->diffInWeekdays($firstPaidLeaveStartDate) + $secondPaidLeaveEndDate->diffInWeekdays($secondPaidLeaveStartDate) + 2;
+    $expectedCommissionsPerDay = $sumOfCommissions / 90;
+
+    $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
+
+    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(intval(round($paidLeaveCommission)));
+});
+
+it('calculates the commission with the additional paid leave value for the current year', function () {
+    $agent = Agent::factory()->create();
+
+    $agent->paidLeaves()->create([
+        'reason' => AgentStatusEnum::SICK->value,
+        'start_date' => $firstPaidLeaveStartDate = Carbon::now()->firstOfYear(),
+        'end_date' => $firstPaidLeaveEndDate = Carbon::now()->firstOfYear()->addDays(3),
+        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+        'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+    ]);
+
+    $agent->paidLeaves()->create([
+        'reason' => AgentStatusEnum::SICK->value,
+        'start_date' => $secondPaidLeaveStartDate = Carbon::now()->lastOfYear()->subDay(3),
+        'end_date' => $secondPaidLeaveEndDate = Carbon::now()->lastOfYear(),
+        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+        'sum_of_commissions' => $sumOfCommissions,
+    ]);
+
+    $firstPaidLeaveDays = $firstPaidLeaveEndDate->diffInWeekdays($firstPaidLeaveStartDate) + 1;
+    $secondPaidLeaveDays = $secondPaidLeaveEndDate->diffInWeekdays($secondPaidLeaveStartDate) + 1;
+
+    $expectedCommissionsPerDay = $sumOfCommissions / 90;
+
+    $paidLeaveCommission = ($firstPaidLeaveDays + $secondPaidLeaveDays) * $expectedCommissionsPerDay;
+
+    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::ANNUALY))->toBe(intval(round($paidLeaveCommission)));
+});
+
+it('does not use paid leaves outside of current month if scope is current month', function () {
+
+})->todo();
+
+it('does not use paid leaves outside of current quarter if scope is current quarter', function () {
+
+})->todo();
+
+it('does not use paid leaves outside of current year if scope is current year', function () {
+
+})->todo();

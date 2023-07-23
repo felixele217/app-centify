@@ -12,17 +12,24 @@ class PaidLeaveCommissionService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
     {
-        return intval(round(match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $agent->paidLeaves()
-                ->whereMonth('end_date', Carbon::now()->month)
-                ->get()
-                ->map(function ($paidLeave) {
-                    $commissionPerDay = $paidLeave->sum_of_commissions / $this->daysForTimeScope($paidLeave->continuation_of_pay_time_scope);
+        $baseQuery = $agent->paidLeaves();
 
-                    return $commissionPerDay * $this->paidLeaveDays($paidLeave);
-                })->sum(),
-            default => 0
-        }));
+        $advancedQuery = match ($timeScope) {
+            TimeScopeEnum::MONTHLY => $baseQuery->whereMonth('end_date', Carbon::now()->month),
+            TimeScopeEnum::QUARTERLY => $baseQuery->whereBetween('end_date', [Carbon::now()->firstOfQuarter(), Carbon::now()->lastOfQuarter()]),
+            TimeScopeEnum::ANNUALY => $baseQuery->whereBetween('end_date', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()]),
+        };
+
+        return intval(round($advancedQuery->get()
+            ->map(fn (PaidLeave $paidLeave) => $this->paidLeaveCommission($paidLeave))
+            ->sum()));
+    }
+
+    private function paidLeaveCommission(PaidLeave $paidLeave): float
+    {
+        $commissionPerDay = $paidLeave->sum_of_commissions / $this->daysForTimeScope($paidLeave->continuation_of_pay_time_scope);
+
+        return $commissionPerDay * $this->paidLeaveDays($paidLeave);
     }
 
     private function daysForTimeScope(ContinuationOfPayTimeScopeEnum $timeScope): int
