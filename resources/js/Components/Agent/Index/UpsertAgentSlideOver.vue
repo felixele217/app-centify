@@ -7,6 +7,7 @@ import TextInput from '@/Components/Form/TextInput.vue'
 import RadioCards, { RadioCardOption } from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import { agentStatusToColor } from '@/utils/Descriptions/agentStatusToColor'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
@@ -32,7 +33,7 @@ const form = useForm({
     paid_leave: {
         start_date: null as Date | null,
         end_date: null as Date | null,
-        continuation_of_pay_time_scope: '',
+        continuation_of_pay_time_scope: 'last 13 weeks' as ContinuationOfPayTimeScopeEnum,
         sum_of_commissions: 0,
     },
 })
@@ -49,8 +50,32 @@ watch(
             form.paid_leave = {
                 start_date: agent.active_paid_leave?.start_date ?? null,
                 end_date: agent.active_paid_leave?.end_date ?? null,
-                continuation_of_pay_time_scope: agent.active_paid_leave?.continuation_of_pay_time_scope ?? '',
+                continuation_of_pay_time_scope:
+                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? 'last 13 weeks',
                 sum_of_commissions: agent.active_paid_leave?.sum_of_commissions ?? 0,
+            }
+        }
+    }
+)
+
+watch(
+    () => form.status,
+    async () => {
+        const activePaidLeave = props.agent?.active_paid_leave
+
+        if (form.status === activePaidLeave?.reason) {
+            form.paid_leave = {
+                start_date: activePaidLeave.start_date,
+                end_date: activePaidLeave.end_date ?? null,
+                continuation_of_pay_time_scope: activePaidLeave.continuation_of_pay_time_scope,
+                sum_of_commissions: activePaidLeave.sum_of_commissions,
+            }
+        } else {
+            form.paid_leave = {
+                start_date: null,
+                end_date: null,
+                continuation_of_pay_time_scope: 'last 13 weeks',
+                sum_of_commissions: 0,
             }
         }
     }
