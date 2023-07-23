@@ -79,6 +79,31 @@ it('can set end date to null if status is sick', function () {
     $this->put(route('agents.update', $agent->id))->assertValid();
 });
 
-it ('does not create a new paid leave if the time frame already exists', function () {
+it('does not create a new paid leave if the time frame already exists', function () {
+    $admin = signInAdmin();
 
-})->todo();
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    PaidLeave::factory()->create([
+        'agent_id' => $agent->id,
+        'start_date' => Carbon::parse('-2 days'),
+        'end_date' => Carbon::parse('+2 days'),
+    ]);
+
+    UpdateAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::SICK->value,
+        'paid_leave' => [
+            'start_date' => $newStartDate = Carbon::today(),
+            'end_date' => Carbon::parse('+1 week'),
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ],
+    ])->fake();
+
+    $this->put(route('agents.update', $agent->id))->assertRedirect();
+
+    expect($agent->paidLeaves)->toHaveCount(1);
+    expect($agent->activePaidLeave->start_date->toDateString())->toBe($newStartDate->toDateString());
+});

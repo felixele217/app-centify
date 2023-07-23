@@ -30,7 +30,7 @@ class AgentRepository
         ]);
 
         if ($request->validated('paid_leave')) {
-            PaidLeaveRepository::create($agent, $request);
+            PaidLeaveRepository::update($agent, $request);
         }
     }
 }
