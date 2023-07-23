@@ -30,6 +30,30 @@ it('can update a plan as an admin', function () {
     expect($plan->payout_frequency->value)->toBe($payoutFrequency);
 });
 
+it('can assign more agents to the plan', function () {
+
+})->todo();
+
+it('can remove agents from the plan', function () {
+
+})->todo();
+
+it('has required fields', function () {
+    $admin = signInAdmin();
+
+    $plan = Plan::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $this->put(route('plans.update', $plan), [])->assertInvalid([
+        'name' => 'The name field is required.',
+        'start_date' => 'The start date field is required.',
+        'target_amount_per_month' => 'The target amount per month field is required.',
+        'target_variable' => 'The target variable field is required.',
+        'payout_frequency' => 'The payout frequency field is required.',
+    ]);
+});
+
 it('cannot update a foreign plan as an admin', function () {
     signInAdmin();
 

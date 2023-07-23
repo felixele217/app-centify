@@ -14,28 +14,28 @@ class UpdatePlanRequest extends FormRequest
     {
         return [
             'name' => [
-                'nullable',
+                'required',
                 'string',
             ],
 
             'start_date' => [
-                'nullable',
+                'required',
                 'date',
             ],
 
             'target_amount_per_month' => [
-                'nullable',
+                'required',
                 'integer',
                 'min:1',
             ],
 
             'target_variable' => [
-                'nullable',
+                'required',
                 new Enum(TargetVariableEnum::class),
             ],
 
             'payout_frequency' => [
-                'nullable',
+                'required',
                 new Enum(PayoutFrequencyEnum::class),
             ],
 
@@ -53,7 +53,9 @@ class UpdatePlanRequest extends FormRequest
     {
         $data = $this->all();
 
-        $data['start_date'] = Carbon::createFromDate($data['start_date']);
+        if (isset($data['start_date'])) {
+            $data['start_date'] = Carbon::createFromDate($data['start_date']);
+        }
 
         $this->replace($data);
     }

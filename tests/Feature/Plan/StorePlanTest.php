@@ -32,6 +32,18 @@ it('can store a plan as an admin', function () {
     expect($plan->organization->id)->toEqual($admin->organization->id);
 });
 
+it('has required fields', function () {
+    signInAdmin();
+
+    $this->post(route('plans.store'), [])->assertInvalid([
+        'name' => 'The name field is required.',
+        'start_date' => 'The start date field is required.',
+        'target_amount_per_month' => 'The target amount per month field is required.',
+        'target_variable' => 'The target variable field is required.',
+        'payout_frequency' => 'The payout frequency field is required.',
+    ]);
+});
+
 it('throws a validation error if target_amount_per_month is smaller than 1', function ($targetAmountPerMonth) {
     signInAdmin();
 

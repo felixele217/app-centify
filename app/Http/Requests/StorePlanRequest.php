@@ -54,7 +54,9 @@ class StorePlanRequest extends FormRequest
     {
         $data = $this->all();
 
-        $data['start_date'] = Carbon::createFromDate($data['start_date']);
+        if (isset($data['start_date'])) {
+            $data['start_date'] = Carbon::createFromDate($data['start_date']);
+        }
 
         $this->replace($data);
     }
