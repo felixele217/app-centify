@@ -53,6 +53,7 @@ class StoreAgentRequest extends FormRequest
                 'nullable',
                 'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'date',
+                'after:paid_leave.start_date',
             ],
 
             'paid_leave.continuation_of_pay_time_scope' => [
@@ -70,5 +71,12 @@ class StoreAgentRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->replace(NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']));
+    }
+
+    public function messages()
+    {
+        return [
+            'paid_leave.end_date.before' => 'The end date needs to come after the start date.',
+        ];
     }
 }

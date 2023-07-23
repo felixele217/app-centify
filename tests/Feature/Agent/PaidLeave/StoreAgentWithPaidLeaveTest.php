@@ -67,3 +67,19 @@ it('can set end date to null if status is sick', function () {
 
     $this->post(route('agents.store'))->assertValid();
 });
+
+it ('cannot specify an end date that is before the start date', function () {
+    signInAdmin();
+
+    StoreAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::VACATION->value,
+        'paid_leave' => [
+            'start_date' => Carbon::parse('+1 week'),
+            'end_date' => Carbon::parse('-1 week'),
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ],
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertInvalid();
+});
