@@ -4,25 +4,13 @@ use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
-use App\Models\Plan;
+use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 
 it('calculates the commission with the additional paid leave value for the current month', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
+    $agent = Agent::factory()->create();
 
-    $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00,
-    ]);
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => Carbon::now()->firstOfMonth(),
-        'value' => 1_000_00,
-    ])->create([
-        'base_salary' => 80_000_00,
-        'on_target_earning' => 200_000_00,
-    ]));
-
-    foreach ([0, 1] as $index) {
+    foreach ($iterations = [0, 1] as $_) {
         $agent->paidLeaves()->create([
             'reason' => AgentStatusEnum::SICK->value,
             'start_date' => $paidLeaveStartDate = Carbon::parse('-10 days'),
@@ -32,10 +20,10 @@ it('calculates the commission with the additional paid leave value for the curre
         ]);
     }
 
-    $paidLeaveDays = $paidLeaveEndDate->diffInDays($paidLeaveStartDate) + 1;
+    $paidLeaveDays = $paidLeaveEndDate->diffInWeekdays($paidLeaveStartDate) + 1;
     $expectedCommissionsPerDay = $sumOfCommissions / 90;
 
     $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
 
-    expect($agent->commission)->toBe(intval(round(20_000_00 + $paidLeaveCommission * 2)));
+    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
