@@ -67,7 +67,7 @@ const noDealsText = computed(() => {
     <div>
         <div class="flex justify-between">
             <page-header
-                class="mb-0"
+                class="mb-2"
                 title="Deals"
                 description="All of your deals."
                 no-bottom-margin

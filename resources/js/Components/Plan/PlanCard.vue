@@ -34,7 +34,7 @@ const planIdBeingDeleted = ref<number | null>()
     <Card class="group flex justify-between hover:bg-gray-50">
         <div>
             <div class="flex items-center gap-3">
-                <h2>{{ props.plan.name }}</h2>
+                <h2 class="whitespace-nowrap">{{ props.plan.name }}</h2>
 
                 <EditAndDeleteOptions
                     @edit-action="() => router.get(route('plans.update', props.plan.id))"
