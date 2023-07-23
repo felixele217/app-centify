@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
 use App\Repositories\AgentRepository;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,7 +17,7 @@ class AgentController extends Controller
     public function index(): Response
     {
         return Inertia::render('Agent/Index', [
-            'agents' => Agent::with('activePaidLeave')->get(),
+            'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get(),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
         ]);
     }

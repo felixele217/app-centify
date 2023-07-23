@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Models\PaidLeave;
-use App\Enum\TimeScopeEnum;
 use App\Enum\AgentStatusEnum;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
+use App\Enum\TimeScopeEnum;
+use App\Services\CommissionService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Agent extends Authenticatable
 {
@@ -87,11 +87,7 @@ class Agent extends Authenticatable
         $timeScope = request()->query('time_scope');
 
         return Attribute::make(
-            get: fn () => match ($timeScope) {
-                TimeScopeEnum::MONTHLY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 12,
-                TimeScopeEnum::QUARTERLY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary) / 4,
-                TimeScopeEnum::ANNUALY->value => $this->quota_attainment * ($this->on_target_earning - $this->base_salary),
-            }
+            get: fn () => (new CommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope))
         );
     }
 }

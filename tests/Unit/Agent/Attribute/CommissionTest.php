@@ -23,7 +23,7 @@ it('calculates the commission properly for the active plan with the most recent 
 
     $agent->plans()->attach(Plan::all());
 
-    expect($agent->commission)->toBe($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 12);
+    expect($agent->commission)->toBe(intval(round($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 12)));
 });
 
 it('correctly calculates the commission for the current month if scoped', function () {

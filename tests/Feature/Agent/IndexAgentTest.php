@@ -5,9 +5,11 @@ use App\Models\Agent;
 use Inertia\Testing\AssertableInertia;
 
 it('passes the correct props', function () {
-    signInAdmin();
+    $admin = signInAdmin();
 
-    $agents = Agent::factory(3)->hasPaidLeaves()->create();
+    $agents = Agent::factory(3)->hasPaidLeaves(1)->create([
+        'organization_id' => $admin->organization->id,
+    ]);
 
     $this->get(route('agents.index'))
         ->assertInertia(
@@ -16,5 +18,18 @@ it('passes the correct props', function () {
                 ->has('agents', $agents->count())
                 ->has('agents.0.active_paid_leave')
                 ->where('possible_statuses', array_column(AgentStatusEnum::cases(), 'value'))
+        );
+});
+
+it('does not send foreign agents', function () {
+    signInAdmin();
+
+    Agent::factory(3)->create();
+
+    $this->get(route('agents.index'))
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Agent/Index')
+                ->has('agents', 0)
         );
 });
