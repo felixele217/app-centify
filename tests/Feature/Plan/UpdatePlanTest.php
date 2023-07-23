@@ -1,10 +1,11 @@
 <?php
 
-use App\Enum\PayoutFrequencyEnum;
-use App\Enum\TargetVariableEnum;
-use App\Http\Requests\StorePlanRequest;
-use App\Models\Plan;
 use Carbon\Carbon;
+use App\Models\Plan;
+use App\Models\Agent;
+use App\Enum\TargetVariableEnum;
+use App\Enum\PayoutFrequencyEnum;
+use App\Http\Requests\UpdatePlanRequest;
 
 it('can update a plan as an admin', function () {
     $admin = signInAdmin();
@@ -19,6 +20,7 @@ it('can update a plan as an admin', function () {
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'payout_frequency' => $payoutFrequency = fake()->randomElement(PayoutFrequencyEnum::cases())->value,
+        'assigned_agent_ids' => [],
     ])->assertRedirect(route('plans.index'));
 
     $plan->refresh();
@@ -31,12 +33,43 @@ it('can update a plan as an admin', function () {
 });
 
 it('can assign more agents to the plan', function () {
+    $admin = signInAdmin();
 
-})->todo();
+    $plan = Plan::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $plan->agents()->attach($agents = Agent::factory(2)->create());
+
+    UpdatePlanRequest::factory()->state([
+        'assigned_agent_ids' => $newAgents = [
+            ...Agent::factory(3)->create()->pluck('id')->toArray(),
+            ...$agents->pluck('id')->toArray(),
+        ],
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertRedirect();
+
+    expect($plan->refresh()->agents->count())->toBe(count($newAgents));
+});
 
 it('can remove agents from the plan', function () {
+    $admin = signInAdmin();
 
-})->todo();
+    $plan = Plan::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $plan->agents()->attach($agents = Agent::factory(4)->create());
+
+    UpdatePlanRequest::factory()->state([
+        'assigned_agent_ids' => $agents->take($expectedAgentCount = 1)->pluck('id')->toArray(),
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertRedirect();
+
+    expect($plan->refresh()->agents->count())->toBe($expectedAgentCount);
+});
 
 it('has required fields', function () {
     $admin = signInAdmin();
@@ -51,6 +84,7 @@ it('has required fields', function () {
         'target_amount_per_month' => 'The target amount per month field is required.',
         'target_variable' => 'The target variable field is required.',
         'payout_frequency' => 'The payout frequency field is required.',
+        'assigned_agent_ids' => 'The assigned agent ids field must be present',
     ]);
 });
 
@@ -59,7 +93,7 @@ it('cannot update a foreign plan as an admin', function () {
 
     $plan = Plan::factory()->create();
 
-    StorePlanRequest::fake();
+    UpdatePlanRequest::fake();
 
     $this->put(route('plans.update', $plan))->assertForbidden();
 });

@@ -41,6 +41,7 @@ class UpdatePlanRequest extends FormRequest
 
             'assigned_agent_ids' => [
                 'array',
+                'present',
             ],
 
             'assigned_agent_ids.*' => [
