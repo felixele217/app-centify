@@ -58,10 +58,6 @@ it('has required fields', function () {
     ]);
 });
 
-it('cannot specify an end date that is after the start date', function () {
-
-})->todo();
-
 it('cannot update an agent with a mail already taken by an admin', function () {
     $admin = signInAdmin();
 

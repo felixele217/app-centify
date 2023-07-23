@@ -21,5 +21,15 @@ it('passes the correct props', function () {
 });
 
 it('does not send foreign fields', function () {
+    signInAdmin();
 
+    CustomIntegrationField::factory()->create();
+
+    $this->get(route('custom-integration-fields.index'))
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('CustomIntegrationField/Index')
+                ->has('custom_integration_fields', 0)
+                ->where('available_integration_field_names', array_column(CustomIntegrationFieldEnum::cases(), 'value'))
+        );
 })->todo();
