@@ -107,3 +107,23 @@ it('does not create a new paid leave if the time frame already exists', function
     expect($agent->paidLeaves)->toHaveCount(1);
     expect($agent->activePaidLeave->start_date->toDateString())->toBe($newStartDate->toDateString());
 });
+
+it ('cannot specify an end date that is before the start date', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    UpdateAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::VACATION->value,
+        'paid_leave' => [
+            'start_date' => Carbon::parse('+1 week'),
+            'end_date' => Carbon::parse('-1 week'),
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ],
+    ])->fake();
+
+    $this->put(route('agents.update', $agent->id))->assertInvalid();
+});
