@@ -4,7 +4,7 @@ import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
 import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
-import Table from '@/Components/Table.vue'
+import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import euroDisplay from '@/utils/euroDisplay'
@@ -25,21 +25,21 @@ function updateDeal() {
         },
         {
             onSuccess: () => {
+                notifyUpdate()
                 dealIdBeingAccepted.value = null
                 dealIdBeingDeclined.value = null
-                notifyUpdate()
             },
         }
     )
 }
 
 function notifyUpdate() {
-    const notifyTitle = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
-    const notifyDescription = dealIdBeingAccepted.value
+    const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
+    const description = dealIdBeingAccepted.value
         ? "It now counts towards this agent's commission metrics."
         : "This deal will not affect this agent's commission metrics."
 
-    notify(notifyTitle, notifyDescription)
+    notify(title, description)
 }
 
 const dealIdBeingAccepted = ref<number | null>()
@@ -76,7 +76,7 @@ const noDealsText = computed(() => {
             <Navigation />
         </div>
 
-        <Table :no-items-text="noDealsText">
+        <TableWrapper :no-items-text="noDealsText">
             <template #header>
                 <tr class="grid grid-cols-11 items-center">
                     <th
@@ -153,7 +153,7 @@ const noDealsText = computed(() => {
                     </td>
                 </tr>
             </template>
-        </Table>
+        </TableWrapper>
 
         <Modal
             @modal-action="updateDeal"
