@@ -40,7 +40,7 @@ it('calculates the paid leave commission just for the employee with the paid lea
     ],
 ]);
 
-it('returns 0 if there is no end_date - for sickness', function (TimeScopeEnum $timeScope) {
+it('returns 0 if the paid leave has no end date - for sickness', function (TimeScopeEnum $timeScope) {
     $agent = Agent::factory()->create();
 
     foreach ([0, 1] as $_) {
