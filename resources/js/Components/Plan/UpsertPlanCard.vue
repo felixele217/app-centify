@@ -28,7 +28,7 @@ export interface AdditionalField {
     text?: string
 }
 
-const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Dependency', 'Trigger']
+const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
 
 const props = defineProps<{
     plan?: Plan
@@ -223,7 +223,7 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                         <InputLabel value="Need more complexity? Add one of the following..." />
 
                         <CardOptions
-                            :options-per-row="5"
+                            :options-per-row="4"
                             :options="
                                 possibleAdditionalFields.map((type) => {
                                     return {

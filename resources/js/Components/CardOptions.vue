@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const requiredTailwindDeclarations = 'sm:grid-cols-5'
+const requiredTailwindDeclarations = 'sm:grid-cols-5 sm:grid-cols-4'
 
 export type CardOptionsOption<T = string> = {
     title: T
