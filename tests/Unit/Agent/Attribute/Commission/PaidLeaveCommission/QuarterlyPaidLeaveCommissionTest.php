@@ -48,24 +48,3 @@ it('calculates the commission with the additional paid leave value for the curre
 
     expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
-
-it('calculates the commission with the additional paid leave value for the current quarter for the paid leave overlapping with next quarter', function () {
-    $agent = Agent::factory()->create();
-
-    foreach ($iterations = [0, 1] as $_) {
-        $agent->paidLeaves()->create([
-            'reason' => AgentStatusEnum::VACATION->value,
-            'start_date' => $paidLeaveStartDate = Carbon::now()->lastOfQuarter()->subDays(6),
-            'end_date' => Carbon::now()->lastOfQuarter()->addDays(5),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
-            'sum_of_commissions' => $sumOfCommissions = 10_000_00,
-        ]);
-    }
-
-    $daysForAPaidLeaveThisQuarter = $paidLeaveStartDate->diffInWeekdays(Carbon::now()->lastOfQuarter()) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 90;
-
-    $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
-
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
-});

@@ -20,14 +20,20 @@ class PaidLeaveCommissionService
     {
         $advancedQuery = match ($timeScope) {
             TimeScopeEnum::MONTHLY => $agent->paidLeaves()
-                ->whereMonth('end_date', $this->dateInScope->month)
-                ->orWhereMonth('start_date', $this->dateInScope->month),
+                ->where(function ($query) {
+                    $query->whereMonth('end_date', $this->dateInScope->month)
+                        ->orWhereMonth('start_date', $this->dateInScope->month);
+                }),
             TimeScopeEnum::QUARTERLY => $agent->paidLeaves()
-                ->whereBetween('end_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()])
-                ->orWhereBetween('start_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()]),
+                ->where(function ($query) {
+                    $query->whereBetween('end_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()])
+                        ->orWhereBetween('start_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()]);
+                }),
             TimeScopeEnum::ANNUALY => $agent->paidLeaves()
-                ->whereBetween('end_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()])
-                ->orWhereBetween('start_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]),
+                ->where(function ($query) {
+                    $query->whereBetween('end_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()])
+                        ->orWhereBetween('start_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]);
+                }),
         };
 
         return intval(round($advancedQuery->get()
