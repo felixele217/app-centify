@@ -180,6 +180,7 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                                 value="Payout Frequency"
                                 required
                             />
+
                             <SelectWithDescription
                                 :options="
                                     enumOptionsToSelectOptionWithDescription(
