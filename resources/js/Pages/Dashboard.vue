@@ -14,7 +14,7 @@ const props = defineProps<{
     open_deal_count: number
 }>()
 
-const totalComission = euroDisplay(sum(props.agents.map((agent) => agent.commission! / 100)))
+const totalComission = euroDisplay(sum(props.agents.map((agent) => agent.commission!)))
 
 const payoutRowObjects: Array<{
     title: string

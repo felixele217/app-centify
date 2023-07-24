@@ -6,7 +6,6 @@ use App\Enum\AgentStatusEnum;
 use App\Enum\TimeScopeEnum;
 use App\Services\Commission\DealCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
-use App\Services\CommissionService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -89,7 +88,7 @@ class Agent extends Authenticatable
         $timeScope = request()->query('time_scope');
 
         return Attribute::make(
-            get: function () use($timeScope) {
+            get: function () use ($timeScope) {
                 $dealCommission = (new DealCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));

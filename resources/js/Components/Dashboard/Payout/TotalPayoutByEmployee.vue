@@ -74,7 +74,7 @@ const src =
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">{{ euroDisplay(agent.commission! / 100) }}</div>
+                                    <div class="text-gray-900">{{ euroDisplay(agent.commission!) }}</div>
                                     <div class="mt-1 text-gray-500">Change - not implemented</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">

@@ -9,7 +9,7 @@ enum ContinuationOfPayTimeScopeEnum: string
     public function amountOfDays(): int
     {
         return match ($this->name) {
-            self::QUARTER->name => 90,
+            self::QUARTER->name => 91,
         };
     }
 }

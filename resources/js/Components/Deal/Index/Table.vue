@@ -135,9 +135,7 @@ const noDealsText = computed(() => {
                         {{ euroDisplay(deal.value) }}
                     </td>
 
-                    <td
-                        class="px-3"
-                    >
+                    <td class="px-3">
                         <DealStatus
                             :deal="deal"
                             @accepted="(id: number) => dealIdBeingAccepted = id"
