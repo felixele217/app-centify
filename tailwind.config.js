@@ -19,6 +19,10 @@ export default {
                 240: '60rem',
                 346: '86.5rem',
             },
+            margin: {
+                0.25: '0.0625rem',
+                0.75: '0.1875rem',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

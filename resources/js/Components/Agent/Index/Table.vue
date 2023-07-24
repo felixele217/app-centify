@@ -129,10 +129,11 @@ const src =
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
                 </td>
-                <td class="lg:table-cell">
+                <td class="absolute lg:table-cell">
                     <EditAndDeleteOptions
                         @edit-action="agentBeingEdited = agent"
                         @delete-action="agentIdBeingDeleted = agent.id"
+                        relative-table-style="relative -mt-0.75 top-8 right-8"
                     />
 
                     <div

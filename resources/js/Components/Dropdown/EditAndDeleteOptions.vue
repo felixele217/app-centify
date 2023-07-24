@@ -6,13 +6,14 @@ import DropdownBox from './DropdownBox.vue'
 
 const props = defineProps<{
     icon?: FunctionalComponent
+    relativeTableStyle?: string
 }>()
 
 defineEmits(['edit-action', 'delete-action'])
 </script>
 
 <template>
-    <Dropdown>
+    <Dropdown :class="props.relativeTableStyle || ''">
         <template #trigger>
             <component
                 :is="props.icon"
