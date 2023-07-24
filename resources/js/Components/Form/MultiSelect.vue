@@ -1,13 +1,11 @@
 <script setup lang="ts">
+import SelectOption from '@/types/SelectOption'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import DeleteIcon from '../Icon/DeleteIcon.vue'
 
 const props = defineProps<{
-    options: Array<{
-        id: number
-        name: string
-    }>
+    options: Array<SelectOption>
     selectedIds: Array<number>
 }>()
 

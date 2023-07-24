@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import InputLabel from '../Form/InputLabel.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
-import SelectWithDescription from '../Form/SelectWithDescription.vue'
+import Select from '../Form/Select.vue'
 
 const kickerType = ref()
 const kickerThreshold = ref(0)
@@ -10,16 +10,16 @@ const kickerPayout = ref(0)
 const salaryType = ref()
 
 const kickerTypeOptions = [
-    { title: 'Salary based - one time', current: false },
-    { title: 'Salary based - accelerator', current: false },
-    { title: 'Fixed amount - one time', current: false },
-    { title: 'Fixed amount - accelerator', current: false },
+    { name: 'Salary based - one time' },
+    { name: 'Salary based - accelerator' },
+    { name: 'Fixed amount - one time' },
+    { name: 'Fixed amount - accelerator' },
 ]
 
 const salaryTypeOptions = [
-    { title: 'Variable Salary (monthly)', current: false },
-    { title: 'Base Salary (monthly)', current: false },
-    { title: 'Full Salary (monthly)', current: false },
+    { name: 'Variable Salary (monthly)' },
+    { name: 'Base Salary (monthly)' },
+    { name: 'Full Salary (monthly)' },
 ]
 </script>
 
@@ -32,9 +32,15 @@ const salaryTypeOptions = [
                     required
                 />
 
-                <SelectWithDescription
+                <!-- <SelectWithDescription
                     :options="kickerTypeOptions"
                     @option-selected="(optionTitle: string) => kickerType = optionTitle"
+                /> -->
+
+                <Select
+                    :options="kickerTypeOptions"
+                    :selected-option-name="kickerType"
+                    @option-selected="(optionName: string) => kickerType = optionName"
                 />
             </div>
             <div>
@@ -57,9 +63,10 @@ const salaryTypeOptions = [
                     required
                 />
 
-                <SelectWithDescription
+                <Select
                     :options="salaryTypeOptions"
-                    @option-selected="(optionTitle: string) => salaryType = optionTitle"
+                    :selected-option-name="kickerType"
+                    @option-selected="(optionName: string) => salaryType = optionName"
                 />
             </div>
             <div>
