@@ -35,7 +35,7 @@ it('stores the paid leave when an agent is stored on vacation or sick', function
     AgentStatusEnum::SICK->value,
 ]);
 
-it('does requires an end date for a vacation', function () {
+it('requires an end date for a vacation', function () {
     signInAdmin();
 
     StoreAgentRequest::factory()->state([
