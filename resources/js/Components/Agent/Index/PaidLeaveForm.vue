@@ -5,6 +5,7 @@ import DateInput from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
+import Tooltip from '@/Components/Tooltip.vue'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { InertiaForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -29,16 +30,20 @@ const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
 </script>
 
 <template>
-    <div v-if="props.form.status === 'sick'">
-        <Checkbox
-            :label="`Employee has been employed for more than 28 calendar days ${
-                employed28OrMoreDays
-                    ? ''
-                    : '\nInfo: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any payment by the company (continuation of pay). Instead, has to contact the health insurance provider for payment.'
-            }`"
-            name="employed_long_enough"
-            v-model:checked="employed28OrMoreDays"
-        />
+    <div
+        class="flex"
+        v-if="props.form.status === 'sick'"
+    >
+        <Tooltip
+            text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
+        payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
+        >
+            <Checkbox
+                label="Employee has been employed for more than 28 calendar days"
+                name="employed_long_enough"
+                v-model:checked="employed28OrMoreDays"
+            />
+        </Tooltip>
     </div>
 
     <div
