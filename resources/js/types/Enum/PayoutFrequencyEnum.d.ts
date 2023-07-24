@@ -1,1 +1,1 @@
-export type PayoutFrequencyEnum = 'monthly'
+export type PayoutFrequencyEnum = 'monthly' | 'quarterly'
