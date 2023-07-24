@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
-import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
 import Deal from '@/types/Deal'
+import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
 
 defineEmits<{
     accepted: [id: number]
@@ -18,11 +17,11 @@ const props = defineProps<{
         class="flex justify-center gap-2 text-gray-500"
         v-if="!props.deal.accepted_at && !props.deal.declined_at"
     >
-        <ThumbsUpIcon
+        <HandThumbUpIcon
             @click="$emit('accepted', deal.id)"
             class="h-6 w-6 cursor-pointer hover:text-green-500"
         />
-        <ThumbsDownIcon
+        <HandThumbDownIcon
             @click="$emit('declined', deal.id)"
             class="h-6 w-6 cursor-pointer hover:text-red-600"
         />

@@ -72,7 +72,7 @@ const props = defineProps<{
                                 </div>
 
                                 <div
-                                    class="mx-auto flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-100"
+                                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100"
                                     v-else
                                 >
                                     <CheckIcon
