@@ -13,4 +13,6 @@ export default interface Deal {
     agent_id: number
     owner_email: string
     agent?: Agent
+    accepted_at: Date | null
+    declined_at: Date | null
 }

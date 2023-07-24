@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import Navigation from '@/Components/Deal/Index/Navigation.vue'
-import ThumbsDownIcon from '@/Components/Icon/ThumbsDownIcon.vue'
-import ThumbsUpIcon from '@/Components/Icon/ThumbsUpIcon.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
@@ -12,6 +10,7 @@ import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
 import { router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
+import DealStatus from './DealStatus.vue'
 
 const props = defineProps<{
     deals: Array<Deal>
@@ -138,18 +137,12 @@ const noDealsText = computed(() => {
 
                     <td
                         class="px-3"
-                        v-if="queryParamValue('scope') === '' || queryParamValue('scope') === 'open'"
                     >
-                        <div class="flex gap-2 text-gray-500">
-                            <thumbs-up-icon
-                                @click="dealIdBeingAccepted = deal.id"
-                                class="h-6 w-6 cursor-pointer hover:text-green-500"
-                            />
-                            <thumbs-down-icon
-                                @click="dealIdBeingDeclined = deal.id"
-                                class="h-6 w-6 cursor-pointer hover:text-red-600"
-                            />
-                        </div>
+                        <DealStatus
+                            :deal="deal"
+                            @accepted="(id: number) => dealIdBeingAccepted = id"
+                            @declined="(id: number) => dealIdBeingDeclined = id"
+                        />
                     </td>
                 </tr>
             </template>
