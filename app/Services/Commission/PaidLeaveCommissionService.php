@@ -18,18 +18,20 @@ class PaidLeaveCommissionService
 
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
     {
+        $paidLeavesWithEndDates = $agent->paidLeaves()->whereNotNull('end_date');
+
         $advancedQuery = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $agent->paidLeaves()
+            TimeScopeEnum::MONTHLY => $paidLeavesWithEndDates
                 ->where(function ($query) {
                     $query->whereMonth('end_date', $this->dateInScope->month)
                         ->orWhereMonth('start_date', $this->dateInScope->month);
                 }),
-            TimeScopeEnum::QUARTERLY => $agent->paidLeaves()
+            TimeScopeEnum::QUARTERLY => $paidLeavesWithEndDates
                 ->where(function ($query) {
                     $query->whereBetween('end_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()])
                         ->orWhereBetween('start_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()]);
                 }),
-            TimeScopeEnum::ANNUALY => $agent->paidLeaves()
+            TimeScopeEnum::ANNUALY => $paidLeavesWithEndDates
                 ->where(function ($query) {
                     $query->whereBetween('end_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()])
                         ->orWhereBetween('start_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]);

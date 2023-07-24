@@ -8,12 +8,8 @@ use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 
 it('calculates the paid leave commission just for the employee with the paid leaves', function (TimeScopeEnum $timeScope, Carbon $startDate, Carbon $endDate) {
-    $agent = Agent::factory()->create([
-        'name' => 'with leaves',
-    ]);
-    $agentWithoutPaidLeaves = Agent::factory()->create([
-        'name' => 'without leaves',
-    ]);
+    $agent = Agent::factory()->create();
+    $agentWithoutPaidLeaves = Agent::factory()->create();
 
     foreach ([0, 1] as $_) {
         $agent->paidLeaves()->create([
@@ -42,4 +38,24 @@ it('calculates the paid leave commission just for the employee with the paid lea
         Carbon::now()->firstOfYear()->addDays(5),
         Carbon::now()->firstOfYear()->addDays(10),
     ],
+]);
+
+it('returns 0 if there is no end_date - for sickness', function (TimeScopeEnum $timeScope) {
+    $agent = Agent::factory()->create();
+
+    foreach ([0, 1] as $_) {
+        $agent->paidLeaves()->create([
+            'reason' => AgentStatusEnum::SICK->value,
+            'start_date' => Carbon::now(),
+            'end_date' => null,
+            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'sum_of_commissions' => 10_000_00,
+        ]);
+    }
+
+    expect((new PaidLeaveCommissionService())->calculate($agent, $timeScope))->toBe(0);
+})->with([
+    TimeScopeEnum::MONTHLY,
+    TimeScopeEnum::QUARTERLY,
+    TimeScopeEnum::ANNUALY,
 ]);
