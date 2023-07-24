@@ -41,16 +41,21 @@ const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthl
             <MenuItems
                 class="absolute right-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
-                <div class="py-1">
+                <div>
                     <MenuItem
-                        v-for="option in sortOptions"
+                        v-for="(option, optionId) in sortOptions"
                         :key="option.name"
                         v-slot="{ active }"
                     >
                         <a
                             @click="currentTimeScope = option.name"
                             :href="option.href"
-                            :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm font-medium text-gray-900']"
+                            :class="[
+                                active ? 'bg-gray-100' : '',
+                                'block px-4 py-2 text-sm font-medium text-gray-900',
+                                optionId === 0 ? 'rounded-t-md' : '',
+                                optionId === sortOptions.length - 1 ? 'rounded-b-md' : '',
+                            ]"
                             >{{ option.name }}</a
                         >
                     </MenuItem>

@@ -31,7 +31,7 @@ const planIdBeingDeleted = ref<number | null>()
 </script>
 
 <template>
-    <Card class="group flex justify-between hover:bg-gray-50">
+    <Card class="group flex justify-between">
         <div>
             <div class="flex items-center gap-3">
                 <h2 class="whitespace-nowrap">{{ props.plan.name }}</h2>
