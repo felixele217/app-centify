@@ -60,6 +60,19 @@ const noDealsText = computed(() => {
             return 'You do not have any declined deals yet.'
     }
 })
+
+const dealsText = computed(() => {
+    switch (queryParamValue('scope') as DealScopeEnum | '') {
+        case '':
+            return 'All of your deals.'
+        case 'open':
+            return 'All open deals.'
+        case 'accepted':
+            return 'All accepted deals.'
+        case 'declined':
+            return 'All rejected deals.'
+    }
+})
 </script>
 
 <template>
@@ -68,7 +81,7 @@ const noDealsText = computed(() => {
             <page-header
                 class="mb-2"
                 title="Deals"
-                description="All of your deals."
+                :description="dealsText"
                 no-bottom-margin
             />
 
