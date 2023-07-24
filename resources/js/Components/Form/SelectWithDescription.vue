@@ -3,15 +3,15 @@ import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } f
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
-export type SelectOption = {
+export type SelectOptionWithDescription = {
     title: string
     description?: string
     current: boolean
 }
 
 const props = defineProps<{
-    options: Array<SelectOption>
-    default?: SelectOption
+    options: Array<SelectOptionWithDescription>
+    default?: SelectOptionWithDescription
 }>()
 
 const selected = ref<null | {
