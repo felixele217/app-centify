@@ -12,7 +12,10 @@ class AgentRepository
     public static function create(StoreAgentRequest $request): Agent
     {
         $agent = Agent::create([
-            ...$request->safe()->except('paid_leave'),
+            ...$request->safe()->except([
+                'paid_leave',
+                'status',
+            ]),
             'organization_id' => Auth::user()->organization->id,
         ]);
 
@@ -26,7 +29,11 @@ class AgentRepository
     public static function update(Agent $agent, UpdateAgentRequest $request): void
     {
         $agent->update([
-            ...$request->safe()->except('paid_leave'),
+            ...$request->safe()->except([
+                'paid_leave',
+                'status',
+            ]
+            ),
         ]);
 
         if ($request->validated('paid_leave')) {

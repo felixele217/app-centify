@@ -6,6 +6,8 @@ use App\Models\Agent;
 use App\Models\Plan;
 use Inertia\Testing\AssertableInertia;
 
+use function Pest\Laravel\withoutExceptionHandling;
+
 it('passes the correct props', function () {
     $admin = signInAdmin();
 
@@ -20,6 +22,7 @@ it('passes the correct props', function () {
 
     $plan->agents()->attach(Agent::all());
 
+    withoutExceptionHandling();
     $this->get(route('plans.edit', $plan))->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Plan/Edit')

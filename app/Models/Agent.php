@@ -33,7 +33,10 @@ class Agent extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'status' => AgentStatusEnum::class,
+    ];
+
+    protected $appends = [
+        'status',
     ];
 
     public function organization(): BelongsTo
@@ -59,6 +62,23 @@ class Agent extends Authenticatable
     public function activePaidLeave(): HasOne
     {
         return $this->hasOne(PaidLeave::class)->active();
+    }
+
+    public function status(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->load('activePaidLeave')->activePaidLeave?->reason->value === AgentStatusEnum::SICK->value) {
+                    return AgentStatusEnum::SICK;
+                }
+
+                if ($this->activePaidLeave?->reason->value === AgentStatusEnum::VACATION->value) {
+                    return AgentStatusEnum::VACATION;
+                }
+
+                return AgentStatusEnum::ACTIVE;
+            }
+        );
     }
 
     protected function quotaAttainment(): Attribute

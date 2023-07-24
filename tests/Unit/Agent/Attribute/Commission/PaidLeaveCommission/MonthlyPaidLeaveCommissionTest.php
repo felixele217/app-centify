@@ -22,7 +22,7 @@ it('calculates the commission with the additional paid leave value for the curre
     }
 
     $paidLeaveDays = $paidLeaveEndDate->diffInWeekdays($paidLeaveStartDate) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 90;
+    $expectedCommissionsPerDay = $sumOfCommissions / 91;
 
     $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
 
@@ -43,7 +43,7 @@ it('calculates the commission with the additional paid leave value for the curre
     }
 
     $paidLeaveDaysThisMonth = $paidLeaveEndDate->diffInWeekdays(Carbon::now()->firstOfMonth()) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 90;
+    $expectedCommissionsPerDay = $sumOfCommissions / 91;
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
 
@@ -64,7 +64,7 @@ it('calculates the commission with the additional paid leave value for the curre
     }
 
     $paidLeaveDaysThisMonth = Carbon::now()->lastOfMonth()->diffInWeekdays($paidLeaveStartDate) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 90;
+    $expectedCommissionsPerDay = $sumOfCommissions / 91;
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
 
