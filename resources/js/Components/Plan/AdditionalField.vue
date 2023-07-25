@@ -9,7 +9,6 @@ import InputLabel from '../Form/InputLabel.vue'
 import SelectWithDescription from '../Form/SelectWithDescription.vue'
 import KickerForm from './KickerForm.vue'
 import { AdditionalField } from './UpsertPlanCard.vue'
-import PercentageInput from '../Form/PercentageInput.vue'
 
 const props = defineProps<{
     field: AdditionalField
@@ -22,7 +21,7 @@ const props = defineProps<{
         assigned_agent_ids: Array<number>
         additionalFields: Array<AdditionalField>
 
-            cliff_percentage: number
+        cliff_percentage: number
     }>
 }>()
 
@@ -46,9 +45,6 @@ const text = ref('')
 
             <InputError />
         </div>
-
-
-
 
         <div v-if="props.field.type === 'Trigger'">
             <SelectWithDescription

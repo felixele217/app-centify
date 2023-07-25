@@ -3,9 +3,7 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
-    options: Array<{
-        name: string
-    }>
+    options: Array<string>
     selectedOptionName: string
 }>()
 
@@ -44,9 +42,9 @@ defineEmits<{
                     <ListboxOption
                         as="template"
                         v-for="option in props.options"
-                        :key="option.name"
+                        :key="option"
                         :value="option"
-                        @click="$emit('option-selected', option.name)"
+                        @click="$emit('option-selected', option)"
                         v-slot="{ active, selected }"
                     >
                         <li
@@ -56,7 +54,7 @@ defineEmits<{
                             ]"
                         >
                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{
-                                option.name
+                                option
                             }}</span>
 
                             <span

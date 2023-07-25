@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
+import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { ref } from 'vue'
 import InputLabel from '../Form/InputLabel.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
@@ -9,18 +11,10 @@ const kickerThreshold = ref(0)
 const kickerPayout = ref(0)
 const salaryType = ref()
 
-const kickerTypeOptions = [
-    { name: 'Salary based - one time' },
-    { name: 'Salary based - accelerator' },
-    { name: 'Fixed amount - one time' },
-    { name: 'Fixed amount - accelerator' },
-]
-
-const salaryTypeOptions = [
-    { name: 'Variable Salary (monthly)' },
-    { name: 'Base Salary (monthly)' },
-    { name: 'Full Salary (monthly)' },
-]
+const props = defineProps<{
+    kickerTypeOptions: Array<KickerTypeEnum>
+    salaryTypeOptions: Array<SalaryTypeEnum>
+}>()
 </script>
 
 <template>
@@ -33,7 +27,7 @@ const salaryTypeOptions = [
                 />
 
                 <Select
-                    :options="kickerTypeOptions"
+                    :options="props.kickerTypeOptions"
                     :selected-option-name="kickerType"
                     @option-selected="(optionName: string) => kickerType = optionName"
                 />
@@ -59,7 +53,7 @@ const salaryTypeOptions = [
                 />
 
                 <Select
-                    :options="salaryTypeOptions"
+                    :options="props.salaryTypeOptions"
                     :selected-option-name="kickerType"
                     @option-selected="(optionName: string) => salaryType = optionName"
                 />

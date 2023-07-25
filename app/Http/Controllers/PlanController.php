@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\KickerTypeEnum;
 use App\Enum\PayoutFrequencyEnum;
+use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
 use App\Http\Requests\UpdatePlanRequest;
@@ -30,6 +32,8 @@ class PlanController extends Controller
             'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
             'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
+            'kicker_type_options' => array_column(KickerTypeEnum::cases(), 'value'),
+            'salary_type_options' => array_column(SalaryTypeEnum::cases(), 'value'),
         ]);
     }
 

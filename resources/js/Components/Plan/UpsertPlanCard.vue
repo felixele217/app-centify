@@ -9,7 +9,9 @@ import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import Agent from '@/types/Agent'
+import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
+import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import Plan from '@/types/Plan'
 import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
@@ -33,8 +35,10 @@ export interface AdditionalField {
 const props = defineProps<{
     plan?: Plan
     agents: Array<Pick<Agent, 'id' | 'name'>>
-    target_variable_options: Array<string>
-    payout_frequency_options: Array<string>
+    target_variable_options: Array<TargetVariableEnum>
+    payout_frequency_options: Array<PayoutFrequencyEnum>
+    kicker_type_options: Array<KickerTypeEnum>
+    salary_type_options: Array<SalaryTypeEnum>
 }>()
 
 const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
@@ -235,7 +239,10 @@ function submit() {
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Kicker')">
-                        <KickerForm />
+                        <KickerForm
+                            :kicker-type-options="props.kicker_type_options"
+                            :salary-type-options="props.salary_type_options"
+                        />
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Cliff')">
