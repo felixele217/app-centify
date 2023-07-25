@@ -25,3 +25,53 @@ it('can store a plan with a kicker as an admin', function () {
     expect(Plan::first()->kicker->salary_type->value)->toBe($salaryType);
 });
 
+it('requires all kicker fields if at least one is specified', function (array $providedField, array $missingFields) {
+    signInAdmin();
+
+    StorePlanRequest::factory()->state([
+        'kicker' => $providedField,
+    ])->fake();
+
+    $this->post(route('plans.store'))->assertInvalid($missingFields);
+})->with([
+    [
+        [
+            'type' => fake()->randomElement(KickerTypeEnum::cases())->value,
+        ],
+        [
+            'kicker.threshold_in_percent',
+            'kicker.payout_in_percent',
+            'kicker.salary_type',
+        ],
+    ],
+    [
+        [
+            'threshold_in_percent' => 200
+        ],
+        [
+            'kicker.type',
+            'kicker.payout_in_percent',
+            'kicker.salary_type',
+        ],
+    ],
+    [
+        [
+            'payout_in_percent' => 25
+        ],
+        [
+            'kicker.type',
+            'kicker.threshold_in_percent',
+            'kicker.salary_type',
+        ],
+    ],
+    [
+        [
+            'salary_type' => fake()->randomElement(SalaryTypeEnum::cases())->value,
+        ],
+        [
+            'kicker.type',
+            'kicker.threshold_in_percent',
+            'kicker.payout_in_percent',
+        ],
+    ],
+]);
