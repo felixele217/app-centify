@@ -63,6 +63,13 @@ class PlanRepository
             );
         }
 
+        if ($request->validated('kicker')) {
+            $plan->kicker()->updateOrCreate(
+                ['id' => $plan->id],
+                $request->validated('kicker'),
+            );
+        }
+
         return $plan;
     }
 }
