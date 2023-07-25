@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enum\KickerTypeEnum;
 use App\Enum\PayoutFrequencyEnum;
+use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
@@ -50,7 +52,36 @@ class StorePlanRequest extends FormRequest
             'cliff_threshold_in_percent' => [
                 'nullable',
                 'integer',
-            ]
+            ],
+
+            'kicker' => [
+                'array',
+            ],
+
+            'kicker.type' => [
+                'string',
+                new Enum(KickerTypeEnum::class),
+                'required_with:kicker,kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
+            ],
+
+            'kicker.threshold_in_percent' => [
+                'integer',
+                'min:1',
+                'required_with:kicker,kicker.type,kicker.payout_in_percent,kicker.salary_type',
+
+            ],
+
+            'kicker.payout_in_percent' => [
+                'integer',
+                'min:1',
+                'required_with:kicker,kicker.type,kicker.threshold_in_percent,kicker.salary_type',
+            ],
+
+            'kicker.salary_type' => [
+                'string',
+                new Enum(SalaryTypeEnum::class),
+                'required_with:kicker,kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
+            ],
         ];
     }
 

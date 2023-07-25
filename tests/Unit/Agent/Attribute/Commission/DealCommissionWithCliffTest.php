@@ -26,12 +26,12 @@ it('returns deal commission of 0 if the cliff threshold is bigger than the achie
     [
         1_000_00,
         10_000_00,
-        0.25,
+        25,
     ],
     [
         4_000,
         100_000_00,
-        0.1,
+        10,
     ],
 ]);
 

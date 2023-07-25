@@ -32,11 +32,6 @@ const salaryTypeOptions = [
                     required
                 />
 
-                <!-- <SelectWithDescription
-                    :options="kickerTypeOptions"
-                    @option-selected="(optionTitle: string) => kickerType = optionTitle"
-                /> -->
-
                 <Select
                     :options="kickerTypeOptions"
                     :selected-option-name="kickerType"

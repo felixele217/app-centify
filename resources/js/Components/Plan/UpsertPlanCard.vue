@@ -21,6 +21,7 @@ import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
+import KickerForm from './KickerForm.vue'
 
 export interface AdditionalField {
     id: number
@@ -233,6 +234,10 @@ function submit() {
                         />
                     </div>
 
+                    <div v-if="activeAdditionalFields.includes('Kicker')">
+                        <KickerForm />
+                    </div>
+
                     <div v-if="activeAdditionalFields.includes('Cliff')">
                         <InputLabel
                             value="Cliff"
@@ -244,7 +249,10 @@ function submit() {
                             @set-value="(newValue: number) => form.cliff_threshold_in_percent = newValue"
                         />
 
-                        <InputError />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.cliff_threshold_in_percent"
+                        />
                     </div>
                 </div>
 

@@ -11,16 +11,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cliffs', function (Blueprint $table) {
+        Schema::create('kickers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Plan::class);
-            $table->integer('threshold_in_percent');
             $table->timestamps();
+            $table->foreignIdFor(Plan::class);
+            $table->string('type');
+            $table->integer('threshold_in_percent');
+            $table->integer('payout_in_percent');
+            $table->string('salary_type');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('cliffs');
+        Schema::dropIfExists('kickers');
     }
 };
