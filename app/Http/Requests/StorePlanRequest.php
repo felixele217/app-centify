@@ -47,6 +47,10 @@ class StorePlanRequest extends FormRequest
                 'exists:agents,id',
             ],
 
+            'cliff_threshold' => [
+                'nullable',
+                'integer',
+            ]
         ];
     }
 

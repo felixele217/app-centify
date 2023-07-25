@@ -9,13 +9,27 @@ use Illuminate\Support\Facades\Auth;
 
 class PlanRepository
 {
+    const PLAN_FIELDS = [
+        'name',
+        'start_date',
+        'target_amount_per_month',
+        'target_variable',
+        'payout_frequency'
+    ];
+
     public static function create(StorePlanRequest $request): Plan
     {
         $plan = Plan::create([
-            ...$request->safe()->except('assigned_agent_ids'),
+            ...$request->safe()->only(self::PLAN_FIELDS),
             'creator_id' => Auth::user()->id,
             'organization_id' => Auth::user()->organization->id,
         ]);
+
+        if ($request->validated('cliff_threshold')) {
+            $plan->cliff()->create([
+                'threshold_in_percent' => $request->validated('cliff_threshold')
+            ]);
+        }
 
         $plan->agents()->attach($request->validated('assigned_agent_ids'));
 
@@ -24,16 +38,14 @@ class PlanRepository
 
     public static function update(Plan $plan, UpdatePlanRequest $request): Plan
     {
-        $plan->update($request->safe()->except('assigned_agent_ids'));
+        $plan->update($request->safe()->only(self::PLAN_FIELDS));
 
-        // dd($plan->agents->pluck('id'), $request->validated('assigned_agent_ids'));
         foreach ($plan->agents as $agent) {
             if (! in_array($agent->id, $request->validated('assigned_agent_ids'))) {
                 $plan->agents()->detach($agent->id);
             }
         }
 
-        // dd($request->validated('assigned_agent_ids')[0], $plan->agents->first()->id);
         foreach ($request->validated('assigned_agent_ids') as $agentId) {
             if (! $plan->agents->contains($agentId)) {
                 $plan->agents()->attach($agentId);
