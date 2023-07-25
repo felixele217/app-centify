@@ -114,3 +114,5 @@ it('correctly calculates the commission for the current year if scoped', functio
 
     expect(intval($agent->commission))->toBe(60_000_00);
 });
+
+

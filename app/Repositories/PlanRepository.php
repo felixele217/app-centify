@@ -27,7 +27,7 @@ class PlanRepository
 
         if ($request->validated('cliff_threshold')) {
             $plan->cliff()->create([
-                'threshold_in_percent' => $request->validated('cliff_threshold')
+                'threshold_in_percent' => $request->validated('cliff_threshold') / 100
             ]);
         }
 

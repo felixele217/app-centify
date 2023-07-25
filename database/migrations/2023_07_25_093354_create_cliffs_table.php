@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cliffs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Plan::class);
-            $table->integer('threshold_in_percent');
+            $table->float('threshold_in_percent');
             $table->timestamps();
         });
     }
