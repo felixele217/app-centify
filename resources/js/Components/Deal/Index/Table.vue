@@ -53,7 +53,7 @@ const noDealsText = computed(() => {
         case '':
             return 'You have no deals yet. You might want to sync your integrations to load your deals into centify.'
         case 'open':
-            return 'Currently, there are no deals that require your manual action.'
+            return 'You do not have any open deals currently.'
         case 'accepted':
             return 'You do not have any accepted deals yet.'
         case 'declined':
