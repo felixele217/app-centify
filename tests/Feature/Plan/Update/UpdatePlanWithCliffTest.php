@@ -23,3 +23,7 @@ it('can update a plan with a cliff as an admin', function (Plan $plan) {
         'organization_id' => $this->admin->organization->id,
     ]),
 ]);
+
+it ('can update a plan with removing the cliff as an admin', function () {
+
+})->todo();

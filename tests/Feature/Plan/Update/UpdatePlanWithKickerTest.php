@@ -86,3 +86,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
         ],
     ],
 ]);
+
+it ('can update a plan with removing the kicker as an admin', function () {
+
+})->todo();
