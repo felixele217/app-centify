@@ -27,8 +27,12 @@ class PlanRepository
 
         if ($request->validated('cliff_threshold_in_percent')) {
             $plan->cliff()->create([
-                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100,
+                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent'),
             ]);
+        }
+
+        if ($request->validated('kicker')) {
+            $plan->kicker()->create($request->validated('kicker'));
         }
 
         $plan->agents()->attach($request->validated('assigned_agent_ids'));
@@ -55,7 +59,7 @@ class PlanRepository
         if ($request->validated('cliff_threshold_in_percent')) {
             $plan->cliff()->updateOrCreate(
                 ['id' => $plan->id],
-                ['threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100]
+                ['threshold_in_percent' => $request->validated('cliff_threshold_in_percent')]
             );
         }
 

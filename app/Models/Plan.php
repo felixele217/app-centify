@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Kicker;
 use App\Traits\HasActiveScope;
 use App\Enum\TargetVariableEnum;
 use App\Enum\PayoutFrequencyEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Plan extends Model
 {
@@ -42,5 +43,10 @@ class Plan extends Model
     public function cliff(): HasOne
     {
         return $this->hasOne(Cliff::class);
+    }
+
+    public function kicker(): HasOne
+    {
+        return $this->hasOne(Kicker::class);
     }
 }
