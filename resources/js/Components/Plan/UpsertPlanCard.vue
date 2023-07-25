@@ -80,10 +80,12 @@ function submit() {
     if (props.plan) {
         form.put(route('plans.update', props.plan.id), {
             onSuccess: () => notify('Plan updated', 'The new data will now be used for calculation.'),
+            preserveScroll: true,
         })
     } else {
         form.post(route('plans.store'), {
             onSuccess: () => notify('Plan stored', 'Your plan is now available for use.'),
+            preserveScroll: true,
         })
     }
 }
