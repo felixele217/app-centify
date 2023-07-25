@@ -23,4 +23,9 @@ class PipedriveHelper
         ? $deal[$demoSetByApiKey]['email'][0]['value']
         : null;
     }
+
+    public static function organizationSubdomain(array $deal): string
+    {
+        return strtok($deal['org_id']['cc_email'], '@');
+    }
 }
