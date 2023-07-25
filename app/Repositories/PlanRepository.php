@@ -14,7 +14,7 @@ class PlanRepository
         'start_date',
         'target_amount_per_month',
         'target_variable',
-        'payout_frequency'
+        'payout_frequency',
     ];
 
     public static function create(StorePlanRequest $request): Plan
@@ -25,10 +25,9 @@ class PlanRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-
         if ($request->validated('cliff_threshold_in_percent')) {
             $plan->cliff()->create([
-                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100
+                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100,
             ]);
         }
 
@@ -51,6 +50,13 @@ class PlanRepository
             if (! $plan->agents->contains($agentId)) {
                 $plan->agents()->attach($agentId);
             }
+        }
+
+        if ($request->validated('cliff_threshold_in_percent')) {
+            $plan->cliff()->updateOrCreate(
+                ['id' => $plan->id],
+                ['threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100]
+            );
         }
 
         return $plan;

@@ -47,6 +47,11 @@ class UpdatePlanRequest extends FormRequest
             'assigned_agent_ids.*' => [
                 'exists:agents,id',
             ],
+
+            'cliff_threshold_in_percent' => [
+                'nullable',
+                'integer',
+            ],
         ];
     }
 
