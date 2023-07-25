@@ -38,7 +38,7 @@ const props = defineProps<{
                 <Select
                     :options="props.kickerTypeOptions"
                     :selected-option="props.kicker.type"
-                    @option-selected="(option) => $emit('set-type', option)"
+                    @option-selected="(kickerType: string) => $emit('set-type', kickerType)"
                 />
             </div>
             <div>
@@ -49,7 +49,7 @@ const props = defineProps<{
 
                 <PercentageInput
                     :value="props.kicker.threshold_in_percent"
-                    @set-value="(value) => $emit('set-threshold-in-percent', value)"
+                    @set-value="(thresholdInPercent: number) => $emit('set-threshold-in-percent', thresholdInPercent)"
                 />
             </div>
         </div>
@@ -64,7 +64,7 @@ const props = defineProps<{
                 <Select
                     :options="props.salaryTypeOptions"
                     :selected-option="props.kicker.salary_type"
-                    @option-selected="(option) => $emit('set-salary-type', option)"
+                    @option-selected="(salaryType: string) => $emit('set-salary-type', salaryType)"
                 />
             </div>
             <div>
@@ -75,7 +75,7 @@ const props = defineProps<{
 
                 <PercentageInput
                     :value="props.kicker.payout_in_percent"
-                    @set-value="(value) => $emit('set-payout-in-percent', value)"
+                    @set-value="(payoutInPercent: number) => $emit('set-payout-in-percent', payoutInPercent)"
                 />
             </div>
         </div>

@@ -266,13 +266,13 @@ function submit() {
                             :kicker="form.kicker"
                             :kicker-type-options="props.kicker_type_options"
                             :salary-type-options="props.salary_type_options"
-                            @set-type="(type) => (form.kicker.type = type)"
-                            @set-salary-type="(salaryType) => (form.kicker.salary_type = salaryType)"
+                            @set-type="(type: KickerTypeEnum) => (form.kicker.type = type)"
+                            @set-salary-type="(salaryType: SalaryTypeEnum) => (form.kicker.salary_type = salaryType)"
                             @set-threshold-in-percent="
-                                (thresholdInPercent) => (form.kicker.threshold_in_percent = thresholdInPercent)
+                                (thresholdInPercent: number) => (form.kicker.threshold_in_percent = thresholdInPercent)
                             "
                             @set-payout-in-percent="
-                                (payoutInPercent) => (form.kicker.payout_in_percent = payoutInPercent)
+                                (payoutInPercent: number) => (form.kicker.payout_in_percent = payoutInPercent)
                             "
                             :errors="form.errors"
                         />
