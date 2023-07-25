@@ -4,6 +4,7 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
+use App\Services\Commission\DealCommissionService;
 use Carbon\Carbon;
 
 it('calculates the commission properly for the active plan with the most recent start_date', function () {
@@ -115,4 +116,8 @@ it('correctly calculates the commission for the current year if scoped', functio
     expect(intval($agent->commission))->toBe(60_000_00);
 });
 
+it('returns 0 if the agent has no active plan', function () {
+    signInAdmin();
 
+    expect((new DealCommissionService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY))->toBe(0);
+});

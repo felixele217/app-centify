@@ -50,9 +50,9 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'type' => fake()->randomElement(KickerTypeEnum::cases())->value,
         ],
         [
-            'kicker.threshold_in_percent',
-            'kicker.payout_in_percent',
-            'kicker.salary_type',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
         ],
     ],
     [
@@ -60,9 +60,9 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'threshold_in_percent' => 200,
         ],
         [
-            'kicker.type',
-            'kicker.payout_in_percent',
-            'kicker.salary_type',
+            'kicker.type' => 'Please specify all fields for the Kicker.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
         ],
     ],
     [
@@ -70,9 +70,9 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'payout_in_percent' => 25,
         ],
         [
-            'kicker.type',
-            'kicker.threshold_in_percent',
-            'kicker.salary_type',
+            'kicker.type' => 'Please specify all fields for the Kicker.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
         ],
     ],
     [
@@ -80,9 +80,9 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'salary_type' => fake()->randomElement(SalaryTypeEnum::cases())->value,
         ],
         [
-            'kicker.type',
-            'kicker.threshold_in_percent',
-            'kicker.payout_in_percent',
+            'kicker.type' => 'Please specify all fields for the Kicker.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
         ],
     ],
 ]);

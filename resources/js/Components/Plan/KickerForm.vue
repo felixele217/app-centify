@@ -1,19 +1,28 @@
 <script setup lang="ts">
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
-import { ref } from 'vue'
+import InputError from '../Form/InputError.vue'
 import InputLabel from '../Form/InputLabel.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
 import Select from '../Form/Select.vue'
 
-const kickerType = ref()
-const kickerThreshold = ref(0)
-const kickerPayout = ref(0)
-const salaryType = ref()
+defineEmits<{
+    'set-type': [type: KickerTypeEnum]
+    'set-salary-type': [type: SalaryTypeEnum]
+    'set-threshold-in-percent': [thresholdInPercent: number]
+    'set-payout-in-percent': [payoutInPercent: number]
+}>()
 
 const props = defineProps<{
     kickerTypeOptions: Array<KickerTypeEnum>
     salaryTypeOptions: Array<SalaryTypeEnum>
+    kicker: {
+        type: KickerTypeEnum
+        salary_type: SalaryTypeEnum
+        threshold_in_percent: number
+        payout_in_percent: number
+    }
+    errors: Record<string, string>
 }>()
 </script>
 
@@ -28,8 +37,8 @@ const props = defineProps<{
 
                 <Select
                     :options="props.kickerTypeOptions"
-                    :selected-option-name="kickerType"
-                    @option-selected="(optionName: string) => kickerType = optionName"
+                    :selected-option="props.kicker.type"
+                    @option-selected="(option) => $emit('set-type', option)"
                 />
             </div>
             <div>
@@ -39,8 +48,8 @@ const props = defineProps<{
                 />
 
                 <PercentageInput
-                    :value="kickerThreshold"
-                    @set-value="(value: number) =>kickerThreshold = value"
+                    :value="props.kicker.threshold_in_percent"
+                    @set-value="(value) => $emit('set-threshold-in-percent', value)"
                 />
             </div>
         </div>
@@ -54,8 +63,8 @@ const props = defineProps<{
 
                 <Select
                     :options="props.salaryTypeOptions"
-                    :selected-option-name="kickerType"
-                    @option-selected="(optionName: string) => salaryType = optionName"
+                    :selected-option="props.kicker.salary_type"
+                    @option-selected="(option) => $emit('set-salary-type', option)"
                 />
             </div>
             <div>
@@ -65,10 +74,18 @@ const props = defineProps<{
                 />
 
                 <PercentageInput
-                    :value="kickerPayout"
-                    @set-value="(value: number) =>kickerPayout = value"
+                    :value="props.kicker.payout_in_percent"
+                    @set-value="(value) => $emit('set-payout-in-percent', value)"
                 />
             </div>
         </div>
+        <InputError
+            :message="
+                props.errors['kicker.type'] ||
+                props.errors['kicker.payout_in_percent'] ||
+                props.errors['kicker.threshold_in_percent'] ||
+                props.errors['kicker.salary_type']
+            "
+        />
     </div>
 </template>

@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use Carbon\Carbon;
 use App\Enum\KickerTypeEnum;
+use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
-use App\Enum\PayoutFrequencyEnum;
-use Illuminate\Validation\Rules\Enum;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdatePlanRequest extends FormRequest
 {
@@ -101,6 +101,10 @@ class UpdatePlanRequest extends FormRequest
     {
         return [
             'target_amount_per_month.min' => 'The :attribute must be at least 0,01€.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.type' => 'Please specify all fields for the Kicker.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
         ];
     }
 }

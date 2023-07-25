@@ -4,11 +4,11 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
     options: Array<string>
-    selectedOptionName: string
+    selectedOption: string
 }>()
 
 defineEmits<{
-    'option-selected': [name: string]
+    'option-selected': [option: string]
 }>()
 </script>
 
@@ -20,8 +20,8 @@ defineEmits<{
             >
                 <span
                     class="block truncate text-sm"
-                    :class="props.selectedOptionName ? 'text-gray-900' : 'text-gray-300'"
-                    >{{ props.selectedOptionName ? props.selectedOptionName : 'Select...' }}</span
+                    :class="props.selectedOption ? 'text-gray-900' : 'text-gray-300'"
+                    >{{ props.selectedOption ? props.selectedOption : 'Select...' }}</span
                 >
                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <ChevronUpDownIcon
@@ -50,7 +50,7 @@ defineEmits<{
                         <li
                             :class="[
                                 active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-3 pr-9',
+                                'relative cursor-pointer select-none py-2 pl-3 pr-9',
                             ]"
                         >
                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{

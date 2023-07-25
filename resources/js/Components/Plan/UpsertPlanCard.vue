@@ -55,6 +55,13 @@ const form = useForm({
     cliff_threshold_in_percent: props.plan?.cliff?.threshold_in_percent
         ? props.plan?.cliff.threshold_in_percent * 100
         : 0,
+
+    kicker: {
+        type: '' as KickerTypeEnum,
+        threshold_in_percent: 0,
+        payout_in_percent: 0,
+        salary_type: '' as SalaryTypeEnum,
+    },
 })
 
 function handleDateChange(newDate: Date) {
@@ -240,8 +247,18 @@ function submit() {
 
                     <div v-if="activeAdditionalFields.includes('Kicker')">
                         <KickerForm
+                            :kicker="form.kicker"
                             :kicker-type-options="props.kicker_type_options"
                             :salary-type-options="props.salary_type_options"
+                            @set-type="(type) => (form.kicker.type = type)"
+                            @set-salary-type="(salaryType) => (form.kicker.salary_type = salaryType)"
+                            @set-threshold-in-percent="
+                                (thresholdInPercent) => (form.kicker.threshold_in_percent = thresholdInPercent)
+                            "
+                            @set-payout-in-percent="
+                                (payoutInPercent) => (form.kicker.payout_in_percent = payoutInPercent)
+                            "
+                            :errors="form.errors"
                         />
                     </div>
 

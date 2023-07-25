@@ -100,6 +100,10 @@ class StorePlanRequest extends FormRequest
     {
         return [
             'target_amount_per_month.min' => 'The :attribute must be at least 0,01€.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.type' => 'Please specify all fields for the Kicker.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
         ];
     }
 }
