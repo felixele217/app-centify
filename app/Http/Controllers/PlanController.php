@@ -53,6 +53,7 @@ class PlanController extends Controller
             'plan' => $plan->load([
                 'agents',
                 'cliff',
+                'kicker',
             ]),
         ]);
     }

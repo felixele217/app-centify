@@ -3,6 +3,7 @@ import Agent from './Agent'
 import Cliff from './Cliff'
 import type { PayoutFrequencyEnum } from './Enum/PayoutFrequencyEnum'
 import type { TargetVariableEnum } from './Enum/TargetVariableEnum'
+import Kicker from './Kicker'
 
 export default interface Plan {
     id: number
@@ -16,4 +17,5 @@ export default interface Plan {
     agents?: Array<Agent>
     creator: Admin
     cliff?: Cliff
+    kicker?: Kicker
 }

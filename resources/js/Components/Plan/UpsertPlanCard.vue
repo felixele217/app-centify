@@ -42,7 +42,21 @@ const props = defineProps<{
 }>()
 
 const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
-const activeAdditionalFields = ref<Array<AdditionalFieldTypes>>(props.plan?.cliff ? ['Cliff'] : [])
+const activeAdditionalFields = ref<Array<AdditionalFieldTypes>>(additionalFieldsOfPlan())
+
+function additionalFieldsOfPlan() {
+    const activeAdditionalFields = []
+
+    if (props.plan?.cliff) {
+        activeAdditionalFields.push('Cliff')
+    }
+
+    if (props.plan?.kicker) {
+        activeAdditionalFields.push('Kicker')
+    }
+
+    return activeAdditionalFields as Array<AdditionalFieldTypes>
+}
 
 const form = useForm({
     name: props.plan?.name || '',
@@ -57,10 +71,10 @@ const form = useForm({
         : 0,
 
     kicker: {
-        type: '' as KickerTypeEnum,
-        threshold_in_percent: 0,
-        payout_in_percent: 0,
-        salary_type: '' as SalaryTypeEnum,
+        type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
+        threshold_in_percent: props.plan?.kicker?.threshold_in_percent || 0,
+        payout_in_percent: props.plan?.kicker?.payout_in_percent || 0,
+        salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
     },
 })
 

@@ -39,6 +39,7 @@ it('passes the correct props', function () {
             ->has('plan')
             ->where('plan.id', $plan->id)
             ->has('plan.cliff')
+            ->has('plan.kicker')
             ->has('plan.agents', $agentCount)
     );
 });
