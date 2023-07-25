@@ -5,7 +5,9 @@ const props = defineProps<{
     value: number
 }>()
 
-const emit = defineEmits(['set-value'])
+const emit = defineEmits<{
+    'set-value': [newValue: number]
+}>()
 
 function handleChange(newValue: string) {
     if (newValue.includes('%')) {

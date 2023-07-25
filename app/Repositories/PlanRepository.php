@@ -25,9 +25,10 @@ class PlanRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        if ($request->validated('cliff_threshold')) {
+
+        if ($request->validated('cliff_threshold_in_percent')) {
             $plan->cliff()->create([
-                'threshold_in_percent' => $request->validated('cliff_threshold') / 100
+                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent') / 100
             ]);
         }
 

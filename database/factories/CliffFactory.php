@@ -11,7 +11,7 @@ class CliffFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+           'threshold_in_percent' => fake()->numberBetween(0, 1)
         ];
     }
 }

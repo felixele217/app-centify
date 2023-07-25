@@ -9,6 +9,7 @@ import InputLabel from '../Form/InputLabel.vue'
 import SelectWithDescription from '../Form/SelectWithDescription.vue'
 import KickerForm from './KickerForm.vue'
 import { AdditionalField } from './UpsertPlanCard.vue'
+import PercentageInput from '../Form/PercentageInput.vue'
 
 const props = defineProps<{
     field: AdditionalField
@@ -20,6 +21,8 @@ const props = defineProps<{
         payout_frequency: PayoutFrequencyEnum
         assigned_agent_ids: Array<number>
         additionalFields: Array<AdditionalField>
+
+            cliff_percentage: number
     }>
 }>()
 
@@ -35,7 +38,7 @@ const text = ref('')
             required
         />
 
-        <div v-if="props.field.type === 'Cap' || props.field.type === 'Cliff'">
+        <div v-if="props.field.type === 'Cap'">
             <CurrencyInput
                 :value="value"
                 @set-value="(newValue: number) => value = newValue"
@@ -43,6 +46,9 @@ const text = ref('')
 
             <InputError />
         </div>
+
+
+
 
         <div v-if="props.field.type === 'Trigger'">
             <SelectWithDescription

@@ -11,7 +11,7 @@ use function Pest\Laravel\withoutExceptionHandling;
 it('passes the correct props', function () {
     $admin = signInAdmin();
 
-    $plan = Plan::factory()->create([
+    $plan = Plan::factory()->hasCliff()->create([
         'organization_id' => $admin->organization->id,
         'creator_id' => $admin->id,
     ]);
@@ -38,6 +38,7 @@ it('passes the correct props', function () {
             ->has('payout_frequency_options', count(PayoutFrequencyEnum::cases()))
             ->has('plan')
             ->where('plan.id', $plan->id)
+            ->has('plan.cliff')
             ->has('plan.agents', $agentCount)
     );
 });

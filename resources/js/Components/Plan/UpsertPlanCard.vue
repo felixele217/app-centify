@@ -8,7 +8,6 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
-import AdditionalField from '@/Components/Plan/AdditionalField.vue'
 import Agent from '@/types/Agent'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
@@ -19,7 +18,9 @@ import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequen
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import notify from '@/utils/notify'
 import { router, useForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
+import PercentageInput from '../Form/PercentageInput.vue'
 
 export interface AdditionalField {
     id: number
@@ -28,8 +29,6 @@ export interface AdditionalField {
     text?: string
 }
 
-const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
-
 const props = defineProps<{
     plan?: Plan
     agents: Array<Pick<Agent, 'id' | 'name'>>
@@ -37,15 +36,20 @@ const props = defineProps<{
     payout_frequency_options: Array<string>
 }>()
 
+const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
+const activeAdditionalFields = ref<Array<AdditionalFieldTypes>>(props.plan?.cliff ? ['Cliff'] : [])
+
 const form = useForm({
     name: props.plan?.name || '',
-    start_date: props.plan?.start_date || (null as Date | null), // first day of next month
+    start_date: props.plan?.start_date ? new Date(props.plan.start_date) : null,
     target_amount_per_month: props.plan?.target_amount_per_month || 0,
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
     payout_frequency: props.plan?.payout_frequency || ('' as PayoutFrequencyEnum),
     assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
 
-    additionalFields: [] as Array<AdditionalField>,
+    cliff_threshold_in_percent: props.plan?.cliff?.threshold_in_percent
+        ? props.plan?.cliff.threshold_in_percent * 100
+        : 0,
 })
 
 function handleDateChange(newDate: Date) {
@@ -71,20 +75,6 @@ function submit() {
         })
     }
 }
-
-function addAdditionalField(type: AdditionalFieldTypes): void {
-    const specialField = ['Cliff', 'Cap'].includes(type) ? { value: 0 } : { text: '' }
-
-    form.additionalFields.push({
-        type: type,
-        id: form.additionalFields.length,
-        ...specialField,
-    })
-}
-
-function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
-    return form.additionalFields.map((field) => field.type).includes(additionalFieldType)
-}
 </script>
 
 <template>
@@ -107,12 +97,14 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                             value="Name"
                             required
                         />
+
                         <TextInput
                             type="text"
                             v-model="form.name"
                             name="name"
                             placeholder="SDR Commission Plan"
                         />
+
                         <InputError
                             class="mt-2"
                             :message="form.errors.name"
@@ -226,29 +218,34 @@ function isSelected(additionalFieldType: AdditionalFieldTypes): boolean {
                         <CardOptions
                             :options-per-row="4"
                             :options="
-                                possibleAdditionalFields.map((type) => {
-                                    return {
-                                        title: type,
-                                        selected: isSelected(type),
-                                    }
-                                })
+                                possibleAdditionalFields.map((type) => ({
+                                    title: type,
+                                    selected: activeAdditionalFields.includes(type),
+                                }))
                             "
                             @option-clicked="(option: CardOptionsOption<AdditionalFieldTypes>) => {
-                                if (isSelected(option.title)) {
-                                    form.additionalFields = form.additionalFields.filter(field => field.type !== option.title)
+                                if (activeAdditionalFields.includes(option.title)) {
+                                    activeAdditionalFields = activeAdditionalFields.filter(field => field !== option.title)
                                 } else {
-                                    addAdditionalField(option.title)
+                                    activeAdditionalFields = [...activeAdditionalFields, option.title]
                                 }
                             }"
                         />
                     </div>
 
-                    <AdditionalField
-                        v-for="field in form.additionalFields"
-                        :form="form"
-                        :field="field"
-                        :key="field.id"
-                    />
+                    <div v-if="activeAdditionalFields.includes('Cliff')">
+                        <InputLabel
+                            value="Cliff"
+                            required
+                        />
+
+                        <PercentageInput
+                            :value="form.cliff_threshold_in_percent"
+                            @set-value="(newValue: number) => form.cliff_threshold_in_percent = newValue"
+                        />
+
+                        <InputError />
+                    </div>
                 </div>
 
                 <FormButtons

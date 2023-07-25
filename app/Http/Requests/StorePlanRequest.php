@@ -47,7 +47,7 @@ class StorePlanRequest extends FormRequest
                 'exists:agents,id',
             ],
 
-            'cliff_threshold' => [
+            'cliff_threshold_in_percent' => [
                 'nullable',
                 'integer',
             ]

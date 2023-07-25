@@ -46,7 +46,10 @@ class PlanController extends Controller
             'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
             'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
-            'plan' => $plan->load('agents'),
+            'plan' => $plan->load([
+                'agents',
+                'cliff',
+            ]),
         ]);
     }
 

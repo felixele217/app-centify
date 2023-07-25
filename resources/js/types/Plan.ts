@@ -1,5 +1,6 @@
 import Admin from './Admin'
 import Agent from './Agent'
+import Cliff from './Cliff'
 import type { PayoutFrequencyEnum } from './Enum/PayoutFrequencyEnum'
 import type { TargetVariableEnum } from './Enum/TargetVariableEnum'
 
@@ -14,4 +15,5 @@ export default interface Plan {
     agents_count?: number
     agents?: Array<Agent>
     creator: Admin
+    cliff?: Cliff
 }
