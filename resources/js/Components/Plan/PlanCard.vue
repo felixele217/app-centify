@@ -31,8 +31,8 @@ const planIdBeingDeleted = ref<number | null>()
 </script>
 
 <template>
-    <Card class="group flex justify-between">
-        <div>
+    <Card>
+        <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <h2 class="whitespace-nowrap">{{ props.plan.name }}</h2>
 
@@ -42,50 +42,49 @@ const planIdBeingDeleted = ref<number | null>()
                     :icon="PencilSquareIcon"
                 />
             </div>
-
-            <div class="mt-4 flex items-center gap-1">
-                <CalendarIcon class="text-gray-400" />
-                <p class="-mb-0.5 text-sm text-gray-600">
-                    starts
-                    <span class="font-semibold text-gray-900">
-                        {{ formatDate(props.plan.start_date) }}
-                    </span>
-                </p>
-            </div>
-
-            <div class="mt-2 flex items-center gap-1">
-                <RecurIcon class="text-gray-400" />
-                <p class="-mb-0.5 text-sm text-gray-600">
-                    occurs
-                    <span class="font-semibold text-gray-900">
-                        {{ props.plan.payout_frequency }}
-                    </span>
-                </p>
-            </div>
-
-            <div class="mt-2 flex items-center gap-1">
-                <BanknotesIcon class="text-gray-400" />
-                <p class="-mb-0.5 text-sm text-gray-600">
-                    targets
-                    <span class="font-semibold text-gray-900">
-                        {{ props.plan.target_variable }}
-                    </span>
-                </p>
-            </div>
-
-            <h3 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h3>
-            <p class="text-sm text-gray-600">monthly target</p>
-        </div>
-
-        <div class="flex flex-col items-end justify-between">
             <div class="flex items-center gap-1 text-gray-600">
                 <p>{{ props.plan.agents_count }}</p>
                 <TeamIcon class="text-gray-600" />
             </div>
+        </div>
 
-            <div class="flex items-center">
-                <p>Created by {{ props.plan.creator.name }}</p>
+        <div class="mt-4 flex items-center gap-1">
+            <CalendarIcon class="text-gray-400" />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                starts
+                <span class="font-semibold text-gray-900">
+                    {{ formatDate(props.plan.start_date) }}
+                </span>
+            </p>
+        </div>
+
+        <div class="mt-2 flex items-center gap-1">
+            <RecurIcon class="text-gray-400" />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                occurs
+                <span class="font-semibold text-gray-900">
+                    {{ props.plan.payout_frequency }}
+                </span>
+            </p>
+        </div>
+
+        <div class="mt-2 flex items-center gap-1">
+            <BanknotesIcon class="text-gray-400" />
+            <p class="-mb-0.5 text-sm text-gray-600">
+                targets
+                <span class="font-semibold text-gray-900">
+                    {{ props.plan.target_variable }}
+                </span>
+            </p>
+        </div>
+
+        <div class="flex items-end justify-between">
+            <div>
+                <h3 class="mt-6">{{ euroDisplay(props.plan.target_amount_per_month) }}</h3>
+                <p class="text-sm text-gray-600">monthly target</p>
             </div>
+
+            <p>Created by {{ props.plan.creator.name }}</p>
         </div>
 
         <Modal
