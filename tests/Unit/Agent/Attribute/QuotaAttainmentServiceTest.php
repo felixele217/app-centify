@@ -1,14 +1,11 @@
 <?php
 
-use App\Enum\TimeScopeEnum;
-use App\Models\Agent;
+use Carbon\Carbon;
 use App\Models\Deal;
 use App\Models\Plan;
-use Carbon\Carbon;
-
-beforeEach(function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
-});
+use App\Models\Agent;
+use App\Enum\TimeScopeEnum;
+use App\Services\QuotaAttainmentService;
 
 it('calculates the quota attainment properly for the active plan with the most recent start_date', function () {
     $agent = Agent::factory()->hasDeals([
@@ -25,7 +22,7 @@ it('calculates the quota attainment properly for the active plan with the most r
 
     $agent->plans()->attach(Plan::all());
 
-    expect($agent->quota_attainment)->toBe($agent->deals->sum('value') / $latestPlan->target_amount_per_month);
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval($agent->deals->sum('value') / $latestPlan->target_amount_per_month));
 });
 
 it('calculates the quota attainment only for accepted deals', function () {
@@ -40,7 +37,7 @@ it('calculates the quota attainment only for accepted deals', function () {
         'accepted_at' => null,
     ]);
 
-    expect($agent->quota_attainment)->toBe($agent->deals()->whereNotNull('accepted_at')->sum('value') / $plan->target_amount_per_month);
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval($agent->deals()->whereNotNull('accepted_at')->sum('value') / $plan->target_amount_per_month));
 });
 
 it('calculates the quota attainment for the current month if scoped', function () {
@@ -67,12 +64,10 @@ it('calculates the quota attainment for the current month if scoped', function (
     $currentMonthDealsQuery = $agent->deals()->whereMonth('accepted_at', Carbon::now()->month);
 
     expect($currentMonthDealsQuery->count())->toBe($currentMonthDealCount);
-    expect($agent->quota_attainment)->toBe(2);
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval(2));
 });
 
 it('calculates the quota attainment for the current quarter if scoped', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::QUARTERLY->value);
-
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
     ]);
@@ -100,12 +95,10 @@ it('calculates the quota attainment for the current quarter if scoped', function
 
     expect($currentQuarterDealsQuery->count())->toBe($currentQuarterDealCount);
 
-    expect($agent->quota_attainment)->toBe(1);
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(floatval(1));
 });
 
 it('calculates the quota attainment for the current year if scoped', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::ANNUALY->value);
-
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
     ]);
@@ -133,7 +126,7 @@ it('calculates the quota attainment for the current year if scoped', function ()
 
     expect($currentYearDealsQuery->count())->toBe($currentYearDealCount);
 
-    expect($agent->quota_attainment)->toBe(0.5);
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::ANNUALY))->toBe(0.5);
 });
 
 it('does not throw any errors when agents have no base_salary or no quota_attainment or no plan', function ($baseSalary, $onTargetEarning) {
@@ -144,7 +137,7 @@ it('does not throw any errors when agents have no base_salary or no quota_attain
         'base_salary' => $baseSalary,
     ]);
 
-    expect($agent->quota_attainment)->not()->toBeNull();
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->not()->toBeNull();
 })->with([
     [10_000_00, 10_000_00],
     [0, 10_000_00],

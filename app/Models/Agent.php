@@ -7,7 +7,7 @@ use App\Enum\TimeScopeEnum;
 use App\Services\Commission\DealCommissionService;
 use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
-use Carbon\Carbon;
+use App\Services\QuotaAttainmentService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -86,27 +86,16 @@ class Agent extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $timeScope = request()->query('time_scope');
+                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
 
-                $latestPlanTargetAmountPerMonth = $this->load('plans')->plans()->active()->first()?->target_amount_per_month;
-
-                if (! $latestPlanTargetAmountPerMonth) {
-                    return 0;
-                }
-
-                return match ($timeScope) {
-                    TimeScopeEnum::MONTHLY->value => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
-                    TimeScopeEnum::QUARTERLY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestPlanTargetAmountPerMonth * 3),
-                    TimeScopeEnum::ANNUALY->value => $this->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestPlanTargetAmountPerMonth * 12),
-                    default => $this->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
-                };
+                return (new QuotaAttainmentService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
             }
         );
     }
 
     protected function commission(): Attribute
     {
-        $timeScope = request()->query('time_scope');
+        $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
 
         return Attribute::make(
             get: function () use ($timeScope) {
