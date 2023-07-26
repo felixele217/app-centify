@@ -2,122 +2,21 @@
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
-use App\Models\Deal;
-use App\Models\Plan;
 use App\Services\Commission\DealCommissionService;
-use Carbon\Carbon;
 
-it('calculates the commission properly for the active plan with the most recent start_date', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
+it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope, int $unitsInYear) {
+    $testQuota = 1;
 
-    $agent = Agent::factory()->hasDeals([
-        'accepted_at' => Carbon::now(),
-    ])->create();
-
-    Plan::factory()->create([
-        'start_date' => Carbon::parse('-2 days'),
+    $agent = Agent::factory()->create([
+        'base_salary' => $baseSalary = 80_000_00,
+        'on_target_earning' => $onTargetEarning = 200_000_00,
     ]);
 
-    Plan::factory()->create([
-        'start_date' => Carbon::yesterday(),
-    ]);
+    $expectedCommission = $testQuota * (($onTargetEarning - $baseSalary) / $unitsInYear);
 
-    $agent->plans()->attach(Plan::all());
-
-    expect($agent->commission)->toBe(intval(round($agent->quota_attainment * ($agent->on_target_earning - $agent->base_salary) / 12)));
-});
-
-it('correctly calculates the commission for the current month if scoped', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
-
-    $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00,
-    ]);
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals($currentMonthDealCount = 2, [
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->firstOfMonth(),
-            Carbon::now()->lastOfMonth(),
-        ]),
-        'value' => 1_000_00,
-    ])->create([
-        'base_salary' => 80_000_00,
-        'on_target_earning' => 200_000_00,
-    ]));
-
-    Deal::factory(3)->create([
-        'agent_id' => $agent->id,
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->firstOfMonth()->subDay(1),
-            Carbon::now()->lastOfMonth()->addDay(1),
-        ]),
-    ]);
-
-    expect($agent->commission)->toBe(20_000_00);
-});
-
-it('correctly calculates the commission for the current quarter if scoped', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::QUARTERLY->value);
-
-    $plan = Plan::factory()->create([
-        'target_amount_per_month' => 2_000_00,
-    ]);
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->nthOfQuarter(1, Carbon::MONDAY),
-            Carbon::now()->nthOfQuarter(6, Carbon::TUESDAY),
-            Carbon::now()->nthOfQuarter(11, Carbon::SATURDAY),
-        ]),
-        'value' => 1_500_00,
-    ])->create([
-        'base_salary' => 80_000_00,
-        'on_target_earning' => 200_000_00,
-    ]));
-
-    Deal::factory(3)->create([
-        'agent_id' => $agent->id,
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->subQuarter(),
-            Carbon::now()->addQuarter(),
-        ]),
-    ]);
-
-    expect(intval($agent->commission))->toBe(15_000_00);
-});
-
-it('correctly calculates the commission for the current year if scoped', function () {
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::ANNUALY->value);
-
-    $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00,
-    ]);
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->lastOfYear(),
-            Carbon::now()->firstOfYear(),
-            Carbon::now(),
-        ]),
-        'value' => 3_000_00,
-    ])->create([
-        'base_salary' => 80_000_00,
-        'on_target_earning' => 200_000_00,
-    ]));
-
-    Deal::factory(3)->create([
-        'agent_id' => $agent->id,
-        'accepted_at' => fake()->randomElement([
-            Carbon::now()->lastOfYear()->addDay(1),
-            Carbon::now()->firstOfYear()->subDay(1),
-        ]),
-    ]);
-
-    expect(intval($agent->commission))->toBe(60_000_00);
-});
-
-it('returns 0 if the agent has no active plan', function () {
-    signInAdmin();
-
-    expect((new DealCommissionService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY))->toBe(0);
-});
+    expect((new DealCommissionService())->calculate($agent, $timeScope, 1))->toBe($expectedCommission);
+})->with([
+    [TimeScopeEnum::MONTHLY, 12],
+    [TimeScopeEnum::QUARTERLY, 4],
+    [TimeScopeEnum::ANNUALY, 1],
+]);

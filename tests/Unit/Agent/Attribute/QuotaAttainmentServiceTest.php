@@ -143,3 +143,9 @@ it('does not throw any errors when agents have no base_salary or no quota_attain
     [0, 10_000_00],
     [10_000_00, 0],
 ]);
+
+it('returns 0 if the agent has no active plan', function () {
+    signInAdmin();
+
+    expect((new QuotaAttainmentService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY, 0))->toBe(floatval(0));
+});

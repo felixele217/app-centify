@@ -99,7 +99,7 @@ class Agent extends Authenticatable
 
         return Attribute::make(
             get: function () use ($timeScope) {
-                $dealCommission = (new DealCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                $dealCommission = (new DealCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope), $this->quotaAttainment);
 
                 $kickerCommission = (new KickerCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope), $this->quotaAttainment);
 
