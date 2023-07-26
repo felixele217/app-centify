@@ -9,20 +9,20 @@ use App\Models\Plan;
 use App\Services\Commission\KickerCommissionService;
 use Carbon\Carbon;
 
-it('incorporates the kicker if its conditions are met', function (int $dealCount) {
+it('incorporates the kicker if its quarterly target is met', function (int $dealCount) {
     $admin = signInAdmin();
 
-    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
+    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::QUARTERLY->value);
 
     $plan = Plan::factory()
         ->hasKicker([
             'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
             'salary_type' => SalaryTypeEnum::BASE_SALARY_MONTHLY->value,
             'threshold_in_percent' => 200,
-            'payout_in_percent' => 25,
+            'payout_in_percent' => $payoutInPercent = 25,
         ])
         ->hasAgents(1, [
-            'base_salary' => 50_000_00,
+            'base_salary' => $baseSalary = 50_000_00,
             'on_target_earning' => 170_000_00,
         ])
         ->create([
@@ -36,11 +36,11 @@ it('incorporates the kicker if its conditions are met', function (int $dealCount
 
     Deal::factory($dealCount)->create([
         'agent_id' => $plan->agents()->first()->id,
-        'value' => 20_000_00,
+        'value' => 60_000_000,
         'accepted_at' => Carbon::yesterday(),
     ]);
 
-    $expectedKickerCommission = (50_000_00 / 12) * 0.25;
+    $expectedKickerCommission = ($baseSalary / 12) * ($payoutInPercent / 100);
 
     expect((new KickerCommissionService())->calculate($plan->agents()->first()))->toBe(intval(round($expectedKickerCommission)));
 })->with([
