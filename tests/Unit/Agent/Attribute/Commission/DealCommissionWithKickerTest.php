@@ -1,11 +1,47 @@
 <?php
 
+use App\Enum\KickerTypeEnum;
+use App\Enum\PayoutFrequencyEnum;
+use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
-use App\Models\Agent;
+use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\DealCommissionService;
 use Carbon\Carbon;
 
-it('', function () {
-   
+it('incorporates the kicker if its conditions are met', function () {
+    $admin = signInAdmin();
+
+    $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
+
+    $plan = Plan::factory()
+        ->hasKicker([
+            'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
+            'salary_type' => SalaryTypeEnum::BASE_SALARY_MONTHLY->value,
+            'threshold_in_percent' => 200,
+            'payout_in_percent' => 25,
+        ])
+        ->hasAgents(1, [
+            'base_salary' => 50_000_00,
+            'on_target_earning' => 170_000_00,
+        ])
+        ->create([
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
+            'target_amount_per_month' => 10_000_00,
+            'start_date' => Carbon::yesterday(),
+            'end_date' => Carbon::tomorrow(),
+            'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
+        ]);
+
+    Deal::factory()->create([
+        'agent_id' => $plan->agents()->first()->id,
+        'value' => 20_000_00,
+        'accepted_at' => Carbon::yesterday(),
+    ]);
+
+    $expectedBaseDealCommission = 20_000_00;
+    $expectedKickerCommission = (50_000_00 / 12) * 0.25;
+
+    expect((new DealCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::MONTHLY))->toBe(intval(round($expectedBaseDealCommission + $expectedKickerCommission)));
 });
