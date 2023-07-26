@@ -9,7 +9,7 @@ use App\Models\Plan;
 use App\Services\Commission\DealCommissionService;
 use Carbon\Carbon;
 
-it('incorporates the kicker if its conditions are met', function () {
+it('incorporates the kicker if its conditions are met', function (int $dealCount) {
     $admin = signInAdmin();
 
     $this->get(route('dashboard').'?time_scope='.TimeScopeEnum::MONTHLY->value);
@@ -34,14 +34,16 @@ it('incorporates the kicker if its conditions are met', function () {
             'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
         ]);
 
-    Deal::factory()->create([
+    Deal::factory($dealCount)->create([
         'agent_id' => $plan->agents()->first()->id,
         'value' => 20_000_00,
         'accepted_at' => Carbon::yesterday(),
     ]);
 
-    $expectedBaseDealCommission = 20_000_00;
+    $expectedBaseDealCommission = 20_000_00 * $dealCount;
     $expectedKickerCommission = (50_000_00 / 12) * 0.25;
 
     expect((new DealCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::MONTHLY))->toBe(intval(round($expectedBaseDealCommission + $expectedKickerCommission)));
-});
+})->with([
+    1, 2,
+]);
