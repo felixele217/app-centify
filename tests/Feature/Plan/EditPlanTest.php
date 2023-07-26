@@ -1,11 +1,13 @@
 <?php
 
-use App\Enum\PayoutFrequencyEnum;
-use App\Enum\TargetVariableEnum;
-use App\Models\Agent;
 use App\Models\Plan;
-use Inertia\Testing\AssertableInertia;
+use App\Models\Agent;
+use App\Enum\KickerTypeEnum;
+use App\Enum\SalaryTypeEnum;
+use App\Enum\TargetVariableEnum;
 
+use App\Enum\PayoutFrequencyEnum;
+use Inertia\Testing\AssertableInertia;
 use function Pest\Laravel\withoutExceptionHandling;
 
 it('passes the correct props', function () {
@@ -34,8 +36,10 @@ it('passes the correct props', function () {
                 ->missing('on_target_earning')
                 ->etc()
             )
-            ->has('target_variable_options', count(TargetVariableEnum::cases()))
-            ->has('payout_frequency_options', count(PayoutFrequencyEnum::cases()))
+            ->where('target_variable_options', array_column(TargetVariableEnum::cases(), 'value'))
+            ->where('payout_frequency_options', array_column(PayoutFrequencyEnum::cases(), 'value'))
+            ->where('kicker_type_options', array_column(KickerTypeEnum::cases(), 'value'))
+            ->where('salary_type_options', array_column(SalaryTypeEnum::cases(), 'value'))
             ->has('plan')
             ->where('plan.id', $plan->id)
             ->has('plan.cliff')
