@@ -23,4 +23,12 @@ class PlanFactory extends Factory
             'creator_id' => Admin::factory()->create(),
         ];
     }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'start_date' => Carbon::now()->firstOfYear(),
+            'end_date' => Carbon::now()->lastOfYear(),
+        ]);
+    }
 }

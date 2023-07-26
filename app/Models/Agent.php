@@ -101,7 +101,7 @@ class Agent extends Authenticatable
             get: function () use ($timeScope) {
                 $dealCommission = (new DealCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
-                $kickerCommission = (new KickerCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                $kickerCommission = (new KickerCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope), $this->quotaAttainment);
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
