@@ -46,3 +46,11 @@ it('incorporates the kicker if its conditions are met', function (int $dealCount
 })->with([
     1, 2,
 ]);
+
+it('returns 0 for the kicker commission if the kicker is not achieved', function () {
+
+})->todo();
+
+it('returns 0 for the kicker commission if the plan has no kicker', function () {
+
+})->todo();
