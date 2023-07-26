@@ -6,7 +6,7 @@ use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\DealCommissionService;
+use App\Services\Commission\KickerCommissionService;
 use Carbon\Carbon;
 
 it('incorporates the kicker if its conditions are met', function (int $dealCount) {
@@ -40,10 +40,9 @@ it('incorporates the kicker if its conditions are met', function (int $dealCount
         'accepted_at' => Carbon::yesterday(),
     ]);
 
-    $expectedBaseDealCommission = 20_000_00 * $dealCount;
     $expectedKickerCommission = (50_000_00 / 12) * 0.25;
 
-    expect((new DealCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::MONTHLY))->toBe(intval(round($expectedBaseDealCommission + $expectedKickerCommission)));
+    expect((new KickerCommissionService())->calculate($plan->agents()->first()))->toBe(intval(round($expectedKickerCommission)));
 })->with([
     1, 2,
 ]);

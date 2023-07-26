@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enum\AgentStatusEnum;
 use App\Enum\TimeScopeEnum;
 use App\Services\Commission\DealCommissionService;
+use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -110,10 +111,11 @@ class Agent extends Authenticatable
         return Attribute::make(
             get: function () use ($timeScope) {
                 $dealCommission = (new DealCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                $kickerCommission = (new KickerCommissionService())->calculate($this);
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
-                return $dealCommission + $paidLeaveCommission;
+                return $dealCommission + $kickerCommission + $paidLeaveCommission;
             }
         );
     }
