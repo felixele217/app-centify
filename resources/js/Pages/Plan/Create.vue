@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import UpsertPlanCard from '@/Components/Plan/UpsertPlanCard.vue'
 import Agent from '@/types/Agent'
-import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum';
-import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum';
-import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum';
-import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum';
+import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
+import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
+import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
+import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 
 const props = defineProps<{
     agents: Array<Pick<Agent, 'id' | 'name'>>

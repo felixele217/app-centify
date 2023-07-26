@@ -2,7 +2,6 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import useFieldsRef from '@/Components/CustomIntegrationField/Composables/useFieldsRef'
 import TextInput from '@/Components/Form/TextInput.vue'
-import PageHeader from '@/Components/PageHeader.vue'
 import CustomIntegrationField from '@/types/CustomIntegrationField'
 import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
 import customIntegrationField from '@/utils/CustomIntegrationField/customIntegrationField'
@@ -66,16 +65,39 @@ const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.c
 
 <template>
     <div class="w-2/3">
-        <PageHeader
-            title="Custom Integration Fields"
-            :description="'To streamline all integration processes, we require you to create and use the custom fields you see below.\n\nThey need to be set to the respective API keys for the custom data field. Go to Pipedrive > Company Settings > Company > Datafields to see your custom fields and their API keys.\n\nYou can hover over a data field and click on the option dots to copy the key. Then you can paste it here and voilá, we will automatically integrate all your data.'"
-        />
+        <h2>Custom Integration Fields</h2>
+
+        <p class="mt-2">
+            To streamline all integration processes, we require you to create and use the following custom fields in
+            your CRM.
+        </p>
+
+        <p class="mt-6">
+            To create the custom fields go to <br />
+            <span class="font-bold">Pipedrive > Company Settings > Company > Datafields</span>
+            or
+            <a
+                href="#"
+                class="link"
+            >
+                click this link.
+            </a>
+        </p>
+
+        <p class="mt-6">
+            You should see a green <span class="font-bold"> 'Add custom field button'. </span>
+            <br />
+            Below you can see the expected names and types of the fields you have to create.
+        </p>
+
+        <p class="mt-6">After creating the keys, click the option dots and copy&paste their API keys.</p>
+
         <div
-            class="flex items-center gap-5 rounded-md py-2"
+            class="mt-6 flex items-center gap-5 rounded-md py-2"
             v-for="(integrationFieldName, index) in props.available_integration_field_names"
             :key="index"
         >
-            <p>{{ integrationFieldName }}:</p>
+            <p class="whitespace-nowrap">{{ integrationFieldName }}:</p>
 
             <TextInput
                 type="text"
