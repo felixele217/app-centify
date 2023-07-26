@@ -23,6 +23,7 @@ import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
+import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 
 export interface AdditionalField {
@@ -156,11 +157,20 @@ function submit() {
                         />
                     </div>
                     <div>
-                        <InputLabel
-                            for="target_amount_per_month"
-                            value="Target Amount (per month)"
-                            required
-                        />
+                        <div class="flex gap-1">
+                            <InputLabel
+                                for="target_amount_per_month"
+                                value="Target Amount (per month)"
+                                required
+                            />
+
+                            <InfoIcon
+                                :hover-text="`Set a monthly target for the target variable that you are going to select in the next step.
+                                                Example: Quarterly ARR Target is 90k.
+                                                You have to insert 30K`"
+                                class="max-w-5 whitespace-pre-line text-gray-700"
+                            />
+                        </div>
                         <CurrencyInput
                             :value="form.target_amount_per_month"
                             @set-value="(value: number) => (form.target_amount_per_month = value)"
