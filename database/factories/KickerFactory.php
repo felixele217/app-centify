@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
+use App\Models\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KickerFactory extends Factory
@@ -17,6 +18,7 @@ class KickerFactory extends Factory
             'threshold_in_percent' => 200,
             'payout_in_percent' => 25,
             'salary_type' => fake()->randomElement(SalaryTypeEnum::cases())->value,
+            'plan_id' => Plan::factory()->create(),
         ];
     }
 }

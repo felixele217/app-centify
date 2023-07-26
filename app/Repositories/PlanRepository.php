@@ -58,14 +58,14 @@ class PlanRepository
 
         if ($request->validated('cliff_threshold_in_percent')) {
             $plan->cliff()->updateOrCreate(
-                ['id' => $plan->id],
+                ['plan_id' => $plan->id],
                 ['threshold_in_percent' => $request->validated('cliff_threshold_in_percent')]
             );
         }
 
         if ($request->validated('kicker')) {
             $plan->kicker()->updateOrCreate(
-                ['id' => $plan->id],
+                ['plan_id' => $plan->id],
                 $request->validated('kicker'),
             );
         }

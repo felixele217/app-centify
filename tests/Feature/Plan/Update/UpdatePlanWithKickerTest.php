@@ -3,10 +3,13 @@
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Http\Requests\UpdatePlanRequest;
+use App\Models\Kicker;
 use App\Models\Plan;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
+
+    Plan::factory()->create();
 });
 
 it('can update a plan with a kicker as an admin', function (Plan $plan) {
@@ -21,10 +24,11 @@ it('can update a plan with a kicker as an admin', function (Plan $plan) {
 
     $this->put(route('plans.update', $plan))->assertRedirect(route('plans.index'));
 
-    expect(Plan::first()->kicker->type->value)->toBe($type);
-    expect(Plan::first()->kicker->threshold_in_percent)->toBe($thresholdInPercent / 100);
-    expect(Plan::first()->kicker->payout_in_percent)->toBe($payoutInPercent / 100);
-    expect(Plan::first()->kicker->salary_type->value)->toBe($salaryType);
+    expect(Kicker::wherePlanId($plan->id)->count())->toBe(1);
+    expect($plan->kicker->type->value)->toBe($type);
+    expect($plan->kicker->threshold_in_percent)->toBe($thresholdInPercent / 100);
+    expect($plan->kicker->payout_in_percent)->toBe($payoutInPercent / 100);
+    expect($plan->kicker->salary_type->value)->toBe($salaryType);
 })->with([
     fn () => Plan::factory()->create([
         'organization_id' => $this->admin->organization->id,
@@ -87,6 +91,6 @@ it('requires all kicker fields if at least one is specified', function (array $p
     ],
 ]);
 
-it ('can update a plan with removing the kicker as an admin', function () {
+it('can update a plan with removing the kicker as an admin', function () {
 
 })->todo();

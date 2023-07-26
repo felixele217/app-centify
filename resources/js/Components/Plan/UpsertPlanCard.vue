@@ -72,8 +72,10 @@ const form = useForm({
 
     kicker: {
         type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
-        threshold_in_percent: props.plan?.kicker?.threshold_in_percent || 0,
-        payout_in_percent: props.plan?.kicker?.payout_in_percent || 0,
+        threshold_in_percent: props.plan?.kicker?.threshold_in_percent
+            ? props.plan.kicker.threshold_in_percent * 100
+            : 0,
+        payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : 0,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
     },
 })
