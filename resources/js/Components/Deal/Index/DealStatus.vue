@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import Tooltip from '@/Components/Tooltip.vue'
 import Deal from '@/types/Deal'
+import formatDate from '@/utils/Date/formatDate'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
 
 defineEmits<{
@@ -30,14 +32,18 @@ const props = defineProps<{
         class="flex justify-center"
         v-else-if="props.deal.accepted_at"
     >
-        <p class="items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">accepted</p>
+        <Tooltip :text="`This deal was accepted at ${formatDate(props.deal.accepted_at)}.`">
+            <p class="items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">accepted</p>
+        </Tooltip>
     </div>
     <div
         class="flex justify-center"
         v-else-if="props.deal.declined_at"
     >
-        <p class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
-            declined
-        </p>
+        <Tooltip :text="`This deal was declined at ${formatDate(props.deal.declined_at)}.`">
+            <p class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
+                declined
+            </p>
+        </Tooltip>
     </div>
 </template>
