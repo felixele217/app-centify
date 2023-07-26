@@ -25,7 +25,7 @@ it('incorporates the kicker if its target is met within the current month', func
             'creator_id' => $admin->id,
         ]);
 
-    $expectedKickerCommission = ($baseSalary / 12) * ($payoutInPercent / 100);
+    $expectedKickerCommission = ($baseSalary / 4) * ($payoutInPercent / 100);
 
     expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::MONTHLY, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
 })->with([

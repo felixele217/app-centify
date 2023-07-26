@@ -14,7 +14,7 @@ class KickerCommissionService
         $factor = $timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
 
         if ($kicker?->threshold_in_percent * $factor <= $quotaAttainment) {
-            $kickerCommission = $kicker?->payout_in_percent * ($agent->base_salary / 12);
+            $kickerCommission = $kicker?->payout_in_percent * ($agent->base_salary / 4);
         }
 
         return intval(round($kickerCommission ?? 0));

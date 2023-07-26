@@ -1,1 +1,1 @@
-export type SalaryTypeEnum = 'Variable Salary (monthly)' | 'Base Salary (monthly)' | 'Full Salary (monthly)'
+export type SalaryTypeEnum = 'Base Salary (monthly)' | 'Variable Salary (monthly)' | 'Full Salary (monthly)'
