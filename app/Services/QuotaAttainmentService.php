@@ -21,15 +21,15 @@ class QuotaAttainmentService
 
         return match ($timeScope) {
             TimeScopeEnum::MONTHLY => array_sum($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / $latestActivePlan?->target_amount_per_month,
-            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestActivePlan?->target_amount_per_month * 3),
-            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestActivePlan?->target_amount_per_month * 12),
-            default => $agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestActivePlan?->target_amount_per_month,
+            TimeScopeEnum::QUARTERLY => array_sum($agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / ($latestActivePlan?->target_amount_per_month * 3),
+            TimeScopeEnum::ANNUALY => array_sum($agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / ($latestActivePlan?->target_amount_per_month * 12),
+            default => array_sum($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / $latestActivePlan?->target_amount_per_month,
         };
     }
 
     private function cappedValue(Deal $deal, ?int $cap): int
     {
-        if (!!$cap && $deal->value >= $cap) {
+        if ((bool) $cap && $deal->value >= $cap) {
             return $cap;
         }
 
