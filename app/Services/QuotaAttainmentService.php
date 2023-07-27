@@ -17,7 +17,7 @@ class QuotaAttainmentService
     {
         $latestActivePlan = $agent->load('plans')->plans()->active()->first();
 
-        if (! $latestActivePlan?->target_amount_per_month) {
+        if (! $latestActivePlan) {
             return 0;
         }
 
@@ -28,12 +28,12 @@ class QuotaAttainmentService
             default => $monthlyDealsQuery
         };
 
-        return $this->cappedSumOfDeals($dealsQuery, $latestActivePlan) / ($latestActivePlan?->target_amount_per_month * $timeScope->monthCount());
+        return $this->cappedSumOfDeals($dealsQuery, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $timeScope->monthCount());
     }
 
     private function cappedSumOfDeals(HasMany $dealsQuery, ?Plan $latestActivePlan): int
     {
-        return array_sum($dealsQuery->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray());
+        return array_sum($dealsQuery->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan->cap?->value))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): int
