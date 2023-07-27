@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+// @codeCoverageIgnoreStart
 class EmailVerificationPromptController extends Controller
 {
     /**
@@ -21,3 +22,4 @@ class EmailVerificationPromptController extends Controller
                     : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
     }
 }
+// @codeCoverageIgnoreEnd

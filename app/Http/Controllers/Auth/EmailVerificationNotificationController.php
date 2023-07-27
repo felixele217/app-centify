@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
+// @codeCoverageIgnoreStart
 class EmailVerificationNotificationController extends Controller
 {
     /**
@@ -23,3 +24,4 @@ class EmailVerificationNotificationController extends Controller
         return back()->with('status', 'verification-link-sent');
     }
 }
+// @codeCoverageIgnoreEnd

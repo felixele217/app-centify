@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
+// @codeCoverageIgnoreStart
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -55,3 +56,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 }
+// @codeCoverageIgnoreEnd

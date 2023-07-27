@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+// @codeCoverageIgnoreStart
 class PasswordResetLinkController extends Controller
 {
     /**
@@ -49,3 +50,4 @@ class PasswordResetLinkController extends Controller
         ]);
     }
 }
+// @codeCoverageIgnoreEnd

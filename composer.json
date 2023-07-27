@@ -65,6 +65,7 @@
         "format": "composer prettier && composer pint",
         "test-local": "composer pest-local && composer vitest && composer dusk-local",
         "pest-local": "vendor/bin/pest --group=feature,unit,architecture",
+        "pest-coverage": "./vendor/bin/pest --coverage --min=90",
         "vitest": "npm run test",
         "dusk-local": "bash ./scripts/killViteProcess.sh && npm run build && sail dusk",
         "stan": "vendor/bin/phpstan analyse --memory-limit=2G"

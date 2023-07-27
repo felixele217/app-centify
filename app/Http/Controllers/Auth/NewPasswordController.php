@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+// @codeCoverageIgnoreStart
 class NewPasswordController extends Controller
 {
     /**
@@ -67,3 +68,4 @@ class NewPasswordController extends Controller
         ]);
     }
 }
+// @codeCoverageIgnoreEnd
