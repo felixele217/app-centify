@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Enum\DealScopeEnum;
 use App\Http\Requests\UpdateDealRequest;
 use App\Models\Deal;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +16,7 @@ class DealRepository
 {
     public static function get(DealScopeEnum|null $scope): Collection
     {
-        $baseQuery = Deal::with('agent')->whereHas('agent.organization', function ($query) {
+        $baseQuery = Deal::with('agent')->whereHas('agent.organization', function (Builder $query) {
             $query->where('id', Auth::user()->organization->id);
         });
 

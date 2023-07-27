@@ -31,6 +31,7 @@
         "nunomaduro/larastan": "^2.0",
         "pestphp/pest": "^2.9",
         "pestphp/pest-plugin-laravel": "^2.1",
+        "pestphp/pest-plugin-type-coverage": "^2.0",
         "spatie/laravel-ignition": "^2.0",
         "worksome/request-factories": "^3.2"
     },

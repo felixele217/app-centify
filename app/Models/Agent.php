@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
@@ -22,7 +24,7 @@ class Agent extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guard = 'agent';
+    protected string $guard = 'agent';
 
     protected $guarded = [];
 

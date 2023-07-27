@@ -28,7 +28,7 @@ jobs:
               env:
                   DB_CONNECTION: sqlite
                   DB_DATABASE: database/database.sqlite
-              run: vendor/bin/pest --group=feature,unit,architecture
+              run: vendor/bin/pest --group=feature,unit,architecture --type-coverage --min=100
 
     frontend-tests:
         runs-on: ubuntu-latest

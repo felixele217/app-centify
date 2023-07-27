@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Integrations\Pipedrive;
 
 class PipedriveClientDummy
 {
-    public function deals()
+    public function deals(): CustomResponse
     {
         $dealsArray = [
             0 => [
@@ -379,14 +381,14 @@ class PipedriveClientDummy
 
 class CustomResponse
 {
-    private $data;
+    private array $data;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
 
-    public function all()
+    public function all(): static
     {
         return $this;
     }
@@ -396,7 +398,7 @@ class CustomResponse
         return json_decode(json_encode($this->getData()), true);
     }
 
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

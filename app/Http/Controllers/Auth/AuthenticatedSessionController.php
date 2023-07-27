@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -8,7 +10,6 @@ use App\Models\Admin;
 use App\Models\Agent;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,16 +43,16 @@ class AuthenticatedSessionController extends Controller
 
     //TODO test log out for both user groups
     //TODO test all auth routes for both users
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(): RedirectResponse
     {
-        match (get_class($request->user())) {
+        match (get_class(request()->user())) {
             Admin::class => Auth::guard('admin')->logout(),
             Agent::class => Auth::guard('admin')->logout(),
         };
 
-        $request->session()->invalidate();
+        request()->session()->invalidate();
 
-        $request->session()->regenerateToken();
+        request()->session()->regenerateToken();
 
         return redirect('/');
     }

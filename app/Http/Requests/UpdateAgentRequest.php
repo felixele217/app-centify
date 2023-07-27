@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
+use App\Actions\NullZeroNumbersAction;
 use App\Enum\AgentStatusEnum;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use App\Actions\NullZeroNumbersAction;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
 
 class UpdateAgentRequest extends FormRequest
 {
@@ -74,7 +76,7 @@ class UpdateAgentRequest extends FormRequest
         $this->replace(NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']));
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'paid_leave.end_date.before' => 'The end date needs to come after the start date.',

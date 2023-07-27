@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Integrations\Pipedrive;
 
 use App\Encrypter;
@@ -23,7 +25,7 @@ class PipedriveTokenIO implements PipedriveTokenStorage
         );
     }
 
-    public function getToken(): PipedriveToken|null
+    public function getToken(): ?PipedriveToken
     {
         $token = Auth::user()->pipedriveToken;
 

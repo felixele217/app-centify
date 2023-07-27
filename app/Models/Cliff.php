@@ -23,7 +23,7 @@ class Cliff extends Model
     protected function thresholdInPercent(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: fn (int $value) => $value / 100,
         );
     }
 }
