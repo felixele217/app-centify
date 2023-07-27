@@ -7,8 +7,8 @@ namespace App\Services\Commission;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\PaidLeave;
+use App\Repositories\PaidLeaveRepository;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Builder;
 
 class PaidLeaveCommissionService
 {
@@ -21,27 +21,9 @@ class PaidLeaveCommissionService
 
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
     {
-        $paidLeavesWithEndDates = $agent->paidLeaves()->whereNotNull('end_date');
+        $paidLeaves = PaidLeaveRepository::get($agent, $timeScope);
 
-        $advancedQuery = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $paidLeavesWithEndDates
-                ->where(function (Builder $query) {
-                    $query->whereMonth('end_date', $this->dateInScope->month)
-                        ->orWhereMonth('start_date', $this->dateInScope->month);
-                }),
-            TimeScopeEnum::QUARTERLY => $paidLeavesWithEndDates
-                ->where(function (Builder $query) {
-                    $query->whereBetween('end_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()])
-                        ->orWhereBetween('start_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()]);
-                }),
-            TimeScopeEnum::ANNUALY => $paidLeavesWithEndDates
-                ->where(function (Builder $query) {
-                    $query->whereBetween('end_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()])
-                        ->orWhereBetween('start_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]);
-                }),
-        };
-
-        return intval(round($advancedQuery->get()
+        return intval(round($paidLeaves
             ->map(fn (PaidLeave $paidLeave) => $this->paidLeaveCommission($paidLeave, $timeScope))
             ->sum()));
     }

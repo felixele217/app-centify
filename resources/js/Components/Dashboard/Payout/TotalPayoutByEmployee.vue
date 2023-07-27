@@ -53,6 +53,12 @@ const src =
                                 >
                                     Quota Attainment
                                 </th>
+                                <th
+                                    scope="col"
+                                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                                >
+                                    Absence
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
@@ -73,13 +79,20 @@ const src =
                                         <div class="mt-1 text-gray-500">{{ agent.email }}</div>
                                     </div>
                                 </td>
+
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">{{ euroDisplay(agent.commission!) }}</div>
                                     <div class="mt-1 text-gray-500">Change - not implemented</div>
                                 </td>
+
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">{{ quotaDisplay(agent.quota_attainment!) }}</div>
                                     <div class="mt-1 text-gray-500">Change - not implemented</div>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                    <div><span class="font-semibold text-gray-600">5</span> days sick</div>
+                                    <div><span class="font-semibold text-gray-600">6</span> days on vacation</div>
                                 </td>
                             </tr>
                         </tbody>
