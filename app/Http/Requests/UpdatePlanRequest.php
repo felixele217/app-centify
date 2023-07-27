@@ -85,6 +85,11 @@ class UpdatePlanRequest extends FormRequest
                 new Enum(SalaryTypeEnum::class),
                 'required_with:kicker,kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
             ],
+
+            'cap' => [
+                'integer',
+                'min:1',
+            ],
         ];
     }
 

@@ -78,6 +78,13 @@ class PlanRepository
             );
         }
 
+        if ($request->validated('cap')) {
+            $plan->cap()->updateOrCreate(
+                ['plan_id' => $plan->id],
+                ['value' => $request->validated('cap')],
+            );
+        }
+
         return $plan;
     }
 }
