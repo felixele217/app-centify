@@ -5,6 +5,7 @@ import PageHeader from '@/Components/PageHeader.vue'
 import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -85,36 +86,31 @@ const src =
                                     <div class="mt-1 text-gray-500">Change - not implemented</div>
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">{{ quotaDisplay(agent.quota_attainment!) }}</div>
-                                    <div class="mt-1 text-gray-500">
-                                        {{
-                                            agent.quota_attainment_change
-                                                ? `${agent.quota_attainment_change > 0 ? '+' : '-'}${roundFloat(
-                                                      agent.quota_attainment_change * 100
-                                                  )}%`
-                                                : '-'
-                                        }}
+                                <td class=" whitespace-nowrap px-3 py-5 text-gray-500">
+                                    <div class="flex items-center">
+                                        <p class="text-900 text-sm">{{ quotaDisplay(agent.quota_attainment!) }}</p>
                                         <p
                                             :class="[
-                                                agent.quo ? 'text-green-600' : 'text-red-600',
-                                                'ml-2 flex items-baseline text-sm font-semibold',
+                                                agent.quota_attainment_change && agent.quota_attainment_change > 0
+                                                    ? 'text-green-600'
+                                                    : 'text-red-600',
+                                                'ml-2 flex items-baseline text-xs font-semibold',
                                             ]"
+                                            v-if="agent.quota_attainment_change"
                                         >
                                             <ArrowUpIcon
-                                                v-if="item.changeType === 'increase'"
-                                                class="h-5 w-5 flex-shrink-0 self-center text-green-500"
+                                                v-if="agent.quota_attainment_change > 0"
+                                                class="h-3 w-3 flex-shrink-0 self-center text-green-500"
                                                 aria-hidden="true"
                                             />
                                             <ArrowDownIcon
                                                 v-else
-                                                class="h-5 w-5 flex-shrink-0 self-center text-red-500"
+                                                class="h-3 w-3 flex-shrink-0 self-center text-red-500"
                                                 aria-hidden="true"
                                             />
-                                            <span class="sr-only">
-                                                {{ item.changeType === 'increase' ? 'Increased' : 'Decreased' }} by
-                                            </span>
-                                            {{ item.change }}
+                                            <span class="ml-0.5 -mb-0.5"
+                                                >{{ roundFloat(agent.quota_attainment_change * 100) }}%</span
+                                            >
                                         </p>
                                     </div>
                                 </td>

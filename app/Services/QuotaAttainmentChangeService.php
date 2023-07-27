@@ -26,6 +26,6 @@ class QuotaAttainmentChangeService
 
         $quotaAttainmentThisTimeScope = (new QuotaAttainmentService(CarbonImmutable::now()))->calculate($agent, $timeScope);
 
-        return ($quotaAttainmentThisTimeScope / $quotaAttainmentPreviousTimeScope) - 1;
+        return $quotaAttainmentThisTimeScope - $quotaAttainmentPreviousTimeScope;
     }
 }
