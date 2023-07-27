@@ -18,7 +18,7 @@ class QuotaAttainmentService
 
     public function __construct(CarbonImmutable $dateInScope = null)
     {
-        $this->dateInScope = $dateInScope ?? new CarbonImmutable();
+        $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
     }
 
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): float
