@@ -10,26 +10,36 @@ use App\Models\Agent;
 use App\Models\PaidLeave;
 use App\Repositories\PaidLeaveRepository;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class PaidLeaveDaysService
 {
-    public function sickDays(Agent $agent, TimeScopeEnum $timeScope): array
+    public function paidLeaveDays(Agent $agent, TimeScopeEnum $timeScope, AgentStatusEnum $leaveReason = null): array
     {
-        $sickLeaves = PaidLeaveRepository::get($agent, $timeScope)->filter(fn (PaidLeave $paidLeave) => $paidLeave->reason->value === AgentStatusEnum::SICK->value);
+        $paidLeaves = PaidLeaveRepository::get($agent, $timeScope);
 
-        $sickLeaveDays = [];
-
-        foreach ($sickLeaves as $sickLeave) {
-            $sickLeaveDays[] = $this->weekdaysBetweenDates($sickLeave->start_date, $sickLeave->end_date);
+        if ($leaveReason) {
+            $paidLeaves = $paidLeaves->filter(fn (PaidLeave $paidLeave) => $paidLeave->reason->value === $leaveReason->value);
         }
 
-        $sickLeaveDays = array_merge(...$sickLeaveDays);
+        return $this->days($paidLeaves);
+    }
 
-        usort($sickLeaveDays, function ($a, $b) {
+    private function days(Collection $paidLeaves): array
+    {
+        $paidLeaveDays = [];
+
+        foreach ($paidLeaves as $sickLeave) {
+            $paidLeaveDays[] = $this->weekdaysBetweenDates($sickLeave->start_date, $sickLeave->end_date);
+        }
+
+        $paidLeaveDays = array_merge(...$paidLeaveDays);
+
+        usort($paidLeaveDays, function ($a, $b) {
             return $a->timestamp - $b->timestamp;
         });
 
-        return $sickLeaveDays;
+        return $paidLeaveDays;
     }
 
     private function weekdaysBetweenDates(Carbon $start, Carbon $end): array
