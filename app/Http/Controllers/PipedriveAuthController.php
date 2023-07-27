@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Facades\Pipedrive;
-use Illuminate\Http\Request;
 
 class PipedriveAuthController extends Controller
 {
@@ -19,10 +18,10 @@ class PipedriveAuthController extends Controller
         return redirect($authorizationUrl);
     }
 
-    public function store(Request $request)
+    public function store()
     {
-        if (! empty($request->query('code'))) {
-            Pipedrive::authorize($request->query('code'));
+        if (! empty(request()->query('code'))) {
+            Pipedrive::authorize(request()->query('code'));
         }
 
         return to_route('integrations');
