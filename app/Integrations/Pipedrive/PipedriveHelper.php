@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Integrations\Pipedrive;
 
 use App\Exceptions\InvalidApiKeyException;
 
 class PipedriveHelper
 {
-    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): string|null
+    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): ?string
     {
         $demoSetByApiKey = $demoSetByApiKey ?? env('PIPEDRIVE_DEMO_SET_BY');
 

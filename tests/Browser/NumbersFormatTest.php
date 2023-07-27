@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Browser;
 
 use App\Models\Admin;
@@ -16,7 +18,7 @@ class NumbersFormatTest extends DuskTestCase
     {
         $admin = $this->setupDatabase();
 
-        $this->browse(function (Browser $browser) use($admin) {
+        $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin)
                 ->visit(route('dashboard'))
                 ->assertUrlIs(route('dashboard'))
@@ -29,7 +31,7 @@ class NumbersFormatTest extends DuskTestCase
     {
         $admin = $this->setupDatabase();
 
-        $this->browse(function (Browser $browser) use($admin) {
+        $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin)
                 ->visit(route('dashboard'))
                 ->assertUrlIs(route('dashboard'))
@@ -51,16 +53,16 @@ class NumbersFormatTest extends DuskTestCase
         $agent = Agent::factory()->create([
             'organization_id' => $admin->organization->id,
             'base_salary' => 50_000_00,
-            'on_target_earning' => 170_000_00
+            'on_target_earning' => 170_000_00,
         ]);
 
         $plan->agents()->attach($agent);
 
         Deal::factory()->create([
-           'value' => 5_000_00,
-           'agent_id' => $agent->id,
-           'owner_email' => $agent->email,
-           'accepted_at' => Carbon::yesterday(),
+            'value' => 5_000_00,
+            'agent_id' => $agent->id,
+            'owner_email' => $agent->email,
+            'accepted_at' => Carbon::yesterday(),
         ]);
 
         return $admin;

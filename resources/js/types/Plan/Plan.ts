@@ -1,10 +1,10 @@
-import Cliff from './Cliff'
-import Cap from './Cap'
-import Kicker from './Kicker'
 import Admin from '../Admin'
 import Agent from '../Agent'
 import { PayoutFrequencyEnum } from '../Enum/PayoutFrequencyEnum'
 import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
+import Cap from './Cap'
+import Cliff from './Cliff'
+import Kicker from './Kicker'
 
 export default interface Plan {
     id: number
