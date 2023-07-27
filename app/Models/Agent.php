@@ -9,6 +9,7 @@ use App\Enum\TimeScopeEnum;
 use App\Services\Commission\DealCommissionService;
 use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
+use App\Services\PaidLeaveDaysService;
 use App\Services\QuotaAttainmentService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,6 +66,20 @@ class Agent extends Authenticatable
     public function activePaidLeave(): HasOne
     {
         return $this->hasOne(PaidLeave::class)->active();
+    }
+
+    public function sickLeavesDaysCount(): Attribute
+    {
+        return Attribute::make(
+             get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK)),
+        );
+    }
+
+    public function vacationLeavesDaysCount(): Attribute
+    {
+        return Attribute::make(
+             get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::VACATION)),
+        );
     }
 
     public function status(): Attribute

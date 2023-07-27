@@ -35,8 +35,8 @@ class PaidLeaveDaysService
 
         $paidLeaveDays = array_merge(...$paidLeaveDays);
 
-        usort($paidLeaveDays, function ($a, $b) {
-            return $a->timestamp - $b->timestamp;
+        usort($paidLeaveDays, function (Carbon $date1, Carbon $date2) {
+            return $date1->timestamp - $date2->timestamp;
         });
 
         return $paidLeaveDays;

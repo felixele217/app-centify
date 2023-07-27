@@ -18,6 +18,8 @@ class DashboardController extends Controller
             'agents' => Auth::user()->organization->agents->load('deals')->append([
                 'quota_attainment',
                 'commission',
+                'sick_leaves_days_count',
+                'vacation_leaves_days_count',
             ]),
             'time_scopes' => array_column(TimeScopeEnum::cases(), 'value'),
             'open_deal_count' => Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) {

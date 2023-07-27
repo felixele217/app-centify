@@ -14,4 +14,6 @@ export default interface Agent {
     commission?: number
     status: AgentStatusEnum
     active_paid_leave?: PaidLeave | null
+    sick_leaves_days_count?: number
+    vacation_leaves_days_count?: number
 }

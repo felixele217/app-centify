@@ -28,19 +28,6 @@ it('returns an array of the sick leave days', function () {
     }
 });
 
-it('does not return vacation days with the sick leave days', function () {
-    $agent = Agent::factory()->has(
-        PaidLeave::factory()->count(2)->sequence([
-            'start_date' => Carbon::now()->firstOfMonth()->addWeekdays(1),
-            'end_date' => Carbon::now()->firstOfMonth()->addWeekdays(2),
-            'reason' => AgentStatusEnum::VACATION->value,
-        ]))->create();
-
-    $sickDays = (new PaidLeaveDaysService())->paidLeaveDays($agent, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK);
-
-    expect(count($sickDays))->toBe(0);
-});
-
 it('returns an array of the vacation leave days', function () {
     $agent = Agent::factory()->has(
         PaidLeave::factory()->count(2)->sequence([
@@ -62,6 +49,19 @@ it('returns an array of the vacation leave days', function () {
     }
 });
 
+it('does not return vacation days with the sick leave days', function () {
+    $agent = Agent::factory()->has(
+        PaidLeave::factory()->count(2)->sequence([
+            'start_date' => Carbon::now()->firstOfMonth()->addWeekdays(1),
+            'end_date' => Carbon::now()->firstOfMonth()->addWeekdays(2),
+            'reason' => AgentStatusEnum::VACATION->value,
+        ]))->create();
+
+    $sickDays = (new PaidLeaveDaysService())->paidLeaveDays($agent, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK);
+
+    expect(count($sickDays))->toBe(0);
+});
+
 it('does not return sick days with the vacation leave days', function () {
     $agent = Agent::factory()->has(
         PaidLeave::factory()->count(2)->sequence([
@@ -74,3 +74,5 @@ it('does not return sick days with the vacation leave days', function () {
 
     expect(count($sickDays))->toBe(0);
 });
+
+test('timescopes for all and so')->todo();

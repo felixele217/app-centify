@@ -91,8 +91,18 @@ const src =
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div><span class="font-semibold text-gray-600">5</span> days sick</div>
-                                    <div><span class="font-semibold text-gray-600">6</span> days on vacation</div>
+                                    <div>
+                                        <span class="font-semibold text-gray-600">{{
+                                            agent.sick_leaves_days_count!
+                                        }}</span>
+                                        days sick
+                                    </div>
+                                    <div>
+                                        <span class="font-semibold text-gray-600">{{
+                                            agent.vacation_leaves_days_count!
+                                        }}</span>
+                                        days on vacation
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
