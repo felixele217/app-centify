@@ -50,3 +50,27 @@ it('quota attainment change returns null when previous scope has no quota', func
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5)],
     [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(5)],
 ]);
+
+it('quota attainment change does not return null for very small quotas in the previous scope', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInPreviousTimeScope) {
+    $plan = Plan::factory()->active()->create([
+        'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
+    ]);
+
+    $plan->agents()->attach($agent = Agent::factory()->has(
+        Deal::factory()->count(2)->sequence([
+            'accepted_at' => $dateInPreviousTimeScope,
+            'add_time' => $dateInPreviousTimeScope,
+            'value' => $targetAmountPerMonth * $timeScope->monthCount() * 0.001,
+        ], [
+            'accepted_at' => Carbon::now(),
+            'add_time' => Carbon::now(),
+            'value' => $targetAmountPerMonth * $timeScope->monthCount(),
+        ]
+        ))->create());
+
+    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->not()->toBeNull();
+})->with([
+    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5)],
+    [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5)],
+    [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(5)],
+]);

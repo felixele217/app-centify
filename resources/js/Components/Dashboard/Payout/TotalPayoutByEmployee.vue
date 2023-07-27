@@ -87,7 +87,7 @@ const src =
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">{{ quotaDisplay(agent.quota_attainment!) }}</div>
-                                    <div class="mt-1 text-gray-500">{{ agent.quota_attainment_change ?? '-' }}</div>
+                                    <div class="mt-1 text-gray-500">{{ agent.quota_attainment_change ? `${agent.quota_attainment_change > 0 ? '+' : '-'}${agent.quota_attainment_change * 100}%` :  '-' }}</div>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
