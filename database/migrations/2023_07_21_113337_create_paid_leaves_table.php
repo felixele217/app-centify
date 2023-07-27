@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('continuation_of_pay_time_scope');
-            $table->integer('sum_of_commissions');
+            $table->bigInteger('sum_of_commissions');
             $table->string('reason');
             $table->timestamps();
         });

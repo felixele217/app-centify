@@ -50,4 +50,9 @@ class Plan extends Model
     {
         return $this->hasOne(Kicker::class);
     }
+
+    public function cap(): HasOne
+    {
+        return $this->hasOne(Cap::class);
+    }
 }

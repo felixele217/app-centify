@@ -12,11 +12,11 @@ return new class extends Migration
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
             $table->string('integration_type');
-            $table->integer('integration_deal_id');
+            $table->bigInteger('integration_deal_id');
             $table->string('title');
             $table->string('status');
             $table->string('owner_email');
-            $table->integer('value');
+            $table->bigInteger('value');
             $table->timestampTz('add_time');
             $table->timestampTz('accepted_at')->nullable();
             $table->timestampTz('declined_at')->nullable();

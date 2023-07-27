@@ -37,6 +37,12 @@ class PlanRepository
             $plan->kicker()->create($request->validated('kicker'));
         }
 
+        if ($request->validated('cap')) {
+            $plan->cap()->create([
+                'value' => $request->validated('cap'),
+            ]);
+        }
+
         $plan->agents()->attach($request->validated('assigned_agent_ids'));
 
         return $plan;
