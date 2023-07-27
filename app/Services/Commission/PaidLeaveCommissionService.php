@@ -8,10 +8,11 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\PaidLeave;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 
 class PaidLeaveCommissionService
 {
-    private $dateInScope;
+    private CarbonImmutable $dateInScope;
 
     public function __construct()
     {
@@ -24,17 +25,17 @@ class PaidLeaveCommissionService
 
         $advancedQuery = match ($timeScope) {
             TimeScopeEnum::MONTHLY => $paidLeavesWithEndDates
-                ->where(function ($query) {
+                ->where(function (Builder $query) {
                     $query->whereMonth('end_date', $this->dateInScope->month)
                         ->orWhereMonth('start_date', $this->dateInScope->month);
                 }),
             TimeScopeEnum::QUARTERLY => $paidLeavesWithEndDates
-                ->where(function ($query) {
+                ->where(function (Builder $query) {
                     $query->whereBetween('end_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()])
                         ->orWhereBetween('start_date', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()]);
                 }),
             TimeScopeEnum::ANNUALY => $paidLeavesWithEndDates
-                ->where(function ($query) {
+                ->where(function (Builder $query) {
                     $query->whereBetween('end_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()])
                         ->orWhereBetween('start_date', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]);
                 }),

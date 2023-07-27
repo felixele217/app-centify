@@ -57,10 +57,10 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         return [
             $agentEmail => collect($deals)
-                ->filter(function ($deal) use ($agentEmail) {
+                ->filter(function (array $deal) use ($agentEmail) {
                     return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
                 })
-                ->map(function ($deal) {
+                ->map(function (array $deal) {
                     $demoSetBy = $this->demoSetByApiKey ? $deal[$this->demoSetByApiKey]['email'][0]['value'] : null;
 
                     return array_filter([
@@ -70,7 +70,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
                         'owner_email' => $demoSetBy,
-                    ], function ($value) {
+                    ], function (string $value) {
                         return $value !== null;
                     });
                 }),

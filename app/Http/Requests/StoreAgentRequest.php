@@ -75,7 +75,7 @@ class StoreAgentRequest extends FormRequest
         $this->replace(NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']));
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'paid_leave.end_date.before' => 'The end date needs to come after the start date.',

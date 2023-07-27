@@ -24,7 +24,7 @@ class Agent extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guard = 'agent';
+    protected string $guard = 'agent';
 
     protected $guarded = [];
 

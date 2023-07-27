@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Facades\Pipedrive;
+use Illuminate\Http\RedirectResponse;
 
 class PipedriveAuthController extends Controller
 {
-    public function create()
+    public function create(): RedirectResponse
     {
         $authorizationUrl = 'https://oauth.pipedrive.com/oauth/authorize?'.http_build_query([
             'client_id' => env('PIPEDRIVE_CLIENT_ID'),
@@ -18,7 +19,7 @@ class PipedriveAuthController extends Controller
         return redirect($authorizationUrl);
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         if (! empty(request()->query('code'))) {
             Pipedrive::authorize(request()->query('code'));

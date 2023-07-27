@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -46,7 +47,7 @@ class NewPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             request()->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) {
+            function (User $user) {
                 $user->forceFill([
                     'password' => Hash::make(request()->password),
                     'remember_token' => Str::random(60),
