@@ -58,6 +58,7 @@ class PlanController extends Controller
                 'agents',
                 'cliff',
                 'kicker',
+                'cap',
             ]),
         ]);
     }

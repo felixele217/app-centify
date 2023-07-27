@@ -1,30 +1,24 @@
 <?php
 
-use App\Models\Plan;
-use App\Models\Agent;
 use App\Enum\KickerTypeEnum;
+use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
-
-use App\Enum\PayoutFrequencyEnum;
+use App\Models\Plan;
 use Inertia\Testing\AssertableInertia;
-use function Pest\Laravel\withoutExceptionHandling;
 
 it('passes the correct props', function () {
     $admin = signInAdmin();
 
-    $plan = Plan::factory()->hasCliff()->create([
-        'organization_id' => $admin->organization->id,
-        'creator_id' => $admin->id,
-    ]);
+    $plan = Plan::factory()
+        ->hasAgents($agentCount = 3, [
+            'organization_id' => $admin->organization->id,
+        ])
+        ->create([
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
+        ]);
 
-    Agent::factory($agentCount = 3)->create([
-        'organization_id' => $admin->organization->id,
-    ]);
-
-    $plan->agents()->attach(Agent::all());
-
-    withoutExceptionHandling();
     $this->get(route('plans.edit', $plan))->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Plan/Edit')
@@ -44,6 +38,7 @@ it('passes the correct props', function () {
             ->where('plan.id', $plan->id)
             ->has('plan.cliff')
             ->has('plan.kicker')
+            ->has('plan.cap')
             ->has('plan.agents', $agentCount)
     );
 });
