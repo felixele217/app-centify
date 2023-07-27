@@ -102,7 +102,7 @@ it('does not throw validation errors if you send 0 as values in either of the pe
             'type' => null,
             'threshold_in_percent' => $thresholdInPercent,
             'payout_in_percent' => $payoutInPercent,
-        ]
+        ],
     ])->fake();
 
     $this->put(route('plans.update', $plan))->assertValid();
@@ -111,6 +111,28 @@ it('does not throw validation errors if you send 0 as values in either of the pe
     [null, 0],
     [0, 0],
 ]);
+
+it('does not update a kicker when an array with empty values is sent', function () {
+    $plan = Plan::factory()->hasKicker()->create([
+        'organization_id' => $this->admin->organization->id,
+    ]);
+
+    UpdatePlanRequest::factory()->state([
+        'kicker' => [
+            'salary_type' => null,
+            'type' => null,
+            'threshold_in_percent' => 0,
+            'payout_in_percent' => 0,
+        ],
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertRedirect();
+
+    expect($plan->kicker->type)->not()->toBeNull();
+    expect($plan->kicker->salary_type)->not()->toBeNull();
+    expect($plan->kicker->threshold_in_percent)->not()->toBeNull();
+    expect($plan->kicker->payout_in_percent)->not()->toBeNull();
+});
 
 it('can update a plan with removing the kicker as an admin', function () {
 

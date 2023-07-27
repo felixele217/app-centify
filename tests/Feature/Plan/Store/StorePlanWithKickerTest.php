@@ -3,6 +3,7 @@
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Http\Requests\StorePlanRequest;
+use App\Models\Kicker;
 use App\Models\Plan;
 
 it('can store a plan with a kicker as an admin', function () {
@@ -78,7 +79,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
 
 it('does not throw validation errors if you send 0 as values in either of the percent fields', function (?int $thresholdInPercent, ?int $payoutInPercent) {
     signInAdmin();
-    
+
     StorePlanRequest::factory()->state([
         'kicker' => [
             'salary_type' => null,
@@ -94,3 +95,20 @@ it('does not throw validation errors if you send 0 as values in either of the pe
     [null, 0],
     [0, 0],
 ]);
+
+it('does not store a kicker when an array with empty values is sent', function () {
+    signInAdmin();
+
+    StorePlanRequest::factory()->state([
+        'kicker' => [
+            'salary_type' => null,
+            'type' => null,
+            'threshold_in_percent' => 0,
+            'payout_in_percent' => 0,
+        ],
+    ])->fake();
+
+    $this->post(route('plans.store'))->assertRedirect();
+
+    expect(Kicker::count())->toBe(0);
+});
