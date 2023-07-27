@@ -28,4 +28,11 @@ class DealFactory extends Factory
             'agent_id' => Agent::factory()->create(),
         ];
     }
+
+    public function accepted(): static
+    {
+        return $this->state(fn () => [
+            'accepted_at' => Carbon::yesterday(),
+        ]);
+    }
 }

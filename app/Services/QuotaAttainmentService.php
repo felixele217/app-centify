@@ -8,9 +8,9 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use Carbon\Carbon;
+use App\Repositories\DealRepository;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Collection;
 
 class QuotaAttainmentService
 {
@@ -29,19 +29,14 @@ class QuotaAttainmentService
             return 0;
         }
 
-        $dealsQuery = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $agent->deals()->whereMonth('accepted_at', $this->dateInScope->month),
-            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->endOfQuarter()]),
-            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]),
-            default => $monthlyDealsQuery
-        };
+        $deals = DealRepository::dealsForAgent($agent, $timeScope, $this->dateInScope);
 
-        return $this->cappedSumOfDeals($dealsQuery, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $timeScope->monthCount());
+        return $this->cappedSumOfDeals($deals, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $timeScope->monthCount());
     }
 
-    private function cappedSumOfDeals(HasMany $dealsQuery, ?Plan $latestActivePlan): int
+    private function cappedSumOfDeals(Collection $deals, ?Plan $latestActivePlan): int
     {
-        return array_sum($dealsQuery->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan->cap?->value))->toArray());
+        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan->cap?->value))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): int

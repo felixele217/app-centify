@@ -30,6 +30,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
         'agent_id' => $plan->agents()->first()->id,
         'value' => 60_000_000,
         'accepted_at' => $dealAcceptedDate,
+        'add_time' => $dealAcceptedDate,
     ]);
 
     expect((new KickerCommissionService())->calculate($plan->agents()->first(), $timeScope, $plan->agents()->first()->quota_attainment))->toBe(0);
