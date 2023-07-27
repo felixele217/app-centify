@@ -14,6 +14,7 @@ class PlanFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => fake()->unique()->randomNumber(),
             'name' => fake()->word().' Plan',
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,

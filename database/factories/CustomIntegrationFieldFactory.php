@@ -15,6 +15,7 @@ class CustomIntegrationFieldFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => fake()->unique()->randomNumber(),
             'name' => fake()->randomElement(CustomIntegrationFieldEnum::cases())->value,
             'api_key' => Str::random(40),
             'integration_type' => fake()->randomElement(IntegrationTypeEnum::cases())->value,

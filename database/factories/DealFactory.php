@@ -13,6 +13,7 @@ class DealFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => fake()->unique()->randomNumber(),
             'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
             'integration_deal_id' => 1,
             'title' => fake()->word(),

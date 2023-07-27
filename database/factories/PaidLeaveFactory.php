@@ -15,6 +15,7 @@ class PaidLeaveFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => fake()->unique()->randomNumber(),
             'reason' => $reason = fake()->randomElement([AgentStatusEnum::SICK, AgentStatusEnum::VACATION])->value,
             'start_date' => Carbon::yesterday(),
             'end_date' => $reason === AgentStatusEnum::SICK->value ? null : Carbon::parse('+1 week'),
