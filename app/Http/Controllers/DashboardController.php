@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Deal;
-use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -17,6 +17,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'agents' => Auth::user()->organization->agents->load('deals')->append([
                 'quota_attainment',
+                'quota_attainment_change',
                 'commission',
                 'sick_leaves_days_count',
                 'vacation_leaves_days_count',

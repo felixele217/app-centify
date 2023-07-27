@@ -11,6 +11,7 @@ export default interface Agent {
     base_salary: number | null
     on_target_earning: number | null
     quota_attainment?: number
+    quota_attainment_change?: number | null
     commission?: number
     status: AgentStatusEnum
     active_paid_leave?: PaidLeave | null

@@ -10,6 +10,7 @@ use App\Services\Commission\DealCommissionService;
 use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\PaidLeaveDaysService;
+use App\Services\QuotaAttainmentChangeService;
 use App\Services\QuotaAttainmentService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -111,20 +112,16 @@ class Agent extends Authenticatable
         );
     }
 
-    // protected function quotaAttainmentChange(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: function () {
-    //             $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
+    protected function quotaAttainmentChange(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
 
-    //             $dateInPreviousTimeScope= match($timeScope) {
-    //                 TimeScopeEnum::MONTHLY
-    //             }
-
-    //             return $this->quotaAttainment / (new QuotaAttainmentService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
-    //         }
-    //     );
-    // }
+                return (new QuotaAttainmentChangeService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+            }
+        );
+    }
 
     protected function commission(): Attribute
     {
