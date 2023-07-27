@@ -14,6 +14,7 @@ import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
+import Plan from '@/types/Plan/Plan'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
@@ -24,7 +25,6 @@ import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
-import Plan from '@/types/Plan/Plan'
 
 export interface AdditionalField {
     id: number
@@ -85,6 +85,7 @@ const form = useForm({
     },
 
     cap: props.plan?.cap?.value || 0,
+    trigger: 'Demo set',
 })
 
 function handleDateChange(newDate: Date) {
@@ -327,6 +328,34 @@ function submit() {
                         <InputError
                             class="mt-2"
                             :message="form.errors.cap"
+                        />
+                    </div>
+
+                    <div v-if="activeAdditionalFields.includes('Trigger')">
+                        <InputLabel
+                            value="Trigger"
+                            required
+                        />
+
+                        <SelectWithDescription
+                            :options="[
+                                {
+                                    title: 'Demo set',
+                                    description: 'The deal\'s demo_set_by field has a user assigned to it.',
+                                    current: true,
+                                },
+                            ]"
+                            :default="{
+                                title: 'Demo set',
+                                description: 'The deal\'s demo_set_by field has a user assigned to it.',
+                                current: true,
+                            }"
+                            @option-selected="(optionTitle: 'Demo set') => form.trigger = optionTitle"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.trigger"
                         />
                     </div>
                 </div>
