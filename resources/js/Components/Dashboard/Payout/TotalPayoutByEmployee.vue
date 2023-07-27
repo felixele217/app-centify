@@ -87,7 +87,36 @@ const src =
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">{{ quotaDisplay(agent.quota_attainment!) }}</div>
-                                    <div class="mt-1 text-gray-500">{{ agent.quota_attainment_change ? `${agent.quota_attainment_change > 0 ? '+' : '-'}${agent.quota_attainment_change * 100}%` :  '-' }}</div>
+                                    <div class="mt-1 text-gray-500">
+                                        {{
+                                            agent.quota_attainment_change
+                                                ? `${agent.quota_attainment_change > 0 ? '+' : '-'}${roundFloat(
+                                                      agent.quota_attainment_change * 100
+                                                  )}%`
+                                                : '-'
+                                        }}
+                                        <p
+                                            :class="[
+                                                agent.quo ? 'text-green-600' : 'text-red-600',
+                                                'ml-2 flex items-baseline text-sm font-semibold',
+                                            ]"
+                                        >
+                                            <ArrowUpIcon
+                                                v-if="item.changeType === 'increase'"
+                                                class="h-5 w-5 flex-shrink-0 self-center text-green-500"
+                                                aria-hidden="true"
+                                            />
+                                            <ArrowDownIcon
+                                                v-else
+                                                class="h-5 w-5 flex-shrink-0 self-center text-red-500"
+                                                aria-hidden="true"
+                                            />
+                                            <span class="sr-only">
+                                                {{ item.changeType === 'increase' ? 'Increased' : 'Decreased' }} by
+                                            </span>
+                                            {{ item.change }}
+                                        </p>
+                                    </div>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">

@@ -12,7 +12,6 @@ use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\PaidLeaveDaysService;
 use App\Services\QuotaAttainmentChangeService;
 use App\Services\QuotaAttainmentService;
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -73,14 +72,14 @@ class Agent extends Authenticatable
     public function sickLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-             get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK)),
+            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK)),
         );
     }
 
     public function vacationLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-             get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::VACATION)),
+            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::VACATION)),
         );
     }
 
