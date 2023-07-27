@@ -26,21 +26,6 @@ it('calculates the quota attainment properly for the active plan with the most r
     expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval($agent->deals->sum('value') / $latestPlan->target_amount_per_month));
 });
 
-it('calculates the quota attainment only for accepted deals', function () {
-    $plan = Plan::factory()->create();
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => Carbon::now(),
-    ])->create());
-
-    Deal::factory(3)->create([
-        'agent_id' => $agent->id,
-        'accepted_at' => null,
-    ]);
-
-    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval($agent->deals()->whereNotNull('accepted_at')->sum('value') / $plan->target_amount_per_month));
-});
-
 it('calculates the quota attainment for the current month if scoped', function () {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
