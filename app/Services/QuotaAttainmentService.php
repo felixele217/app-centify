@@ -6,23 +6,33 @@ namespace App\Services;
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
+use App\Models\Deal;
 use Carbon\Carbon;
 
 class QuotaAttainmentService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): float
     {
-        $latestPlanTargetAmountPerMonth = $agent->load('plans')->plans()->active()->first()?->target_amount_per_month;
+        $latestActivePlan = $agent->load('plans')->plans()->active()->first();
 
-        if (! $latestPlanTargetAmountPerMonth) {
+        if (! $latestActivePlan?->target_amount_per_month) {
             return 0;
         }
 
         return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
-            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestPlanTargetAmountPerMonth * 3),
-            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestPlanTargetAmountPerMonth * 12),
-            default => $agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestPlanTargetAmountPerMonth,
+            TimeScopeEnum::MONTHLY => array_sum($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / $latestActivePlan?->target_amount_per_month,
+            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->sum('value') / ($latestActivePlan?->target_amount_per_month * 3),
+            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->sum('value') / ($latestActivePlan?->target_amount_per_month * 12),
+            default => $agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->sum('value') / $latestActivePlan?->target_amount_per_month,
         };
+    }
+
+    private function cappedValue(Deal $deal, ?int $cap): int
+    {
+        if (!!$cap && $deal->value >= $cap) {
+            return $cap;
+        }
+
+        return $deal->value;
     }
 }
