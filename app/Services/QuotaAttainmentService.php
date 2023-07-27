@@ -7,7 +7,9 @@ namespace App\Services;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
+use App\Models\Plan;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuotaAttainmentService
 {
@@ -19,12 +21,19 @@ class QuotaAttainmentService
             return 0;
         }
 
-        return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => array_sum($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / $latestActivePlan?->target_amount_per_month,
-            TimeScopeEnum::QUARTERLY => array_sum($agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()])->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / ($latestActivePlan?->target_amount_per_month * 3),
-            TimeScopeEnum::ANNUALY => array_sum($agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()])->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / ($latestActivePlan?->target_amount_per_month * 12),
-            default => array_sum($agent->deals()->whereMonth('accepted_at', Carbon::now()->month)->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray()) / $latestActivePlan?->target_amount_per_month,
+        $dealsQuery = match ($timeScope) {
+            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $agent->deals()->whereMonth('accepted_at', Carbon::now()->month),
+            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()]),
+            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()]),
+            default => $monthlyDealsQuery
         };
+
+        return $this->cappedSumOfDeals($dealsQuery, $latestActivePlan) / ($latestActivePlan?->target_amount_per_month * $timeScope->monthCount());
+    }
+
+    private function cappedSumOfDeals(HasMany $dealsQuery, ?Plan $latestActivePlan): int
+    {
+        return array_sum($dealsQuery->get()->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan?->cap?->value))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): int
