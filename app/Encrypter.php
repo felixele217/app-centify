@@ -10,12 +10,12 @@ class Encrypter
 
     const TAG_LENGTH = 16;
 
-    public static function encrypt($data)
+    public static function encrypt(string $data): string
     {
         $iv = openssl_random_pseudo_bytes(self::getIvLen());
         $tag = null;
 
-        $encryptedData = openssl_encrypt($data, self::CIPHER, env('ENCRYPTION_KEY'), $options = OPENSSL_RAW_DATA, $iv, $tag, '', self::TAG_LENGTH);
+        $encryptedData = openssl_encrypt($data, self::CIPHER, env('ENCRYPTION_KEY', 'encryption key'), $options = OPENSSL_RAW_DATA, $iv, $tag, '', self::TAG_LENGTH);
 
         if ($encryptedData === false) {
             return false;
@@ -24,7 +24,7 @@ class Encrypter
         return base64_encode($iv.$tag.$encryptedData);
     }
 
-    public static function decrypt($encryptedData)
+    public static function decrypt(string $encryptedData): string
     {
         $encryptedData = base64_decode($encryptedData);
         $ivlen = self::getIvLen();
@@ -33,7 +33,7 @@ class Encrypter
         $tag = substr($encryptedData, $ivlen, self::TAG_LENGTH);
         $encryptedData = substr($encryptedData, $ivlen + self::TAG_LENGTH);
 
-        return openssl_decrypt($encryptedData, self::CIPHER, env('ENCRYPTION_KEY'), $options = OPENSSL_RAW_DATA, $iv, $tag);
+        return openssl_decrypt($encryptedData, self::CIPHER, env('ENCRYPTION_KEY', 'encryption key'), $options = OPENSSL_RAW_DATA, $iv, $tag);
     }
 
     private static function getIvLen(): int

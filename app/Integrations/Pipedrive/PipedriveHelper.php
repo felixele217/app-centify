@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Exceptions\InvalidApiKeyException;
+use Illuminate\Http\RedirectResponse;
 
 class PipedriveHelper
 {
-    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): ?string
+    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): string|RedirectResponse|null
     {
         $demoSetByApiKey = $demoSetByApiKey ?? env('PIPEDRIVE_DEMO_SET_BY');
 
