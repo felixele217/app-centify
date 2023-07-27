@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Actions\NullZeroNumbersAction;
 use App\Enum\KickerTypeEnum;
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
@@ -62,28 +63,29 @@ class UpdatePlanRequest extends FormRequest
             ],
 
             'kicker.type' => [
+                'nullable',
                 'string',
                 new Enum(KickerTypeEnum::class),
-                'required_with:kicker,kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
+                'required_with:kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
             ],
 
             'kicker.threshold_in_percent' => [
+                'nullable',
                 'integer',
-                'min:1',
-                'required_with:kicker,kicker.type,kicker.payout_in_percent,kicker.salary_type',
-
+                'required_with:kicker.type,kicker.payout_in_percent,kicker.salary_type',
             ],
 
             'kicker.payout_in_percent' => [
+                'nullable',
                 'integer',
-                'min:1',
-                'required_with:kicker,kicker.type,kicker.threshold_in_percent,kicker.salary_type',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.salary_type',
             ],
 
             'kicker.salary_type' => [
+                'nullable',
                 'string',
                 new Enum(SalaryTypeEnum::class),
-                'required_with:kicker,kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
             ],
 
             'cap' => [
@@ -99,6 +101,10 @@ class UpdatePlanRequest extends FormRequest
 
         if (isset($data['start_date'])) {
             $data['start_date'] = Carbon::createFromDate($data['start_date']);
+        }
+
+        if (isset($data['kicker'])) {
+            $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);
         }
 
         $this->replace($data);

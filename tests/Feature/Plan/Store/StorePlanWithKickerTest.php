@@ -75,3 +75,22 @@ it('requires all kicker fields if at least one is specified', function (array $p
         ],
     ],
 ]);
+
+it('does not throw validation errors if you send 0 as values in either of the percent fields', function (?int $thresholdInPercent, ?int $payoutInPercent) {
+    signInAdmin();
+    
+    StorePlanRequest::factory()->state([
+        'kicker' => [
+            'salary_type' => null,
+            'type' => null,
+            'threshold_in_percent' => $thresholdInPercent,
+            'payout_in_percent' => $payoutInPercent,
+        ],
+    ])->fake();
+
+    $this->post(route('plans.store'))->assertValid();
+})->with([
+    [0, null],
+    [null, 0],
+    [0, 0],
+]);
