@@ -9,10 +9,18 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuotaAttainmentService
 {
+    private CarbonImmutable $dateInScope;
+
+    public function __construct(CarbonImmutable $dateInScope = null)
+    {
+        $this->dateInScope = $dateInScope ?? new CarbonImmutable();
+    }
+
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): float
     {
         $latestActivePlan = $agent->load('plans')->plans()->active()->first();
@@ -22,9 +30,9 @@ class QuotaAttainmentService
         }
 
         $dealsQuery = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $agent->deals()->whereMonth('accepted_at', Carbon::now()->month),
-            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfQuarter(), Carbon::now()->endOfQuarter()]),
-            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()]),
+            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $agent->deals()->whereMonth('accepted_at', $this->dateInScope->month),
+            TimeScopeEnum::QUARTERLY => $agent->deals()->whereBetween('accepted_at', [$this->dateInScope->firstOfQuarter(), $this->dateInScope->endOfQuarter()]),
+            TimeScopeEnum::ANNUALY => $agent->deals()->whereBetween('accepted_at', [$this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()]),
             default => $monthlyDealsQuery
         };
 

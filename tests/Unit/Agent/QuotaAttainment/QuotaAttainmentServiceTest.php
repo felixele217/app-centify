@@ -1,11 +1,12 @@
 <?php
 
-use Carbon\Carbon;
+use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TimeScopeEnum;
 use App\Services\QuotaAttainmentService;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 it('calculates the quota attainment properly for the active plan with the most recent start_date', function () {
     $agent = Agent::factory()->hasDeals([
@@ -142,6 +143,27 @@ it('does not throw any errors when agents have no base_salary or no quota_attain
     [10_000_00, 10_000_00],
     [0, 10_000_00],
     [10_000_00, 0],
+]);
+
+it('can calculate for past and future timescopes', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInScope) {
+    $plan = Plan::factory()->create([
+        'target_amount_per_month' => 10_000_00,
+    ]);
+
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
+        'accepted_at' => $dateInScope,
+        'add_time' => $dateInScope,
+        'value' => 5_000_00,
+    ])->create());
+
+    expect((new QuotaAttainmentService($dateInScope))->calculate($agent, $timeScope))->toBe(floatval(1 / $timeScope->monthCount()));
+})->with([
+    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(10)],
+    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->lastOfMonth()->addDays(10)],
+    [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(10)],
+    [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->lastOfQuarter()->addDays(10)],
+    [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(10)],
+    [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->lastOfYear()->addDays(10)],
 ]);
 
 it('returns 0 if the agent has no active plan', function () {
