@@ -4,7 +4,7 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Services\Commission\DealCommissionService;
 
-it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope, int $unitsInYear) {
+it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope) {
     $testQuota = 1;
 
     $agent = Agent::factory()->create([
@@ -12,11 +12,11 @@ it('calculates the commission correctly for the respective scopes', function (Ti
         'on_target_earning' => $onTargetEarning = 200_000_00,
     ]);
 
-    $expectedCommission = $testQuota * (($onTargetEarning - $baseSalary) / $unitsInYear);
+    $expectedCommission = $testQuota * (($onTargetEarning - $baseSalary) / (12 / $timeScope->monthCount()));
 
     expect((new DealCommissionService())->calculate($agent, $timeScope, 1))->toBe($expectedCommission);
 })->with([
-    [TimeScopeEnum::MONTHLY, 12],
-    [TimeScopeEnum::QUARTERLY, 4],
-    [TimeScopeEnum::ANNUALY, 1],
+    TimeScopeEnum::MONTHLY,
+    TimeScopeEnum::QUARTERLY,
+    TimeScopeEnum::ANNUALY,
 ]);

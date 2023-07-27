@@ -259,7 +259,7 @@ function submit() {
                         />
                     </div>
 
-                    <div >
+                    <div>
                         <InputLabel value="Need more complexity? Add one of the following..." />
 
                         <CardOptions
