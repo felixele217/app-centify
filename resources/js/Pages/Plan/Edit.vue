@@ -5,7 +5,7 @@ import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
-import Plan from '@/types/Plan'
+import Plan from '@/types/Plan/Plan'
 
 const props = defineProps<{
     agents: Array<Pick<Agent, 'id' | 'name'>>

@@ -1,5 +1,5 @@
-import { KickerTypeEnum } from './Enum/KickerTypeEnum'
-import { SalaryTypeEnum } from './Enum/SalaryTypeEnum'
+import { KickerTypeEnum } from "../Enum/KickerTypeEnum"
+import { SalaryTypeEnum } from "../Enum/SalaryTypeEnum"
 
 export default interface Kicker {
     id: number

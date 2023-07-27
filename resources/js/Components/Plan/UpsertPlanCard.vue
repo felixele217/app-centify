@@ -13,7 +13,6 @@ import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
-import Plan from '@/types/Plan'
 import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
@@ -25,6 +24,7 @@ import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
+import Plan from '@/types/Plan/Plan'
 
 export interface AdditionalField {
     id: number
@@ -56,6 +56,10 @@ function additionalFieldsOfPlan() {
         activeAdditionalFields.push('Kicker')
     }
 
+    if (props.plan?.cap) {
+        activeAdditionalFields.push('Cap')
+    }
+
     return activeAdditionalFields as Array<AdditionalFieldTypes>
 }
 
@@ -79,6 +83,8 @@ const form = useForm({
         payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : 0,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
     },
+
+    cap: props.plan?.cap?.value || 0,
 })
 
 function handleDateChange(newDate: Date) {
@@ -304,6 +310,23 @@ function submit() {
                         <InputError
                             class="mt-2"
                             :message="form.errors.cliff_threshold_in_percent"
+                        />
+                    </div>
+
+                    <div v-if="activeAdditionalFields.includes('Cap')">
+                        <InputLabel
+                            value="Deal Cap"
+                            required
+                        />
+
+                        <CurrencyInput
+                            :value="form.cap"
+                            @set-value="(newValue: number) => form.cap = newValue"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.cap"
                         />
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PageHeader from '@/Components/PageHeader.vue'
 import PlanCard from '@/Components/Plan/PlanCard.vue'
-import type Plan from '@/types/Plan'
+import type Plan from '@/types/Plan/Plan'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{

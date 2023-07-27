@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Plan from '@/types/Plan'
+import type Plan from '@/types/Plan/Plan'
 import formatDate from '@/utils/Date/formatDate'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
