@@ -164,32 +164,6 @@ function submit() {
                             />
                         </div>
                     </div>
-                    <div>
-                        <InputLabel
-                            for="payout_frequency"
-                            value="Payout Frequency"
-                            required
-                        />
-
-                        <SelectWithDescription
-                            :options="
-                                enumOptionsToSelectOptionWithDescription(
-                                    props.payout_frequency_options,
-                                    payoutFrequencyToDescription
-                                )
-                            "
-                            @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
-                            :default="props.plan ? {
-                                    title: form.payout_frequency,
-                                    description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
-                                    current: true
-                                } : undefined"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.payout_frequency"
-                        />
-                    </div>
                     <div class="flex gap-5">
                         <div class="w-1/2">
                             <InputLabel
@@ -240,6 +214,33 @@ function submit() {
                                 :message="form.errors.target_amount_per_month"
                             />
                         </div>
+                    </div>
+
+                    <div>
+                        <InputLabel
+                            for="payout_frequency"
+                            value="Payout Frequency"
+                            required
+                        />
+
+                        <SelectWithDescription
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    props.payout_frequency_options,
+                                    payoutFrequencyToDescription
+                                )
+                            "
+                            @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
+                            :default="props.plan ? {
+                                        title: form.payout_frequency,
+                                        description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
+                                        current: true
+                                    } : undefined"
+                        />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.payout_frequency"
+                        />
                     </div>
 
                     <div>
