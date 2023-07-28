@@ -1,11 +1,11 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TargetVariableEnum;
 use App\Enum\PayoutFrequencyEnum;
+use App\Enum\TargetVariableEnum;
 use App\Http\Requests\UpdatePlanRequest;
+use App\Models\Agent;
+use App\Models\Plan;
+use Carbon\Carbon;
 
 it('can update a plan as an admin', function () {
     $admin = signInAdmin();

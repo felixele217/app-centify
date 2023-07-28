@@ -1,11 +1,11 @@
 <?php
 
-use Carbon\Carbon;
+use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TimeScopeEnum;
 use App\Repositories\DealRepository;
+use Carbon\Carbon;
 
 it('retrieves only accepted deals', function () {
     $plan = Plan::factory()->create();

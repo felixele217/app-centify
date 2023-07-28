@@ -68,7 +68,7 @@ it('can set end date to null if status is sick', function () {
     $this->post(route('agents.store'))->assertValid();
 });
 
-it ('cannot specify an end date that is before the start date', function () {
+it('cannot specify an end date that is before the start date', function () {
     signInAdmin();
 
     StoreAgentRequest::factory()->state([

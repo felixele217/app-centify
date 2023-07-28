@@ -4,7 +4,6 @@ use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
-use App\Models\Plan;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 

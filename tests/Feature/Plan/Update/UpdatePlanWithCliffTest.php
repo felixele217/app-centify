@@ -28,6 +28,6 @@ it('can update a plan with a cliff as an admin', function (Plan $plan) {
     ]),
 ]);
 
-it ('can update a plan with removing the cliff as an admin', function () {
+it('can update a plan with removing the cliff as an admin', function () {
 
 })->todo();

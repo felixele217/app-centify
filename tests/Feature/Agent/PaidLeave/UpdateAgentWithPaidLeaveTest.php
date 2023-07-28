@@ -108,7 +108,7 @@ it('does not create a new paid leave if the time frame already exists', function
     expect($agent->activePaidLeave->start_date->toDateString())->toBe($newStartDate->toDateString());
 });
 
-it ('cannot specify an end date that is before the start date', function () {
+it('cannot specify an end date that is before the start date', function () {
     $admin = signInAdmin();
 
     $agent = Agent::factory()->create([

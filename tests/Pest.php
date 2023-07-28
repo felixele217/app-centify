@@ -1,11 +1,11 @@
 <?php
 
-use Tests\TestCase;
-use App\Models\Plan;
 use App\Models\Admin;
 use App\Models\Agent;
+use App\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class)->in(
     'Feature',
@@ -25,8 +25,8 @@ function createPlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth
         'accepted_at' => $addTime ?? Carbon::now()->firstOfMonth(),
         'value' => $targetAmountPerMonth * $quotaAttainmentPerMonth,
     ])->create([
-        'base_salary' =>  50_000_00,
-        'on_target_earning' =>  170_000_00,
+        'base_salary' => 50_000_00,
+        'on_target_earning' => 170_000_00,
         'organization_id' => $organizationId,
     ]));
 

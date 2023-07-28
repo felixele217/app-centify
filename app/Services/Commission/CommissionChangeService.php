@@ -20,7 +20,6 @@ class CommissionChangeService
         $quotaAttainmentLastTimeScope = (new QuotaAttainmentService(DateHelper::dateInPreviousTimeScope($timeScope)))->calculate($agent, $timeScope);
         $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
 
-
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }
 }

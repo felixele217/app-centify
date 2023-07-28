@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Plan;
-use App\Enum\TimeScopeEnum;
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
+use App\Enum\TimeScopeEnum;
+use App\Models\Plan;
 use App\Services\Commission\KickerCommissionService;
 
 it('incorporates the kicker if its target is met within the current quarter', function (float $quotaAttainment) {

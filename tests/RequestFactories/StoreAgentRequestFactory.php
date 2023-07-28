@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Tests\RequestFactories;
 
 use App\Enum\AgentStatusEnum;

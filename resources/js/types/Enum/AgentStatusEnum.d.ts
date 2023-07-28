@@ -1,1 +1,1 @@
-export type AgentStatusEnum = 'active' | 'sick' | 'on vacation';
+export type AgentStatusEnum = 'active' | 'sick' | 'on vacation'

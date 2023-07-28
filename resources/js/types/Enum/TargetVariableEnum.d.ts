@@ -1,1 +1,1 @@
-export type TargetVariableEnum = 'Deal Value';
+export type TargetVariableEnum = 'Deal Value'

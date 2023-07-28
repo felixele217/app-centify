@@ -12,7 +12,7 @@ class CliffFactory extends Factory
     {
         return [
             'id' => fake()->unique()->randomNumber(),
-           'threshold_in_percent' => fake()->numberBetween(0, 1)
+            'threshold_in_percent' => fake()->numberBetween(0, 1),
         ];
     }
 }
