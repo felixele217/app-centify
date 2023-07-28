@@ -241,7 +241,7 @@ function submit() {
                                                             />
 
                                                             <InfoIcon
-                                                                hover-text="On-target earning (OTE) is the expected total pay, including base salary and incentives, if performance targets are met."
+                                                                hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
                                                             />
                                                         </div>
 
