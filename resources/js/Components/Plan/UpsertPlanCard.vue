@@ -85,7 +85,7 @@ const form = useForm({
     },
 
     cap: props.plan?.cap?.value || 0,
-    trigger: 'Demo set',
+    trigger: 'demo_set_by',
 })
 
 function handleDateChange(newDate: Date) {
@@ -341,17 +341,17 @@ function submit() {
                         <SelectWithDescription
                             :options="[
                                 {
-                                    title: 'Demo set',
+                                    title: 'demo_set_by',
                                     description: 'The deal\'s demo_set_by field has a user assigned to it.',
                                     current: true,
                                 },
                             ]"
                             :default="{
-                                title: 'Demo set',
+                                title: 'demo_set_by',
                                 description: 'The deal\'s demo_set_by field has a user assigned to it.',
                                 current: true,
                             }"
-                            @option-selected="(optionTitle: 'Demo set') => form.trigger = optionTitle"
+                            @option-selected="(optionTitle: 'demo_set_by') => form.trigger = optionTitle"
                         />
 
                         <InputError

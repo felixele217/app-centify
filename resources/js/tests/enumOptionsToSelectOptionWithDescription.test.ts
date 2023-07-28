@@ -18,7 +18,7 @@ test('receives the proper response for TargetVariableOptions', function () {
         'DEAL_VALUE'
     )
     expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription)[0].description).toBe(
-        targetVariableToDescription['DEAL_VALUE']
+        targetVariableToDescription['Deal Value']
     )
     expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription)[0].current).toBeFalsy()
 })
