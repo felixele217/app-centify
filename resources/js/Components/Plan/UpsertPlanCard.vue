@@ -42,7 +42,7 @@ const props = defineProps<{
     salary_type_options: Array<SalaryTypeEnum>
 }>()
 
-const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap', 'Trigger']
+const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap']
 const activeAdditionalFields = ref<Array<AdditionalFieldTypes>>(additionalFieldsOfPlan())
 
 function additionalFieldsOfPlan() {
@@ -332,7 +332,7 @@ function submit() {
                         />
                     </div>
 
-                    <div v-if="activeAdditionalFields.includes('Trigger')">
+                    <div>
                         <InputLabel
                             value="Trigger"
                             required

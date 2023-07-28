@@ -1,1 +1,1 @@
-export type AdditionalFieldTypes = 'Kicker' | 'Cliff' | 'Cap' | 'Trigger'
+export type AdditionalFieldTypes = 'Kicker' | 'Cliff' | 'Cap'
