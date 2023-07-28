@@ -1,13 +1,13 @@
 import { SelectOptionWithDescription } from '@/Components/Form/SelectWithDescription.vue'
 
 export default function enumOptionsToSelectOptionWithDescription(
-    titles: Array<string>,
-    titleToDescription: Record<string, string>
+    enumValues: Array<string>,
+    enumValueToDescription: Record<string, string>
 ): Array<SelectOptionWithDescription> {
-    return titles.map((title) => {
+    return enumValues.map((enumValue) => {
         return {
-            title: title,
-            description: titleToDescription[title],
+            title: enumValue,
+            description: enumValueToDescription[enumValue],
             current: false,
         }
     })
