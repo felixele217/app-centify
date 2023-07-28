@@ -12,5 +12,5 @@ it('returns immutable date in previous specified timescope for quarterly', funct
 });
 
 it('returns immutable date in previous specified timescope for annualy', function () {
-    expect(DateHelper::dateInPreviousTimeScope(TimeScopeEnum::ANNUALY)->isLastQuarter())->toBeTrue();
+    expect(DateHelper::dateInPreviousTimeScope(TimeScopeEnum::ANNUALY)->isLastYear())->toBeTrue();
 });
