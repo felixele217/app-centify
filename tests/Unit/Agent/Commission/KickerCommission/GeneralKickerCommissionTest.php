@@ -3,6 +3,7 @@
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\KickerCommissionService;
@@ -43,6 +44,16 @@ it('does not incorporate the kicker if its target is not met because deals are o
     [TimeScopeEnum::QUARTERLY, Carbon::now()->lastOfQuarter()->addDays(1)],
     [TimeScopeEnum::ANNUALY, Carbon::now()->lastOfYear()->addDays(1)],
 ]);
+
+it('returns 0 for the kicker commission if user has no plan', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->id,
+    ]);
+
+    expect((new KickerCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY, 10))->toBe(0);
+});
 
 it('returns 0 for the kicker commission if the plan has no kicker', function () {
     $admin = signInAdmin();

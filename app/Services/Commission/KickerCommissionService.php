@@ -11,7 +11,7 @@ class KickerCommissionService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainment): int
     {
-        $kicker = $agent->plans()->active()->first()->kicker;
+        $kicker = $agent->plans()->active()->first()?->kicker;
 
         $factor = $timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
 
