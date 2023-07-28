@@ -34,8 +34,8 @@ class RenderPagesTest extends DuskTestCase
             route('custom-integration-fields.index') => 'Custom Integration Fields',
 
             route('plans.index') => 'Plans',
-            route('plans.create') => 'Create Flatrate Commission Plan',
-            route('plans.edit', $user->organization->plans->first()) => 'Update Flatrate Commission Plan',
+            route('plans.create') => 'Create Straight-Line Commission Plan',
+            route('plans.edit', $user->organization->plans->first()) => 'Update Straight-Line Commission Plan',
         ];
 
         foreach ($urlsToText as $url => $text) {
