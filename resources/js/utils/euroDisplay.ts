@@ -1,6 +1,6 @@
 export default function euroDisplay(number: number | null): string {
     if (!number) {
-        return '-'
+        return '0€'
     }
 
     return (
