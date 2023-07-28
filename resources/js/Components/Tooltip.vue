@@ -12,6 +12,7 @@ const props = defineProps<{
         arrow
         placement="left"
         :content="props.text"
+        class="text-xs"
     >
         <slot />
     </Popper>
@@ -25,8 +26,7 @@ const props = defineProps<{
     --popper-theme-border-width: 0px;
     --popper-theme-border-style: solid;
     --popper-theme-border-radius: 6px;
-    --popper-theme-padding: 24px;
+    --popper-theme-padding: 16px;
     --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
-    font-size: 0.875rem;
 }
 </style>

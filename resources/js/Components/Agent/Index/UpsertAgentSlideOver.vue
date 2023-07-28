@@ -15,6 +15,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
+import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 
 const emit = defineEmits(['close-slide-over'])
 
@@ -190,11 +191,15 @@ function submit() {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <InputLabel
-                                                            for="email"
-                                                            value="Email"
-                                                            required
-                                                        />
+                                                        <div class="flex gap-1">
+                                                            <InputLabel
+                                                                for="email"
+                                                                value="Work Email"
+                                                                required
+                                                            />
+
+                                                            <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
+                                                        </div>
 
                                                         <TextInput
                                                             id="email"
