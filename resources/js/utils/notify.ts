@@ -4,7 +4,7 @@ export default function notify(
     title: string,
     description: string,
     wasSuccessful: boolean = true,
-    timeout: number = 3000
+    timeout: number = 5000
 ) {
     notifyFromPackage(
         {
