@@ -42,7 +42,7 @@ const form = useForm({
     paid_leave: {
         start_date: null as Date | null,
         end_date: null as Date | null,
-        continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum,
+        continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
         sum_of_commissions: 0,
     },
 })
@@ -60,7 +60,7 @@ watch(
                 start_date: agent.active_paid_leave?.start_date ?? null,
                 end_date: agent.active_paid_leave?.end_date ?? null,
                 continuation_of_pay_time_scope:
-                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? 'last quarter',
+                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? '',
                 sum_of_commissions: agent.active_paid_leave?.sum_of_commissions ?? 0,
             }
         }
