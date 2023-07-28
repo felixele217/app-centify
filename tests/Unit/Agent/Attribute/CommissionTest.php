@@ -4,10 +4,7 @@ use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
-use App\Models\Agent;
-use App\Models\Deal;
 use App\Models\PaidLeave;
-use App\Models\Plan;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 
@@ -43,6 +40,7 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 });
 
 it('sums the commissions of deals and paid leaves and kicker correctly for the current quarter', function () {
+    $this->get(route('dashboard') . '?time_scope=' . TimeScopeEnum::QUARTERLY->value);
     $admin = signInAdmin();
 
     [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6, Carbon::now()->firstOfQuarter());
@@ -66,11 +64,11 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 
     $expectedDealCommission = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
     $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;
-    $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY);
+    $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY);
 
     $expectedTotalCommission = $expectedDealCommission + $expectedKickerCommission + $expectedPaidLeaveCommission;
 
     expect($agent->commission)->toBe(intval($expectedTotalCommission));
 });
 
-it('sums the commissions of deals and paid leaves and kicker correctly for the current quarter')->todo();
+it('sums the commissions of deals and paid leaves and kicker correctly for the current year')->todo();
