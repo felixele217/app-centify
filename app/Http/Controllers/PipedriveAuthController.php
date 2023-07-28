@@ -25,6 +25,6 @@ class PipedriveAuthController extends Controller
             Pipedrive::authorize(request()->query('code'));
         }
 
-        return to_route('integrations');
+        return to_route('custom-integration-fields.index');
     }
 }
