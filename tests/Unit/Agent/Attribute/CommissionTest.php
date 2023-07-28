@@ -11,7 +11,7 @@ use Carbon\Carbon;
 it('sums the commissions of deals and paid leaves and kicker correctly for the current month', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
 
-    $this->get(route('dashboard') . '?time_scope='. $timeScope->value);
+    $this->get(route('dashboard').'?time_scope='.$timeScope->value);
 
     [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6);
 
@@ -32,11 +32,11 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 
     $variableSalaryPerMonth = ($agent->on_target_earning - $agent->base_salary) / 12;
 
-    $expectedDealCommission = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
+    $expectedCommissionFromQuota = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
     $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;
     $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, $timeScope);
 
-    $expectedTotalCommission = $expectedDealCommission + $expectedKickerCommission + $expectedPaidLeaveCommission;
+    $expectedTotalCommission = $expectedCommissionFromQuota + $expectedKickerCommission + $expectedPaidLeaveCommission;
 
     expect($agent->commission)->toBe(intval($expectedTotalCommission));
 })->with([

@@ -2,7 +2,7 @@
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
-use App\Services\Commission\DealCommissionService;
+use App\Services\Commission\CommissionFromQuotaService;
 
 it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope) {
     $testQuota = 1;
@@ -14,7 +14,7 @@ it('calculates the commission correctly for the respective scopes', function (Ti
 
     $expectedCommission = $testQuota * (($onTargetEarning - $baseSalary) / (12 / $timeScope->monthCount()));
 
-    expect((new DealCommissionService())->calculate($agent, $timeScope, 1))->toBe($expectedCommission);
+    expect((new CommissionFromQuotaService())->calculate($agent, $timeScope, 1))->toBe($expectedCommission);
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,

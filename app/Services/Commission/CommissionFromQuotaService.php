@@ -7,7 +7,7 @@ namespace App\Services\Commission;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 
-class DealCommissionService
+class CommissionFromQuotaService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainment): int
     {
@@ -17,12 +17,12 @@ class DealCommissionService
 
         $annualCommission = $quotaAttainment * ($agent->on_target_earning - $agent->base_salary);
 
-        $dealCommission = match ($timeScope) {
+        $commissionFromQuota = match ($timeScope) {
             TimeScopeEnum::MONTHLY => $annualCommission / 12,
             TimeScopeEnum::QUARTERLY => $annualCommission / 4,
             TimeScopeEnum::ANNUALY => $annualCommission,
         };
 
-        return intval(round($dealCommission));
+        return intval(round($commissionFromQuota));
     }
 }
