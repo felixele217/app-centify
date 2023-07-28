@@ -107,13 +107,13 @@ const dealsText = computed(() => {
                         scope="col"
                         class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                        Description
+                        Deal Value
                     </th>
                     <th
                         scope="col"
                         class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                        Deal Value
+                        Notes
                     </th>
                     <th
                         scope="col"
@@ -143,10 +143,11 @@ const dealsText = computed(() => {
                         </a>
                     </td>
 
-                    <td class="col-span-2 px-3 py-4 text-gray-500">description...</td>
                     <td class="col-span-2 px-3 py-4 text-gray-500">
                         {{ euroDisplay(deal.value) }}
                     </td>
+
+                    <td class="col-span-2 px-3 py-4 text-gray-500">notes...</td>
 
                     <td class="px-3">
                         <DealStatus
