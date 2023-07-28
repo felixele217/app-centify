@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import AgentNameColumn from '@/Components/AgentNameColumn.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
-import NameInitials from '@/Components/NameInitials.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
@@ -65,12 +65,6 @@ const agentBeingEdited = ref<Agent>()
                     scope="col"
                     class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                 >
-                    E-Mail
-                </th>
-                <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-                >
                     Base Salary
                 </th>
                 <th
@@ -89,23 +83,13 @@ const agentBeingEdited = ref<Agent>()
                 :key="agent.id"
                 :class="agentId === 0 ? '' : 'border-t'"
             >
-                <td class="flex items-center gap-5 whitespace-nowrap py-5 pl-5 pr-3 text-sm">
-                    <NameInitials :name="agent.name" />
-
-                    <div class="font-medium text-gray-900">{{ agent.name }}</div>
+                <td class="whitespace-nowrap py-5 pl-5 pr-3 text-sm">
+                    <AgentNameColumn :agent="agent" />
 
                     <div
                         v-if="agentId !== 0"
                         class="absolute -top-px left-6 right-0 h-px bg-gray-200"
                     />
-                </td>
-                <td
-                    :class="[
-                        agentId === 0 ? '' : 'border-t border-gray-200',
-                        'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
-                    ]"
-                >
-                    {{ agent.email }}
                 </td>
                 <td
                     :class="[

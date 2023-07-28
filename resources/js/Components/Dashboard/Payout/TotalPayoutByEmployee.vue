@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AgentNameColumn from '@/Components/AgentNameColumn.vue'
 import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -6,8 +7,6 @@ import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import ValueChange from './ValueChange.vue'
-import initials from '@/utils/initials'
-import NameInitials from '@/Components/NameInitials.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -66,13 +65,8 @@ function quotaDisplay(quotaAttainment: number) {
                                 v-for="agent in props.agents"
                                 :key="agent.email"
                             >
-                                <td class="flex gap-5 whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <NameInitials :name="agent.name" />
-                                   
-                                    <div>
-                                        <div class="font-medium text-gray-900">{{ agent.name }}</div>
-                                        <div class="mt-1 text-gray-500">{{ agent.email }}</div>
-                                    </div>
+                                <td class="text-sm whitespace-nowrap py-5 pl-4 pr-3 sm:pl-0">
+                                    <AgentNameColumn :agent="agent" />
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
