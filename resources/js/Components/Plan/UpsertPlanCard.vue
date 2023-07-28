@@ -130,7 +130,7 @@ function submit() {
             >
                 <div class="my-6 space-y-6">
                     <div class="flex gap-5">
-                        <div class="w-2/3">
+                        <div class="w-1/2">
                             <InputLabel
                                 for="name"
                                 value="Name"
@@ -148,7 +148,7 @@ function submit() {
                             />
                         </div>
 
-                        <div class="w-1/3">
+                        <div class="w-1/2">
                             <InputLabel
                                 for="start_date"
                                 value="Start Date"
@@ -165,27 +165,29 @@ function submit() {
                         </div>
                     </div>
                     <div>
-                        <div class="flex gap-1">
-                            <InputLabel
-                                for="target_amount_per_month"
-                                value="Target Amount (per month)"
-                                required
-                            />
+                        <InputLabel
+                            for="payout_frequency"
+                            value="Payout Frequency"
+                            required
+                        />
 
-                            <InfoIcon
-                                :hover-text="`Set a monthly target for the target variable that you are going to select in the next step.
-                                                Example: Quarterly ARR Target is 90k.
-                                                You have to insert 30K`"
-                                class="max-w-5 whitespace-pre-line text-gray-700"
-                            />
-                        </div>
-                        <CurrencyInput
-                            :value="form.target_amount_per_month"
-                            @set-value="(value: number) => (form.target_amount_per_month = value)"
+                        <SelectWithDescription
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    props.payout_frequency_options,
+                                    payoutFrequencyToDescription
+                                )
+                            "
+                            @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
+                            :default="props.plan ? {
+                                    title: form.payout_frequency,
+                                    description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
+                                    current: true
+                                } : undefined"
                         />
                         <InputError
                             class="mt-2"
-                            :message="form.errors.target_amount_per_month"
+                            :message="form.errors.payout_frequency"
                         />
                     </div>
                     <div class="flex gap-5">
@@ -215,29 +217,27 @@ function submit() {
                             />
                         </div>
                         <div class="w-1/2">
-                            <InputLabel
-                                for="payout_frequency"
-                                value="Payout Frequency"
-                                required
-                            />
+                            <div class="flex gap-1">
+                                <InputLabel
+                                    for="target_amount_per_month"
+                                    value="Target Amount (per month)"
+                                    required
+                                />
 
-                            <SelectWithDescription
-                                :options="
-                                    enumOptionsToSelectOptionWithDescription(
-                                        props.payout_frequency_options,
-                                        payoutFrequencyToDescription
-                                    )
-                                "
-                                @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
-                                :default="props.plan ? {
-                                    title: form.payout_frequency,
-                                    description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
-                                    current: true
-                                } : undefined"
+                                <InfoIcon
+                                    :hover-text="`Set a monthly target for the target variable that you are going to select in the next step.
+                                                Example: Quarterly ARR Target is 90k.
+                                                You have to insert 30K`"
+                                    class="max-w-5 whitespace-pre-line text-gray-700"
+                                />
+                            </div>
+                            <CurrencyInput
+                                :value="form.target_amount_per_month"
+                                @set-value="(value: number) => (form.target_amount_per_month = value)"
                             />
                             <InputError
                                 class="mt-2"
-                                :message="form.errors.payout_frequency"
+                                :message="form.errors.target_amount_per_month"
                             />
                         </div>
                     </div>
