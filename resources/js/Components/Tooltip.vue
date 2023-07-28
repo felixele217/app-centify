@@ -12,7 +12,7 @@ const props = defineProps<{
         arrow
         placement="left"
         :content="props.text"
-        class="text-xs"
+        class="text-sm"
     >
         <slot />
     </Popper>

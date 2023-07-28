@@ -4,6 +4,7 @@ import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import RadioCards, { RadioCardOption } from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
@@ -15,7 +16,6 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
-import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 
 const emit = defineEmits(['close-slide-over'])
 
@@ -198,7 +198,9 @@ function submit() {
                                                                 required
                                                             />
 
-                                                            <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
+                                                            <InfoIcon
+                                                                hover-text="This email will be used to synchronize agent data from your integrations."
+                                                            />
                                                         </div>
 
                                                         <TextInput
@@ -231,11 +233,17 @@ function submit() {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <InputLabel
-                                                            for="on_target_earning"
-                                                            value="Annual On Target Earning (OTE)"
-                                                            required
-                                                        />
+                                                        <div class="flex gap-1">
+                                                            <InputLabel
+                                                                for="on_target_earning"
+                                                                value="Annual On Target Earning (OTE)"
+                                                                required
+                                                            />
+
+                                                            <InfoIcon
+                                                                hover-text="On-target earning (OTE) is the expected total pay, including base salary and incentives, if performance targets are met."
+                                                            />
+                                                        </div>
 
                                                         <CurrencyInput
                                                             :value="form.on_target_earning"
