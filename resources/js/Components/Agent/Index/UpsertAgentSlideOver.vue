@@ -52,7 +52,7 @@ watch(
                 start_date: agent.active_paid_leave?.start_date ?? null,
                 end_date: agent.active_paid_leave?.end_date ?? null,
                 continuation_of_pay_time_scope:
-                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? 'last 13 weeks',
+                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? 'last quarter',
                 sum_of_commissions: agent.active_paid_leave?.sum_of_commissions ?? 0,
             }
         }
@@ -75,7 +75,7 @@ watch(
             form.paid_leave = {
                 start_date: null,
                 end_date: null,
-                continuation_of_pay_time_scope: 'last 13 weeks',
+                continuation_of_pay_time_scope: 'last quarter',
                 sum_of_commissions: 0,
             }
         }
