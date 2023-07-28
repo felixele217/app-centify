@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use App\Enum\TimeScopeEnum;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 class DateHelper
 {
@@ -13,5 +15,14 @@ class DateHelper
         $sanitized = preg_replace('/ =>/', ':', $time);
 
         return Carbon::createFromFormat('Y-m-d H:i:s', $sanitized);
+    }
+
+    public static function dateInPreviousTimeScope(TimeScopeEnum $timeScope): CarbonImmutable
+    {
+        return match ($timeScope) {
+            TimeScopeEnum::MONTHLY => CarbonImmutable::now()->firstOfMonth()->subDays(10),
+            TimeScopeEnum::QUARTERLY => CarbonImmutable::now()->firstOfQuarter()->subDays(10),
+            TimeScopeEnum::ANNUALY => CarbonImmutable::now()->firstOfYear()->subDays(10),
+        };
     }
 }
