@@ -17,7 +17,15 @@ import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
 
-const emit = defineEmits(['close-slide-over'])
+const emit = defineEmits<{
+    'close-slide-over': [],
+}>()
+
+function closeSlideOver() {
+    form.reset()
+
+    emit('close-slide-over')
+}
 
 const props = defineProps<{
     isOpen: boolean
@@ -86,8 +94,8 @@ function submit() {
     if (props.agent) {
         form.put(route('agents.update', props.agent.id), {
             onSuccess: () => {
-                emit('close-slide-over')
-                form.reset()
+                closeSlideOver()
+
                 notify(
                     'Agent updated',
                     'Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email.'
@@ -97,8 +105,8 @@ function submit() {
     } else {
         form.post(route('agents.store'), {
             onSuccess: () => {
-                emit('close-slide-over')
-                form.reset()
+                closeSlideOver()
+
                 notify(
                     'Agent created',
                     "This agent's metrics now count towards your totals.\n You should assign this agent a plan now."
@@ -117,7 +125,7 @@ function submit() {
         <Dialog
             as="div"
             class="relative z-10"
-            @close="$emit('close-slide-over')"
+            @close="closeSlideOver"
         >
             <div class="fixed inset-0" />
 
@@ -148,7 +156,7 @@ function submit() {
                                                     <button
                                                         type="button"
                                                         class="rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                                                        @click="$emit('close-slide-over')"
+                                                        @click="closeSlideOver"
                                                     >
                                                         <span class="sr-only">Close panel</span>
                                                         <XMarkIcon
@@ -286,7 +294,7 @@ function submit() {
                                     <FormButtons
                                         :positiveButtonText="props.agent ? 'Save' : 'Create'"
                                         class="pr-4"
-                                        @cancel-button-clicked="$emit('close-slide-over')"
+                                        @cancel-button-clicked="closeSlideOver"
                                     />
                                 </form>
                             </DialogPanel>
