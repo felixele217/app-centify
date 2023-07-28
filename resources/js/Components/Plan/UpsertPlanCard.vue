@@ -129,39 +129,40 @@ function submit() {
                 class="divide-y divide-gray-200"
             >
                 <div class="my-6 space-y-6">
-                    <div>
-                        <InputLabel
-                            for="name"
-                            value="Name"
-                            required
-                        />
+                    <div class="flex gap-5">
+                        <div class="w-2/3">
+                            <InputLabel
+                                for="name"
+                                value="Name"
+                                required
+                            />
+                            <TextInput
+                                type="text"
+                                v-model="form.name"
+                                name="name"
+                                placeholder="SDR Commission Plan"
+                            />
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.name"
+                            />
+                        </div>
 
-                        <TextInput
-                            type="text"
-                            v-model="form.name"
-                            name="name"
-                            placeholder="SDR Commission Plan"
-                        />
-
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.name"
-                        />
-                    </div>
-                    <div>
-                        <InputLabel
-                            for="start_date"
-                            value="Start Date"
-                            required
-                        />
-                        <DateInput
-                            :date="form.start_date"
-                            @date-changed="handleDateChange"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.start_date"
-                        />
+                        <div class="w-1/3">
+                            <InputLabel
+                                for="start_date"
+                                value="Start Date"
+                                required
+                            />
+                            <DateInput
+                                :date="form.start_date"
+                                @date-changed="handleDateChange"
+                            />
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.start_date"
+                            />
+                        </div>
                     </div>
                     <div>
                         <div class="flex gap-1">
