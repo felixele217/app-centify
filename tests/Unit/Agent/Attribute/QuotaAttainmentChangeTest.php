@@ -14,13 +14,13 @@ it('returns the attained quota change in %', function () {
         Deal::factory()->count(2)->sequence([
             'accepted_at' => Carbon::now()->firstOfMonth()->subDays(1),
             'add_time' => Carbon::now()->firstOfMonth()->subDays(1),
-            'value' => 5_000_00,
+            'value' => $targetAmountPerMonth / 2,
         ], [
             'accepted_at' => Carbon::now(),
             'add_time' => Carbon::now(),
-            'value' => 10_000_00,
+            'value' => $targetAmountPerMonth,
         ]
         ))->create());
 
-    expect($agent->quota_attainment_change)->toBe(floatval(1));
+    expect($agent->quota_attainment_change)->toBe(0.5);
 });

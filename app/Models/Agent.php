@@ -134,6 +134,8 @@ class Agent extends Authenticatable
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
+                // dd($dealCommission, $kickerCommission, $paidLeaveCommission);
+
                 return $dealCommission + $kickerCommission + $paidLeaveCommission;
             }
         );
