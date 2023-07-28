@@ -16,7 +16,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div :class="[`grid grid-cols-1 sm:grid-cols-${props.optionsPerRow || '3'}`, 'mt-4 gap-y-6 sm:gap-x-4']">
+    <div :class="[`grid grid-cols-1 sm:grid-cols-${props.optionsPerRow || '3'}`, 'mt-2 gap-y-6 sm:gap-x-4']">
         <div
             as="template"
             v-for="option in props.options"
