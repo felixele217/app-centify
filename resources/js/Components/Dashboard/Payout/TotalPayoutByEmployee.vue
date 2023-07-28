@@ -7,6 +7,7 @@ import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import ValueChange from './ValueChange.vue'
 import initials from '@/utils/initials'
+import NameInitials from '@/Components/NameInitials.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -66,9 +67,8 @@ function quotaDisplay(quotaAttainment: number) {
                                 :key="agent.email"
                             >
                                 <td class="flex gap-5 whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="h-11 w-11 flex-shrink-0 rounded-full flex items-center justify-center bg-gray-200">
-                                        <p class="text-gray-800 text-sm">{{ initials(agent.name) }}</p>
-                                    </div>
+                                    <NameInitials :name="agent.name" />
+                                   
                                     <div>
                                         <div class="font-medium text-gray-900">{{ agent.name }}</div>
                                         <div class="mt-1 text-gray-500">{{ agent.email }}</div>

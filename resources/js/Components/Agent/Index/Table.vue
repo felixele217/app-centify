@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
+import NameInitials from '@/Components/NameInitials.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
@@ -33,9 +34,6 @@ function closeModal(): void {
 const isOpen = ref(false)
 const agentIdBeingDeleted = ref<number | null>()
 const agentBeingEdited = ref<Agent>()
-
-const src =
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 </script>
 
 <template>
@@ -92,11 +90,7 @@ const src =
                 :class="agentId === 0 ? '' : 'border-t'"
             >
                 <td class="flex items-center gap-5 whitespace-nowrap py-5 pl-5 pr-3 text-sm">
-                    <img
-                        class="h-10 w-10 rounded-full"
-                        :src="src"
-                        alt="Profile Photo"
-                    />
+                    <NameInitials :name="agent.name" />
 
                     <div class="font-medium text-gray-900">{{ agent.name }}</div>
 
