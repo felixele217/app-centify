@@ -30,8 +30,8 @@ class PlanFactory extends Factory
     public function active(): static
     {
         return $this->state(fn (array $attributes) => [
-            'start_date' => Carbon::now()->firstOfYear(),
-            'end_date' => Carbon::now()->lastOfYear(),
+            'start_date' => Carbon::now()->firstOfYear()->subDays(10)->firstOfYear(),
+            'end_date' => Carbon::now()->lastOfYear()->addDays(10)->lastOfYear(),
         ]);
     }
 }

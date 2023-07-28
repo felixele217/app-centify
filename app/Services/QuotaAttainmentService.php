@@ -23,7 +23,7 @@ class QuotaAttainmentService
 
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): float
     {
-        $latestActivePlan = $agent->load('plans')->plans()->active()->first();
+        $latestActivePlan = $agent->load('plans')->plans()->active($this->dateInScope)->first();
 
         if (! $latestActivePlan) {
             return 0;

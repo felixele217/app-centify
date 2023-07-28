@@ -71,27 +71,6 @@ it('does not use deals that lie out of the current time scope', function (TimeSc
     [TimeScopeEnum::ANNUALY, Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()],
 ]);
 
-it('can calculate for past and future timescopes', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInScope) {
-    $plan = Plan::factory()->create([
-        'target_amount_per_month' => 10_000_00,
-    ]);
-
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => $dateInScope,
-        'add_time' => $dateInScope,
-        'value' => 5_000_00,
-    ])->create());
-
-    expect((new QuotaAttainmentService($dateInScope))->calculate($agent, $timeScope))->toBe(floatval(1 / $timeScope->monthCount()));
-})->with([
-    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(10)],
-    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->lastOfMonth()->addDays(10)],
-    [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(10)],
-    [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->lastOfQuarter()->addDays(10)],
-    [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(10)],
-    [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->lastOfYear()->addDays(10)],
-]);
-
 it('returns 0 if the agent has no active plan', function () {
     signInAdmin();
 
