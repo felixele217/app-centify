@@ -18,6 +18,7 @@ import Plan from '@/types/Plan/Plan'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
+import { triggerToDescription } from '@/utils/Descriptions/triggerToDescription'
 import notify from '@/utils/notify'
 import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -340,13 +341,15 @@ function submit() {
                         />
 
                         <SelectWithDescription
-                            :options="[
-                                {
-                                    title: 'demo_set_by',
-                                    description: 'The deal\'s demo_set_by field has a user assigned to it.',
-                                    current: true,
-                                },
-                            ]"
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    [
+                                        'demo_set_by',
+                                        // 'deal_won'
+                                    ],
+                                    triggerToDescription
+                                )
+                            "
                             :default="{
                                 title: 'demo_set_by',
                                 description: 'The deal\'s demo_set_by field has a user assigned to it.',
