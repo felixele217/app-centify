@@ -48,24 +48,27 @@ class UpdateAgentRequest extends FormRequest
             ],
 
             'paid_leave.start_date' => [
-                'required_with:paid_leave',
+                'nullable',
+                'required_with:paid_leave.end_date,paid_leave.continuation_of_pay_time_scope,paid_leave.sum_of_commissions',
                 'date',
             ],
 
             'paid_leave.end_date' => [
                 'nullable',
-                'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'date',
+                'required_if:status,'.AgentStatusEnum::VACATION->value,
                 'after:paid_leave.start_date',
             ],
 
             'paid_leave.continuation_of_pay_time_scope' => [
-                'required_with:paid_leave',
+                'nullable',
+                'required_with:paid_leave.end_date,paid_leave.start_date,paid_leave.sum_of_commissions',
                 new Enum(ContinuationOfPayTimeScopeEnum::class),
             ],
 
             'paid_leave.sum_of_commissions' => [
-                'required_with:paid_leave',
+                'nullable',
+                'required_with:paid_leave.end_date,paid_leave.start_date,paid_leave.continuation_of_pay_time_scope',
                 'integer',
             ],
         ];
@@ -73,7 +76,13 @@ class UpdateAgentRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->replace(NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']));
+        $data = NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']);
+
+        if (isset($data['paid_leave'])) {
+            $data['paid_leave'] = NullZeroNumbersAction::execute($data['paid_leave'], ['sum_of_commissions']);
+        }
+
+        $this->replace($data);
     }
 
     public function messages(): array

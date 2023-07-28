@@ -77,8 +77,8 @@ class StoreAgentRequest extends FormRequest
     {
         $data = NullZeroNumbersAction::execute($this->all(), ['base_salary', 'on_target_earning']);
 
-       if(isset($data['paid_leave'])) {
-           $data['paid_leave'] = NullZeroNumbersAction::execute($data['paid_leave'], ['sum_of_commissions']);
+        if (isset($data['paid_leave'])) {
+            $data['paid_leave'] = NullZeroNumbersAction::execute($data['paid_leave'], ['sum_of_commissions']);
         }
 
         $this->replace($data);

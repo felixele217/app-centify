@@ -127,3 +127,23 @@ it('cannot specify an end date that is before the start date', function () {
 
     $this->put(route('agents.update', $agent->id))->assertInvalid();
 });
+
+it('does not throw validation errors if the paid leave is an empty object', function () {
+   $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    UpdateAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::ACTIVE->value,
+        'paid_leave' => [
+            'start_date' => null,
+            'end_date' => null,
+            'continuation_of_pay_time_scope' => null,
+            'sum_of_commissions' => 0,
+        ],
+    ])->fake();
+
+    $this->put(route('agents.update', $agent->id))->assertValid();
+});

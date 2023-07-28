@@ -102,3 +102,15 @@ it('can update an agent with his same email', function () {
 
     $this->put(route('agents.update', $agent))->assertValid()->assertRedirect();
 });
+
+it('does not fail when using null values in the paid leave object', function () {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    UpdateAgentRequest::factory()->fake();
+
+    $this->put(route('agents.update', $agent))->assertValid()->assertRedirect();
+});

@@ -61,7 +61,6 @@ it('cannot create an agent with a mail already taken by an agent', function () {
     ]);
 });
 
-
 it('does not fail when using null values in the paid leave object', function () {
     $agent = signInAgent();
 

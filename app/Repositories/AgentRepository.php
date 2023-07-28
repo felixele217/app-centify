@@ -38,7 +38,7 @@ class AgentRepository
             ),
         ]);
 
-        if ($request->validated('paid_leave')) {
+        if ($request->validated('paid_leave') && $request->validated('paid_leave')['start_date']) {
             PaidLeaveRepository::update($agent, $request);
         }
     }
