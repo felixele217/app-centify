@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 export type SelectOptionWithDescription = {
@@ -14,11 +15,20 @@ const props = defineProps<{
     default?: SelectOptionWithDescription
 }>()
 
+const emit = defineEmits<{
+    'option-selected': [title: string]
+}>()
+
 const selected = ref<null | {
     title: string
     description?: string
     current: boolean
 }>(props.default || null)
+
+function clearSelect() {
+    emit('option-selected', '')
+    selected.value = null
+}
 </script>
 
 <template>
@@ -51,6 +61,12 @@ const selected = ref<null | {
                     class="hover:bg-i inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
                     <span class="sr-only">Change published status</span>
+
+                    <XMarkIcon
+                        @click.prevent="clearSelect"
+                        class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                        v-if="selected?.title"
+                    />
 
                     <ChevronDownIcon
                         class="h-5 w-5 text-gray-600"
