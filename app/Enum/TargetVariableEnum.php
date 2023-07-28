@@ -6,5 +6,5 @@ namespace App\Enum;
 
 enum TargetVariableEnum: string
 {
-    case ARR = 'ARR';
+    case DEAL_VALUE = 'Deal Value';
 }

@@ -16,7 +16,7 @@ it('can store a plan as an admin', function () {
         'name' => $name = 'first commission plan',
         'start_date' => $startDate = Carbon::tomorrow(),
         'target_amount_per_month' => $targetAmountPerMonth = 500000,
-        'target_variable' => $targetVariable = TargetVariableEnum::ARR->value,
+        'target_variable' => $targetVariable = TargetVariableEnum::DEAL_VALUE->value,
         'payout_frequency' => $payoutFrequency = PayoutFrequencyEnum::MONTHLY->value,
         'assigned_agent_ids' => $assignedAgents = $agents->pluck('id')->toArray(),
     ])->assertRedirect(route('plans.index'));

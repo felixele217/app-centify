@@ -20,7 +20,7 @@ class PlanFactory extends Factory
             'name' => fake()->word().' Plan',
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,
-            'target_variable' => TargetVariableEnum::ARR->value,
+            'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
             'organization_id' => Organization::factory()->create(),
             'creator_id' => Admin::factory()->create(),

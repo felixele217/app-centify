@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import roundFloat from '@/utils/roundFloat'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps<{

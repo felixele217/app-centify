@@ -13,10 +13,12 @@ test('receives the proper response for PayoutFrequencyOptions', function () {
 })
 
 test('receives the proper response for TargetVariableOptions', function () {
-    expect(enumOptionsToSelectOptionWithDescription(['ARR'], targetVariableToDescription).length).toBe(1)
-    expect(enumOptionsToSelectOptionWithDescription(['ARR'], targetVariableToDescription)[0].title).toBe('ARR')
-    expect(enumOptionsToSelectOptionWithDescription(['ARR'], targetVariableToDescription)[0].description).toBe(
-        targetVariableToDescription['ARR']
+    expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription).length).toBe(1)
+    expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription)[0].title).toBe(
+        'DEAL_VALUE'
     )
-    expect(enumOptionsToSelectOptionWithDescription(['ARR'], targetVariableToDescription)[0].current).toBeFalsy()
+    expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription)[0].description).toBe(
+        targetVariableToDescription['DEAL_VALUE']
+    )
+    expect(enumOptionsToSelectOptionWithDescription(['DEAL_VALUE'], targetVariableToDescription)[0].current).toBeFalsy()
 })
