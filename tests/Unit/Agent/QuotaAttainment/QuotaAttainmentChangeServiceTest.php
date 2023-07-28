@@ -8,7 +8,7 @@ use App\Services\QuotaAttainmentChangeService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
-it('quota attainment change is calculated correctly', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInPreviousTimeScope, float $factorForThisScope) {
+it('quota attainment change is calculated correctly', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInPreviousTimeScope, float $factorForLastScope) {
     $plan = Plan::factory()->active()->create([
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
@@ -17,21 +17,20 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
         Deal::factory()->count(2)->sequence([
             'accepted_at' => $dateInPreviousTimeScope,
             'add_time' => $dateInPreviousTimeScope,
-            'value' => $targetAmountPerMonth * $timeScope->monthCount(),
+            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
         ], [
             'accepted_at' => Carbon::now(),
             'add_time' => Carbon::now(),
-            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForThisScope,
+            'value' => $targetAmountPerMonth * $timeScope->monthCount(),
         ]
         ))->create());
 
-    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval($factorForThisScope - 1));
+    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval(1 - $factorForLastScope));
 })->with([
-    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 0.5],
+    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 0.3],
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 1],
-    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 2],
+    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 1.6],
 
-    [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 1],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5), 1],
     [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(5), 1],
 ]);
