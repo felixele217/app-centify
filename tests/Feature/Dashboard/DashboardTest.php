@@ -28,6 +28,7 @@ it('passes the correct props', function () {
                 ->has('agents.1.quota_attainment')
                 ->has('agents.1.quota_attainment_change')
                 ->has('agents.1.commission')
+                ->has('agents.1.commission_change')
                 ->has('agents.1.sick_leaves_days_count')
                 ->has('agents.1.vacation_leaves_days_count')
                 ->where('time_scopes', array_column(TimeScopeEnum::cases(), 'value'))

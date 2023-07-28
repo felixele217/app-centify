@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
 use App\Enum\TimeScopeEnum;
+use App\Services\Commission\CommissionChangeService;
 use App\Services\Commission\CommissionFromQuotaService;
 use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
@@ -134,9 +135,18 @@ class Agent extends Authenticatable
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
 
-                // dd($commissionFromQuota, $kickerCommission, $paidLeaveCommission);
-
                 return $commissionFromQuota + $kickerCommission + $paidLeaveCommission;
+            }
+        );
+    }
+
+    protected function commissionChange(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
+
+                return (new CommissionChangeService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
             }
         );
     }

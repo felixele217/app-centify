@@ -19,6 +19,7 @@ class DashboardController extends Controller
                 'quota_attainment',
                 'quota_attainment_change',
                 'commission',
+                'commission_change',
                 'sick_leaves_days_count',
                 'vacation_leaves_days_count',
             ]),

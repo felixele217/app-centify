@@ -13,6 +13,7 @@ export default interface Agent {
     quota_attainment?: number
     quota_attainment_change?: number | null
     commission?: number
+    commission_change?: number | null
     status: AgentStatusEnum
     active_paid_leave?: PaidLeave | null
     sick_leaves_days_count?: number
