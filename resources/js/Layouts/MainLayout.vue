@@ -13,7 +13,7 @@ const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: route().current('dashboard') },
     {
         name: 'Deals',
-        href: route('deals.index'),
+        href: route('deals.index') + '?scope=open',
         icon: ClipboardDocumentCheckIcon,
         current: route().current('deals.index'),
     },
