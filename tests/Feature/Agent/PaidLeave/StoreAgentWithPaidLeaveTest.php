@@ -42,6 +42,7 @@ it('requires an end date for a vacation', function () {
         'status' => AgentStatusEnum::VACATION->value,
         'paid_leave' => [
             'start_date' => Carbon::today(),
+            'end_date' => null,
             'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
             'sum_of_commissions' => 10_000_00,
         ],
@@ -82,4 +83,20 @@ it('cannot specify an end date that is before the start date', function () {
     ])->fake();
 
     $this->post(route('agents.store'))->assertInvalid();
+});
+
+it('does not throw validation errors if the paid leave is an empty object', function () {
+    signInAdmin();
+
+    StoreAgentRequest::factory()->state([
+        'status' => AgentStatusEnum::ACTIVE->value,
+        'paid_leave' => [
+            'start_date' => null,
+            'end_date' => null,
+            'continuation_of_pay_time_scope' => null,
+            'sum_of_commissions' => 0,
+        ],
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertValid();
 });

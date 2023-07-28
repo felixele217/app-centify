@@ -42,7 +42,7 @@ const form = useForm({
     paid_leave: {
         start_date: null as Date | null,
         end_date: null as Date | null,
-        continuation_of_pay_time_scope: 'last 13 weeks' as ContinuationOfPayTimeScopeEnum,
+        continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum,
         sum_of_commissions: 0,
     },
 })

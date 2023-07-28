@@ -21,7 +21,7 @@ class AgentRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        if ($request->validated('paid_leave')) {
+        if ($request->validated('paid_leave') && $request->validated('paid_leave')['start_date']) {
             PaidLeaveRepository::create($agent, $request);
         }
 
