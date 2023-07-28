@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Badge from '@/Components/Badge.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import Deal from '@/types/Deal'
 import formatDate from '@/utils/Date/formatDate'
@@ -33,7 +34,10 @@ const props = defineProps<{
         v-else-if="props.deal.accepted_at"
     >
         <Tooltip :text="`This deal was accepted at ${formatDate(props.deal.accepted_at)}.`">
-            <p class="items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">accepted</p>
+            <Badge
+                text="declined"
+                color="green"
+            />
         </Tooltip>
     </div>
     <div
@@ -41,9 +45,10 @@ const props = defineProps<{
         v-else-if="props.deal.declined_at"
     >
         <Tooltip :text="`This deal was declined at ${formatDate(props.deal.declined_at)}.`">
-            <p class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
-                declined
-            </p>
+            <Badge
+                text="declined"
+                color="red"
+            />
         </Tooltip>
     </div>
 </template>

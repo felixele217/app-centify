@@ -7,7 +7,10 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
-import { InertiaForm } from '@inertiajs/vue3'
+import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
+import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/continuationOfPayTimeScopeToDescription'
+import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
+import { InertiaForm, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const props = defineProps<{
@@ -25,6 +28,9 @@ const props = defineProps<{
         }
     }>
 }>()
+
+const continuationOfPayTimeScopeOptions = usePage().props
+    .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
 
 const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
 </script>
@@ -91,24 +97,13 @@ const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
             />
 
             <SelectWithDescription
-                :options="[
-                    {
-                        title: 'last 13 weeks',
-                        description: 'test description',
-                        current: false,
-                    },
-                    {
-                        title: 'test 2',
-                        description: 'test description 2',
-                        current: false,
-                    },
-                ]"
+                :options="
+                    enumOptionsToSelectOptionWithDescription(
+                        continuationOfPayTimeScopeOptions,
+                        continuationOfPayTimeScopeToDescription
+                    )
+                "
                 @option-selected="(optionTitle: string) => props.form.paid_leave.continuation_of_pay_time_scope = optionTitle"
-                :default="{
-                    title: 'last 13 weeks',
-                    description: 'test description',
-                    current: false,
-                }"
             />
 
             <InputError

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
+import Badge from '@/Components/Badge.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -29,6 +30,17 @@ function deleteAgent(agentId: number): void {
 function closeModal(): void {
     isOpen.value = false
     agentBeingEdited.value = undefined
+}
+
+function color(status: AgentStatusEnum) {
+    switch (status) {
+        case 'active':
+            return 'green'
+        case 'sick':
+            return 'purple'
+        case 'on vacation':
+            return 'yellow'
+    }
 }
 
 const isOpen = ref(false)
@@ -73,6 +85,12 @@ const agentBeingEdited = ref<Agent>()
                 >
                     On Target Earning
                 </th>
+                <th
+                    scope="col"
+                    class="hidden py-3.5 pl-3 pr-14 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                >
+                    Status
+                </th>
                 <th />
             </tr>
         </template>
@@ -106,6 +124,17 @@ const agentBeingEdited = ref<Agent>()
                     ]"
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
+                </td>
+                <td
+                    :class="[
+                        agentId === 0 ? '' : 'border-t border-gray-200',
+                        'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
+                    ]"
+                >
+                    <Badge
+                        :text="agent.status"
+                        :color="color(agent.status)"
+                    />
                 </td>
                 <td class="absolute lg:table-cell">
                     <EditAndDeleteOptions

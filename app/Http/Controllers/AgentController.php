@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enum\AgentStatusEnum;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
@@ -21,6 +22,7 @@ class AgentController extends Controller
         return Inertia::render('Agent/Index', [
             'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get(),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
+            'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
         ]);
     }
 
