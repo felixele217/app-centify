@@ -15,13 +15,13 @@ it('calculates the commission with the additional paid leave value for the curre
             'reason' => AgentStatusEnum::VACATION->value,
             'start_date' => $paidLeaveStartDate = Carbon::now()->firstOfYear()->addDays(6),
             'end_date' => $paidLeaveEndDate = Carbon::now()->firstOfYear()->addDays(11),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,
         ]);
     }
 
     $daysForAPaidLeaveThisYear = $paidLeaveEndDate->diffInWeekdays($paidLeaveStartDate) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 91;
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisYear * $expectedCommissionsPerDay;
 
@@ -36,13 +36,13 @@ it('calculates the commission with the additional paid leave value for the curre
             'reason' => AgentStatusEnum::VACATION->value,
             'start_date' => Carbon::now()->firstOfYear()->subDays(6),
             'end_date' => $paidLeaveEndDate = Carbon::now()->firstOfYear()->addDays(5),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,
         ]);
     }
 
     $daysForAPaidLeaveThisYear = $paidLeaveEndDate->diffInWeekdays(Carbon::now()->firstOfYear()) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 91;
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisYear * $expectedCommissionsPerDay;
 
@@ -57,13 +57,13 @@ it('calculates the commission with the additional paid leave value for the curre
             'reason' => AgentStatusEnum::VACATION->value,
             'start_date' => $paidLeaveStartDate = Carbon::now()->lastOfYear()->subDays(6),
             'end_date' => Carbon::now()->lastOfYear()->addDays(5),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,
         ]);
     }
 
     $daysForAPaidLeaveThisYear = $paidLeaveStartDate->diffInWeekdays(Carbon::now()->lastOfYear()) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 91;
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisYear * $expectedCommissionsPerDay;
 

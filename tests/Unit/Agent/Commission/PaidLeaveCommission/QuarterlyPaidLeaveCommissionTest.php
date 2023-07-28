@@ -15,13 +15,13 @@ it('calculates the commission with the additional paid leave value for the curre
             'reason' => AgentStatusEnum::VACATION->value,
             'start_date' => $paidLeaveStartDate = Carbon::now()->firstOfQuarter()->addDays(6),
             'end_date' => $paidLeaveEndDate = Carbon::now()->firstOfQuarter()->addDays(11),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,
         ]);
     }
 
     $daysForAPaidLeaveThisQuarter = $paidLeaveEndDate->diffInWeekdays($paidLeaveStartDate) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 91;
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
 
@@ -36,13 +36,13 @@ it('calculates the commission with the additional paid leave value for the curre
             'reason' => AgentStatusEnum::VACATION->value,
             'start_date' => Carbon::now()->firstOfQuarter()->subDays(6),
             'end_date' => $paidLeaveEndDate = Carbon::now()->firstOfQuarter()->addDays(5),
-            'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,
         ]);
     }
 
     $daysForAPaidLeaveThisQuarter = $paidLeaveEndDate->diffInWeekdays(Carbon::now()->firstOfMonth()) + 1;
-    $expectedCommissionsPerDay = $sumOfCommissions / 91;
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
 
