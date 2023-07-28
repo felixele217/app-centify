@@ -6,6 +6,7 @@ import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import ValueChange from './ValueChange.vue'
+import initials from '@/utils/initials'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -14,9 +15,6 @@ const props = defineProps<{
 function quotaDisplay(quotaAttainment: number) {
     return roundFloat(quotaAttainment * 100) + '%'
 }
-
-const src =
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 </script>
 
 <template>
@@ -68,12 +66,8 @@ const src =
                                 :key="agent.email"
                             >
                                 <td class="flex gap-5 whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="h-11 w-11 flex-shrink-0">
-                                        <img
-                                            class="h-11 w-11 rounded-full"
-                                            :src="src"
-                                            alt="Profile Photo"
-                                        />
+                                    <div class="h-11 w-11 flex-shrink-0 rounded-full flex items-center justify-center bg-gray-200">
+                                        <p class="text-gray-800 text-sm">{{ initials(agent.name) }}</p>
                                     </div>
                                     <div>
                                         <div class="font-medium text-gray-900">{{ agent.name }}</div>
