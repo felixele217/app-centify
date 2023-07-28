@@ -8,16 +8,18 @@ use App\Enum\TimeScopeEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Services\QuotaAttainmentService;
+use Carbon\CarbonImmutable;
 
 class CommissionChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
     {
-        $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $agent->quota_attainment);
+        $quotaAttainmentThisTimeScope = (new QuotaAttainmentService(CarbonImmutable::now()))->calculate($agent, $timeScope);
+        $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisTimeScope);
 
         $quotaAttainmentLastTimeScope = (new QuotaAttainmentService(DateHelper::dateInPreviousTimeScope($timeScope)))->calculate($agent, $timeScope);
-
         $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
+
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }

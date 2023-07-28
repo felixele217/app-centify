@@ -9,13 +9,13 @@ use App\Models\Agent;
 
 class CommissionFromQuotaService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainment): int
+    public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainmentForTimeScope): int
     {
-        if ($agent->plans()->active()->first()?->cliff?->threshold_in_percent > $quotaAttainment) {
+        if ($agent->plans()->active()->first()?->cliff?->threshold_in_percent > $quotaAttainmentForTimeScope) {
             return 0;
         }
 
-        $annualCommission = $quotaAttainment * ($agent->on_target_earning - $agent->base_salary);
+        $annualCommission = $quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary);
 
         $commissionFromQuota = match ($timeScope) {
             TimeScopeEnum::MONTHLY => $annualCommission / 12,
