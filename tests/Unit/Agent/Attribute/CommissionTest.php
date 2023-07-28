@@ -11,10 +11,10 @@ use App\Models\Plan;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 
-it('sums the commissions of deals and paid leaves and kicker', function () {
+it('sums the commissions of deals and paid leaves and kicker correctly for the current month', function () {
     $admin = signInAdmin();
 
-    [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainment = 6);
+    [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6);
 
     $plan->kicker()->create([
         'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
@@ -33,7 +33,7 @@ it('sums the commissions of deals and paid leaves and kicker', function () {
 
     $variableSalaryPerMonth = ($agent->on_target_earning - $agent->base_salary) / 12;
 
-    $expectedDealCommission = $quotaAttainment * $variableSalaryPerMonth;
+    $expectedDealCommission = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
     $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;
     $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY);
 
@@ -42,32 +42,35 @@ it('sums the commissions of deals and paid leaves and kicker', function () {
     expect($agent->commission)->toBe(intval($expectedTotalCommission));
 });
 
-// // Quota Attainment
-// $plan = Plan::factory()->create([
-//     'target_amount_per_month' => 1_000_00,
-// ]);
+it('sums the commissions of deals and paid leaves and kicker correctly for the current quarter', function () {
+    $admin = signInAdmin();
 
-// $plan->agents()->attach($agent = Agent::factory()->has(
-//     Deal::factory()->count(2)->sequence([
-//         'accepted_at' => $lastDateInScope,
-//         'add_time' => $lastDateInScope,
-//     ], [
-//         'accepted_at' => $firstDateInScope,
-//         'add_time' => $firstDateInScope,
-//     ])->state([
-//         'value' => 1_000_00,
-//     ]))->create());
+    [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6, Carbon::now()->firstOfQuarter());
 
-// expect((new QuotaAttainmentService())->calculate($agent, $timeScope))->toBe(floatval(2 / $timeScope->monthCount()));
+    $plan->kicker()->create([
+        'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
+        'salary_type' => SalaryTypeEnum::BASE_SALARY_MONTHLY->value,
+        'threshold_in_percent' => 200,
+        'payout_in_percent' => 25,
+    ]);
 
-// //DEAL COMMISSION
-// $testQuota = 1;
+    PaidLeave::factory()->create([
+        'agent_id' => $agent->id,
+        'start_date' => Carbon::now()->firstOfQuarter()->addWeekdays(1),
+        'end_date' => Carbon::now()->firstOfQuarter()->addWeekdays(4),
+        'sum_of_commissions' => 10_000_00,
+        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
+    ]);
 
-// $agent = Agent::factory()->create([
-//     'base_salary' => $baseSalary = 80_000_00,
-//     'on_target_earning' => $onTargetEarning = 200_000_00,
-// ]);
+    $variableSalaryPerMonth = ($agent->on_target_earning - $agent->base_salary) / 12;
 
-// $expectedTotalCommission = $testQuota * (($onTargetEarning - $baseSalary) / (12 / $timeScope->monthCount()));
+    $expectedDealCommission = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
+    $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;
+    $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY);
 
-// expect((new DealCommissionService())->calculate($agent, $timeScope, 1))->toBe($expectedTotalCommission);
+    $expectedTotalCommission = $expectedDealCommission + $expectedKickerCommission + $expectedPaidLeaveCommission;
+
+    expect($agent->commission)->toBe(intval($expectedTotalCommission));
+});
+
+it('sums the commissions of deals and paid leaves and kicker correctly for the current quarter')->todo();
