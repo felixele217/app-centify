@@ -174,7 +174,7 @@ function submit() {
                                                     <div class="leading-6">
                                                         <InputLabel
                                                             for="name"
-                                                            value="Name"
+                                                            value="Full Name"
                                                             required
                                                         />
 
@@ -211,7 +211,7 @@ function submit() {
                                                     <div>
                                                         <InputLabel
                                                             for="base_salary"
-                                                            value="Base Salary"
+                                                            value="Annual Base Salary"
                                                             required
                                                         />
 
@@ -228,7 +228,7 @@ function submit() {
                                                     <div>
                                                         <InputLabel
                                                             for="on_target_earning"
-                                                            value="On Target Earning (OTE)"
+                                                            value="Annual On Target Earning (OTE)"
                                                             required
                                                         />
 
