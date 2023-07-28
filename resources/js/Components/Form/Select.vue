@@ -19,11 +19,19 @@ defineEmits<{
             <ListboxButton
                 class="relative flex w-full cursor-pointer items-center justify-between rounded-md bg-white py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
             >
-                <span
-                    class="block truncate text-sm"
-                    :class="props.selectedOption ? 'text-gray-900' : 'text-gray-300'"
-                    >{{ props.selectedOption ? props.selectedOption : 'Select...' }}</span
-                >
+                <div class="flex items-center gap-x-1.5">
+                    <CheckIcon
+                        v-if="props.selectedOption"
+                        class="-ml-0.5 h-4 w-4"
+                        :class="props.selectedOption ? 'text-gray-600' : 'text-gray-300'"
+                        aria-hidden="true"
+                    />
+                    <span
+                        class="block truncate text-sm"
+                        :class="props.selectedOption ? 'text-gray-900' : 'text-gray-300'"
+                        >{{ props.selectedOption ? props.selectedOption : 'Select...' }}</span
+                    >
+                </div>
 
                 <div>
                     <XMarkIcon
