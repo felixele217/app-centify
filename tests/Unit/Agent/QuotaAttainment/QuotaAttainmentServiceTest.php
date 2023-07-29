@@ -6,7 +6,6 @@ use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\QuotaAttainmentService;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 
 it('calculates the quota attainment properly for the active plan with the most recent start_date', function () {
     $agent = Agent::factory()->hasDeals([
