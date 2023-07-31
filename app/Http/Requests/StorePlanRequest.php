@@ -18,6 +18,7 @@ class StorePlanRequest extends FormRequest
 {
     public function rules(): array
     {
+        //    dd($this->all());
         return [
             'name' => [
                 'required',
@@ -101,6 +102,7 @@ class StorePlanRequest extends FormRequest
             ],
 
             'cap' => [
+                'nullable',
                 'integer',
                 'min:1',
             ],
@@ -111,6 +113,8 @@ class StorePlanRequest extends FormRequest
     {
         $data = $this->all();
 
+        $data = NullZeroNumbersAction::execute($data, ['cap']);
+
         if (isset($data['start_date'])) {
             $data['start_date'] = Carbon::createFromDate($data['start_date']);
         }
@@ -118,7 +122,7 @@ class StorePlanRequest extends FormRequest
         if (isset($data['kicker'])) {
             $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);
         }
-       
+
         if (isset($data['cliff'])) {
             $data['cliff'] = NullZeroNumbersAction::execute($data['cliff'], ['threshold_in_percent']);
         }

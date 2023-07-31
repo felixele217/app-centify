@@ -13,6 +13,7 @@ import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
+import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
 import Plan from '@/types/Plan/Plan'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
@@ -72,9 +73,12 @@ const form = useForm({
     payout_frequency: props.plan?.payout_frequency || ('' as PayoutFrequencyEnum),
     assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
 
-    cliff_threshold_in_percent: props.plan?.cliff?.threshold_in_percent
-        ? props.plan?.cliff.threshold_in_percent * 100
-        : 0,
+    cliff: {
+        threshold_in_percent: props.plan?.cliff?.threshold_in_percent
+            ? props.plan?.cliff.threshold_in_percent * 100
+            : 0,
+        time_scope: 'monthly' as TimeScopeEnum,
+    },
 
     kicker: {
         type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
@@ -307,13 +311,13 @@ function submit() {
                         />
 
                         <PercentageInput
-                            :value="form.cliff_threshold_in_percent"
-                            @set-value="(newValue: number) => form.cliff_threshold_in_percent = newValue"
+                            :value="form.cliff.threshold_in_percent"
+                            @set-value="(newValue: number) => form.cliff.threshold_in_percent = newValue"
                         />
 
                         <InputError
                             class="mt-2"
-                            :message="form.errors.cliff_threshold_in_percent"
+                            :message="(form.errors as Record<string, string>)['cliff.threshold_in_percent'] || (form.errors as Record<string, string>)['cliff.time_scope']"
                         />
                     </div>
 

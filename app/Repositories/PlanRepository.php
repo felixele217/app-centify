@@ -31,7 +31,7 @@ class PlanRepository
             $plan->cliff()->create($request->validated('cliff'));
         }
 
-        if ($request->validated('kicker') && $request->validated('kicker')['type']) {
+        if (isset($request->validated('kicker')['type'])) {
             $plan->kicker()->create($request->validated('kicker'));
         }
 
@@ -69,7 +69,7 @@ class PlanRepository
             );
         }
 
-        if ($request->validated('kicker') && $request->validated('kicker')['type']) {
+        if (isset($request->validated('kicker')['type'])) {
             $plan->kicker()->updateOrCreate(
                 ['plan_id' => $plan->id],
                 $request->validated('kicker'),
