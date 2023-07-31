@@ -53,8 +53,7 @@ class Organization extends Model
     {
         return Attribute::make(
             get: fn () => [
-                'pipedrive' => $this->pipedriveConfig?->refresh_token ? true : false,
-                'salesforce' => false,
+                'pipedrive' => $this->pipedriveConfig?->subdomain,
             ]
         );
     }

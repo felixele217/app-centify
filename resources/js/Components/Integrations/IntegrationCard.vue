@@ -11,7 +11,7 @@ const props = defineProps<{
     for: IntegrationTypeEnum
 }>()
 
-const activeIntegrations = usePage().props.integrations as Record<IntegrationTypeEnum, boolean>
+const activeIntegrations = usePage().props.integrations as Record<IntegrationTypeEnum, null | string>
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.for}.create`))
 

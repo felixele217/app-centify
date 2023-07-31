@@ -6,7 +6,8 @@ import CustomIntegrationField from '@/types/CustomIntegrationField'
 import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
 import customIntegrationField from '@/utils/CustomIntegrationField/customIntegrationField'
 import notify from '@/utils/notify'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 const props = defineProps<{
     custom_integration_fields: Array<CustomIntegrationField>
@@ -61,6 +62,8 @@ function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEn
     )
 }
 const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.custom_integration_fields)
+
+const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization.active_integrations.pipedrive)
 </script>
 
 <template>
@@ -77,8 +80,9 @@ const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.c
             <span class="font-bold">Pipedrive > Company Settings > Company > Datafields</span>
             or
             <a
-                href="#"
+                :href="`https://${pipedriveSubdomain}.pipedrive.com/settings/fields`"
                 class="link"
+                target="_blank"
             >
                 click this link.
             </a>

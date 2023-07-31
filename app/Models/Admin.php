@@ -29,6 +29,10 @@ class Admin extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $with = [
+        'organization',
+    ];
+
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);

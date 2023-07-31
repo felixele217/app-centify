@@ -8,7 +8,7 @@ import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 
@@ -31,6 +31,8 @@ function updateDeal() {
         }
     )
 }
+
+const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization.active_integrations.pipedrive)
 
 function notifyUpdate() {
     const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
@@ -136,7 +138,7 @@ const dealsText = computed(() => {
                     <td class="col-span-3 px-3 py-4">
                         <a
                             class="link"
-                            :href="`https://paul-sandbox11.pipedrive.com/deal/${deal.integration_deal_id}`"
+                            :href="`https://${pipedriveSubdomain}.pipedrive.com/deal/${deal.integration_deal_id}`"
                             target="_blank"
                         >
                             {{ deal.title }}

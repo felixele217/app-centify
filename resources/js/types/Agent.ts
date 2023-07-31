@@ -1,4 +1,5 @@
 import { AgentStatusEnum } from './Enum/AgentStatusEnum'
+import Organization from './Organization'
 import PaidLeave from './PaidLeave'
 
 export default interface Agent {
@@ -18,4 +19,6 @@ export default interface Agent {
     active_paid_leave?: PaidLeave | null
     sick_leaves_days_count?: number
     vacation_leaves_days_count?: number
+    organization: Organization
+    organization_id: number
 }

@@ -45,6 +45,10 @@ class Agent extends Authenticatable
         'status',
     ];
 
+    protected $with = [
+        'organization',
+    ];
+
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);

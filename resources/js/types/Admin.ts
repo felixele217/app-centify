@@ -7,5 +7,6 @@ export default interface Admin {
     email_verified_at: string
     created_at: Date
     updated_at: Date
-    organization?: Organization
+    organization: Organization
+    organization_id: number
 }

@@ -12,8 +12,8 @@ export default interface Organization {
     agents?: Array<Agent>
     plans?: Array<Plan>
     active_integrations: {
-        pipedrive: boolean
-        salesforce: boolean
+        pipedrive: null | string
+        salesforce: null | string
     }
     custom_integration_fields: Array<CustomIntegrationField>
     pipedrive_config?: {
