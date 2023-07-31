@@ -35,7 +35,7 @@ const props = defineProps<{
     >
         <Tooltip :text="`This deal was accepted at ${formatDate(props.deal.accepted_at)}.`">
             <Badge
-                text="declined"
+                text="accepted"
                 color="green"
             />
         </Tooltip>
