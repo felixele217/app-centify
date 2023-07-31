@@ -24,11 +24,11 @@ const props = defineProps<{
             </div>
         </div>
 
-        <h1
+        <p
             v-else
             class="text-base leading-6 text-gray-900"
         >
             {{ props.noItemsText }}
-        </h1>
+        </p>
     </div>
 </template>
