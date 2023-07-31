@@ -42,6 +42,7 @@ const payoutRowObjects: Array<{
 <template>
     <div>
         <Head title="Dashboard" />
+
         <div class="mb-5 grid grid-cols-4 gap-5">
             <PayoutCard
                 v-for="object in payoutRowObjects"
