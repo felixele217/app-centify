@@ -4,10 +4,13 @@ import QuotaAttainment from '@/Components/Dashboard/Payout/QuotaAttainment.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import DealIcon from '@/Components/Icon/DealIcon.vue'
+import PaidLeaveSlideOver from '@/Components/PaidLeaveSlideOver.vue'
 import Agent from '@/types/Agent'
+import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import sum from '@/utils/sum'
 import { Head } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -37,6 +40,14 @@ const payoutRowObjects: Array<{
         link: route('deals.index') + '?scope=open',
     },
 ]
+
+const agentIdBeingManaged = ref<number>()
+const paidLeaveStatus = ref<AgentStatusEnum>('on vacation')
+
+function handleOpenPaidLeaveSlideOver(agentId: number, status: AgentStatusEnum) {
+    agentIdBeingManaged.value = agentId
+    paidLeaveStatus.value = status
+}
 </script>
 
 <template>
@@ -55,6 +66,16 @@ const payoutRowObjects: Array<{
             />
         </div>
 
-        <TotalPayoutByEmployee :agents="props.agents" />
+        <TotalPayoutByEmployee
+            :agents="props.agents"
+            @open-paid-leave-slide-over="handleOpenPaidLeaveSlideOver"
+        />
+
+        <PaidLeaveSlideOver
+            :is-open="!!agentIdBeingManaged"
+            :agent="agentIdBeingManaged"
+            :status="paidLeaveStatus"
+            @close-slide-over="agentIdBeingManaged = undefined"
+        />
     </div>
 </template>

@@ -4,12 +4,18 @@ import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Agent from '@/types/Agent'
+import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
+import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import ValueChange from './ValueChange.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
+}>()
+
+defineEmits<{
+    'open-paid-leave-slide-over': [agentId: number, type: AgentStatusEnum]
 }>()
 
 function quotaDisplay(quotaAttainment: number) {
@@ -65,7 +71,7 @@ function quotaDisplay(quotaAttainment: number) {
                                 v-for="agent in props.agents"
                                 :key="agent.email"
                             >
-                                <td class="text-sm whitespace-nowrap py-5 pl-4 pr-3 sm:pl-0">
+                                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                                     <AgentNameColumn :agent="agent" />
                                 </td>
 
@@ -90,17 +96,27 @@ function quotaDisplay(quotaAttainment: number) {
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div>
+                                    <div class="flex items-center gap-1">
                                         <span class="font-semibold text-gray-600">{{
                                             agent.sick_leaves_days_count!
                                         }}</span>
                                         days sick
+
+                                        <PencilSquareIcon
+                                            class="ml-1 h-3 w-3 cursor-pointer hover:text-black"
+                                            @click="$emit('open-paid-leave-slide-over', agent.id, 'sick')"
+                                        />
                                     </div>
-                                    <div>
+                                    <div class="flex items-center gap-1">
                                         <span class="font-semibold text-gray-600">{{
                                             agent.vacation_leaves_days_count!
                                         }}</span>
                                         days on vacation
+
+                                        <PencilSquareIcon
+                                            class="ml-1 h-3 w-3 cursor-pointer hover:text-black"
+                                            @click="$emit('open-paid-leave-slide-over', agent.id, 'on vacation')"
+                                        />
                                     </div>
                                 </td>
                             </tr>

@@ -4,17 +4,17 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AppendTimeScopeQuery;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', fn () => to_route('dashboard'));
 
 Route::middleware('auth')->group(function () {
     Route::middleware(AppendTimeScopeQuery::class)->get('/dashboard', DashboardController::class)->name('dashboard');
-   
+
     Route::get('/integrations', IntegrationController::class)->name('integrations');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,9 +32,6 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
-    });
-
-    Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::put('/{deal}', 'update')->name('update');
     });
 
@@ -43,6 +40,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/', 'store')->name('store');
         Route::put('/{agent}', 'update')->name('update');
         Route::delete('/{agent}', 'destroy')->name('destroy');
+
+        Route::prefix('{agent}/paid-leaves')->name('paid-leaves.')->controller(PaidLeaveController::class)->group(function () {
+            Route::post('/', 'store')->name('store');
+        });
     });
 
 });

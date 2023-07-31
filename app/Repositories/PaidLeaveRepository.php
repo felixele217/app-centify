@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Enum\TimeScopeEnum;
 use App\Http\Requests\StoreAgentRequest;
+use App\Http\Requests\StorePaidLeaveRequest;
 use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
 use App\Models\PaidLeave;
@@ -15,12 +16,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PaidLeaveRepository
 {
-    public static function create(Agent $agent, StoreAgentRequest|UpdateAgentRequest $request): PaidLeave
+    public static function create(Agent $agent, StorePaidLeaveRequest $request): PaidLeave
     {
         return PaidLeave::create([
             'agent_id' => $agent->id,
-            ...$request->validated('paid_leave'),
-            'reason' => $request->validated('status'),
+            ...$request->validated(),
         ]);
     }
 

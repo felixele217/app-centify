@@ -15,10 +15,6 @@ import { ref } from 'vue'
 
 const props = defineProps<{
     form: InertiaForm<{
-        name: string
-        email: string
-        base_salary: number
-        on_target_earning: number
         status: AgentStatusEnum
         paid_leave: {
             start_date: Date | null
@@ -32,7 +28,7 @@ const props = defineProps<{
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
 
-const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
+const employed28OrMoreDays = ref<boolean>(true)
 </script>
 
 <template>
@@ -52,20 +48,19 @@ const employed28OrMoreDays = ref<boolean>(props.form.status === 'sick')
         </Tooltip>
     </div>
 
-    <div
-        v-if="(props.form.status === 'sick' && employed28OrMoreDays) || props.form.status === 'on vacation'"
-        class="space-y-4"
-    >
+    <div class="space-y-4">
         <div>
             <InputLabel
                 for="start_date"
                 value="Start Date"
                 required
             />
+
             <DateInput
                 :date="props.form.paid_leave.start_date"
                 @date-changed="(newDate: Date) => (props.form.paid_leave.start_date = newDate)"
             />
+
             <InputError
                 class="mt-2"
                 :message="(props.form.errors as Record<string, string>)['paid_leave.start_date']"

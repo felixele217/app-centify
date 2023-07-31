@@ -8,17 +8,15 @@ import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import RadioCards, { RadioCardOption } from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
-import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import { agentStatusToColor } from '@/utils/Descriptions/agentStatusToColor'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
-import PaidLeaveForm from './PaidLeaveForm.vue'
 
 const emit = defineEmits<{
-    'close-slide-over': [],
+    'close-slide-over': []
 }>()
 
 function closeSlideOver() {
@@ -38,13 +36,6 @@ const form = useForm({
     email: '',
     base_salary: 0,
     on_target_earning: 0,
-    status: 'active' as AgentStatusEnum,
-    paid_leave: {
-        start_date: null as Date | null,
-        end_date: null as Date | null,
-        continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
-        sum_of_commissions: 0,
-    },
 })
 
 watch(
@@ -55,37 +46,6 @@ watch(
             form.email = agent.email
             form.base_salary = agent.base_salary ?? 0
             form.on_target_earning = agent.on_target_earning ?? 0
-            form.status = agent.status
-            form.paid_leave = {
-                start_date: agent.active_paid_leave?.start_date ?? null,
-                end_date: agent.active_paid_leave?.end_date ?? null,
-                continuation_of_pay_time_scope:
-                    agent.active_paid_leave?.continuation_of_pay_time_scope ?? '',
-                sum_of_commissions: agent.active_paid_leave?.sum_of_commissions ?? 0,
-            }
-        }
-    }
-)
-
-watch(
-    () => form.status,
-    async () => {
-        const activePaidLeave = props.agent?.active_paid_leave
-
-        if (form.status === activePaidLeave?.reason) {
-            form.paid_leave = {
-                start_date: activePaidLeave.start_date,
-                end_date: activePaidLeave.end_date ?? null,
-                continuation_of_pay_time_scope: activePaidLeave.continuation_of_pay_time_scope,
-                sum_of_commissions: activePaidLeave.sum_of_commissions,
-            }
-        } else {
-            form.paid_leave = {
-                start_date: null,
-                end_date: null,
-                continuation_of_pay_time_scope: 'last quarter',
-                sum_of_commissions: 0,
-            }
         }
     }
 )
@@ -284,8 +244,6 @@ function submit() {
                                                             :message="form.errors.status"
                                                         />
                                                     </div>
-
-                                                    <PaidLeaveForm :form="form" />
                                                 </div>
                                             </div>
                                         </div>

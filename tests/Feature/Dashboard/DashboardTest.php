@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -32,6 +33,7 @@ it('passes the correct props', function () {
                 ->has('agents.1.sick_leaves_days_count')
                 ->has('agents.1.vacation_leaves_days_count')
                 ->where('time_scopes', array_column(TimeScopeEnum::cases(), 'value'))
+                ->where('continuation_of_pay_time_scope_options', array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'))
         );
 });
 

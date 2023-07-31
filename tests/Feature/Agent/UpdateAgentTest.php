@@ -16,7 +16,6 @@ it('can update an agent as an admin', function () {
         'email' => $email = 'john.doe@gmail.com',
         'base_salary' => $baseSalary = 10000000,
         'on_target_earning' => $onTargetEarning = 20000000,
-        'status' => AgentStatusEnum::ACTIVE->value,
     ])->assertRedirect();
 
     $agent->refresh();
@@ -53,7 +52,6 @@ it('has required fields', function () {
         'email' => 'The email field is required.',
         'base_salary' => 'The base salary field is required.',
         'on_target_earning' => 'The on target earning field is required.',
-        'status' => 'The status field is required.',
     ]);
 });
 
