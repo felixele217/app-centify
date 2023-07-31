@@ -19,5 +19,6 @@ it('stores the pipedrive subdomain for the organization upon syncing the data', 
 
     (new PipedriveIntegrationService())->syncAgentDeals();
 
+    // model pipedrive config mit den tokens, subdomain und was noch kommt
     expect($admin->organization->pipedrive_subdomain)->toBe($subdomain);
 })->todo();

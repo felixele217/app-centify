@@ -2,8 +2,11 @@
 
 use App\Models\Admin;
 
+use function Pest\Laravel\withoutExceptionHandling;
+
 test('profile page is displayed', function () {
     $user = Admin::factory()->create();
+    withoutExceptionHandling();
 
     $response = $this
         ->actingAs($user)

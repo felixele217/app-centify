@@ -9,18 +9,19 @@ class CreatePipedrivetokensTable extends Migration
 {
     public function up()
     {
-        Schema::create('pipedrive_tokens', function (Blueprint $table) {
+        Schema::create('pipedrive_configs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Admin::class);
             $table->longText('access_token');
             $table->longText('refresh_token');
             $table->timestamp('expires_at');
+            $table->string('subdomain')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('pipedrive_tokens');
+        Schema::dropIfExists('pipedrive_configs');
     }
 }
