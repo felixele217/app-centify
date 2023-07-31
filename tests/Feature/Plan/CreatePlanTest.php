@@ -20,6 +20,7 @@ it('passes the correct props', function () {
             ->has('agents', $agentCount, fn (AssertableInertia $page) => $page
                 ->has('id')
                 ->has('name')
+                ->has('organization_id')
                 ->missing('email')
                 ->missing('base_salary')
                 ->missing('on_target_earning')

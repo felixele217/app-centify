@@ -31,7 +31,7 @@ class PlanController extends Controller
     public function create(): Response
     {
         return Inertia::render('Plan/Create', [
-            'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
+            'agents' => Auth::user()->organization->agents()->select('id', 'name', 'organization_id')->get(),
             'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
             'kicker_type_options' => array_column(KickerTypeEnum::cases(), 'value'),
@@ -49,7 +49,7 @@ class PlanController extends Controller
     public function edit(Plan $plan): Response
     {
         return Inertia::render('Plan/Edit', [
-            'agents' => Auth::user()->organization->agents()->select('id', 'name')->get(),
+            'agents' => Auth::user()->organization->agents()->select('id', 'name', 'organization_id')->get(),
             'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
             'kicker_type_options' => array_column(KickerTypeEnum::cases(), 'value'),
