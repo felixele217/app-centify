@@ -11,10 +11,6 @@ class CommissionFromQuotaService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainmentForTimeScope): int
     {
-        if ($agent->plans()->active()->first()?->cliff?->threshold_in_percent > $quotaAttainmentForTimeScope) {
-            return 0;
-        }
-
         $annualCommission = $quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary);
 
         $commissionFromQuota = match ($timeScope) {

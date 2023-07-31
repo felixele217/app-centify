@@ -1,10 +1,12 @@
 <?php
 
 use App\Enum\TimeScopeEnum;
+use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\QuotaAttainmentChangeService;
+use App\Services\QuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -44,6 +46,23 @@ it('quota attainment change returns null when previous scope has no quota', func
     ])->create());
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBeNull();
+})->with([
+    TimeScopeEnum::MONTHLY,
+    TimeScopeEnum::QUARTERLY,
+    TimeScopeEnum::ANNUALY,
+]);
+
+it('quota attainment change is correct when previous scope has quota and current does not', function (TimeScopeEnum $timeScope) {
+    $plan = Plan::factory()->active()->create();
+
+    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
+        'accepted_at' => $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope(($timeScope)),
+        'add_time' => $dateInPreviousTimeScope,
+    ])->create());
+
+    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($dateInPreviousTimeScope))->calculate($agent, $timeScope);
+
+    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5)],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5)],
