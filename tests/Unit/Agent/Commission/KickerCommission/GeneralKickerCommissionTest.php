@@ -45,14 +45,14 @@ it('does not incorporate the kicker if its target is not met because deals are o
     [TimeScopeEnum::ANNUALY, Carbon::now()->lastOfYear()->addDays(1)],
 ]);
 
-it('returns 0 for the kicker commission if user has no plan', function () {
+it('returns null for the kicker commission if user has no plan', function () {
     $admin = signInAdmin();
 
     $agent = Agent::factory()->create([
         'organization_id' => $admin->id,
     ]);
 
-    expect((new KickerCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY, 10))->toBe(0);
+    expect((new KickerCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY, null))->toBeNull();
 });
 
 it('returns 0 for the kicker commission if the plan has no kicker', function () {

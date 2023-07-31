@@ -9,8 +9,12 @@ use App\Models\Agent;
 
 class CommissionFromQuotaService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainmentForTimeScope): int
+    public function calculate(Agent $agent, TimeScopeEnum $timeScope, ?float $quotaAttainmentForTimeScope): ?int
     {
+        if (is_null($quotaAttainmentForTimeScope)) {
+            return null;
+        }
+
         $annualCommission = $quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary);
 
         $commissionFromQuota = match ($timeScope) {

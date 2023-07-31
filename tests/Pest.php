@@ -13,7 +13,7 @@ uses(TestCase::class, RefreshDatabase::class)->in(
     'Integration',
 );
 
-function createPlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, Carbon $addTime = null): array
+function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, Carbon $addTime = null): array
 {
     $plan = Plan::factory()->active()->create([
         'target_amount_per_month' => $targetAmountPerMonth = 1_000_00,

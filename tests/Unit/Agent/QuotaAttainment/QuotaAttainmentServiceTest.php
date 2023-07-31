@@ -70,10 +70,10 @@ it('does not use deals that lie out of the current time scope', function (TimeSc
     [TimeScopeEnum::ANNUALY, Carbon::now()->firstOfYear(), Carbon::now()->lastOfYear()],
 ]);
 
-it('returns 0 if the agent has no active plan', function () {
+it('returns null if the agent has no active plan', function () {
     signInAdmin();
-
-    expect((new QuotaAttainmentService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY, 0))->toBe(floatval(0));
+   
+    expect((new QuotaAttainmentService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY, 0))->toBeNull();
 });
 
 it('does not throw any errors when agents have no base_salary or no quota_attainment or no plan', function ($baseSalary, $onTargetEarning) {
@@ -84,7 +84,7 @@ it('does not throw any errors when agents have no base_salary or no quota_attain
         'base_salary' => $baseSalary,
     ]);
 
-    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->not()->toBeNull();
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBeNull();
 })->with([
     [10_000_00, 10_000_00],
     [0, 10_000_00],

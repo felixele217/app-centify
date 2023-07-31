@@ -12,13 +12,18 @@ use Carbon\CarbonImmutable;
 
 class CommissionChangeService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
+    public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
     {
+        $quotaAttainmentLastTimeScope = (new QuotaAttainmentService(DateHelper::dateInPreviousTimeScope($timeScope)))->calculate($agent, $timeScope);
+
+        if (is_null($quotaAttainmentLastTimeScope)) {
+            return null;
+        }
+
+        $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
+
         $quotaAttainmentThisTimeScope = (new QuotaAttainmentService(CarbonImmutable::now()))->calculate($agent, $timeScope);
         $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisTimeScope);
-
-        $quotaAttainmentLastTimeScope = (new QuotaAttainmentService(DateHelper::dateInPreviousTimeScope($timeScope)))->calculate($agent, $timeScope);
-        $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }

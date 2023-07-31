@@ -13,14 +13,14 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 
     $this->get(route('dashboard').'?time_scope='.$timeScope->value);
 
-    [$plan, $agent] = createPlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6);
+    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6);
 
     $plan->kicker()->create([
         'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
         'salary_type' => SalaryTypeEnum::BASE_SALARY_MONTHLY->value,
         'threshold_in_percent' => 200,
         'payout_in_percent' => 25,
-        'time_scope' => TimeScopeEnum::QUARTERLY->value
+        'time_scope' => TimeScopeEnum::QUARTERLY->value,
     ]);
 
     PaidLeave::factory()->create([

@@ -21,12 +21,12 @@ class QuotaAttainmentService
         $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
     }
 
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope): float
+    public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?float
     {
         $latestActivePlan = $agent->load('plans')->plans()->active($this->dateInScope)->first();
 
         if (! $latestActivePlan) {
-            return 0;
+            return null;
         }
 
         $deals = DealRepository::dealsForAgent($agent, $timeScope, $this->dateInScope);

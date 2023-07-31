@@ -9,13 +9,17 @@ use App\Models\Agent;
 
 class KickerCommissionService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope, float $quotaAttainment): int
+    public function calculate(Agent $agent, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
     {
+        if (is_null($quotaAttainmentThisTimeScope)) {
+            return null;
+        }
+
         $kicker = $agent->plans()->active()->first()?->kicker;
 
         $factor = $timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
 
-        if ($kicker?->threshold_in_percent * $factor <= $quotaAttainment) {
+        if ($kicker?->threshold_in_percent * $factor <= $quotaAttainmentThisTimeScope) {
             $kickerCommission = $kicker?->payout_in_percent * ($agent->base_salary / 4);
         }
 
