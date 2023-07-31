@@ -37,37 +37,6 @@ it('can update a plan with removing the cliff as an admin', function () {
 
 })->todo();
 
-it('requires all cliff fields if at least one is specified', function (array $providedField, array $missingFields) {
-    $admin = signInAdmin();
-
-    $plan = Plan::factory()->create([
-        'organization_id' => $admin->organization->id,
-    ]);
-
-    UpdatePlanRequest::factory()->state([
-        'cliff' => $providedField,
-    ])->fake();
-
-    $this->put(route('plans.update', $plan))->assertInvalid($missingFields);
-})->with([
-    [
-        [
-            'threshold_in_percent' => 25,
-        ],
-        [
-            'cliff.time_scope' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
-        ],
-    ],
-    [
-        [
-            'time_scope' => TimeScopeEnum::MONTHLY->value,
-        ],
-        [
-            'cliff.threshold_in_percent' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
-        ],
-    ],
-]);
-
 it('does not throw validation errors if you send 0 as values in either of the percent fields', function () {
     $admin = signInAdmin();
 
@@ -95,7 +64,7 @@ it('does not store a cliff when an array with empty values is sent', function ()
     UpdatePlanRequest::factory()->state([
         'cliff' => [
             'threshold_in_percent' => 0,
-            'time_scope' => null,
+            'time_scope' => TimeScopeEnum::MONTHLY->value,
         ],
     ])->fake();
 

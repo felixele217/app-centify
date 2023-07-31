@@ -87,6 +87,7 @@ const form = useForm({
             : 0,
         payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : 0,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
+        time_scope: 'quarterly' as TimeScopeEnum,
     },
 
     cap: props.plan?.cap?.value || 0,

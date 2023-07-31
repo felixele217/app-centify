@@ -27,7 +27,7 @@ class PlanRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        if (isset($request->validated('cliff')['time_scope'])) {
+        if (isset($request->validated('cliff')['threshold_in_percent'])) {
             $plan->cliff()->create($request->validated('cliff'));
         }
 
@@ -62,7 +62,7 @@ class PlanRepository
             }
         }
 
-        if (isset($request->validated('cliff')['time_scope'])) {
+        if (isset($request->validated('cliff')['threshold_in_percent'])) {
             $plan->cliff()->updateOrCreate(
                 ['plan_id' => $plan->id],
                 $request->validated('cliff'),

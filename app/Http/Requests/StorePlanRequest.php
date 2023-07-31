@@ -68,7 +68,6 @@ class StorePlanRequest extends FormRequest
             'cliff.threshold_in_percent' => [
                 'nullable',
                 'integer',
-                'required_with:cliff.time_scope',
             ],
 
             'kicker' => [
@@ -79,26 +78,26 @@ class StorePlanRequest extends FormRequest
                 'nullable',
                 'string',
                 new Enum(KickerTypeEnum::class),
-                'required_with:kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type,kicker.time_scope',
+                'required_with:kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
             ],
 
             'kicker.threshold_in_percent' => [
                 'nullable',
                 'integer',
-                'required_with:kicker.type,kicker.payout_in_percent,kicker.salary_type,kicker.time_scope',
+                'required_with:kicker.type,kicker.payout_in_percent,kicker.salary_type',
             ],
 
             'kicker.payout_in_percent' => [
                 'nullable',
                 'integer',
-                'required_with:kicker.type,kicker.threshold_in_percent,kicker.salary_type,kicker.time_scope',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.salary_type',
             ],
 
             'kicker.salary_type' => [
                 'nullable',
                 'string',
                 new Enum(SalaryTypeEnum::class),
-                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent,kicker.time_scope',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
             ],
 
             'kicker.time_scope' => [
