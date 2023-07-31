@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import FormButtons from '@/Components/Form/FormButtons.vue'
-import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import notify from '@/utils/notify'
@@ -8,6 +7,7 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import PaidLeaveForm from './Agent/Index/PaidLeaveForm.vue'
+import { watch } from 'vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -21,22 +21,29 @@ function closeSlideOver() {
 
 const props = defineProps<{
     isOpen: boolean
-    agentId?: Agent
-    status: AgentStatusEnum
+    agentId?: number
+    reason?: AgentStatusEnum
 }>()
 
 const form = useForm({
-    status: '' as AgentStatusEnum,
-    paid_leave: {
-        start_date: null as Date | null,
-        end_date: null as Date | null,
-        continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
-        sum_of_commissions: 0,
-    },
+    reason: props.reason as AgentStatusEnum,
+    start_date: null as Date | null,
+    end_date: null as Date | null,
+    continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
+    sum_of_commissions: 0,
 })
 
+watch(
+    () => props.reason,
+    async (reason) => {
+        if (reason) {
+            form.reason = reason
+        }
+    }
+)
+
 function submit() {
-    form.put(route('agents.update', props.agentId), {
+    form.post(route('agents.paid-leaves.store', props.agentId), {
         onSuccess: () => {
             closeSlideOver()
 
@@ -105,8 +112,8 @@ function submit() {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="flex flex-1 flex-col justify-between h-full overflow-y-auto">
-                                            <div class="divide-y divide-gray-200 px-6 h-full">
+                                        <div class="flex h-full flex-1 flex-col justify-between overflow-y-auto">
+                                            <div class="h-full divide-y divide-gray-200 px-6">
                                                 <div class="space-y-6 pb-5 pt-6">
                                                     <PaidLeaveForm :form="form" />
                                                 </div>

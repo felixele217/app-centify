@@ -42,11 +42,11 @@ const payoutRowObjects: Array<{
 ]
 
 const agentIdBeingManaged = ref<number>()
-const paidLeaveStatus = ref<AgentStatusEnum>('on vacation')
+const paidLeaveReason = ref<AgentStatusEnum>()
 
-function handleOpenPaidLeaveSlideOver(agentId: number, status: AgentStatusEnum) {
+function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) {
     agentIdBeingManaged.value = agentId
-    paidLeaveStatus.value = status
+    paidLeaveReason.value = reason
 }
 </script>
 
@@ -73,8 +73,8 @@ function handleOpenPaidLeaveSlideOver(agentId: number, status: AgentStatusEnum) 
 
         <PaidLeaveSlideOver
             :is-open="!!agentIdBeingManaged"
-            :agent="agentIdBeingManaged"
-            :status="paidLeaveStatus"
+            :agentId="agentIdBeingManaged"
+            :reason="paidLeaveReason"
             @close-slide-over="agentIdBeingManaged = undefined"
         />
     </div>
