@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enum\TimeScopeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CliffFactory extends Factory
@@ -13,6 +14,7 @@ class CliffFactory extends Factory
         return [
             'id' => fake()->unique()->randomNumber(),
             'threshold_in_percent' => fake()->numberBetween(0, 1),
+            'time_scope' => fake()->randomElement(TimeScopeEnum::cases())->value,
         ];
     }
 }

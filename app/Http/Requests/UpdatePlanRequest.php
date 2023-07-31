@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Actions\NullZeroNumbersAction;
+use Carbon\Carbon;
+use App\Enum\TimeScopeEnum;
 use App\Enum\KickerTypeEnum;
-use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
-use Carbon\Carbon;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Enum\PayoutFrequencyEnum;
 use Illuminate\Validation\Rules\Enum;
+use App\Actions\NullZeroNumbersAction;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePlanRequest extends FormRequest
 {
@@ -53,9 +54,21 @@ class UpdatePlanRequest extends FormRequest
                 'exists:agents,id',
             ],
 
-            'cliff_threshold_in_percent' => [
+            'cliff' => [
+                'array',
+            ],
+
+            'cliff.time_scope' => [
+                'nullable',
+                'string',
+                new Enum(TimeScopeEnum::class),
+                'required_with:cliff.threshold_in_percent',
+            ],
+
+            'cliff.threshold_in_percent' => [
                 'nullable',
                 'integer',
+                'required_with:cliff.time_scope',
             ],
 
             'kicker' => [
@@ -107,6 +120,10 @@ class UpdatePlanRequest extends FormRequest
             $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);
         }
 
+        if (isset($data['cliff'])) {
+            $data['cliff'] = NullZeroNumbersAction::execute($data['cliff'], ['threshold_in_percent']);
+        }
+
         $this->replace($data);
     }
 
@@ -114,10 +131,12 @@ class UpdatePlanRequest extends FormRequest
     {
         return [
             'target_amount_per_month.min' => 'The :attribute must be at least 0,01€.',
-            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker.',
-            'kicker.type' => 'Please specify all fields for the Kicker.',
-            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker.',
-            'kicker.salary_type' => 'Please specify all fields for the Kicker.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'cliff.time_scope' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
+            'cliff.threshold_in_percent' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
         ];
     }
 }

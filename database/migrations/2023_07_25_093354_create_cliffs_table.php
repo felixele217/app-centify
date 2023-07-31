@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Plan::class);
             $table->integer('threshold_in_percent');
+            $table->string('time_scope');
             $table->timestamps();
         });
     }

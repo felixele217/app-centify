@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enum\TimeScopeEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,10 @@ class Cliff extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'time_scope' => TimeScopeEnum::class,
+    ];
 
     public function plan(): BelongsTo
     {

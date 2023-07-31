@@ -27,10 +27,8 @@ class PlanRepository
             'organization_id' => Auth::user()->organization->id,
         ]);
 
-        if ($request->validated('cliff_threshold_in_percent')) {
-            $plan->cliff()->create([
-                'threshold_in_percent' => $request->validated('cliff_threshold_in_percent'),
-            ]);
+        if (isset($request->validated('cliff')['time_scope'])) {
+            $plan->cliff()->create($request->validated('cliff'));
         }
 
         if ($request->validated('kicker') && $request->validated('kicker')['type']) {
@@ -64,10 +62,10 @@ class PlanRepository
             }
         }
 
-        if ($request->validated('cliff_threshold_in_percent')) {
+        if (isset($request->validated('cliff')['time_scope'])) {
             $plan->cliff()->updateOrCreate(
                 ['plan_id' => $plan->id],
-                ['threshold_in_percent' => $request->validated('cliff_threshold_in_percent')]
+                $request->validated('cliff'),
             );
         }
 
