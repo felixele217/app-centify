@@ -118,11 +118,12 @@ class StorePlanRequest extends FormRequest
     {
         $data = $this->all();
 
-        $data = NullZeroNumbersAction::execute($data, ['cap']);
 
         if (isset($data['start_date'])) {
             $data['start_date'] = Carbon::createFromDate($data['start_date']);
         }
+
+        $data = NullZeroNumbersAction::execute($data, ['cap']);
 
         if (isset($data['kicker'])) {
             $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);

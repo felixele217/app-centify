@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use Carbon\Carbon;
-use App\Enum\TimeScopeEnum;
+use App\Actions\NullZeroNumbersAction;
 use App\Enum\KickerTypeEnum;
+use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
-use App\Enum\PayoutFrequencyEnum;
-use Illuminate\Validation\Rules\Enum;
-use App\Actions\NullZeroNumbersAction;
+use App\Enum\TimeScopeEnum;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdatePlanRequest extends FormRequest
 {
@@ -108,6 +108,7 @@ class UpdatePlanRequest extends FormRequest
             ],
 
             'cap' => [
+                'nullable',
                 'integer',
                 'min:1',
             ],
@@ -121,6 +122,8 @@ class UpdatePlanRequest extends FormRequest
         if (isset($data['start_date'])) {
             $data['start_date'] = Carbon::createFromDate($data['start_date']);
         }
+
+        $data = NullZeroNumbersAction::execute($data, ['cap']);
 
         if (isset($data['kicker'])) {
             $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);

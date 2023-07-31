@@ -27,3 +27,15 @@ it('can update a plan with a cap as an admin', function (Plan $plan) {
         'organization_id' => $this->admin->organization->id,
     ]),
 ]);
+
+it('does not throw validation error if you send cap of 0', function () {
+    $plan = Plan::factory()->hasCap()->create([
+        'organization_id' => $this->admin->organization->id,
+    ]);
+
+    UpdatePlanRequest::factory()->state([
+        'cap' => 0,
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertValid();
+});
