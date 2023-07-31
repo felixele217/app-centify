@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\SetPipedriveSubdomainAction;
 use App\Facades\Pipedrive;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class PipedriveAuthController extends Controller
 {
@@ -24,6 +26,8 @@ class PipedriveAuthController extends Controller
         if (! empty(request()->query('code'))) {
             Pipedrive::authorize(request()->query('code'));
         }
+
+        SetPipedriveSubdomainAction::execute(Auth::user()->organization);
 
         return to_route('custom-integration-fields.index');
     }

@@ -41,7 +41,6 @@ const payoutRowObjects: Array<{
 
 <template>
     <div>
-        <!-- <a :href="route('testgc')">test here</a> -->
         <Head title="Dashboard" />
 
         <div class="mb-5 grid grid-cols-4 gap-5">
