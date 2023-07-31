@@ -15,7 +15,7 @@ class PipedriveTokenIO implements PipedriveTokenStorage
     public function setToken(PipedriveToken $token): void
     {
         PipedriveConfig::updateOrCreate(
-            ['admin_id' => Auth::user()->id],
+            ['organization_id' => Auth::user()->organization->id],
             [
                 'access_token' => $token->getAccessToken(),
                 'refresh_token' => $token->getRefreshToken(),
@@ -26,7 +26,7 @@ class PipedriveTokenIO implements PipedriveTokenStorage
 
     public function getToken(): ?PipedriveToken
     {
-        $token = Auth::user()->pipedriveConfig;
+        $token = Auth::user()->organization->pipedriveConfig;
 
         if ($token) {
             return new PipedriveToken([

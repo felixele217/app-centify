@@ -1,9 +1,11 @@
 <?php
 
+use App\Facades\Pipedrive;
 use App\Http\Controllers\CustomIntegrationFieldController;
 use App\Http\Controllers\PipedriveAuthController;
 use App\Http\Controllers\SalesforceAuthController;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {

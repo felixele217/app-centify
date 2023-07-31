@@ -1,3 +1,5 @@
+import Organization from "./Organization"
+
 export default interface Admin {
     id: number
     name: string
@@ -5,8 +7,5 @@ export default interface Admin {
     email_verified_at: string
     created_at: Date
     updated_at: Date
-    active_integrations: {
-        pipedrive: boolean
-        salesforce: boolean
-    }
+    organization?: Organization
 }

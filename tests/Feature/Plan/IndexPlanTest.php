@@ -3,6 +3,8 @@
 use App\Models\Plan;
 use Inertia\Testing\AssertableInertia;
 
+use function Pest\Laravel\withoutExceptionHandling;
+
 it('passes the correct props', function () {
     $admin = signInAdmin();
 

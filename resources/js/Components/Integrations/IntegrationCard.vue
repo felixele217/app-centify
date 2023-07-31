@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Admin from '@/types/Admin'
 import { IntegrationTypeEnum } from '@/types/Enum/IntegrationTypeEnum'
 import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
@@ -12,7 +11,7 @@ const props = defineProps<{
     for: IntegrationTypeEnum
 }>()
 
-const activeIntegrations = (usePage().props.auth.user as Admin).active_integrations
+const activeIntegrations = usePage().props.integrations as Record<IntegrationTypeEnum, boolean>
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.for}.create`))
 

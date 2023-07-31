@@ -39,8 +39,8 @@ class PipedriveConfig extends Model
         );
     }
 
-    public function admin(): BelongsTo
+    public function organization(): BelongsTo
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Organization::class);
     }
 }
