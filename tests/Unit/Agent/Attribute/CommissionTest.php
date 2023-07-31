@@ -20,6 +20,7 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
         'salary_type' => SalaryTypeEnum::BASE_SALARY_MONTHLY->value,
         'threshold_in_percent' => 200,
         'payout_in_percent' => 25,
+        'time_scope' => TimeScopeEnum::QUARTERLY->value
     ]);
 
     PaidLeave::factory()->create([

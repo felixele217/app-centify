@@ -2,6 +2,7 @@
 
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
+use App\Enum\TimeScopeEnum;
 use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Kicker;
 use App\Models\Plan;
@@ -19,6 +20,7 @@ it('can update a plan with a kicker as an admin', function (Plan $plan) {
             'threshold_in_percent' => $thresholdInPercent = 200,
             'payout_in_percent' => $payoutInPercent = 25,
             'salary_type' => $salaryType = fake()->randomElement(SalaryTypeEnum::cases())->value,
+            'time_scope' => $timeScope = fake()->randomElement(TimeScopeEnum::cases())->value,
         ],
     ])->fake();
 
@@ -29,6 +31,7 @@ it('can update a plan with a kicker as an admin', function (Plan $plan) {
     expect($plan->kicker->threshold_in_percent)->toBe($thresholdInPercent / 100);
     expect($plan->kicker->payout_in_percent)->toBe($payoutInPercent / 100);
     expect($plan->kicker->salary_type->value)->toBe($salaryType);
+    expect($plan->kicker->time_scope->value)->toBe($timeScope);
 })->with([
     fn () => Plan::factory()->create([
         'organization_id' => $this->admin->organization->id,
@@ -57,6 +60,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
         ],
     ],
     [
@@ -67,6 +71,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
         ],
     ],
     [
@@ -77,6 +82,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
         ],
     ],
     [
@@ -87,8 +93,20 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
         ],
     ],
+    [
+        [
+            'time_scope' => fake()->randomElement(TimeScopeEnum::cases())->value,
+        ],
+        [
+            'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+        ],
+    ]
 ]);
 
 it('does not throw validation errors if you send 0 as values in either of the percent fields', function (?int $thresholdInPercent, ?int $payoutInPercent) {

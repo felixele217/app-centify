@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
+use App\Enum\TimeScopeEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Kicker extends Model
     protected $casts = [
         'type' => KickerTypeEnum::class,
         'salary_type' => SalaryTypeEnum::class,
+        'time_scope' => TimeScopeEnum::class,
     ];
 
     public function plan(): BelongsTo

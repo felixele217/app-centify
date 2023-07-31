@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('threshold_in_percent');
             $table->integer('payout_in_percent');
             $table->string('salary_type');
+            $table->string('time_scope');
         });
     }
 

@@ -79,26 +79,33 @@ class StorePlanRequest extends FormRequest
                 'nullable',
                 'string',
                 new Enum(KickerTypeEnum::class),
-                'required_with:kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
+                'required_with:kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type,kicker.time_scope',
             ],
 
             'kicker.threshold_in_percent' => [
                 'nullable',
                 'integer',
-                'required_with:kicker.type,kicker.payout_in_percent,kicker.salary_type',
+                'required_with:kicker.type,kicker.payout_in_percent,kicker.salary_type,kicker.time_scope',
             ],
 
             'kicker.payout_in_percent' => [
                 'nullable',
                 'integer',
-                'required_with:kicker.type,kicker.threshold_in_percent,kicker.salary_type',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.salary_type,kicker.time_scope',
             ],
 
             'kicker.salary_type' => [
                 'nullable',
                 'string',
                 new Enum(SalaryTypeEnum::class),
-                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent',
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent,kicker.time_scope',
+            ],
+
+            'kicker.time_scope' => [
+                'nullable',
+                'string',
+                new Enum(TimeScopeEnum::class),
+                'required_with:kicker.type,kicker.threshold_in_percent,kicker.payout_in_percent,kicker.salary_type',
             ],
 
             'cap' => [
@@ -138,6 +145,7 @@ class StorePlanRequest extends FormRequest
             'kicker.type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.salary_type' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
+            'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'cliff.time_scope' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
             'cliff.threshold_in_percent' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
         ];
