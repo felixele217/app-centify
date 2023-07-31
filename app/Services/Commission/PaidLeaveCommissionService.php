@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Commission;
 
 use App\Enum\TimeScopeEnum;
+use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\PaidLeave;
 use App\Repositories\PaidLeaveRepository;
@@ -49,11 +50,11 @@ class PaidLeaveCommissionService
         $currentScope = data_get($this->dateInScope, $timeScope);
 
         if (data_get($paidLeave->start_date, $timeScope) === $currentScope && data_get($paidLeave->end_date, $timeScope) === $currentScope) {
-            return $paidLeave->end_date->diffInWeekdays($paidLeave->start_date) + 1;
+            return DateHelper::weekdayCount($paidLeave->start_date, $paidLeave->end_date);
         } elseif (data_get($paidLeave->end_date, $timeScope) === $currentScope) {
-            return $paidLeave->end_date->diffInWeekdays($timeScopeStartDate) + 1;
+            return DateHelper::weekdayCount($timeScopeStartDate, $paidLeave->end_date);
         } elseif (data_get($paidLeave->start_date, $timeScope) === $currentScope) {
-            return $paidLeave->start_date->diffInWeekdays($timeScopeEndDate) + 1;
+            return DateHelper::weekdayCount($paidLeave->start_date, $timeScopeEndDate);
         }
 
         return 0;

@@ -17,6 +17,15 @@ class DateHelper
         return Carbon::createFromFormat('Y-m-d H:i:s', $sanitized);
     }
 
+    public static function weekdayCount(Carbon|CarbonImmutable $startDate, Carbon|CarbonImmutable $endDate): int
+    {
+        if ($endDate->isWeekend()) {
+            return $startDate->diffInWeekdays($endDate);
+        }
+
+        return $startDate->diffInWeekdays($endDate) + 1;
+    }
+
     public static function dateInPreviousTimeScope(TimeScopeEnum $timeScope): CarbonImmutable
     {
         return match ($timeScope) {

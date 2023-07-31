@@ -3,6 +3,7 @@
 use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\TimeScopeEnum;
+use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ it('calculates the commission with the additional paid leave value for the curre
         ]);
     }
 
-    $paidLeaveDays = $paidLeaveEndDate->diffInWeekdays($paidLeaveStartDate) + 1;
+    $paidLeaveDays = DateHelper::weekdayCount($paidLeaveStartDate, $paidLeaveEndDate);
     $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
@@ -41,7 +42,7 @@ it('calculates the commission with the additional paid leave value for the curre
         ]);
     }
 
-    $paidLeaveDaysThisMonth = $paidLeaveEndDate->diffInWeekdays(Carbon::now()->firstOfMonth()) + 1;
+    $paidLeaveDaysThisMonth = DateHelper::weekdayCount(Carbon::now()->firstOfMonth(), $paidLeaveEndDate);
     $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
@@ -62,7 +63,7 @@ it('calculates the commission with the additional paid leave value for the curre
         ]);
     }
 
-    $paidLeaveDaysThisMonth = Carbon::now()->lastOfMonth()->diffInWeekdays($paidLeaveStartDate) + 1;
+    $paidLeaveDaysThisMonth = DateHelper::weekdayCount($paidLeaveStartDate, Carbon::now()->lastOfMonth());
     $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
