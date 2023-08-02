@@ -9,6 +9,7 @@ import Tooltip from '@/Components/Tooltip.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
+import PaidLeave from '@/types/PaidLeave'
 import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/continuationOfPayTimeScopeToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
@@ -30,9 +31,9 @@ const continuationOfPayTimeScopeOptions = usePage().props
 
 const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
 
-const markedAgentRanges = [
-    ...agent.paid_leaves
-        .filter((paidLeave) => paidLeave.reason === 'sick')
+function paidLeaveRanges(paidLeaves: Array<PaidLeave>, type: AgentStatusEnum) {
+    return paidLeaves
+        .filter((paidLeave) => paidLeave.reason === type)
         .map(
             (paidLeave) =>
                 ({
@@ -40,18 +41,16 @@ const markedAgentRanges = [
                     end_date: new Date(paidLeave.end_date),
                     color: 'green',
                 } as MarkedRange)
-        ),
-    ...agent.paid_leaves
-        .filter((paidLeave) => paidLeave.reason === 'on vacation')
-        .map(
-            (paidLeave) =>
-                ({
-                    start_date: new Date(paidLeave.start_date),
-                    end_date: new Date(paidLeave.end_date),
-                    color: 'yellow',
-                } as MarkedRange)
-        ),
-]
+        )
+}
+
+function agentPaidLeaveRanges() {
+    if (!agent) {
+        return undefined
+    }
+
+    return [...paidLeaveRanges(agent!.paid_leaves, 'sick'), ...paidLeaveRanges(agent!.paid_leaves, 'on vacation')]
+}
 
 const employed28OrMoreDays = ref<boolean>(true)
 </script>
@@ -84,7 +83,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             <DateInput
                 :current-date="props.form.start_date"
                 @date-changed="(newDate: Date) => (props.form.start_date = newDate)"
-                :marked-ranges="markedAgentRanges"
+                :marked-ranges="agentPaidLeaveRanges()"
             />
 
             <InputError
@@ -103,7 +102,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             <DateInput
                 :current-date="props.form.end_date"
                 @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
-                :marked-ranges="markedAgentRanges"
+                :marked-ranges="agentPaidLeaveRanges()"
             />
 
             <InputError

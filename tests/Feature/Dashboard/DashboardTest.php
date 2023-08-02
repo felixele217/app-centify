@@ -5,6 +5,7 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Query\Builder;
 use Inertia\Testing\AssertableInertia;
 
@@ -18,6 +19,10 @@ it('passes the correct props', function () {
 
     $plan->agents()->attach(Agent::factory($agentCount = 3)
         ->hasDeals(3)
+        ->hasPaidLeaves(1, [
+            'start_date' => $startDate = Carbon::yesterday(),
+            'end_date' => $endDate = Carbon::tomorrow(),
+        ])
         ->create(['organization_id' => $admin->organization->id]));
 
     $this->get(route('dashboard'))
@@ -32,7 +37,8 @@ it('passes the correct props', function () {
                 ->has('agents.1.commission_change')
                 ->has('agents.1.sick_leaves_days_count')
                 ->has('agents.1.vacation_leaves_days_count')
-                ->has('agents.1.paid_leaves')
+                ->where('agents.1.paid_leaves.0.start_date', $startDate->toDateString())
+                ->where('agents.1.paid_leaves.0.end_date', $endDate->toDateString())
                 ->where('time_scopes', array_column(TimeScopeEnum::cases(), 'value'))
                 ->where('continuation_of_pay_time_scope_options', array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'))
         );
