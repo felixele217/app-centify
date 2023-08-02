@@ -26,8 +26,6 @@ const props = defineProps<{
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
 
-        console.log(props.form.reason);
-        
 const employed28OrMoreDays = ref<boolean>(true)
 </script>
 
@@ -71,7 +69,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             <InputLabel
                 for="end_date"
                 value="End Date"
-                :required="props.form.status === 'on vacation'"
+                :required="props.form.reason === 'on vacation'"
             />
 
             <DateInput

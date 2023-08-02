@@ -5,10 +5,8 @@ import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import InfoIcon from '@/Components/Icon/InfoIcon.vue'
-import RadioCards, { RadioCardOption } from '@/Components/RadioCards.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
-import { agentStatusToColor } from '@/utils/Descriptions/agentStatusToColor'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -221,27 +219,6 @@ function submit() {
                                                         <InputError
                                                             class="mt-2"
                                                             :message="form.errors.on_target_earning"
-                                                        />
-                                                    </div>
-
-                                                    <div>
-                                                        <RadioCards
-                                                            label="Status"
-                                                            :options="
-                                                                props.possibleStatuses.map((status) => {
-                                                                    return {
-                                                                        title: status,
-                                                                        color: agentStatusToColor[status],
-                                                                    }
-                                                                })
-                                                            "
-                                                            @radio-clicked="(option: RadioCardOption<AgentStatusEnum>) => (form.status = option.title)"
-                                                            :default="form.status"
-                                                        />
-
-                                                        <InputError
-                                                            class="mt-2"
-                                                            :message="form.errors.status"
                                                         />
                                                     </div>
                                                 </div>
