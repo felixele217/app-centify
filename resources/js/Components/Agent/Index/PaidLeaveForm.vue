@@ -6,6 +6,7 @@ import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import Tooltip from '@/Components/Tooltip.vue'
+import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/continuationOfPayTimeScopeToDescription'
@@ -21,10 +22,14 @@ const props = defineProps<{
         continuation_of_pay_time_scope: string
         sum_of_commissions: number
     }>
+    agentId?: number
 }>()
 
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
+
+const agentSickDates = (usePage().props.agents as Array<Agent>).filter(agent => agent.id === props.agentId)[0].paid_leaves.filter(paidLeave => paidLeave.reason === 'sick').map(paidLeave => [new Date(paidLeave.start_date), new Date(paidLeave.end_date)])
+const agentVacationDays = (usePage().props.agents as Array<Agent>).filter(agent => agent.id === props.agentId)[0].paid_leaves.filter(paidLeave => paidLeave.reason === 'on vacation').map(paidLeave => [new Date(paidLeave.start_date), new Date(paidLeave.end_date)])
 
 const employed28OrMoreDays = ref<boolean>(true)
 </script>
@@ -55,8 +60,10 @@ const employed28OrMoreDays = ref<boolean>(true)
             />
 
             <DateInput
-                :date="props.form.start_date"
+                :current-date="props.form.start_date"
                 @date-changed="(newDate: Date) => (props.form.start_date = newDate)"
+                :vacation-dates="agentVacationDays"
+                :sick-dates="agentSickDates"
             />
 
             <InputError
@@ -73,8 +80,10 @@ const employed28OrMoreDays = ref<boolean>(true)
             />
 
             <DateInput
-                :date="props.form.end_date"
+                :current-date="props.form.end_date"
                 @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
+                :vacation-dates="agentVacationDays"
+                :sick-dates="agentSickDates"
             />
 
             <InputError

@@ -21,4 +21,5 @@ export default interface Agent {
     vacation_leaves_days_count?: number
     organization: Organization
     organization_id: number
+    paid_leaves: Array<PaidLeave>
 }

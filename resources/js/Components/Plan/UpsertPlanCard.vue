@@ -161,7 +161,7 @@ function submit() {
                                 required
                             />
                             <DateInput
-                                :date="form.start_date"
+                                :current-date="form.start_date"
                                 @date-changed="handleDateChange"
                             />
                             <InputError

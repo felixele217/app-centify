@@ -115,7 +115,7 @@ function submit() {
                                         <div class="flex h-full flex-1 flex-col justify-between overflow-y-auto">
                                             <div class="h-full divide-y divide-gray-200 px-6">
                                                 <div class="space-y-6 pb-5 pt-6">
-                                                    <PaidLeaveForm :form="form" />
+                                                    <PaidLeaveForm :form="form" :agentId="props.agentId" />
                                                 </div>
                                             </div>
                                         </div>
