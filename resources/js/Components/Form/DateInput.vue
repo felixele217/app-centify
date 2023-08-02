@@ -7,36 +7,42 @@ import { computed, ref } from 'vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
 import TextInput from './TextInput.vue'
 
+export type MarkedRange = {
+    start_date: Date
+    end_date: Date
+    color: 'yellow' | 'green'
+}
+
 const props = defineProps<{
     currentDate: Date | null
-    sickDates: Array<[Date, Date]>
-    vacationDates: Array<[Date, Date]>
+    markedRanges: Array<MarkedRange>
 }>()
 
-function markedDates(sickDates: Array<[Date, Date]>, vacationDates: Array<[Date, Date]>) {
-    return [
-        ...sickDates.map((sickDates) => ({
-            dates: [sickDates],
-            highlight: {
-                color: 'green',
-                fillMode: 'light',
-            },
-        })),
-        ...vacationDates.map((vacationDates) => ({
-            dates: [vacationDates],
-            highlight: {
-                color: 'yellow',
-                fillMode: 'light',
-            },
-        })),
-    ]
+function markedDates() {
+    return props.markedRanges.map((markedRange) => ({
+        dates: [[markedRange.start_date, markedRange.end_date]],
+        highlight: {
+            color: markedRange.color,
+            fillMode: 'light',
+        },
+    }))
 }
 
 const disabledDates = computed(() => [
-    // @ts-ignore
-    ...props.sickDates,
-    ...props.vacationDates,
+    ...props.markedRanges.map((markedRange) => datesBetween(markedRange.start_date, markedRange.end_date)),
 ])
+
+function datesBetween(startDate: Date, endDate: Date): Date[] {
+    let datesArray: Date[] = []
+    let currentDate = startDate
+
+    while (currentDate <= endDate) {
+        datesArray.push(new Date(currentDate))
+        currentDate.setDate(currentDate.getDate() + 1)
+    }
+
+    return datesArray
+}
 
 const selectedColor = ref('indigo')
 </script>
@@ -45,7 +51,6 @@ const selectedColor = ref('indigo')
     <Dropdown
         align="left"
         width="48"
-        content-classes=""
     >
         <template #trigger>
             <TextInput
@@ -64,7 +69,7 @@ const selectedColor = ref('indigo')
 
                     $emit('date-changed', newDate)
                 }"
-                :attributes="markedDates(props.sickDates, props.vacationDates)"
+                :attributes="markedDates()"
                 :disabledDates="disabledDates"
             />
         </template>

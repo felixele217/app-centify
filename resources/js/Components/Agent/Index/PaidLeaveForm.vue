@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import DateInput from '@/Components/Form/DateInput.vue'
+import DateInput, { MarkedRange } from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
@@ -28,8 +28,30 @@ const props = defineProps<{
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
 
-const agentSickDates = (usePage().props.agents as Array<Agent>).filter(agent => agent.id === props.agentId)[0].paid_leaves.filter(paidLeave => paidLeave.reason === 'sick').map(paidLeave => [new Date(paidLeave.start_date), new Date(paidLeave.end_date)])
-const agentVacationDays = (usePage().props.agents as Array<Agent>).filter(agent => agent.id === props.agentId)[0].paid_leaves.filter(paidLeave => paidLeave.reason === 'on vacation').map(paidLeave => [new Date(paidLeave.start_date), new Date(paidLeave.end_date)])
+const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
+
+const markedAgentRanges = [
+    ...agent.paid_leaves
+        .filter((paidLeave) => paidLeave.reason === 'sick')
+        .map(
+            (paidLeave) =>
+                ({
+                    start_date: new Date(paidLeave.start_date),
+                    end_date: new Date(paidLeave.end_date),
+                    color: 'green',
+                } as MarkedRange)
+        ),
+    ...agent.paid_leaves
+        .filter((paidLeave) => paidLeave.reason === 'on vacation')
+        .map(
+            (paidLeave) =>
+                ({
+                    start_date: new Date(paidLeave.start_date),
+                    end_date: new Date(paidLeave.end_date),
+                    color: 'yellow',
+                } as MarkedRange)
+        ),
+]
 
 const employed28OrMoreDays = ref<boolean>(true)
 </script>
@@ -62,8 +84,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             <DateInput
                 :current-date="props.form.start_date"
                 @date-changed="(newDate: Date) => (props.form.start_date = newDate)"
-                :vacation-dates="agentVacationDays"
-                :sick-dates="agentSickDates"
+                :marked-ranges="markedAgentRanges"
             />
 
             <InputError
@@ -82,8 +103,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             <DateInput
                 :current-date="props.form.end_date"
                 @date-changed="(newDate: Date) => (props.form.end_date = newDate)"
-                :vacation-dates="agentVacationDays"
-                :sick-dates="agentSickDates"
+                :marked-ranges="markedAgentRanges"
             />
 
             <InputError
