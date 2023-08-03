@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import formatDate from '@/utils/Date/formatDate'
 // @ts-ignore
+import { MarkedRange } from '@/utils/markedRangesFromRangeObjects'
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
 import { computed, ref } from 'vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
 import TextInput from './TextInput.vue'
-
-export type MarkedRange = {
-    start_date: Date
-    end_date: Date
-    color: 'yellow' | 'green'
-}
 
 const props = defineProps<{
     currentDate: Date | null
@@ -19,11 +14,6 @@ const props = defineProps<{
 }>()
 
 function vCalendarMarkedRanges() {
-    if (typeof props.markedRanges === 'undefined') {
-        console.log('hallo')
-        return null
-    }
-
     return props.markedRanges!.map((markedRange) => ({
         dates: [[markedRange.start_date, markedRange.end_date]],
         highlight: {

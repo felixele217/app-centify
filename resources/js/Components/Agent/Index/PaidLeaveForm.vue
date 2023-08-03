@@ -31,17 +31,18 @@ const continuationOfPayTimeScopeOptions = usePage().props
 
 const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
 
-function paidLeaveRanges(paidLeaves: Array<PaidLeave>, type: AgentStatusEnum, color: string) {
-    return paidLeaves
-        .filter((paidLeave) => paidLeave.reason === type)
-        .map(
-            (paidLeave) =>
-                ({
-                    start_date: new Date(paidLeave.start_date),
-                    end_date: new Date(paidLeave.end_date),
-                    color: color,
-                } as MarkedRange)
-        )
+function markedRangesFromRangeObjects<T extends { start_date: Date; end_date: Date }>(
+    rangeObjects: Array<T>,
+    color: string
+) {
+    return rangeObjects.map(
+        (rangeObject) =>
+            ({
+                start_date: new Date(rangeObject.start_date),
+                end_date: new Date(rangeObject.end_date),
+                color: color,
+            } as MarkedRange)
+    )
 }
 
 function agentPaidLeaveRanges() {
@@ -50,8 +51,14 @@ function agentPaidLeaveRanges() {
     }
 
     return [
-        ...paidLeaveRanges(agent!.paid_leaves, 'sick', 'green'),
-        ...paidLeaveRanges(agent!.paid_leaves, 'on vacation', 'yellow'),
+        ...markedRangesFromRangeObjects(
+            agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'sick'),
+            'green'
+        ),
+        ...markedRangesFromRangeObjects(
+            agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'on vacation'),
+            'yellow'
+        ),
     ]
 }
 
