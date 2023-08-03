@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import DateInput, { MarkedRange } from '@/Components/Form/DateInput.vue'
+import DateInput from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
@@ -9,9 +9,9 @@ import Tooltip from '@/Components/Tooltip.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
-import PaidLeave from '@/types/PaidLeave'
 import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/continuationOfPayTimeScopeToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
+import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
@@ -30,20 +30,6 @@ const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
 
 const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
-
-function markedRangesFromRangeObjects<T extends { start_date: Date; end_date: Date }>(
-    rangeObjects: Array<T>,
-    color: string
-) {
-    return rangeObjects.map(
-        (rangeObject) =>
-            ({
-                start_date: new Date(rangeObject.start_date),
-                end_date: new Date(rangeObject.end_date),
-                color: color,
-            } as MarkedRange)
-    )
-}
 
 function agentPaidLeaveRanges() {
     if (!agent) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import formatDate from '@/utils/Date/formatDate'
-// @ts-ignore
 import { MarkedRange } from '@/utils/markedRangesFromRangeObjects'
+// @ts-ignore
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
 import { computed, ref } from 'vue'
