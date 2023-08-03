@@ -6,11 +6,15 @@ const props = withDefaults(
         align?: 'left' | 'right'
         width?: '48'
         contentClasses?: string
+        closeOnContentClick?: boolean
+        isOpen?: boolean | null
     }>(),
     {
         align: 'right',
         width: '48',
         contentClasses: 'rounded-md bg-white ',
+        closeOnContentClick: true,
+        isOpen: null,
     }
 )
 
@@ -39,21 +43,46 @@ const alignmentClasses = computed(() => {
     }
 })
 
-const open = ref(false)
+const emit = defineEmits<{
+    'set-is-open': [state: boolean]
+}>()
+
+const open = ref(props.isOpen)
+function handleContentClick() {
+    if (props.closeOnContentClick) {
+        closeDropdown()
+    }
+}
+
+const closeDropdown = () => {
+    if (props.isOpen === null) {
+        open.value = false
+    } else {
+        emit('set-is-open', false)
+    }
+}
+
+const toggleDropdown = () => {
+    if (props.isOpen === null) {
+        open.value = !open.value
+    } else {
+        emit('set-is-open', !props.isOpen)
+    }
+}
 </script>
 
 <template>
     <div class="relative">
-        <div @click="open = !open">
+        <div @click="toggleDropdown">
             <slot name="trigger" />
         </div>
 
         <!-- Full Screen Dropdown Overlay -->
         <div
-            v-show="open"
+            v-show="open || props.isOpen"
             class="fixed inset-0 z-40"
-            @click="open = false"
-        ></div>
+            @click="closeDropdown"
+        />
 
         <transition
             enter-active-class="transition ease-out duration-200"
@@ -64,11 +93,11 @@ const open = ref(false)
             leave-to-class="transform opacity-0 scale-95"
         >
             <div
-                v-show="open"
+                v-show="open || props.isOpen"
                 class="absolute z-50 mt-2 rounded-md shadow-lg"
                 :class="[widthClass, alignmentClasses]"
                 style="display: none"
-                @click="open = false"
+                @click="handleContentClick"
             >
                 <div :class="contentClasses">
                     <slot name="content" />

@@ -38,12 +38,16 @@ const disabledDates = computed(() =>
 )
 
 const selectedColor = ref('indigo')
+const dropdownIsOpen = ref(false)
 </script>
 
 <template>
     <Dropdown
         align="left"
         width="48"
+        :close-on-content-click="false"
+        :is-open="dropdownIsOpen"
+        @set-is-open="(state) => (dropdownIsOpen = state)"
     >
         <template #trigger>
             <TextInput
@@ -59,6 +63,8 @@ const selectedColor = ref('indigo')
                 :model-value="props.currentDate"
                 @update:model-value="(newDate: Date) => {
                     newDate.setHours(15)
+
+                    dropdownIsOpen = false
 
                     $emit('date-changed', newDate)
                 }"
