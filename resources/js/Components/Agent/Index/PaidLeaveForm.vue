@@ -31,7 +31,7 @@ const continuationOfPayTimeScopeOptions = usePage().props
 
 const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
 
-function paidLeaveRanges(paidLeaves: Array<PaidLeave>, type: AgentStatusEnum) {
+function paidLeaveRanges(paidLeaves: Array<PaidLeave>, type: AgentStatusEnum, color: string) {
     return paidLeaves
         .filter((paidLeave) => paidLeave.reason === type)
         .map(
@@ -39,7 +39,7 @@ function paidLeaveRanges(paidLeaves: Array<PaidLeave>, type: AgentStatusEnum) {
                 ({
                     start_date: new Date(paidLeave.start_date),
                     end_date: new Date(paidLeave.end_date),
-                    color: 'green',
+                    color: color,
                 } as MarkedRange)
         )
 }
@@ -49,7 +49,10 @@ function agentPaidLeaveRanges() {
         return undefined
     }
 
-    return [...paidLeaveRanges(agent!.paid_leaves, 'sick'), ...paidLeaveRanges(agent!.paid_leaves, 'on vacation')]
+    return [
+        ...paidLeaveRanges(agent!.paid_leaves, 'sick', 'green'),
+        ...paidLeaveRanges(agent!.paid_leaves, 'on vacation', 'yellow'),
+    ]
 }
 
 const employed28OrMoreDays = ref<boolean>(true)

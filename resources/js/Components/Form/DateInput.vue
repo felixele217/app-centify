@@ -3,7 +3,7 @@ import formatDate from '@/utils/Date/formatDate'
 // @ts-ignore
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/style.css'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
 import TextInput from './TextInput.vue'
 
@@ -33,6 +33,10 @@ function vCalendarMarkedRanges() {
     }))
 }
 
+const disabledDates = computed(() =>
+    props.markedRanges?.map((markedRange) => [markedRange.start_date, markedRange.end_date])
+)
+
 const selectedColor = ref('indigo')
 </script>
 
@@ -58,6 +62,7 @@ const selectedColor = ref('indigo')
 
                     $emit('date-changed', newDate)
                 }"
+                :disabledDates="disabledDates"
                 :attributes="vCalendarMarkedRanges()"
             />
         </template>
