@@ -47,7 +47,7 @@ const dropdownIsOpen = ref(false)
         width="48"
         :close-on-content-click="false"
         :is-open="dropdownIsOpen"
-        @set-is-open="(state) => (dropdownIsOpen = state)"
+        @set-is-open="(state: boolean) => (dropdownIsOpen = state)"
     >
         <template #trigger>
             <TextInput
