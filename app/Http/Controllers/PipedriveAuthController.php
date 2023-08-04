@@ -32,10 +32,10 @@ class PipedriveAuthController extends Controller
 
         SetPipedriveSubdomainAction::execute(Auth::user()->organization);
 
-        IntegrationRepository::create(Auth::user()->organization->id, [
-            'name' => IntegrationTypeEnum::PIPEDRIVE->value,
-            'subdomain' => GetPipedriveSubdomainAction::execute(),
-        ]);
+        // IntegrationRepository::create(Auth::user()->organization->id, [
+        //     'name' => IntegrationTypeEnum::PIPEDRIVE->value,
+        //     'subdomain' => GetPipedriveSubdomainAction::execute(),
+        // ]);
 
         return to_route('custom-integration-fields.index');
     }
