@@ -21,7 +21,7 @@ const navigation = [
     { name: 'Teams & Users', href: route('agents.index'), icon: FolderIcon, current: route().current('agents.index') },
     {
         name: 'Integrations',
-        href: route('integrations'),
+        href: route('integrations.index'),
         icon: PuzzlePieceIcon,
         current: route().current('integrations'),
     },

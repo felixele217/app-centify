@@ -10,7 +10,7 @@ it('passes the correct props', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $this->get(route('integrations'))
+    $this->get(route('integrations.index'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Integration/Index')

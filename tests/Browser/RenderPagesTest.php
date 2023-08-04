@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Browser;
 
 use App\Models\Admin;
+use App\Models\Integration;
 use App\Models\Plan;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -23,24 +24,24 @@ class RenderPagesTest extends DuskTestCase
 
     public function testRender(): void
     {
-        $user = $this->setupDatabase();
+        $admin = $this->setupDatabase();
 
         $urlsToText = [
             route('dashboard') => 'Total Payout',
             route('deals.index') => 'Users',
             route('agents.index') => 'Dashboard',
-            route('integrations') => 'pipedrive',
+            route('integrations.index') => 'pipedrive',
             route('profile.edit') => 'Profile Information',
-            route('custom-integration-fields.index') => 'Custom Integration Fields',
+            route('integrations.custom-fields.index', $admin->integrations->first()) => 'Custom Integration Fields',
 
             route('plans.index') => 'Plans',
             route('plans.create') => 'Create Straight-Line Commission Plan',
-            route('plans.edit', $user->organization->plans->first()) => 'Update Straight-Line Commission Plan',
+            route('plans.edit', $admin->organization->plans->first()) => 'Update Straight-Line Commission Plan',
         ];
 
         foreach ($urlsToText as $url => $text) {
-            $this->browse(function (Browser $browser) use ($user, $url, $text) {
-                $browser->loginAs($user)
+            $this->browse(function (Browser $browser) use ($admin, $url, $text) {
+                $browser->loginAs($admin)
                     ->visit($url)
                     ->assertUrlIs($url)
                     ->waitForText($text)
@@ -53,15 +54,19 @@ class RenderPagesTest extends DuskTestCase
 
     private function setupDatabase(): Admin
     {
-        $user = Admin::factory()->create();
+        $admin = Admin::factory()->create();
 
         Plan::factory(5)->hasAgents(3, [
-            'organization_id' => $user->organization->id,
+            'organization_id' => $admin->organization->id,
         ])->create([
-            'organization_id' => $user->organization->id,
-            'creator_id' => $user->id,
+            'organization_id' => $admin->organization->id,
+            'creator_id' => $admin->id,
         ]);
 
-        return $user;
+        Integration::factory()->create([
+            'organization_id' => $admin->organization->id,
+        ]);
+
+        return $admin;
     }
 }
