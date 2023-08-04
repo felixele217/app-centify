@@ -13,9 +13,7 @@ class PaidLeaveController extends Controller
 {
     public function store(StorePaidLeaveRequest $request, Agent $agent): RedirectResponse
     {
-        if (isset($request->validated()['start_date'])) {
-            PaidLeaveRepository::create($agent, $request);
-        }
+        PaidLeaveRepository::create($agent, $request);
 
         return back();
     }

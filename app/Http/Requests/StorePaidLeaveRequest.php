@@ -21,8 +21,7 @@ class StorePaidLeaveRequest extends FormRequest
             ],
 
             'start_date' => [
-                'nullable',
-                'required_with:end_date,continuation_of_pay_time_scope,sum_of_commissions',
+                'required',
                 'date',
             ],
 
@@ -34,14 +33,12 @@ class StorePaidLeaveRequest extends FormRequest
             ],
 
             'continuation_of_pay_time_scope' => [
-                'nullable',
-                'required_with:end_date,start_date,sum_of_commissions',
+                'required',
                 new Enum(ContinuationOfPayTimeScopeEnum::class),
             ],
 
             'sum_of_commissions' => [
-                'nullable',
-                'required_with:end_date,start_date,continuation_of_pay_time_scope',
+                'required',
                 'integer',
             ],
         ];

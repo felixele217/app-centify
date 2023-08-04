@@ -6,7 +6,6 @@ use App\Http\Requests\StorePaidLeaveRequest;
 use App\Models\Agent;
 use App\Models\PaidLeave;
 use Carbon\Carbon;
-use function Pest\Laravel\withoutExceptionHandling;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
@@ -40,14 +39,17 @@ it('stores the paid leave when an agent is stored on vacation or sick', function
 it('requires an end date for a vacation', function () {
     StorePaidLeaveRequest::factory()->state([
         'reason' => AgentStatusEnum::VACATION->value,
-        'start_date' => Carbon::today(),
+        'start_date' => null,
         'end_date' => null,
-        'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
-        'sum_of_commissions' => 10_000_00,
+        'continuation_of_pay_time_scope' => null,
+        'sum_of_commissions' => null,
     ])->fake();
 
     $this->post(route('agents.paid-leaves.store', $this->agent))->assertInvalid([
+        'start_date',
         'end_date',
+        'continuation_of_pay_time_scope',
+        'sum_of_commissions',
     ]);
 });
 
@@ -73,16 +75,4 @@ it('cannot specify an end date that is before the start date', function () {
     ])->fake();
 
     $this->post(route('agents.paid-leaves.store', $this->agent))->assertInvalid();
-});
-
-it('does not throw validation errors if the paid leave is an empty object', function () {
-    StorePaidLeaveRequest::factory()->state([
-        'reason' => AgentStatusEnum::ACTIVE->value,
-        'start_date' => null,
-        'end_date' => null,
-        'continuation_of_pay_time_scope' => null,
-        'sum_of_commissions' => 0,
-    ])->fake();
-
-    $this->post(route('agents.paid-leaves.store', $this->agent))->assertValid()->assertRedirect();
 });

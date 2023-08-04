@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
+import CurrencyInputNew from '@/Components/Form/CurrencyInputNew.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
@@ -139,6 +140,8 @@ const employed28OrMoreDays = ref<boolean>(true)
                 :value="props.form.sum_of_commissions"
                 @set-value="(value: number) => (props.form.sum_of_commissions = value)"
             />
+
+            <CurrencyInputNew />
 
             <InputError
                 class="mt-2"
