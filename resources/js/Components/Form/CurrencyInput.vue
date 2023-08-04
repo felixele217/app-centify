@@ -18,7 +18,7 @@ const props = defineProps<{
                 placeholder="0.00"
                 aria-describedby="price-currency"
                 :value="props.value"
-                @input="$emit('set-value', $event.target?.value)"
+                @input="$emit('set-value', ($event.target as HTMLInputElement)?.value)"
             />
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <span
