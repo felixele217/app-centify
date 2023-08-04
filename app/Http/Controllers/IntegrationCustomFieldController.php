@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enum\CustomFieldEnum;
+use App\Http\Requests\StoreCustomFieldRequest;
+use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
+use App\Models\CustomIntegrationField;
+use App\Models\Integration;
+use App\Repositories\CustomFieldRepository;
+use App\Repositories\CustomIntegrationFieldRepository;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Integration;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use App\Models\CustomIntegrationField;
-use App\Enum\CustomIntegrationFieldEnum;
-use App\Repositories\CustomFieldRepository;
-use App\Http\Requests\StoreCustomFieldRequest;
-use App\Repositories\CustomIntegrationFieldRepository;
-use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
 
 class IntegrationCustomFieldController extends Controller
 {
-    public function index(): Response
+    public function index(Integration $integration): Response
     {
-        return Inertia::render('CustomIntegrationField/Index', [
-            'custom_integration_fields' => Auth::user()->organization->customIntegrationFields,
-            'available_integration_field_names' => array_column(CustomIntegrationFieldEnum::cases(), 'value'),
+        return Inertia::render('Integration/CustomField/Index', [
+            'custom_fields' => $integration->customFields,
+            'available_custom_field_names' => array_column(CustomFieldEnum::cases(), 'value'),
         ]);
     }
 
