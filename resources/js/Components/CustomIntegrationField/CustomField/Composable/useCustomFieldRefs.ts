@@ -1,13 +1,12 @@
 import CustomField from '@/types/CustomField'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
-import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
 import customField from '@/utils/CustomField/customField'
 import { Ref, ref } from 'vue'
 
-export default function useFieldsRef(
+export default function useCustomFieldRefs(
     availableNames: Array<CustomFieldEnum>,
     availableFields: Array<CustomField>
-): Ref<Record<CustomIntegrationFieldEnum, string>> {
+): Ref<Record<CustomFieldEnum, string>> {
     const result: Record<string, string> = {}
 
     availableNames.forEach((name) => {

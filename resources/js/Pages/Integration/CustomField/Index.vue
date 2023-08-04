@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
-import useFieldsRef from '@/Components/CustomIntegrationField/Composables/useFieldsRef'
+import useCustomFieldRefs from '@/Components/CustomIntegrationField/Composables/useCustomFieldRefs'
 import TextInput from '@/Components/Form/TextInput.vue'
 import CustomField from '@/types/CustomField'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
@@ -68,7 +68,7 @@ function updateCustomField(customField: CustomField) {
         }
     )
 }
-const apiKeyRefs = useFieldsRef(props.available_custom_field_names, props.integration.custom_fields)
+const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.integration.custom_fields)
 
 const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization.active_integrations.pipedrive)
 </script>
