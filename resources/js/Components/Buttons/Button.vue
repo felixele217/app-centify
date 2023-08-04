@@ -2,6 +2,7 @@
 const props = defineProps<{
     text?: string
     padding?: string
+    disabled?: boolean
 }>()
 </script>
 
