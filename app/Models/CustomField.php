@@ -19,7 +19,6 @@ class CustomField extends Model
 
     protected $casts = [
         'name' => CustomFieldEnum::class,
-        'integration_type' => IntegrationTypeEnum::class,
     ];
 
     public function integration(): BelongsTo
