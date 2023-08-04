@@ -1,4 +1,4 @@
-import { TimeScopeEnum } from "../Enum/TimeScopeEnum"
+import { TimeScopeEnum } from '../Enum/TimeScopeEnum'
 
 export default interface Cliff {
     id: number

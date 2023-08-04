@@ -8,7 +8,6 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
-import { onMounted } from 'vue'
 
 const emit = defineEmits<{
     'close-slide-over': []

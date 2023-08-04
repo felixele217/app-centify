@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Encrypter;
+use App\Models\CustomField;
 use App\Enum\IntegrationTypeEnum;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Integration extends Model
 {
@@ -28,6 +30,16 @@ class Integration extends Model
         'expires_at',
     ];
 
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function customFields(): HasMany
+    {
+        return $this->hasMany(CustomField::class);
+    }
+
     protected function accessToken(): Attribute
     {
         return Attribute::make(
@@ -42,10 +54,5 @@ class Integration extends Model
             get: fn (string $refresh_token) => Encrypter::decrypt($refresh_token),
             set: fn (string $refresh_token) => Encrypter::encrypt($refresh_token),
         );
-    }
-
-    public function organization(): BelongsTo
-    {
-        return $this->belongsTo(Organization::class);
     }
 }

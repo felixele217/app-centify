@@ -16,11 +16,13 @@ class IntegrationRepository
         ]);
     }
 
-    public static function update(int $organizationId, array $integrationFields): void
+    public static function update(int $organizationId, array $integrationFields): Integration
     {
-        Integration::whereOrganizationId($organizationId)->update([
+        $integrationId = Integration::whereOrganizationId($organizationId)->update([
             ...$integrationFields,
         ]);
+
+        return Integration::find($integrationId);
     }
 
     public static function updateOrCreate(int $organizationId, array $integrationFields): void

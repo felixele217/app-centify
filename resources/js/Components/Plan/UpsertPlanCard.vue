@@ -185,7 +185,7 @@ function submit() {
                                     )
                                 "
                                 @option-selected-title="(optionTitle: TargetVariableEnum) => form.target_variable = optionTitle"
-                                :default="props.plan ?  form.target_variable : undefined"
+                                :default="props.plan ? form.target_variable : undefined"
                             />
                             <InputError
                                 class="mt-2"

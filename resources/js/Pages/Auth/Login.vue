@@ -5,7 +5,7 @@ import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 
 defineOptions({ layout: GuestLayout })
 

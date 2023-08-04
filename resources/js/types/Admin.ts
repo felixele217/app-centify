@@ -1,4 +1,4 @@
-import Organization from "./Organization"
+import Organization from './Organization'
 
 export default interface Admin {
     id: number
