@@ -38,7 +38,6 @@ function syncIntegration() {
                 <IntegrationLogo :integration="props.integration" />
                 <h3>{{ props.integration }}</h3>
             </div>
-
             <div>
                 <Tooltip
                     :text="
@@ -49,7 +48,7 @@ function syncIntegration() {
                 >
                     <Cog6ToothIcon
                         @click="router.get(route('custom-integration-fields.index'))"
-                        class="h-6 w-6 cursor-pointer hover:text-primary"
+                        class="-mb-1.5 h-6 w-6 cursor-pointer hover:text-primary"
                         v-if="activeIntegrations[props.integration]"
                     />
 

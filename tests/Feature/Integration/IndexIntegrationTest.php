@@ -8,7 +8,7 @@ it('passes the correct props', function () {
     $this->get(route('integrations'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
-                ->component('Integrations')
+                ->component('Integration/Index')
                 ->has('integrations')
         );
 });
