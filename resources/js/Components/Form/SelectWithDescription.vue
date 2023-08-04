@@ -12,7 +12,8 @@ export type SelectOptionWithDescription = {
 
 const props = defineProps<{
     options: Array<SelectOptionWithDescription>
-    default?: SelectOptionWithDescription
+    defaultTitle?: string
+    disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -23,9 +24,13 @@ const selected = ref<null | {
     title: string
     description?: string
     current: boolean
-}>(props.default || null)
+}>(props.defaultTitle ? props.options.filter((option) => option.title === props.defaultTitle)[0] : null)
 
 function clearSelect() {
+    if (props.disabled) {
+        return
+    }
+
     emit('option-selected', '')
     selected.value = null
 }
@@ -81,10 +86,11 @@ function clearSelect() {
                 leave-to-class="opacity-0"
             >
                 <ListboxOptions
+                    :class="props.disabled ? 'invisible' : ''"
                     class="absolute left-0 top-10 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                     <ListboxOption
-                        @click="$emit('option-selected', option.title)"
+                        @click.prevent="$emit('option-selected', option.title)"
                         as="template"
                         v-for="option in props.options"
                         :key="option.title"

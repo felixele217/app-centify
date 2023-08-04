@@ -5,6 +5,7 @@ import DateInput from '@/Components/Form/DateInput.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
+import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
@@ -108,10 +109,14 @@ const employed28OrMoreDays = ref<boolean>(true)
         </div>
 
         <div>
-            <InputLabel
-                value="Continuation of pay based on.."
-                required
-            />
+            <div class="flex gap-1">
+                <InputLabel
+                    value="Continuation of pay based on.."
+                    required
+                />
+
+                <InfoIcon hover-text="Pay is based on the last quarter as per German law." v-if="props.form.reason === 'on vacation'"/>
+            </div>
 
             <SelectWithDescription
                 :options="
@@ -121,6 +126,8 @@ const employed28OrMoreDays = ref<boolean>(true)
                     )
                 "
                 @option-selected="(optionTitle: string) => props.form.continuation_of_pay_time_scope = optionTitle"
+                :default-title="props.form.reason === 'on vacation' ? 'last quarter' : undefined"
+                :disabled="props.form.reason === 'on vacation'"
             />
 
             <InputError

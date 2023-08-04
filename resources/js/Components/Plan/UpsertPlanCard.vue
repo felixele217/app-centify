@@ -184,12 +184,8 @@ function submit() {
                                         targetVariableToDescription
                                     )
                                 "
-                                @option-selected="(optionTitle: TargetVariableEnum) => form.target_variable = optionTitle"
-                                :default="props.plan ? {
-                                    title: form.target_variable,
-                                    description: targetVariableToDescription[form.target_variable as TargetVariableEnum],
-                                    current: true
-                                } : undefined"
+                                @option-selected-title="(optionTitle: TargetVariableEnum) => form.target_variable = optionTitle"
+                                :default="props.plan ?  form.target_variable : undefined"
                             />
                             <InputError
                                 class="mt-2"
@@ -237,11 +233,7 @@ function submit() {
                                 )
                             "
                             @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
-                            :default="props.plan ? {
-                                        title: form.payout_frequency,
-                                        description: payoutFrequencyToDescription[form.payout_frequency as PayoutFrequencyEnum],
-                                        current: true
-                                    } : undefined"
+                            :default-title="props.plan ? form.payout_frequency : undefined"
                         />
                         <InputError
                             class="mt-2"
@@ -355,11 +347,7 @@ function submit() {
                                     triggerToDescription
                                 )
                             "
-                            :default="{
-                                title: 'demo_set_by',
-                                description: 'The deal\'s demo_set_by field has a user assigned to it.',
-                                current: true,
-                            }"
+                            default-title="demo_set_by"
                             @option-selected="(optionTitle: 'demo_set_by') => form.trigger = optionTitle"
                         />
 

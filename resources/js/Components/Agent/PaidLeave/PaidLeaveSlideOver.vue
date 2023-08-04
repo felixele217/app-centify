@@ -8,6 +8,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
+import { onMounted } from 'vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -34,10 +35,14 @@ const form = useForm({
 })
 
 watch(
-    () => props.reason,
-    async (reason) => {
-        if (reason) {
-            form.reason = reason
+    () => props.isOpen,
+    async () => {
+        if (props.reason) {
+            form.reason = props.reason
+        }
+
+        if (props.reason === 'on vacation') {
+            form.continuation_of_pay_time_scope = 'last quarter'
         }
     }
 )
