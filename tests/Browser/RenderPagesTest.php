@@ -32,7 +32,7 @@ class RenderPagesTest extends DuskTestCase
             route('agents.index') => 'Dashboard',
             route('integrations.index') => 'pipedrive',
             route('profile.edit') => 'Profile Information',
-            route('integrations.custom-fields.index', $admin->integrations->first()) => 'Custom Integration Fields',
+            route('integrations.custom-fields.index', $admin->organization->integrations->first()) => 'Custom Integration Fields',
 
             route('plans.index') => 'Plans',
             route('plans.create') => 'Create Straight-Line Commission Plan',
