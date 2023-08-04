@@ -9,6 +9,7 @@ it('passes the correct props', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Integration/Index')
+                ->has('integrations')
                 ->has('activeIntegrations')
         );
 });
