@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Enum\IntegrationTypeEnum;
-use App\Models\PipedriveConfig;
 use App\Repositories\IntegrationRepository;
 use Carbon\Carbon;
 use Devio\Pipedrive\PipedriveToken;
@@ -22,15 +21,6 @@ class PipedriveTokenIO implements PipedriveTokenStorage
             'refresh_token' => $token->getRefreshToken(),
             'expires_at' => Carbon::createFromTimestamp($token->expiresAt()),
         ]);
-       
-        PipedriveConfig::updateOrCreate(
-            ['organization_id' => Auth::user()->organization->id],
-            [
-                'access_token' => $token->getAccessToken(),
-                'refresh_token' => $token->getRefreshToken(),
-                'expires_at' => Carbon::createFromTimestamp($token->expiresAt()),
-            ],
-        );
     }
 
     public function getToken(): ?PipedriveToken

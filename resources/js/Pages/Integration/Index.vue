@@ -6,7 +6,6 @@ import { Head } from '@inertiajs/vue3'
 
 const props = defineProps<{
     integrations: Array<Integration | null>
-    activeIntegrations: Record<IntegrationTypeEnum, string> | null
 }>()
 
 const availableIntegrationNames: Array<IntegrationTypeEnum> = ['pipedrive']

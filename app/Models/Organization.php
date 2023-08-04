@@ -17,14 +17,6 @@ class Organization extends Model
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'pipedriveConfig',
-    ];
-
-    protected $appends = [
-        'active_integrations',
-    ];
-
     public function plans(): HasMany
     {
         return $this->hasMany(Plan::class);
@@ -43,25 +35,5 @@ class Organization extends Model
     public function integrations(): HasMany
     {
       return $this->hasMany(Integration::class);
-    }
-
-    public function pipedriveConfig(): HasOne
-    {
-        return $this->hasOne(PipedriveConfig::class);
-    }
-
-    protected function activeIntegrations(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $activeIntegrations = [];
-
-                if ($this->pipedriveConfig?->subdomain) {
-                    $activeIntegrations['pipedrive'] = $this->pipedriveConfig?->subdomain;
-                }
-
-                return $activeIntegrations;
-            }
-        );
     }
 }

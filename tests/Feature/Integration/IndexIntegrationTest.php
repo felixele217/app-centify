@@ -15,6 +15,5 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('Integration/Index')
                 ->has('integrations.0.custom_fields')
-                ->has('activeIntegrations')
         );
 });

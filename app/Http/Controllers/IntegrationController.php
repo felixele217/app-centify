@@ -15,7 +15,6 @@ class IntegrationController extends Controller
     {
         return Inertia::render('Integration/Index', [
             'integrations' => Integration::with('customFields')->whereOrganizationId(Auth::user()->organization->id)->get(),
-            'activeIntegrations' => Auth::user()->organization->activeIntegrations,
         ]);
     }
 }

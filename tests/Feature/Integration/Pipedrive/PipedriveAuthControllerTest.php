@@ -1,14 +1,9 @@
 <?php
 
 use App\Models\Integration;
-use App\Models\PipedriveConfig;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
-
-    PipedriveConfig::factory()->create([
-        'organization_id' => $this->admin->organization->id,
-    ]);
 });
 
 it('redirects to correct route and stores the integration', function () {
