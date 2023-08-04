@@ -33,7 +33,11 @@ function syncIntegration() {
 }
 
 function hasMissingCustomField() {
-    return !props.activeIntegration?.custom_fields.length
+    if (!props.activeIntegration) {
+        return false
+    }
+
+    return props.activeIntegration!.custom_fields?.length !== 1
 }
 </script>
 

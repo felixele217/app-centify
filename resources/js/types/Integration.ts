@@ -10,5 +10,5 @@ export default interface Integration {
     refresh_token: string
     expires_at: Date
     subdomain: Date
-    custom_fields: Array<CustomField>
+    custom_fields?: Array<CustomField>
 }

@@ -67,38 +67,36 @@ function updateCustomField(customField: CustomField) {
         }
     )
 }
-const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.integration.custom_fields)
+const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.integration.custom_fields!)
 </script>
 
 <template>
     <div class="w-2/3">
         <h2>Custom Integration Fields</h2>
 
-        <p class="mt-2">
-            To streamline all integration processes, we require you to create and use the following custom fields in
-            your CRM.
-        </p>
+        <p class="mt-8 font-bold">How to create and add Custom Integration Fields in {{ props.integration.name }}</p>
 
-        <p class="mt-6">
-            To create the custom fields go to <br />
-            <span class="font-bold">Pipedrive > Company Settings > Company > Datafields</span>
-            or
+        <div class="mt-3">
             <a
                 :href="`https://${props.integration.subdomain}.pipedrive.com/settings/fields`"
                 class="link"
                 target="_blank"
             >
-                click this link.
+                1. Open your Custom Integration Fields
             </a>
-        </p>
+        </div>
 
-        <p class="mt-6">
-            You should see a green <span class="font-bold"> 'Add custom field button'. </span>
-            <br />
-            Below you can see the expected names and types of the fields you have to create.
-        </p>
+        <div class="mt-2 flex gap-0.5">
+            <p class="">2.</p>
+            <div class="">
+                You should see a green
+                <span class="font-bold"> 'Add custom field button'. </span>
+                <br />
+                Create the fields which types (e.g. Person field) and names (e.g. 'demo_set_by') match the ones below.
+            </div>
+        </div>
 
-        <p class="mt-6">After creating the keys, click the option dots and copy&paste their API keys.</p>
+        <p class="mt-2">3. After creating the keys, click the option dots and copy&paste their API keys.</p>
 
         <div
             class="mt-6 flex items-center gap-5 rounded-md py-2"
@@ -110,7 +108,7 @@ const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.
             <TextInput
                 type="text"
                 v-model="apiKeyRefs[customFieldName]"
-                class="ml-5"
+                class="ml-3"
                 no-top-margin
             />
 
