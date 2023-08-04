@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\IntegrationCustomFieldController;
 use App\Http\Controllers\PipedriveAuthController;
 use App\Http\Controllers\SalesforceAuthController;
-use App\Http\Controllers\IntegrationCustomFieldController;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('salesforce-auth', [SalesforceAuthController::class, 'create'])->name('authenticate.salesforce.create');

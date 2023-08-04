@@ -3,7 +3,6 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
-use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
@@ -14,7 +13,6 @@ Route::get('/', fn () => to_route('dashboard'));
 
 Route::middleware('auth')->group(function () {
     Route::middleware(AppendTimeScopeQuery::class)->get('/dashboard', DashboardController::class)->name('dashboard');
-
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
