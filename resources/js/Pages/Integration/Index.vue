@@ -11,16 +11,12 @@ const props = defineProps<{
 
 const availableIntegrationNames: Array<IntegrationTypeEnum> = ['pipedrive']
 
-function isActive(availableIntegrationName: IntegrationTypeEnum) {
-    if (!props.integrations.length) {
-        return false
-    }
-
-    return props.integrations.filter((integration) => integration!.name === availableIntegrationName)[0]
-}
-
 function hasAllCustomFields(availableIntegration: IntegrationTypeEnum) {
     return true
+}
+
+function activeIntegration(availableIntegrationName: IntegrationTypeEnum) {
+    return props.integrations.filter((integration) => integration!.name === availableIntegrationName)[0]
 }
 </script>
 
@@ -30,8 +26,7 @@ function hasAllCustomFields(availableIntegration: IntegrationTypeEnum) {
         <IntegrationCard
             v-for="availableIntegrationName in availableIntegrationNames"
             :integrationName="availableIntegrationName"
-            :isActive="isActive(availableIntegrationName)"
-            :has-all-custom-fields="hasAllCustomFields(availableIntegrationName)"
+            :activeIntegration="activeIntegration(availableIntegrationName)"
         />
     </div>
 </template>

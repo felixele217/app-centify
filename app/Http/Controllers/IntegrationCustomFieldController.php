@@ -19,7 +19,7 @@ class IntegrationCustomFieldController extends Controller
     public function index(Integration $integration): Response
     {
         return Inertia::render('Integration/CustomField/Index', [
-            'custom_fields' => $integration->customFields,
+            'integration' => $integration->load('customFields'),
             'available_custom_field_names' => array_column(CustomFieldEnum::cases(), 'value'),
         ]);
     }

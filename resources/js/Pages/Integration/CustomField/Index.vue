@@ -2,50 +2,57 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import useFieldsRef from '@/Components/CustomIntegrationField/Composables/useFieldsRef'
 import TextInput from '@/Components/Form/TextInput.vue'
-import CustomIntegrationField from '@/types/CustomIntegrationField'
-import { CustomIntegrationFieldEnum } from '@/types/Enum/CustomIntegrationFieldEnum'
-import customIntegrationField from '@/utils/CustomIntegrationField/customIntegrationField'
+import CustomField from '@/types/CustomField'
+import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
+import Integration from '@/types/Integration'
+import customField from '@/utils/CustomField/customField'
 import notify from '@/utils/notify'
 import { router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 const props = defineProps<{
-    custom_integration_fields: Array<CustomIntegrationField>
-    available_integration_field_names: Array<CustomIntegrationFieldEnum>
+    integration: Integration
+    available_custom_field_names: Array<CustomFieldEnum>
 }>()
 
-function upsertCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
-    if (customIntegrationField(props.custom_integration_fields, integrationField)) {
-        updateCustomIntegrationField(integrationField)
+function upsertCustomField(customFieldName: CustomFieldEnum) {
+    const currentCustomField = customField(props.integration.custom_fields, customFieldName)
+
+    if (currentCustomField) {
+        updateCustomField(currentCustomField)
     } else {
-        storeCustomIntegrationField(integrationField)
+        storeCustomField(customFieldName)
     }
 }
 
-function storeCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
+function storeCustomField(customFieldName: CustomFieldEnum) {
     router.post(
-        route('custom-integration-fields.store'),
+        route('integrations.custom-fields.store', props.integration.id),
         {
-            name: integrationField,
-            api_key: apiKeyRefs.value[integrationField],
-            integration_type: 'pipedrive',
+            name: customFieldName,
+            api_key: apiKeyRefs.value[customFieldName],
+            integration_type: props.integration.name,
         },
         {
             onSuccess: () => {
                 notify('Api key stored!', 'We can now access the value of your custom field.')
             },
+            onError: () => {
+                notify(
+                    'Store failed!',
+                    'The format of the api key was invalid. It has to be 40 characters long.',
+                    false
+                )
+            },
         }
     )
 }
 
-function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEnum) {
+function updateCustomField(customField: CustomField) {
     router.put(
-        route(
-            'custom-integration-fields.update',
-            customIntegrationField(props.custom_integration_fields, integrationField)
-        ),
+        route('integrations.custom-fields.update', [customField.integration_id, customField.id]),
         {
-            api_key: apiKeyRefs.value[integrationField],
+            api_key: apiKeyRefs.value[customField.name],
         },
         {
             onSuccess: () => {
@@ -61,7 +68,7 @@ function updateCustomIntegrationField(integrationField: CustomIntegrationFieldEn
         }
     )
 }
-const apiKeyRefs = useFieldsRef(props.available_integration_field_names, props.custom_integration_fields)
+const apiKeyRefs = useFieldsRef(props.available_custom_field_names, props.integration.custom_fields)
 
 const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization.active_integrations.pipedrive)
 </script>
@@ -98,20 +105,20 @@ const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization
 
         <div
             class="mt-6 flex items-center gap-5 rounded-md py-2"
-            v-for="(integrationFieldName, index) in props.available_integration_field_names"
+            v-for="(customFieldName, index) in props.available_custom_field_names"
             :key="index"
         >
-            <p class="whitespace-nowrap">{{ integrationFieldName }}:</p>
+            <p class="whitespace-nowrap">{{ customFieldName }}:</p>
 
             <TextInput
                 type="text"
-                v-model="apiKeyRefs[integrationFieldName]"
+                v-model="apiKeyRefs[customFieldName]"
                 class="ml-5"
                 no-top-margin
             />
 
             <PrimaryButton
-                @click="upsertCustomIntegrationField(integrationFieldName)"
+                @click="upsertCustomField(customFieldName)"
                 text="Save"
             />
         </div>

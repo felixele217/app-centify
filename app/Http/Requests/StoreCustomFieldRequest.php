@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Enum\CustomIntegrationFieldEnum;
-use App\Enum\IntegrationTypeEnum;
+use App\Enum\CustomFieldEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -16,18 +15,13 @@ class StoreCustomFieldRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                new Enum(CustomIntegrationFieldEnum::class),
+                new Enum(CustomFieldEnum::class),
             ],
 
             'api_key' => [
                 'required',
                 'string',
                 'size:40',
-            ],
-
-            'integration_type' => [
-                'required',
-                new Enum(IntegrationTypeEnum::class),
             ],
         ];
     }

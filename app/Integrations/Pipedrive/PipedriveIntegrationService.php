@@ -18,8 +18,10 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
     public function __construct()
     {
-        $this->demoSetByApiKey = Auth::user()->organization->customIntegrationFields()
-            ->whereIntegrationType(IntegrationTypeEnum::PIPEDRIVE->value)
+        $this->demoSetByApiKey = Auth::user()->organization->integrations()
+            ->whereName(IntegrationTypeEnum::PIPEDRIVE->value)
+            ->first()
+            ->customFields()
             ->whereName(CustomIntegrationFieldEnum::DEMO_SET_BY->value)
             ->first()?->api_key;
     }

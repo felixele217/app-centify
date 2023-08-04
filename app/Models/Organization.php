@@ -45,11 +45,6 @@ class Organization extends Model
       return $this->hasMany(Integration::class);
     }
 
-    public function customIntegrationFields(): HasMany
-    {
-        return $this->hasMany(CustomIntegrationField::class);
-    }
-
     public function pipedriveConfig(): HasOne
     {
         return $this->hasOne(PipedriveConfig::class);

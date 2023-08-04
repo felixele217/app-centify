@@ -1,6 +1,5 @@
 import Admin from './Admin'
 import Agent from './Agent'
-import CustomIntegrationField from './CustomIntegrationField'
 import Plan from './Plan/Plan'
 
 export default interface Organization {
@@ -15,7 +14,6 @@ export default interface Organization {
         pipedrive: null | string
         salesforce: null | string
     }
-    custom_integration_fields: Array<CustomIntegrationField>
     pipedrive_config?: {
         subdomain: string
     }

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('api_key');
-            $table->string('integration_type');
             $table->foreignIdFor(Integration::class);
             $table->timestamps();
         });

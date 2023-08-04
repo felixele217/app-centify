@@ -1,23 +1,27 @@
 <?php
 
-use App\Enum\CustomIntegrationFieldEnum;
+use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Helper\DateHelper;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
-use App\Models\CustomIntegrationField;
+use App\Models\CustomField;
 use App\Models\Deal;
+use App\Models\Integration;
 use Illuminate\Support\Facades\Auth;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
 
-    CustomIntegrationField::create([
+    $this->integration = Integration::factory()->create([
         'organization_id' => $this->admin->organization->id,
-        'name' => CustomIntegrationFieldEnum::DEMO_SET_BY->value,
-        'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
+    ]);
+
+    CustomField::create([
+        'name' => CustomFieldEnum::DEMO_SET_BY->value,
+        'integration_id' => $this->integration->id,
         'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
     ]);
 });

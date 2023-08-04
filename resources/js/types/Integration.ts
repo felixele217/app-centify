@@ -1,3 +1,4 @@
+import CustomField from './CustomField'
 import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
 
 export default interface Integration {
@@ -9,4 +10,5 @@ export default interface Integration {
     refresh_token: string
     expires_at: Date
     subdomain: Date
+    custom_fields: Array<CustomField>
 }

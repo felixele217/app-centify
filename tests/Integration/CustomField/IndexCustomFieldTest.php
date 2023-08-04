@@ -18,7 +18,7 @@ it('passes the correct props', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Integration/CustomField/Index')
-                ->has('custom_fields', $customFieldCount)
+                ->has('integration.custom_fields', $customFieldCount)
                 ->where('available_custom_field_names', array_column(CustomFieldEnum::cases(), 'value'))
         );
 });
@@ -34,7 +34,7 @@ it('does not send foreign fields', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Integration/CustomField/Index')
-                ->has('custom_fields', 0)
+                ->has('integration.custom_fields', 0)
                 ->where('available_custom_field_names', array_column(CustomFieldEnum::cases(), 'value'))
         );
 });
