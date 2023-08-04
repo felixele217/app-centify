@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Plan;
+use App\Enum\CustomFieldEnum;
+use App\Enum\IntegrationTypeEnum;
 use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\CustomField;
 use App\Models\Integration;
-use App\Enum\CustomFieldEnum;
+use App\Models\Plan;
 use Illuminate\Database\Seeder;
-use App\Enum\IntegrationTypeEnum;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
             ...$admin->organization->agents->pluck('id'),
         ]);
 
-        CustomField::create([
+        CustomField::factory()->create([
             'integration_id' => Integration::factory()->create([
                 'name' => IntegrationTypeEnum::PIPEDRIVE->value,
                 'organization_id' => $admin->organization->id,
