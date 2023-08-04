@@ -2,10 +2,12 @@
 import { IntegrationTypeEnum } from '@/types/Enum/IntegrationTypeEnum'
 import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
 import Logo from '../Logos/Logo.vue'
+import Tooltip from '../Tooltip.vue'
 
 const props = defineProps<{
     for: IntegrationTypeEnum
@@ -30,18 +32,33 @@ function syncIntegration() {
 </script>
 
 <template>
-    <Card class="w-72">
+    <Card class="relative w-72">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <Logo :for="props.for" />
                 <h3>{{ props.for }}</h3>
             </div>
 
-            <Cog6ToothIcon
-                @click="router.get(route('custom-integration-fields.index'))"
-                class="h-6 w-6 cursor-pointer hover:text-primary"
-                v-if="activeIntegrations[props.for]"
-            />
+            <div>
+                <Tooltip
+                    :text="
+                        true
+                            ? ''
+                            : 'You did not configure all of the required fields to sync your integration data yet. To do so, click the wheel and follow the instructions'
+                    "
+                >
+                    <Cog6ToothIcon
+                        @click="router.get(route('custom-integration-fields.index'))"
+                        class="h-6 w-6 cursor-pointer hover:text-primary"
+                        v-if="activeIntegrations[props.for]"
+                    />
+
+                    <ExclamationCircleIcon
+                        v-if="false"
+                        class="absolute right-3 top-2 h-5 w-5 text-red-500"
+                    />
+                </Tooltip>
+            </div>
         </div>
 
         <div class="mt-10">
