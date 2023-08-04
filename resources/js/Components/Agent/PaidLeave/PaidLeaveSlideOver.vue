@@ -30,7 +30,7 @@ const form = useForm({
     start_date: null as Date | null,
     end_date: null as Date | null,
     continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
-    sum_of_commissions: 0,
+    sum_of_commissions: null,
 })
 
 watch(

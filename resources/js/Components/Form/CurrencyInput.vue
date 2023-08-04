@@ -1,77 +1,32 @@
 <script setup lang="ts">
-import TextInput from './TextInput.vue'
-
 const props = defineProps<{
-    value: number
+    value: number | null
 }>()
-
-const emit = defineEmits(['set-value'])
-
-function handleKeyDown(event: any) {
-    if (!['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Backspace', 'Tab', '-'].includes(event.key)) {
-        return
-    }
-
-    if (event.key === '-') {
-        emit('set-value', -props.value)
-        return
-    }
-
-    if (event.key === 'Backspace') {
-        if (props.value < 0 && props.value.toString().length === 2) {
-            emit('set-value', 0)
-            return
-        }
-
-        emit('set-value', Number(props.value.toString().slice(0, -1)))
-        return
-    }
-
-    if (props.value.toString().length > 8) {
-        return
-    }
-
-    if (props.value === 0) {
-        emit('set-value', Number(event.key))
-    } else {
-        emit('set-value', Number(props.value.toString() + event.key))
-    }
-}
-
-function currencyDisplay(valueInCents: number): string {
-    if (valueInCents.toString().length === 1) {
-        return `00.0${valueInCents}€`
-    }
-
-    if (valueInCents.toString().length === 2) {
-        return `00.${valueInCents}€`
-    }
-
-    if (valueInCents.toString().length === 3) {
-        const firstDigit = valueInCents.toString().slice(0, 1)
-        const lastTwoDigits = valueInCents.toString().slice(1)
-        return `0${firstDigit}.${lastTwoDigits}€`
-    }
-
-    if (valueInCents.toString().length === 4) {
-        const firstDigits = valueInCents.toString().slice(0, 2)
-        const lastTwoDigits = valueInCents.toString().slice(2)
-        return `${firstDigits}.${lastTwoDigits}€`
-    }
-
-    const options = {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }
-    return `${Number(valueInCents / 100).toLocaleString('de', options)}€`
-}
 </script>
 
 <template>
-    <TextInput
-        :class="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
-        @keydown.prevent="handleKeyDown"
-        type="text"
-        :modelValue="currencyDisplay(props.value)"
-    />
+    <div>
+        <div class="relative mt-2 rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <span class="text-gray-500 sm:text-sm">€</span>
+            </div>
+            <input
+                type="number"
+                name="price"
+                id="price"
+                class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="0.00"
+                aria-describedby="price-currency"
+                :value="props.value"
+                @input="$emit('set-value', $event.target?.value)"
+            />
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <span
+                    class="text-gray-500 sm:text-sm"
+                    id="price-currency"
+                    >EUR</span
+                >
+            </div>
+        </div>
+    </div>
 </template>

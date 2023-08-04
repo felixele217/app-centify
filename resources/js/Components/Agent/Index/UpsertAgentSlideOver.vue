@@ -32,8 +32,8 @@ const props = defineProps<{
 const form = useForm({
     name: '',
     email: '',
-    base_salary: 0,
-    on_target_earning: 0,
+    base_salary: null as number | null,
+    on_target_earning: null as number | null,
 })
 
 watch(
@@ -42,8 +42,8 @@ watch(
         if (agent) {
             form.name = agent.name
             form.email = agent.email
-            form.base_salary = agent.base_salary ?? 0
-            form.on_target_earning = agent.on_target_earning ?? 0
+            form.base_salary = agent.base_salary ?? null
+            form.on_target_earning = agent.on_target_earning ?? null
         }
     }
 )
