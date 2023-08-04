@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Integrations\Pipedrive;
 
-use App\Enum\CustomIntegrationFieldEnum;
+use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
@@ -22,7 +22,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
             ->whereName(IntegrationTypeEnum::PIPEDRIVE->value)
             ->first()
             ->customFields()
-            ->whereName(CustomIntegrationFieldEnum::DEMO_SET_BY->value)
+            ->whereName(CustomFieldEnum::DEMO_SET_BY->value)
             ->first()?->api_key;
     }
 
