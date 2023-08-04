@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
-import useCustomFieldRefs from '@/Components/CustomIntegrationField/Composables/useCustomFieldRefs'
+import useCustomFieldRefs from '@/Components/CustomField/Composable/useCustomFieldRefs'
 import TextInput from '@/Components/Form/TextInput.vue'
 import CustomField from '@/types/CustomField'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
