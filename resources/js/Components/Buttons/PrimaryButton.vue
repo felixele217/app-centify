@@ -4,6 +4,7 @@ import Button from './Button.vue'
 const props = defineProps<{
     text?: string
     padding?: string
+    disabled?: boolean
 }>()
 </script>
 

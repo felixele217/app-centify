@@ -6,6 +6,7 @@ import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router, usePage } from '@inertiajs/vue3'
+import Button from '../Buttons/Button.vue'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
 import IntegrationLogo from '../Logos/IntegrationLogo.vue'
@@ -17,7 +18,6 @@ const props = defineProps<{
 }>()
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.integrationName}.create`))
-console.log(props.activeIntegration)
 
 function syncIntegration() {
     router.get(
@@ -33,7 +33,7 @@ function syncIntegration() {
 }
 
 function hasMissingCustomField() {
-    return !!props.activeIntegration?.custom_fields.filter((customField) => !customField.api_key).length
+    return !props.activeIntegration?.custom_fields.length
 }
 </script>
 
@@ -76,8 +76,15 @@ function hasMissingCustomField() {
                     <p class="-mt-0.5 text-sm font-semibold">active</p>
                 </div>
                 <PrimaryButton
+                    v-if="!hasMissingCustomField()"
                     text="Sync"
                     @click="syncIntegration"
+                />
+
+                <Button
+                    v-else
+                    class="bg-gray-200 text-white"
+                    text="Sync"
                 />
             </div>
 
