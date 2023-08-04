@@ -6,6 +6,7 @@ use App\Http\Requests\StorePaidLeaveRequest;
 use App\Models\Agent;
 use App\Models\PaidLeave;
 use Carbon\Carbon;
+use function Pest\Laravel\withoutExceptionHandling;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
@@ -83,5 +84,5 @@ it('does not throw validation errors if the paid leave is an empty object', func
         'sum_of_commissions' => 0,
     ])->fake();
 
-    $this->post(route('agents.paid-leaves.store', $this->agent))->assertValid();
+    $this->post(route('agents.paid-leaves.store', $this->agent))->assertValid()->assertRedirect();
 });
