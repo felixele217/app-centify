@@ -14,7 +14,6 @@ class PipedriveHelper
         $demoSetByApiKey = $demoSetByApiKey ?? env('PIPEDRIVE_DEMO_SET_BY');
 
         if (! array_key_exists($demoSetByApiKey, $deal)) {
-
             report(new InvalidApiKeyException($errorMessage = "Invalid demo_set_by api key! Please check your integration's settings."));
 
             return back()->withErrors([

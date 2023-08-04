@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+import Card from '@/Components/Card.vue'
 import useCustomFieldRefs from '@/Components/CustomField/Composable/useCustomFieldRefs'
 import TextInput from '@/Components/Form/TextInput.vue'
 import CustomField from '@/types/CustomField'
@@ -72,51 +73,52 @@ const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.
 
 <template>
     <div class="w-2/3">
-        <h2>Custom Integration Fields</h2>
+        <Card>
+            <h2>How to create and add Custom Integration Fields in {{ props.integration.name }}</h2>
 
-        <p class="mt-8 font-bold">How to create and add Custom Integration Fields in {{ props.integration.name }}</p>
-
-        <div class="mt-3">
-            <a
-                :href="`https://${props.integration.subdomain}.pipedrive.com/settings/fields`"
-                class="link"
-                target="_blank"
-            >
-                1. Open your Custom Integration Fields
-            </a>
-        </div>
-
-        <div class="mt-2 flex gap-0.5">
-            <p class="">2.</p>
-            <div class="">
-                You should see a green
-                <span class="font-bold"> 'Add custom field'</span>
-                button.
-                <br />
-                Create the fields which types (e.g. Person field) and names (e.g. 'demo_set_by') match the ones below.
+            <div class="mt-3">
+                <a
+                    :href="`https://${props.integration.subdomain}.pipedrive.com/settings/fields`"
+                    class="link"
+                    target="_blank"
+                >
+                    1. Open your Custom Integration Fields
+                </a>
             </div>
-        </div>
+            <div class="mt-2 flex gap-0.5">
+                <p class="">2.</p>
+                <div class="">
+                    You should see a green
+                    <span class="font-bold"> 'Add custom field'</span>
+                    button.
+                    <br />
+                    In pipedrive, create the fields which types (e.g. Person field) and names (e.g. 'demo_set_by') match
+                    the ones of the fields below.
+                </div>
+            </div>
+            <p class="mt-2">3. After creating the keys, click the option dots and copy&paste their API keys.</p>
+        </Card>
 
-        <p class="mt-2">3. After creating the keys, click the option dots and copy&paste their API keys.</p>
+        <Card class="mt-6">
+            <h3>Your Integration API Keys</h3>
 
-        <div
-            class="mt-6 flex items-center gap-5 rounded-md py-2"
-            v-for="(customFieldName, index) in props.available_custom_field_names"
-            :key="index"
-        >
-            <p class="whitespace-nowrap">{{ customFieldName }}:</p>
-
-            <TextInput
-                type="text"
-                v-model="apiKeyRefs[customFieldName]"
-                class="ml-3"
-                no-top-margin
-            />
-
-            <PrimaryButton
-                @click="upsertCustomField(customFieldName)"
-                text="Save"
-            />
-        </div>
+            <div
+                class="flex items-center gap-5 rounded-md py-2"
+                v-for="(customFieldName, index) in props.available_custom_field_names"
+                :key="index"
+            >
+                <p class="whitespace-nowrap">{{ customFieldName }}:</p>
+                <TextInput
+                    type="text"
+                    v-model="apiKeyRefs[customFieldName]"
+                    class="ml-3"
+                    no-top-margin
+                />
+                <PrimaryButton
+                    @click="upsertCustomField(customFieldName)"
+                    text="Save"
+                />
+            </div>
+        </Card>
     </div>
 </template>
