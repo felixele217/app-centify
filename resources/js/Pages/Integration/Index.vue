@@ -10,10 +10,6 @@ const props = defineProps<{
 
 const availableIntegrationNames: Array<IntegrationTypeEnum> = ['pipedrive']
 
-function hasAllCustomFields(availableIntegration: IntegrationTypeEnum) {
-    return true
-}
-
 function activeIntegration(availableIntegrationName: IntegrationTypeEnum) {
     return props.integrations.filter((integration) => integration!.name === availableIntegrationName)[0]
 }

@@ -30,6 +30,10 @@ function syncIntegration() {
         }
     )
 }
+
+function hasMissingCustomField() {
+    return !!props.activeIntegration?.custom_fields.filter((customField) => !customField.api_key).length
+}
 </script>
 
 <template>
@@ -42,9 +46,9 @@ function syncIntegration() {
             <div>
                 <Tooltip
                     :text="
-                        true
-                            ? ''
-                            : 'You did not configure all of the required fields to sync your integration data yet. To do so, please click the wheel and follow the instructions.'
+                        hasMissingCustomField()
+                            ? 'You did not configure all of the required fields to sync your integration data yet. To do so, please click the wheel and follow the instructions.'
+                            : ''
                     "
                 >
                     <Cog6ToothIcon
@@ -54,7 +58,7 @@ function syncIntegration() {
                     />
 
                     <ExclamationCircleIcon
-                        v-if="false"
+                        v-if="hasMissingCustomField()"
                         class="absolute right-3 top-2 h-5 w-5 text-red-500"
                     />
                 </Tooltip>
