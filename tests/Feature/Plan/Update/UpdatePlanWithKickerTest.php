@@ -136,7 +136,3 @@ it('does not update a kicker when an array with empty values is sent', function 
     expect($plan->kicker->threshold_in_percent)->not()->toBeNull();
     expect($plan->kicker->payout_in_percent)->not()->toBeNull();
 });
-
-it('can update a plan with removing the kicker as an admin', function () {
-
-})->todo();

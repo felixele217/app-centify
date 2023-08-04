@@ -33,10 +33,6 @@ it('can update a plan with a cliff as an admin', function (Plan $plan) {
     ]),
 ]);
 
-it('can update a plan with removing the cliff as an admin', function () {
-
-})->todo();
-
 it('does not throw validation errors if you send 0 as values in either of the percent fields', function () {
     $admin = signInAdmin();
 
