@@ -8,6 +8,7 @@ use App\Actions\GetPipedriveSubdomainAction;
 use App\Actions\SetPipedriveSubdomainAction;
 use App\Facades\Pipedrive;
 use App\Models\Integration;
+use App\Repositories\IntegrationRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,9 +30,10 @@ class PipedriveAuthController extends Controller
             Pipedrive::authorize(request()->query('code'));
         }
 
-        Integration::whereOrganizationId(Auth::user()->organization->id)->first()->update([
+        IntegrationRepository::update(Auth::user()->organization->id, [
             'subdomain' => GetPipedriveSubdomainAction::execute(),
         ]);
+
         SetPipedriveSubdomainAction::execute(Auth::user()->organization);
 
         return to_route('custom-integration-fields.index');
