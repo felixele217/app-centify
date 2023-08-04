@@ -15,6 +15,7 @@ import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumO
 import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import PaidLeaveCard from './PaidLeaveCard.vue'
 
 const props = defineProps<{
     form: InertiaForm<{
@@ -115,7 +116,10 @@ const employed28OrMoreDays = ref<boolean>(true)
                     required
                 />
 
-                <InfoIcon hover-text="Pay is based on the last quarter as per German law." v-if="props.form.reason === 'on vacation'"/>
+                <InfoIcon
+                    hover-text="Pay is based on the last quarter as per German law."
+                    v-if="props.form.reason === 'on vacation'"
+                />
             </div>
 
             <SelectWithDescription
@@ -150,6 +154,16 @@ const employed28OrMoreDays = ref<boolean>(true)
             <InputError
                 class="mt-2"
                 :message="(props.form.errors as Record<string, string>)['sum_of_commissions']"
+            />
+        </div>
+
+        <div>
+            <h4 class="mt-20">Recent Paid Leaves</h4>
+
+            <PaidLeaveCard
+                class="mt-2"
+                v-for="paidLeave of agent.paid_leaves"
+                :paid-leave="paidLeave"
             />
         </div>
     </div>
