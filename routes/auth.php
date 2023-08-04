@@ -30,6 +30,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/integrations', IntegrationController::class)->name('integrations.index');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
