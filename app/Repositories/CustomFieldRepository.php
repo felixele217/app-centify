@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\StoreCustomFieldRequest;
-use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
+use App\Http\Requests\UpdateCustomFieldRequest;
 use App\Models\CustomField;
-use App\Models\CustomIntegrationField;
 
 class CustomFieldRepository
 {
@@ -19,8 +18,8 @@ class CustomFieldRepository
         ]);
     }
 
-    public static function update(CustomIntegrationField $customIntegrationField, UpdateCustomIntegrationFieldRequest $request): void
+    public static function update(UpdateCustomFieldRequest $request, CustomField $customField): void
     {
-        $customIntegrationField->update($request->validated());
+        $customField->update($request->validated());
     }
 }

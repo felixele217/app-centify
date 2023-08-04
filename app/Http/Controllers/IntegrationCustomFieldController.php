@@ -6,11 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Enum\CustomFieldEnum;
 use App\Http\Requests\StoreCustomFieldRequest;
-use App\Http\Requests\UpdateCustomIntegrationFieldRequest;
-use App\Models\CustomIntegrationField;
+use App\Http\Requests\UpdateCustomFieldRequest;
+use App\Models\CustomField;
 use App\Models\Integration;
 use App\Repositories\CustomFieldRepository;
-use App\Repositories\CustomIntegrationFieldRepository;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,9 +31,9 @@ class IntegrationCustomFieldController extends Controller
         return back();
     }
 
-    public function update(UpdateCustomIntegrationFieldRequest $request, CustomIntegrationField $customIntegrationField): RedirectResponse
+    public function update(UpdateCustomFieldRequest $request, Integration $integration, CustomField $customField): RedirectResponse
     {
-        CustomIntegrationFieldRepository::update($customIntegrationField, $request);
+        CustomFieldRepository::update($request, $customField);
 
         return back();
     }

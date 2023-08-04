@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('integrations/{integration}/custom-fields')->name('integrations.custom-fields.')->controller(IntegrationCustomFieldController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
-        Route::put('/{customIntegrationField}', 'update')->name('update');
+        Route::put('/{customField}', 'update')->name('update');
     });
 
     Route::get('pipedrive-sync', function () {
