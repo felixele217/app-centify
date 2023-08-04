@@ -52,9 +52,15 @@ class Organization extends Model
     protected function activeIntegrations(): Attribute
     {
         return Attribute::make(
-            get: fn () => [
-                'pipedrive' => $this->pipedriveConfig?->subdomain,
-            ]
+            get: function () {
+                $activeIntegrations = [];
+
+                if ($this->pipedriveConfig?->subdomain) {
+                    $activeIntegrations['pipedrive'] = $this->pipedriveConfig?->subdomain;
+                }
+
+                return $activeIntegrations;
+            }
         );
     }
 }

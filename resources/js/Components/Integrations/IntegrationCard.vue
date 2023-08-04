@@ -10,16 +10,15 @@ import IntegrationLogo from '../Logos/IntegrationLogo.vue'
 import Tooltip from '../Tooltip.vue'
 
 const props = defineProps<{
-    integration: IntegrationTypeEnum
+    integrationName: IntegrationTypeEnum
+    isActive: boolean
 }>()
 
-const activeIntegrations = usePage().props.integrations as Record<IntegrationTypeEnum, null | string>
-
-const authenticate = () => (window.location.href = route(`authenticate.${props.integration}.create`))
+const authenticate = () => (window.location.href = route(`authenticate.${props.integrationName}.create`))
 
 function syncIntegration() {
     router.get(
-        route(`${props.integration}.sync`),
+        route(`${props.integrationName}.sync`),
         {},
         {
             onSuccess: () =>
@@ -35,8 +34,8 @@ function syncIntegration() {
     <Card class="relative w-72">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <IntegrationLogo :integration="props.integration" />
-                <h3>{{ props.integration }}</h3>
+                <IntegrationLogo :integrationName="props.integrationName" />
+                <h3>{{ props.integrationName }}</h3>
             </div>
             <div>
                 <Tooltip
@@ -49,7 +48,7 @@ function syncIntegration() {
                     <Cog6ToothIcon
                         @click="router.get(route('custom-integration-fields.index'))"
                         class="-mb-1.5 h-6 w-6 cursor-pointer hover:text-primary"
-                        v-if="activeIntegrations[props.integration]"
+                        v-if="props.isActive"
                     />
 
                     <ExclamationCircleIcon
@@ -63,7 +62,7 @@ function syncIntegration() {
         <div class="mt-10">
             <div
                 class="flex items-center justify-between gap-5"
-                v-if="activeIntegrations[props.integration]"
+                v-if="props.isActive"
             >
                 <div class="-mb-1 flex items-center gap-3">
                     <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
