@@ -72,14 +72,5 @@ class DatabaseSeeder extends Seeder
         Plan::first()->agents()->attach([
             ...$admin->organization->agents->pluck('id'),
         ]);
-
-        CustomField::factory()->create([
-            'integration_id' => Integration::factory()->create([
-                'name' => IntegrationTypeEnum::PIPEDRIVE->value,
-                'organization_id' => $admin->organization->id,
-            ]),
-            'name' => CustomFieldEnum::DEMO_SET_BY->value,
-            'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
-        ]);
     }
 }

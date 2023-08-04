@@ -17,6 +17,7 @@ const props = defineProps<{
 }>()
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.integrationName}.create`))
+console.log(props.activeIntegration)
 
 function syncIntegration() {
     router.get(
