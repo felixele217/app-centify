@@ -141,7 +141,7 @@ const employed28OrMoreDays = ref<boolean>(true)
                 @set-value="(value: number) => (props.form.sum_of_commissions = value)"
             />
 
-            <CurrencyInputNew />
+            <!-- <CurrencyInputNew /> -->
 
             <InputError
                 class="mt-2"

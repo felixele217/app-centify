@@ -42,7 +42,7 @@ it('calculates the commission with the additional paid leave value for the curre
         ]);
     }
 
-    $daysForAPaidLeaveThisQuarter = DateHelper::weekdayCount(Carbon::now()->firstOfMonth(), $paidLeaveEndDate);
+    $daysForAPaidLeaveThisQuarter = DateHelper::weekdayCount(Carbon::now()->firstOfQuarter(), $paidLeaveEndDate);
     $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
 
     $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
