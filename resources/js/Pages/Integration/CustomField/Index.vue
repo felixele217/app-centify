@@ -90,8 +90,8 @@ const apiKeyRefs = useCustomFieldRefs(props.available_custom_field_names, props.
             <p class="">2.</p>
             <div class="">
                 You should see a green
-                <span class="font-bold"> 'Add custom field'. </span>
-                button
+                <span class="font-bold"> 'Add custom field'</span>
+                button.
                 <br />
                 Create the fields which types (e.g. Person field) and names (e.g. 'demo_set_by') match the ones below.
             </div>
