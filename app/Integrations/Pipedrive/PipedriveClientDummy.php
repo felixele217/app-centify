@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Integrations\Pipedrive;
 
+use Devio\Pipedrive\PipedriveToken;
+
 class PipedriveClientDummy
 {
     public function deals(): CustomResponse
@@ -376,6 +378,17 @@ class PipedriveClientDummy
         }
 
         return $emailCount;
+    }
+
+    public static function authorize(): void
+    {
+        $pipedriveTokenIO = new PipedriveTokenIO();
+
+        $pipedriveTokenIO->setToken(new PipedriveToken([
+            'accessToken' => 'test access token',
+            'refreshToken' => 'test refresh token',
+            'expiresAt' => 1691157785,
+        ]));
     }
 }
 

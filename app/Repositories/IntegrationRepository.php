@@ -12,8 +12,7 @@ class IntegrationRepository
     {
         return Integration::create([
             'organization_id' => $organizationId,
-            'name' => $integrationFields['name'],
-            'subdomain' => $integrationFields['subdomain'],
+            ...$integrationFields,
         ]);
     }
 }

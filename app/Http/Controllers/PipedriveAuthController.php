@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Facades\Pipedrive;
-use App\Enum\IntegrationTypeEnum;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use App\Repositories\IntegrationRepository;
 use App\Actions\GetPipedriveSubdomainAction;
 use App\Actions\SetPipedriveSubdomainAction;
+use App\Facades\Pipedrive;
+use App\Models\Integration;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class PipedriveAuthController extends Controller
 {
@@ -30,12 +29,10 @@ class PipedriveAuthController extends Controller
             Pipedrive::authorize(request()->query('code'));
         }
 
+        Integration::whereOrganizationId(Auth::user()->organization->id)->first()->update([
+            'subdomain' => GetPipedriveSubdomainAction::execute(),
+        ]);
         SetPipedriveSubdomainAction::execute(Auth::user()->organization);
-
-        // IntegrationRepository::create(Auth::user()->organization->id, [
-        //     'name' => IntegrationTypeEnum::PIPEDRIVE->value,
-        //     'subdomain' => GetPipedriveSubdomainAction::execute(),
-        // ]);
 
         return to_route('custom-integration-fields.index');
     }

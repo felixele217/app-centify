@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('subdomain');
+            $table->string('subdomain')->nullable();
+            $table->longText('access_token');
+            $table->longText('refresh_token');
+            $table->timestamp('expires_at');
             $table->foreignIdFor(Organization::class);
         });
     }

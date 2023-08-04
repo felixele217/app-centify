@@ -1,6 +1,7 @@
 <?php
 
 use App\Integrations\Pipedrive\PipedriveTokenIO;
+use App\Models\Integration;
 use App\Models\PipedriveConfig;
 use Carbon\Carbon;
 use Devio\Pipedrive\PipedriveToken;
@@ -46,4 +47,6 @@ it('updates the existing token model instead of creating a new one on setToken',
     expect($newToken->getAccessToken())->toBe($newAccessToken);
     expect($newToken->getRefreshToken())->toBe($newRefreshToken);
     expect($newToken->expiresAt())->toBe($newExpiredAt);
+
+    expect(Integration::count())->toBe(1);
 });
