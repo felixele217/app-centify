@@ -13,7 +13,7 @@ class IntegrationController extends Controller
     public function __invoke(): Response
     {
         return Inertia::render('Integration/Index', [
-            'integrations' => Auth::user()->organization->activeIntegrations,
+            'activeIntegrations' => Auth::user()->organization->activeIntegrations,
         ]);
     }
 }
