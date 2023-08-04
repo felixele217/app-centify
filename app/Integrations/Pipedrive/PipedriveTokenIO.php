@@ -27,7 +27,7 @@ class PipedriveTokenIO implements PipedriveTokenStorage
     {
         $integration = Auth::user()->organization->integrations()->whereName(IntegrationTypeEnum::PIPEDRIVE->value)->first();
 
-        if ($integration) {
+        if ($integration->access_token) {
             return new PipedriveToken([
                 'accessToken' => $integration->access_token,
                 'refreshToken' => $integration->refresh_token,
