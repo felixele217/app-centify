@@ -10,12 +10,10 @@ beforeEach(function () {
     ]);
 });
 
-it('redirects to correct route', function () {
+it('redirects to correct route and stores the integration', function () {
     $this->get(route('authenticate.pipedrive.store'))->assertRedirect(route('custom-integration-fields.index'));
-});
 
-it('sets the subdomain for the organization', function () {
-    $this->get(route('authenticate.pipedrive.store'))->assertRedirect();
-
-    expect($this->admin->organization->pipedriveConfig->subdomain)->not()->toBeNull();
+    expect($this->admin->organization->integrations)->toHaveCount(1);
+    expect($this->admin->organization->integrations->first()->name->value)->toBe('pipedrive');
+    expect($this->admin->organization->integrations->first()->subdomain)->not()->toBeNull();
 });

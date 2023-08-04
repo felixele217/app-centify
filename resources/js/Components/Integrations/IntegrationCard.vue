@@ -12,6 +12,7 @@ import Tooltip from '../Tooltip.vue'
 const props = defineProps<{
     integrationName: IntegrationTypeEnum
     isActive: boolean
+    hasAllCustomFields: boolean
 }>()
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.integrationName}.create`))
@@ -40,9 +41,9 @@ function syncIntegration() {
             <div>
                 <Tooltip
                     :text="
-                        true
+                        props.hasAllCustomFields
                             ? ''
-                            : 'You did not configure all of the required fields to sync your integration data yet. To do so, click the wheel and follow the instructions'
+                            : 'You did not configure all of the required fields to sync your integration data yet. To do so, please click the wheel and follow the instructions.'
                     "
                 >
                     <Cog6ToothIcon
@@ -52,7 +53,7 @@ function syncIntegration() {
                     />
 
                     <ExclamationCircleIcon
-                        v-if="false"
+                        v-if="!props.hasAllCustomFields"
                         class="absolute right-3 top-2 h-5 w-5 text-red-500"
                     />
                 </Tooltip>
