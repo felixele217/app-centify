@@ -23,7 +23,7 @@ const navigation = [
         name: 'Integrations',
         href: route('integrations.index'),
         icon: PuzzlePieceIcon,
-        current: route().current('integrations'),
+        current: route().current('integrations.index'),
     },
 ]
 </script>
