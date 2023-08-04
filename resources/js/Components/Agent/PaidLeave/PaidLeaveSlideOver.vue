@@ -6,8 +6,8 @@ import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
-import PaidLeaveForm from './Agent/Index/PaidLeaveForm.vue'
 import { watch } from 'vue'
+import PaidLeaveForm from './PaidLeaveForm.vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -115,7 +115,10 @@ function submit() {
                                         <div class="flex h-full flex-1 flex-col justify-between overflow-y-auto">
                                             <div class="h-full divide-y divide-gray-200 px-6">
                                                 <div class="space-y-6 pb-5 pt-6">
-                                                    <PaidLeaveForm :form="form" :agentId="props.agentId" />
+                                                    <PaidLeaveForm
+                                                        :form="form"
+                                                        :agentId="props.agentId"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

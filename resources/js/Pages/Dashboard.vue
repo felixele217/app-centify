@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import PaidLeaveSlideOver from '@/Components/Agent/PaidLeave/PaidLeaveSlideOver.vue'
 import PayoutCard from '@/Components/Dashboard/Payout/PayoutCard.vue'
 import QuotaAttainment from '@/Components/Dashboard/Payout/QuotaAttainment.vue'
 import TotalPayoutByEmployee from '@/Components/Dashboard/Payout/TotalPayoutByEmployee.vue'
 import BanknotesIcon from '@/Components/Icon/BanknotesIcon.vue'
 import DealIcon from '@/Components/Icon/DealIcon.vue'
-import PaidLeaveSlideOver from '@/Components/PaidLeaveSlideOver.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
