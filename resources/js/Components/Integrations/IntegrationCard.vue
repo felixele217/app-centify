@@ -6,20 +6,20 @@ import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
-import Logo from '../Logos/Logo.vue'
+import IntegrationLogo from '../Logos/IntegrationLogo.vue'
 import Tooltip from '../Tooltip.vue'
 
 const props = defineProps<{
-    for: IntegrationTypeEnum
+    integration: IntegrationTypeEnum
 }>()
 
 const activeIntegrations = usePage().props.integrations as Record<IntegrationTypeEnum, null | string>
 
-const authenticate = () => (window.location.href = route(`authenticate.${props.for}.create`))
+const authenticate = () => (window.location.href = route(`authenticate.${props.integration}.create`))
 
 function syncIntegration() {
     router.get(
-        route(`${props.for}.sync`),
+        route(`${props.integration}.sync`),
         {},
         {
             onSuccess: () =>
@@ -35,8 +35,8 @@ function syncIntegration() {
     <Card class="relative w-72">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <Logo :for="props.for" />
-                <h3>{{ props.for }}</h3>
+                <IntegrationLogo :integration="props.integration" />
+                <h3>{{ props.integration }}</h3>
             </div>
 
             <div>
@@ -50,7 +50,7 @@ function syncIntegration() {
                     <Cog6ToothIcon
                         @click="router.get(route('custom-integration-fields.index'))"
                         class="h-6 w-6 cursor-pointer hover:text-primary"
-                        v-if="activeIntegrations[props.for]"
+                        v-if="activeIntegrations[props.integration]"
                     />
 
                     <ExclamationCircleIcon
@@ -64,7 +64,7 @@ function syncIntegration() {
         <div class="mt-10">
             <div
                 class="flex items-center justify-between gap-5"
-                v-if="activeIntegrations[props.for]"
+                v-if="activeIntegrations[props.integration]"
             >
                 <div class="-mb-1 flex items-center gap-3">
                     <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />

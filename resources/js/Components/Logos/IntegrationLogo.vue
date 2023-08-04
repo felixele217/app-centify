@@ -4,14 +4,14 @@ import { Component, computed } from 'vue'
 import PipedriveLogo from './PipedriveLogo.vue'
 
 const props = defineProps<{
-    for: IntegrationTypeEnum
+    integration: IntegrationTypeEnum
 }>()
 
 const logos: Record<IntegrationTypeEnum, Component> = {
     pipedrive: PipedriveLogo,
 }
 
-const LogoToRender = computed(() => logos[props.for])
+const LogoToRender = computed(() => logos[props.integration])
 </script>
 
 <template>
