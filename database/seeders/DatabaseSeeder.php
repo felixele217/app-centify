@@ -79,7 +79,6 @@ class DatabaseSeeder extends Seeder
                 'organization_id' => $admin->organization->id,
             ]),
             'name' => CustomFieldEnum::DEMO_SET_BY->value,
-            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
             'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
         ]);
     }
