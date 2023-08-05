@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\InvalidApiKeyException;
 use App\Integrations\Pipedrive\PipedriveClientDummy;
 use App\Integrations\Pipedrive\PipedriveHelper;
 
@@ -18,5 +19,5 @@ it('returns null if it has no demo_set_by email', function () {
 it('throws an exception if the provided api key is wrong', function () {
     $deals = (new PipedriveClientDummy())->deals()->toArray();
 
-    expect(PipedriveHelper::demoSetByEmail($deals[2], 'invalid api key')->content())->toContain('Redirecting to');
-});
+    PipedriveHelper::demoSetByEmail($deals[2], 'invalid api key');
+})->throws(InvalidApiKeyException::class);

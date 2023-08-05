@@ -1,5 +1,6 @@
 import Admin from './Admin'
 import Agent from './Agent'
+import Integration from './Integration'
 import Plan from './Plan/Plan'
 
 export default interface Organization {
@@ -10,11 +11,5 @@ export default interface Organization {
     admins?: Array<Admin>
     agents?: Array<Agent>
     plans?: Array<Plan>
-    active_integrations: {
-        pipedrive: null | string
-        salesforce: null | string
-    }
-    pipedrive_config?: {
-        subdomain: string
-    }
+    integrations?: Array<Integration | null>
 }

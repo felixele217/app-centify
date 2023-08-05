@@ -5,15 +5,17 @@ import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
+import Integration from '@/types/Integration'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
-import { router, usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 
 const props = defineProps<{
     deals: Array<Deal>
+    integrations: Array<Integration>
 }>()
 
 function updateDeal() {
@@ -32,7 +34,7 @@ function updateDeal() {
     )
 }
 
-const pipedriveSubdomain = computed(() => usePage().props.auth.user.organization.active_integrations.pipedrive)
+const pipedriveSubdomain = computed(() => props.integrations[0].subdomain)
 
 function notifyUpdate() {
     const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
