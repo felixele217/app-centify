@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 function upsertCustomField(customFieldName: CustomFieldEnum) {
-    const currentCustomField = customField(props.integration.custom_fields, customFieldName)
+    const currentCustomField = customField(props.integration.custom_fields!, customFieldName)
 
     if (currentCustomField) {
         updateCustomField(currentCustomField)
