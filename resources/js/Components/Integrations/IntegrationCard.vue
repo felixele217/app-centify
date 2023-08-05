@@ -6,7 +6,6 @@ import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router, usePage } from '@inertiajs/vue3'
-import Button from '../Buttons/Button.vue'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
 import IntegrationLogo from '../Logos/IntegrationLogo.vue'
@@ -79,16 +78,11 @@ function hasMissingCustomField() {
                     <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
                     <p class="-mt-0.5 text-sm font-semibold">active</p>
                 </div>
+
                 <PrimaryButton
-                    v-if="!hasMissingCustomField()"
                     text="Sync"
                     @click="syncIntegration"
-                />
-
-                <Button
-                    v-else
-                    class="bg-gray-200 text-white"
-                    text="Sync"
+                    :disabled="hasMissingCustomField()"
                 />
             </div>
 

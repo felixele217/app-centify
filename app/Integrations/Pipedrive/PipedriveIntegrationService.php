@@ -44,7 +44,6 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $agentEmails = [];
 
         foreach ($deals as $deal) {
-
             $email = PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey);
 
             if ($email && ! in_array($email, $agentEmails)) {
