@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\InvalidApiKeyException;
 use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\IntegrationCustomFieldController;
 use App\Http\Controllers\PipedriveAuthController;
@@ -29,16 +28,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('pipedrive-sync', function () {
+        (new PipedriveIntegrationService())->syncAgentDeals();
 
-        try {
-            (new PipedriveIntegrationService())->syncAgentDeals();
-
-            return back();
-        } catch (InvalidApiKeyException $exception) {
-            return back()->withErrors([
-                'invalid_api_key' => $exception->getMessage(),
-            ]);
-        }
-
+        return back();
     })->name('pipedrive.sync');
 });
