@@ -15,7 +15,6 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "mudandstars/sync-enum-types": "^0.8.0",
         "omniphx/forrest": "^2.16",
         "tightenco/ziggy": "^1.0",
         "fakerphp/faker": "^1.9.1"
@@ -27,6 +26,7 @@
         "laravel/pint": "^1.10",
         "laravel/sail": "^1.23",
         "mockery/mockery": "^1.4.4",
+        "mudandstars/sync-enum-types": "^1.0",
         "nunomaduro/collision": "^7.0",
         "nunomaduro/larastan": "^2.0",
         "pestphp/pest": "^2.9",
