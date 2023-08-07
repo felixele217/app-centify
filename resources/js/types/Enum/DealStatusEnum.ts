@@ -1,1 +1,1 @@
-export type DealStatusEnum = 'open' | 'won' | 'lost'
+export type DealStatusEnum ='open' | 'won' | 'lost';

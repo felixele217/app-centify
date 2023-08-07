@@ -1,1 +1,1 @@
-export type TimeScopeEnum = 'monthly' | 'quarterly' | 'annually'
+export type TimeScopeEnum ='monthly' | 'quarterly' | 'annually';

@@ -6976,31 +6976,31 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.4",
+            "version": "1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66"
+                "reference": "68782e943f9ffcbc72bda08aedabe73fecb50041"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/d1413755e26fe56a63455f7753221c86cbb88f66",
-                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/68782e943f9ffcbc72bda08aedabe73fecb50041",
+                "reference": "68782e943f9ffcbc72bda08aedabe73fecb50041",
                 "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "^2.0.1",
                 "lib-pcre": ">=7.0",
-                "php": ">=7.4,<8.3"
+                "php": ">=7.3"
             },
             "conflict": {
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5 || ^9.3",
+                "phpunit/phpunit": "^8.5 || ^9.6.10",
                 "psalm/plugin-phpunit": "^0.18.4",
                 "symplify/easy-coding-standard": "^11.5.0",
-                "vimeo/psalm": "^5.13.1"
+                "vimeo/psalm": "^4.30"
             },
             "type": "library",
             "autoload": {
@@ -7057,20 +7057,20 @@
                 "security": "https://github.com/mockery/mockery/security/advisories",
                 "source": "https://github.com/mockery/mockery"
             },
-            "time": "2023-07-19T15:51:02+00:00"
+            "time": "2023-08-06T00:30:34+00:00"
         },
         {
             "name": "mudandstars/sync-enum-types",
-            "version": "v1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mudandstars/sync-enum-types.git",
-                "reference": "0a7cf4acb1912a415735f2fdfe1c18a7b3a1fc09"
+                "reference": "41f01a1680ca26b5675378d3490f9c8ecf27a75e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mudandstars/sync-enum-types/zipball/0a7cf4acb1912a415735f2fdfe1c18a7b3a1fc09",
-                "reference": "0a7cf4acb1912a415735f2fdfe1c18a7b3a1fc09",
+                "url": "https://api.github.com/repos/mudandstars/sync-enum-types/zipball/41f01a1680ca26b5675378d3490f9c8ecf27a75e",
+                "reference": "41f01a1680ca26b5675378d3490f9c8ecf27a75e",
                 "shasum": ""
             },
             "require": {
@@ -7121,9 +7121,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mudandstars/sync-enum-types/issues",
-                "source": "https://github.com/mudandstars/sync-enum-types/tree/v1.0"
+                "source": "https://github.com/mudandstars/sync-enum-types/tree/v1.1.1"
             },
-            "time": "2023-08-05T14:42:51+00:00"
+            "time": "2023-08-07T08:47:35+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -7186,16 +7186,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v7.8.0",
+            "version": "v7.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "1813f0a3470f2ac171443bc37b324c2a693005f9"
+                "reference": "61553ad3260845d7e3e49121b7074619233d361b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/1813f0a3470f2ac171443bc37b324c2a693005f9",
-                "reference": "1813f0a3470f2ac171443bc37b324c2a693005f9",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/61553ad3260845d7e3e49121b7074619233d361b",
+                "reference": "61553ad3260845d7e3e49121b7074619233d361b",
                 "shasum": ""
             },
             "require": {
@@ -7275,7 +7275,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-08-04T10:26:10+00:00"
+            "time": "2023-08-07T08:03:21+00:00"
         },
         {
             "name": "nunomaduro/larastan",
