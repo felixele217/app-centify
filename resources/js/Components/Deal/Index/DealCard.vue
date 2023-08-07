@@ -69,7 +69,7 @@ const noteText = ref<string>(props.deal.note ?? '')
         <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
     </td>
 
-    <td class="col-span-2 px-3 py-4">
+    <td class="col-span-2 px-3 py-4 text-gray-500">
         <a
             class="link"
             :href="`https://${pipedriveSubdomain}.pipedrive.com/deal/${deal.integration_deal_id}`"
@@ -77,23 +77,20 @@ const noteText = ref<string>(props.deal.note ?? '')
         >
             {{ deal.title }}
         </a>
-    </td>
-
-    <td class="col-span-2 px-3 py-4 text-gray-500">
-        {{ euroDisplay(deal.value) }}
+        <p>{{ euroDisplay(deal.value) }}</p>
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
         {{ paymentCycle(deal.add_time) }}
     </td>
 
-    <td class="col-span-2 px-3 py-4 text-gray-500">
+    <td class="col-span-4 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
             class="flex cursor-pointer items-center gap-1.5 hover:text-black"
             @click="dealIdOfNoteBeingEdited = deal.id"
         >
-            <p>{{ deal.note ?? 'Add Note' }}</p>
+            <p class="truncate">{{ deal.note ?? 'Add Note' }}</p>
 
             <PencilSquareIcon class="h-4 w-4" />
         </div>
