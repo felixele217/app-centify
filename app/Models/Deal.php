@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,13 @@ class Deal extends Model
 
     public function rejections(): HasMany
     {
-       return $this->hasMany(Rejection::class);
+        return $this->hasMany(Rejection::class);
+    }
+
+    public function latestRejection(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rejections()->orderBy('created_at', 'desc')->first(),
+        );
     }
 }

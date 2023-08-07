@@ -40,6 +40,7 @@ const props = defineProps<{
             />
         </Tooltip>
     </div>
+   
     <div
         class="flex justify-center"
         v-else-if="props.deal.declined_at"

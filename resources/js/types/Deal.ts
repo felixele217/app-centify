@@ -1,6 +1,7 @@
 import Agent from './Agent'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
 import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
+import Rejection from './Rejection'
 
 export default interface Deal {
     id: number
@@ -14,6 +15,7 @@ export default interface Deal {
     owner_email: string
     agent?: Agent
     accepted_at: string | null
-    declined_at: string | null
     note: string | null
+    rejections?: Array<Rejection>
+    latest_rejection: Rejection
 }
