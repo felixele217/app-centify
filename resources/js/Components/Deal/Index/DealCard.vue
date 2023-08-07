@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import InputError from '@/Components/Form/InputError.vue'
+import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import Modal from '@/Components/Modal.vue'
 import Deal from '@/types/Deal'
@@ -7,7 +9,7 @@ import paymentCycle from '@/utils/Date/paymentCycle'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 
@@ -17,19 +19,24 @@ const props = defineProps<{
 }>()
 
 function updateDeal() {
-    const body = dealIdOfNoteBeingEdited
+    const body = dealIdOfNoteBeingEdited.value
         ? {
               note: noteText.value,
           }
-        : {
+        : dealIdBeingAccepted.value
+        ? {
               has_accepted_deal: !!dealIdBeingAccepted.value,
+          }
+        : {
+              rejection_reason: rejectionReason.value,
           }
 
     router.put(route('deals.update', props.deal.id), body, {
         onSuccess: () => {
-            if (dealIdOfNoteBeingEdited) {
+            if (dealIdOfNoteBeingEdited.value) {
                 notifyEditedNote()
                 dealIdOfNoteBeingEdited.value = undefined
+                noteText.value = ''
             } else {
                 notifyAcceptDecline()
                 dealIdBeingAccepted.value = null
@@ -61,6 +68,8 @@ const dealIdBeingAccepted = ref<number | null>()
 const dealIdBeingDeclined = ref<number | null>()
 const dealIdOfNoteBeingEdited = ref<number>()
 const noteText = ref<string>(props.deal.note ?? '')
+
+const rejectionReason = ref<string>('')
 </script>
 
 <template>
@@ -137,5 +146,19 @@ const noteText = ref<string>(props.deal.note ?? '')
         button-text="Decline"
         title="Decline Deal"
         :description="'Are you sure you want to decline this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
-    />
+    >
+        <div class="mt-5">
+            <InputLabel
+                value="Reason"
+                required
+            />
+
+            <TextInput v-model="rejectionReason" />
+
+            <InputError
+                class="mt-2"
+                :message="usePage().props.errors.rejection_reason"
+            />
+        </div>
+    </Modal>
 </template>

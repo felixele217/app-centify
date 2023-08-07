@@ -94,6 +94,8 @@ const props = defineProps<{
                                 </div>
                             </div>
 
+                            <slot />
+
                             <div class="mt-6 sm:flex sm:flex-row-reverse">
                                 <button
                                     type="button"

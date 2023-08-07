@@ -3,8 +3,6 @@ export default function paymentCycle(originalDate?: string | null): string {
         return '-'
     }
 
-    console.log(originalDate);
-
     const date = new Date(originalDate)
 
     const monthNumber = date.getMonth() + 1
