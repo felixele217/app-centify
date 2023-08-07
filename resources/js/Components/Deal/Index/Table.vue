@@ -6,6 +6,7 @@ import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import Integration from '@/types/Integration'
+import paymentCycle from '@/utils/Date/paymentCycle'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
@@ -94,7 +95,7 @@ const dealsText = computed(() => {
 
         <TableWrapper :no-items-text="noDealsText">
             <template #header>
-                <tr class="grid grid-cols-11 items-center">
+                <tr class="grid grid-cols-12 items-center">
                     <th
                         scope="col"
                         class="col-span-3 py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900"
@@ -103,7 +104,7 @@ const dealsText = computed(() => {
                     </th>
                     <th
                         scope="col"
-                        class="col-span-3 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                         Name
                     </th>
@@ -112,6 +113,12 @@ const dealsText = computed(() => {
                         class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                         Deal Value
+                    </th>
+                    <th
+                        scope="col"
+                        class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                        Payment Cycle
                     </th>
                     <th
                         scope="col"
@@ -130,14 +137,14 @@ const dealsText = computed(() => {
             <template #body>
                 <tr
                     v-for="deal in props.deals"
-                    class="grid grid-cols-11 items-center whitespace-nowrap text-sm"
+                    class="grid grid-cols-12 items-center whitespace-nowrap text-sm"
                 >
                     <td class="col-span-3 py-4 pl-6 pr-3">
                         <p class="text-gray-900">{{ deal.agent!.name }}</p>
                         <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
                     </td>
 
-                    <td class="col-span-3 px-3 py-4">
+                    <td class="col-span-2 px-3 py-4">
                         <a
                             class="link"
                             :href="`https://${pipedriveSubdomain}.pipedrive.com/deal/${deal.integration_deal_id}`"
@@ -149,6 +156,10 @@ const dealsText = computed(() => {
 
                     <td class="col-span-2 px-3 py-4 text-gray-500">
                         {{ euroDisplay(deal.value) }}
+                    </td>
+
+                    <td class="col-span-2 px-3 py-4 text-gray-500">
+                        {{ paymentCycle(deal.add_time) }}
                     </td>
 
                     <td class="col-span-2 px-3 py-4 text-gray-500">notes...</td>

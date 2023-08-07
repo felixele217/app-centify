@@ -9,10 +9,10 @@ export default interface Deal {
     title: string
     status: DealStatusEnum
     value: number
-    add_time: Date
+    add_time: string
     agent_id: number
     owner_email: string
     agent?: Agent
-    accepted_at: Date | null
-    declined_at: Date | null
+    accepted_at: string | null
+    declined_at: string | null
 }
