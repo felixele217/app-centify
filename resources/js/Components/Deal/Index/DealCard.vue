@@ -18,25 +18,16 @@ const props = defineProps<{
     integrations: Array<Integration>
 }>()
 
-function updateDeal() {
-    const body = dealIdOfNoteBeingEdited.value
-        ? {
-              note: noteText.value,
-          }
-        : dealIdBeingAccepted.value
-        ? {
-              has_accepted_deal: !!dealIdBeingAccepted.value,
-          }
-        : {
-              rejection_reason: rejectionReason.value,
-          }
+const acceptDeal = () => updateDeal({ has_accepted_deal: true })
+const declineDeal = () => updateDeal({ rejection_reason: rejectionReason.value })
+const updateDealNote = () => updateDeal({ note: noteText.value })
 
+function updateDeal(body: any) {
     router.put(route('deals.update', props.deal.id), body, {
         onSuccess: () => {
             if (dealIdOfNoteBeingEdited.value) {
                 notifyEditedNote()
                 dealIdOfNoteBeingEdited.value = undefined
-                noteText.value = ''
             } else {
                 notifyAcceptDecline()
                 dealIdBeingAccepted.value = null
@@ -111,12 +102,12 @@ const rejectionReason = ref<string>('')
             <TextInput
                 no-top-margin
                 v-model="noteText"
-                @keyup.enter="updateDeal"
+                @keyup.enter="updateDealNote"
             />
 
             <CheckIcon
                 class="h-7 w-7 rounded-full bg-gray-100 px-1.5 py-1 hover:bg-green-100 hover:text-green-900"
-                @click="updateDeal"
+                @click="updateDealNote"
             />
         </div>
     </td>
@@ -130,7 +121,7 @@ const rejectionReason = ref<string>('')
     </td>
 
     <Modal
-        @modal-action="updateDeal"
+        @modal-action="acceptDeal"
         :isOpen="!!dealIdBeingAccepted"
         @close-modal="dealIdBeingAccepted = null"
         button-text="Accept"
@@ -139,7 +130,7 @@ const rejectionReason = ref<string>('')
     />
 
     <Modal
-        @modal-action="updateDeal"
+        @modal-action="declineDeal"
         is-negative-action
         :isOpen="!!dealIdBeingDeclined"
         @close-modal="dealIdBeingDeclined = null"
@@ -153,7 +144,10 @@ const rejectionReason = ref<string>('')
                 required
             />
 
-            <TextInput v-model="rejectionReason" />
+            <TextInput
+                v-model="rejectionReason"
+                autofocus
+            />
 
             <InputError
                 class="mt-2"

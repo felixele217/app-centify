@@ -14,7 +14,7 @@ it('can accept a deal', function () {
     ])->assertRedirect();
 
     expect($deal->fresh()->accepted_at)->not()->toBeNull();
-    expect($deal->fresh()->declined_at)->toBeNull();
+    expect($deal->rejections->count())->toBe(0);
 });
 
 it('can update the note of a deal', function () {

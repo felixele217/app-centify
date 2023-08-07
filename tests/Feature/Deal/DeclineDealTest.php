@@ -28,17 +28,12 @@ it('reason is required for declining a deal', function () {
     ]);
 });
 
-it('can decline a deal', function () {
+it('rejection_reason is not required if there is an empty note', function () {
     signInAdmin();
 
-    $deal = Deal::factory()->create([
-        'declined_at' => null,
-    ]);
+    $deal = Deal::factory()->create();
 
     $this->put(route('deals.update', $deal), [
-        'has_accepted_deal' => false,
-    ])->assertRedirect();
-
-    expect($deal->fresh()->declined_at)->not()->toBeNull();
-    expect($deal->fresh()->accepted_at)->toBeNull();
-});
+        'note' => null,
+    ])->assertValid();
+})->todo();

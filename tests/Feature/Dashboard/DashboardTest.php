@@ -20,8 +20,8 @@ it('passes the correct props', function () {
     $plan->agents()->attach(Agent::factory($agentCount = 3)
         ->hasDeals(3)
         ->hasPaidLeaves(1, [
-            'start_date' => $startDate = Carbon::yesterday(),
-            'end_date' => $endDate = Carbon::tomorrow(),
+            'start_date' => Carbon::yesterday(),
+            'end_date' => Carbon::tomorrow(),
         ])
         ->create(['organization_id' => $admin->organization->id]));
 

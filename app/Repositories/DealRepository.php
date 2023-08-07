@@ -36,7 +36,7 @@ class DealRepository
     {
         $dateInScope = $dateInScope ?? CarbonImmutable::now();
 
-        $baseQuery = $agent->deals()->whereNotNull('accepted_at')->whereNull('declined_at');
+        $baseQuery = $agent->deals()->whereNotNull('accepted_at')->doesntHave('rejections');
 
         return match ($timeScope) {
             TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $baseQuery->whereMonth('add_time', $dateInScope->month)->get(),
@@ -52,7 +52,6 @@ class DealRepository
 
         $deal->update([
             'accepted_at' => $hasAcceptedDeal === true ? Carbon::now() : null,
-            'declined_at' => $hasAcceptedDeal === false ? Carbon::now() : null,
             'note' => $request->validated('note'),
         ]);
 
