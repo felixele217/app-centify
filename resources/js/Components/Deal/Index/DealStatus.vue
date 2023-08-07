@@ -45,7 +45,7 @@ const props = defineProps<{
         class="flex justify-center"
         v-else-if="props.deal.latest_rejection?.created_at"
     >
-        <Tooltip :text="`This deal was declined at ${formatDate(props.deal.latest_rejection.created_at)}.`">
+        <Tooltip :text="`This deal was declined at ${formatDate(props.deal.latest_rejection.created_at)} due to: '${props.deal.latest_rejection.reason}'`">
             <Badge
                 :text="formatDate(props.deal.latest_rejection.created_at)"
                 color="red"
