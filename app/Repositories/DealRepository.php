@@ -52,6 +52,7 @@ class DealRepository
         $deal->update([
             'accepted_at' => $hasAcceptedDeal === true ? Carbon::now() : null,
             'declined_at' => $hasAcceptedDeal === false ? Carbon::now() : null,
+            'note' => $request->validated('note'),
         ]);
     }
 }

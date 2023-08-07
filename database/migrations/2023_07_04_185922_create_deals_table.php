@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestampTz('add_time');
             $table->timestampTz('accepted_at')->nullable();
             $table->timestampTz('declined_at')->nullable();
+            $table->longText('note')->nullable();
             $table->timestamps();
             $table->foreignIdFor(Agent::class);
         });

@@ -14,6 +14,11 @@ class UpdateDealRequest extends FormRequest
             'has_accepted_deal' => [
                 'boolean',
             ],
+
+            'note' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

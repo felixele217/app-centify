@@ -26,6 +26,7 @@ class DealFactory extends Factory
             'accepted_at' => null,
             'declined_at' => null,
             'agent_id' => Agent::factory()->create(),
+           'note' => null,
         ];
     }
 

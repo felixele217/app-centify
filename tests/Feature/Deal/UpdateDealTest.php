@@ -31,3 +31,17 @@ it('can decline a deal', function () {
     expect($deal->fresh()->declined_at)->not()->toBeNull();
     expect($deal->fresh()->accepted_at)->toBeNull();
 });
+
+it('can update the note of a deal', function () {
+    signInAdmin();
+
+    $deal = Deal::factory()->create([
+        'note' => null,
+    ]);
+
+    $this->put(route('deals.update', $deal), [
+        'note' => $newNote = 'simeon thought out some sophisticated note that is very long',
+    ])->assertRedirect();
+
+    expect($deal->fresh()->note)->toBe($newNote);
+});
