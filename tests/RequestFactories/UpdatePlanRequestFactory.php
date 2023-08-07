@@ -6,6 +6,7 @@ namespace Tests\RequestFactories;
 
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\TargetVariableEnum;
+use Carbon\Carbon;
 use Worksome\RequestFactories\RequestFactory;
 
 class UpdatePlanRequestFactory extends RequestFactory
@@ -14,7 +15,7 @@ class UpdatePlanRequestFactory extends RequestFactory
     {
         return [
             'name' => fake()->name(),
-            'start_date' => fake()->date(),
+            'start_date' => Carbon::createFromDate(fake()->date())->toDateString(),
             'target_amount_per_month' => fake()->randomElement([200000, 400000]),
             'target_variable' => fake()->randomElement(TargetVariableEnum::cases())->value,
             'payout_frequency' => fake()->randomElement(PayoutFrequencyEnum::cases())->value,

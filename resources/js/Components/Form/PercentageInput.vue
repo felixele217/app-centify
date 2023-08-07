@@ -2,7 +2,7 @@
 import TextInput from './TextInput.vue'
 
 const props = defineProps<{
-    value: number
+    value: number | null
 }>()
 
 const emit = defineEmits<{
@@ -25,6 +25,6 @@ function handleChange(newValue: string) {
         :class="props.value === 0 ? 'text-gray-300' : 'text-gray-900'"
         @update:modelValue="handleChange"
         type="text"
-        :modelValue="props.value.toString() + '%'"
+        :modelValue="props.value ? props.value.toString() + '%' : '0%'"
     />
 </template>

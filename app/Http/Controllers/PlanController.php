@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Data\PlanData;
 use App\Enum\KickerTypeEnum;
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
-use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Plan;
 use App\Repositories\PlanRepository;
 use Illuminate\Http\RedirectResponse;
@@ -63,11 +63,11 @@ class PlanController extends Controller
         ]);
     }
 
-    public function update(UpdatePlanRequest $request, Plan $plan): RedirectResponse
+    public function update(Plan $plan, PlanData $planData): RedirectResponse
     {
         $this->authorize('any', $plan);
 
-        PlanRepository::update($plan, $request);
+        PlanRepository::update($plan, $planData);
 
         return to_route('plans.index');
     }

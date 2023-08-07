@@ -33,7 +33,7 @@ it('can update a plan with a cliff as an admin', function (Plan $plan) {
     ]),
 ]);
 
-it('does not throw validation errors if you send 0 as values in either of the percent fields', function () {
+it('has required fields with', function (array $cliffData, string $expectedValidationErrorField) {
     $admin = signInAdmin();
 
     $plan = Plan::factory()->create([
@@ -41,14 +41,21 @@ it('does not throw validation errors if you send 0 as values in either of the pe
     ]);
 
     UpdatePlanRequest::factory()->state([
-        'cliff' => [
-            'threshold_in_percent' => 0,
-            'time_scope' => null,
-        ],
+        'cliff' => $cliffData,
     ])->fake();
 
-    $this->put(route('plans.update', $plan))->assertValid();
-});
+    $this->put(route('plans.update', $plan))->assertInvalid([
+        $expectedValidationErrorField => 'Please specify all fields for the Cliff if you want to have one in your plan.',
+    ]);
+})->with([
+    [
+        [
+            'threshold_in_percent' => 10,
+            'time_scope' => null,
+        ],
+        'cliff.time_scope',
+    ]
+]);
 
 it('does not store a cliff when an array with empty values is sent', function () {
     $admin = signInAdmin();
@@ -59,7 +66,7 @@ it('does not store a cliff when an array with empty values is sent', function ()
 
     UpdatePlanRequest::factory()->state([
         'cliff' => [
-            'threshold_in_percent' => 0,
+            'threshold_in_percent' => null,
             'time_scope' => TimeScopeEnum::MONTHLY->value,
         ],
     ])->fake();

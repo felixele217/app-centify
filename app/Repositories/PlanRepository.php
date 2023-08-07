@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Data\PlanData;
 use App\Http\Requests\StorePlanRequest;
-use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,40 +46,42 @@ class PlanRepository
         return $plan;
     }
 
-    public static function update(Plan $plan, UpdatePlanRequest $request): Plan
+    public static function update(Plan $plan, PlanData $planData): Plan
     {
-        $plan->update($request->safe()->only(self::PLAN_FIELDS));
+        $fieldsToUpdate = array_intersect_key($planData->toArray(), array_flip(self::PLAN_FIELDS));
+
+        $plan->update($fieldsToUpdate);
 
         foreach ($plan->agents as $agent) {
-            if (! in_array($agent->id, $request->validated('assigned_agent_ids'))) {
+            if (! in_array($agent->id, $planData->assigned_agent_ids)) {
                 $plan->agents()->detach($agent->id);
             }
         }
 
-        foreach ($request->validated('assigned_agent_ids') as $agentId) {
+        foreach ($planData->assigned_agent_ids as $agentId) {
             if (! $plan->agents->contains($agentId)) {
                 $plan->agents()->attach($agentId);
             }
         }
 
-        if (isset($request->validated('cliff')['threshold_in_percent'])) {
+        if (isset($planData->cliff->threshold_in_percent)) {
             $plan->cliff()->updateOrCreate(
                 ['plan_id' => $plan->id],
-                $request->validated('cliff'),
+                $planData->cliff->toArray(),
             );
         }
 
-        if (isset($request->validated('kicker')['type'])) {
+        if (isset($planData->kicker->threshold_in_percent)) {
             $plan->kicker()->updateOrCreate(
                 ['plan_id' => $plan->id],
-                $request->validated('kicker'),
+                $planData->kicker->toArray(),
             );
         }
 
-        if ($request->validated('cap')) {
+        if ($planData->cap) {
             $plan->cap()->updateOrCreate(
                 ['plan_id' => $plan->id],
-                ['value' => $request->validated('cap')],
+                ['value' => $planData->cap],
             );
         }
 

@@ -76,7 +76,7 @@ const form = useForm({
     cliff: {
         threshold_in_percent: props.plan?.cliff?.threshold_in_percent
             ? props.plan?.cliff.threshold_in_percent * 100
-            : 0,
+            : null,
         time_scope: 'monthly' as TimeScopeEnum,
     },
 
@@ -84,13 +84,13 @@ const form = useForm({
         type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
         threshold_in_percent: props.plan?.kicker?.threshold_in_percent
             ? props.plan.kicker.threshold_in_percent * 100
-            : 0,
-        payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : 0,
+            : null,
+        payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : null,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
         time_scope: 'quarterly' as TimeScopeEnum,
     },
 
-    cap: props.plan?.cap?.value || 0,
+    cap: props.plan?.cap?.value || null,
     trigger: 'demo_set_by',
 })
 

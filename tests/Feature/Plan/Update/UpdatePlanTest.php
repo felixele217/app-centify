@@ -16,7 +16,7 @@ it('can update a plan as an admin', function () {
 
     $this->put(route('plans.update', $plan), [
         'name' => $name = 'John Doe',
-        'start_date' => $startDate = Carbon::tomorrow(),
+        'start_date' => $startDateString = Carbon::tomorrow()->toDateString(),
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'payout_frequency' => $payoutFrequency = fake()->randomElement(PayoutFrequencyEnum::cases())->value,
@@ -26,7 +26,7 @@ it('can update a plan as an admin', function () {
     $plan->refresh();
 
     expect($plan->name)->toBe($name);
-    expect($plan->start_date->toDateString())->toBe($startDate->toDateString());
+    expect($plan->start_date->toDateString())->toBe($startDateString);
     expect($plan->target_amount_per_month)->toBe($targetAmountPerMonth);
     expect($plan->target_variable->value)->toBe($targetVariable);
     expect($plan->payout_frequency->value)->toBe($payoutFrequency);
@@ -84,7 +84,7 @@ it('has required fields', function () {
         'target_amount_per_month' => 'The target amount per month field is required.',
         'target_variable' => 'The target variable field is required.',
         'payout_frequency' => 'The payout frequency field is required.',
-        'assigned_agent_ids' => 'The assigned agent ids field must be present',
+        'assigned_agent_ids' => 'The assigned agent ids field is required.',
     ]);
 });
 
