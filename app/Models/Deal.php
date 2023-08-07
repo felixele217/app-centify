@@ -9,6 +9,7 @@ use App\Enum\IntegrationTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Deal extends Model
 {
@@ -26,5 +27,10 @@ class Deal extends Model
     public function agent(): BelongsTo
     {
         return $this->belongsTo(Agent::class);
+    }
+
+    public function rejections(): HasMany
+    {
+       return $this->hasMany(Rejection::class);
     }
 }

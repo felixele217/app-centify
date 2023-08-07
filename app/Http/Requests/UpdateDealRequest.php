@@ -19,6 +19,11 @@ class UpdateDealRequest extends FormRequest
                 'nullable',
                 'string',
             ],
+
+            'rejection_reason' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

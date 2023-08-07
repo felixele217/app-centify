@@ -9,6 +9,7 @@ use App\Enum\TimeScopeEnum;
 use App\Http\Requests\UpdateDealRequest;
 use App\Models\Agent;
 use App\Models\Deal;
+use App\Models\Rejection;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,5 +55,11 @@ class DealRepository
             'declined_at' => $hasAcceptedDeal === false ? Carbon::now() : null,
             'note' => $request->validated('note'),
         ]);
+
+        if ($request->validated('rejection_reason')) {
+            $deal->rejections()->create([
+                'reason' => $request->validated('rejection_reason'),
+            ]);
+        }
     }
 }

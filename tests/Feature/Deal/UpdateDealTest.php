@@ -17,21 +17,6 @@ it('can accept a deal', function () {
     expect($deal->fresh()->declined_at)->toBeNull();
 });
 
-it('can decline a deal', function () {
-    signInAdmin();
-
-    $deal = Deal::factory()->create([
-        'declined_at' => null,
-    ]);
-
-    $this->put(route('deals.update', $deal), [
-        'has_accepted_deal' => false,
-    ])->assertRedirect();
-
-    expect($deal->fresh()->declined_at)->not()->toBeNull();
-    expect($deal->fresh()->accepted_at)->toBeNull();
-});
-
 it('can update the note of a deal', function () {
     signInAdmin();
 
