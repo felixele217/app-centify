@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\DealRejectionController;
 use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::put('/{deal}', 'update')->name('update');
+
+        Route::prefix('{deal}/rejections')->name('rejections.')->controller(DealRejectionController::class)->group(function () {
+            Route::post('', 'store')->name('store');
+        });
     });
 
     Route::prefix('agents')->name('agents.')->controller(AgentController::class)->group(function () {

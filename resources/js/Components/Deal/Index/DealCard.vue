@@ -2,6 +2,7 @@
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import Toggle from '@/Components/Form/Toggle.vue'
 import Modal from '@/Components/Modal.vue'
 import Deal from '@/types/Deal'
 import Integration from '@/types/Integration'
@@ -9,7 +10,7 @@ import paymentCycle from '@/utils/Date/paymentCycle'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
-import { router, usePage } from '@inertiajs/vue3'
+import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 
@@ -19,8 +20,24 @@ const props = defineProps<{
 }>()
 
 const acceptDeal = () => updateDeal({ has_accepted_deal: true })
-const declineDeal = () => updateDeal({ rejection_reason: rejectionReason.value })
 const updateDealNote = () => updateDeal({ note: noteText.value })
+
+const declineDeal = () => {
+    router.post(
+        route('deals.rejections.store', props.deal.id),
+        {
+            rejection_reason: rejectionForm.reason,
+            is_permanent: rejectionForm.is_permanent,
+        },
+        {
+            onSuccess: () => {
+                notifyAcceptDecline()
+                dealIdBeingDeclined.value = null
+                rejectionForm.reset()
+            },
+        }
+    )
+}
 
 function updateDeal(body: any) {
     router.put(route('deals.update', props.deal.id), body, {
@@ -31,7 +48,6 @@ function updateDeal(body: any) {
             } else {
                 notifyAcceptDecline()
                 dealIdBeingAccepted.value = null
-                dealIdBeingDeclined.value = null
             }
         },
     })
@@ -60,7 +76,10 @@ const dealIdBeingDeclined = ref<number | null>()
 const dealIdOfNoteBeingEdited = ref<number>()
 const noteText = ref<string>(props.deal.note ?? '')
 
-const rejectionReason = ref<string>('')
+const rejectionForm = useForm({
+    reason: '',
+    is_permanent: false,
+})
 </script>
 
 <template>
@@ -145,7 +164,7 @@ const rejectionReason = ref<string>('')
             />
 
             <TextInput
-                v-model="rejectionReason"
+                v-model="rejectionForm.reason"
                 autofocus
             />
 
@@ -154,5 +173,12 @@ const rejectionReason = ref<string>('')
                 :message="usePage().props.errors.rejection_reason"
             />
         </div>
+
+        <Toggle
+            class="mt-5"
+            title="Reject permanently"
+            description="After rejecting a deal permanently, it ceases to reappear each month."
+            v-model="rejectionForm.is_permanent"
+        />
     </Modal>
 </template>

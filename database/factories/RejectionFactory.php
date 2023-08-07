@@ -14,6 +14,7 @@ class RejectionFactory extends Factory
         return [
             'id' => fake()->unique()->randomNumber(),
             'reason' => fake()->text(40),
+            'is_permanent' => false,
             'deal_id' => Deal::factory()->create(),
         ];
     }

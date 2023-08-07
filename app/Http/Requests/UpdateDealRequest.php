@@ -10,7 +10,6 @@ class UpdateDealRequest extends FormRequest
 {
     public function rules(): array
     {
-        // dd($this->all());
         return [
             'has_accepted_deal' => [
                 'boolean',
@@ -20,19 +19,6 @@ class UpdateDealRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-
-            'rejection_reason' => [
-                'nullable',
-                'string',
-               'required_without_all:note,has_accepted_deal'
-            ],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'rejection_reason' => 'You must provide a reason.'
         ];
     }
 }

@@ -2,38 +2,35 @@
 
 use App\Models\Deal;
 
-it('stores a rejection upon rejecting a deal', function () {
+use function Pest\Laravel\withoutExceptionHandling;
+
+it('stores the correct rejection upon rejecting a deal', function (bool $isPermanent) {
     signInAdmin();
 
     $deal = Deal::factory()->create();
 
-    $this->put(route('deals.update', $deal), [
+    $this->post(route('deals.rejections.store', $deal), [
         'rejection_reason' => $reason = 'quality was poor',
+        'is_permanent' => $isPermanent,
     ])->assertRedirect();
 
     $rejection = $deal->fresh()->rejections->first();
 
     expect($rejection->reason)->toBe($reason);
-});
+    expect($rejection->is_permanent)->toBe($isPermanent);
+})->with([
+    true, false,
+]);
 
 it('reason is required for declining a deal', function () {
     signInAdmin();
 
     $deal = Deal::factory()->create();
 
-    $this->put(route('deals.update', $deal), [
+    $this->post(route('deals.rejections.store', $deal), [
         'rejection_reason' => null,
+        'is_permanent' => null,
     ])->assertInvalid([
-        'rejection_reason' => 'You must provide a reason.'
+        'rejection_reason' => 'You must provide a reason.',
     ]);
 });
-
-it('rejection_reason is not required if there is an empty note', function () {
-    signInAdmin();
-
-    $deal = Deal::factory()->create();
-
-    $this->put(route('deals.update', $deal), [
-        'note' => null,
-    ])->assertValid();
-})->todo();

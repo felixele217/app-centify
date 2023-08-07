@@ -15,6 +15,10 @@ class Rejection extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'is_permanent' => 'boolean',
+    ];
+
     public function deal(): BelongsTo
     {
         return $this->belongsTo(Deal::class);

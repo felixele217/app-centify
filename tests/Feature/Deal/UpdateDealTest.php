@@ -30,3 +30,17 @@ it('can update the note of a deal', function () {
 
     expect($deal->fresh()->note)->toBe($newNote);
 });
+
+it('can update the note of a deal setting it to null', function () {
+    signInAdmin();
+
+    $deal = Deal::factory()->create([
+        'note' => 'some existing note',
+    ]);
+
+    $this->put(route('deals.update', $deal), [
+        'note' => null,
+    ])->assertRedirect();
+
+    expect($deal->fresh()->note)->toBeNull();
+});

@@ -54,11 +54,5 @@ class DealRepository
             'accepted_at' => $hasAcceptedDeal === true ? Carbon::now() : null,
             'note' => $request->validated('note'),
         ]);
-
-        if ($request->validated('rejection_reason')) {
-            $deal->rejections()->create([
-                'reason' => $request->validated('rejection_reason'),
-            ]);
-        }
     }
 }

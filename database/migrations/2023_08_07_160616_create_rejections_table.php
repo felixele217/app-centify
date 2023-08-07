@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rejections', function (Blueprint $table) {
             $table->id();
             $table->longText('reason');
+            $table->boolean('is_permanent');
             $table->foreignIdFor(Deal::class);
             $table->timestamps();
         });
