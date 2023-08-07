@@ -6,48 +6,16 @@ import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import Integration from '@/types/Integration'
-import paymentCycle from '@/utils/Date/paymentCycle'
-import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
 import { router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue'
-import DealStatus from './DealStatus.vue'
+import { computed, ref, watch } from 'vue'
+import DealCard from './DealCard.vue'
 
 const props = defineProps<{
     deals: Array<Deal>
     integrations: Array<Integration>
 }>()
-
-function updateDeal() {
-    router.put(
-        route('deals.update', (dealIdBeingAccepted.value || dealIdBeingDeclined.value)!),
-        {
-            has_accepted_deal: !!dealIdBeingAccepted.value,
-        },
-        {
-            onSuccess: () => {
-                notifyUpdate()
-                dealIdBeingAccepted.value = null
-                dealIdBeingDeclined.value = null
-            },
-        }
-    )
-}
-
-const pipedriveSubdomain = computed(() => props.integrations[0].subdomain)
-
-function notifyUpdate() {
-    const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
-    const description = dealIdBeingAccepted.value
-        ? "It now counts towards this agent's commission metrics."
-        : "This deal will not affect this agent's commission metrics."
-
-    notify(title, description)
-}
-
-const dealIdBeingAccepted = ref<number | null>()
-const dealIdBeingDeclined = ref<number | null>()
 
 const noDealsText = computed(() => {
     if (props.deals.length > 0) {
@@ -139,59 +107,9 @@ const dealsText = computed(() => {
                     v-for="deal in props.deals"
                     class="grid grid-cols-12 items-center whitespace-nowrap text-sm"
                 >
-                    <td class="col-span-3 py-4 pl-6 pr-3">
-                        <p class="text-gray-900">{{ deal.agent!.name }}</p>
-                        <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
-                    </td>
-
-                    <td class="col-span-2 px-3 py-4">
-                        <a
-                            class="link"
-                            :href="`https://${pipedriveSubdomain}.pipedrive.com/deal/${deal.integration_deal_id}`"
-                            target="_blank"
-                        >
-                            {{ deal.title }}
-                        </a>
-                    </td>
-
-                    <td class="col-span-2 px-3 py-4 text-gray-500">
-                        {{ euroDisplay(deal.value) }}
-                    </td>
-
-                    <td class="col-span-2 px-3 py-4 text-gray-500">
-                        {{ paymentCycle(deal.add_time) }}
-                    </td>
-
-                    <td class="col-span-2 px-3 py-4 text-gray-500">notes...</td>
-
-                    <td class="px-3">
-                        <DealStatus
-                            :deal="deal"
-                            @accepted="(id: number) => dealIdBeingAccepted = id"
-                            @declined="(id: number) => dealIdBeingDeclined = id"
-                        />
-                    </td>
+                    <DealCard :deal="deal" :integrations="props.integrations" />
                 </tr>
             </template>
         </TableWrapper>
-
-        <Modal
-            @modal-action="updateDeal"
-            :isOpen="!!dealIdBeingAccepted"
-            @close-modal="dealIdBeingAccepted = null"
-            button-text="Accept"
-            title="Accept Deal"
-            :description="'Are you sure you want to accept this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
-        />
-
-        <Modal
-            @modal-action="updateDeal"
-            is-negative-action
-            :isOpen="!!dealIdBeingDeclined"
-            @close-modal="dealIdBeingDeclined = null"
-            button-text="Decline"
-            title="Decline Deal"
-            :description="'Are you sure you want to decline this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
-        />
     </div>
 </template>

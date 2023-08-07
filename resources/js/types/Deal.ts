@@ -15,4 +15,5 @@ export default interface Deal {
     agent?: Agent
     accepted_at: string | null
     declined_at: string | null
+    note: string | null
 }
