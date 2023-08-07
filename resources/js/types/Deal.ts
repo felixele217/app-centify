@@ -17,5 +17,5 @@ export default interface Deal {
     accepted_at: string | null
     note: string | null
     rejections?: Array<Rejection>
-    latest_rejection: Rejection
+    latest_rejection?: Rejection
 }

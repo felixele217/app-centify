@@ -26,9 +26,9 @@ class DealRepository
 
         return match ($scope) {
             null => $baseQuery->get(),
-            DealScopeEnum::OPEN => $baseQuery->whereNull('accepted_at')->whereNull('declined_at')->get(),
-            DealScopeEnum::ACCEPTED => $baseQuery->whereNotNull('accepted_at')->whereNull('declined_at')->get(),
-            DealScopeEnum::DECLINED => $baseQuery->whereNull('accepted_at')->whereNotNull('declined_at')->get(),
+            DealScopeEnum::OPEN => $baseQuery->whereNull('accepted_at')->doesntHave('rejections')->get(),
+            DealScopeEnum::ACCEPTED => $baseQuery->whereNotNull('accepted_at')->doesntHave('rejections')->get(),
+            DealScopeEnum::DECLINED => $baseQuery->whereNull('accepted_at')->whereHas('rejections')->get(),
         };
     }
 

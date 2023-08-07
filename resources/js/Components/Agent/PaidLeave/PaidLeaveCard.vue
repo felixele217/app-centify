@@ -11,7 +11,11 @@ const props = defineProps<{
 <template>
     <div>
         <Badge
-            :text="formatDate(new Date(paidLeave.start_date)) + ' - ' + formatDate(new Date(paidLeave.end_date))"
+            :text="
+                formatDate(new Date(paidLeave.start_date)) + ' - ' + paidLeave.end_date
+                    ? formatDate(new Date(paidLeave.end_date!))
+                    : ''
+            "
             :color="paidLeave.reason === 'sick' ? 'green' : 'yellow'"
         />
     </div>

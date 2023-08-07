@@ -22,11 +22,10 @@ beforeEach(function () {
         'accepted_at' => Carbon::now(),
     ]);
 
-    Deal::factory($this->declinedDealCount = 4)->create([
+    Deal::factory($this->declinedDealCount = 4)->hasRejections(1)->create([
         'agent_id' => Agent::factory()->create([
             'organization_id' => $this->admin->organization->id,
         ]),
-        'declined_at' => Carbon::now(),
     ]);
 
     Deal::factory($this->foreignDealCount = 1)->create();
@@ -38,6 +37,7 @@ it('passes the correct props for all deals if no scope is specified', function (
             ->component('Deal/Index')
             ->has('deals', $this->openDealCount + $this->acceptedDealCount + $this->declinedDealCount)
             ->has('deals.1.agent')
+            ->has('deals.1.latest_rejection')
             ->has('integrations')
     );
 });
