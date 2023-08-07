@@ -68,7 +68,7 @@ function additionalFieldsOfPlan() {
 const form = useForm({
     name: props.plan?.name || '',
     start_date: props.plan?.start_date ? new Date(props.plan.start_date) : null,
-    target_amount_per_month: props.plan?.target_amount_per_month || 0,
+    target_amount_per_month: props.plan?.target_amount_per_month || null,
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
     payout_frequency: props.plan?.payout_frequency || ('' as PayoutFrequencyEnum),
     assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
@@ -184,8 +184,8 @@ function submit() {
                                         targetVariableToDescription
                                     )
                                 "
-                                @option-selected-title="(optionTitle: TargetVariableEnum) => form.target_variable = optionTitle"
-                                :default="props.plan ? form.target_variable : undefined"
+                                @option-selected="(optionTitle: string) => form.target_variable = (optionTitle as TargetVariableEnum)"
+                                :default-title="props.plan ? form.target_variable : undefined"
                             />
                             <InputError
                                 class="mt-2"
@@ -232,9 +232,10 @@ function submit() {
                                     payoutFrequencyToDescription
                                 )
                             "
-                            @option-selected="(optionTitle: PayoutFrequencyEnum) => form.payout_frequency = optionTitle"
+                            @option-selected="(optionTitle: string) => form.payout_frequency = (optionTitle as PayoutFrequencyEnum)"
                             :default-title="props.plan ? form.payout_frequency : undefined"
                         />
+
                         <InputError
                             class="mt-2"
                             :message="form.errors.payout_frequency"
