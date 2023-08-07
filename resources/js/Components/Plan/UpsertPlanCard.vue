@@ -8,13 +8,14 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
+import { AdditionalPlanFieldEnumCases } from '@/EnumCases/AdditionalPlanFieldEnum'
 import Agent from '@/types/Agent'
+import { AdditionalPlanFieldEnum } from '@/types/Enum/AdditionalPlanFieldEnum'
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import { AdditionalFieldTypes } from '@/types/Plan/AdditionalFieldTypes'
 import Plan from '@/types/Plan/Plan'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
@@ -30,7 +31,7 @@ import KickerForm from './KickerForm.vue'
 
 export interface AdditionalField {
     id: number
-    type: AdditionalFieldTypes
+    type: AdditionalPlanFieldEnum
     value?: number
     text?: string
 }
@@ -44,8 +45,7 @@ const props = defineProps<{
     salary_type_options: Array<SalaryTypeEnum>
 }>()
 
-const possibleAdditionalFields: Array<AdditionalFieldTypes> = ['Kicker', 'Cliff', 'Cap']
-const activeAdditionalFields = ref<Array<AdditionalFieldTypes>>(additionalFieldsOfPlan())
+const activeAdditionalFields = ref<Array<AdditionalPlanFieldEnum>>(additionalFieldsOfPlan())
 
 function additionalFieldsOfPlan() {
     const activeAdditionalFields = []
@@ -62,7 +62,7 @@ function additionalFieldsOfPlan() {
         activeAdditionalFields.push('Cap')
     }
 
-    return activeAdditionalFields as Array<AdditionalFieldTypes>
+    return activeAdditionalFields as Array<AdditionalPlanFieldEnum>
 }
 
 const form = useForm({
@@ -117,6 +117,18 @@ function submit() {
             onSuccess: () => notify('Plan stored', 'Your plan is now available for use.'),
             preserveScroll: true,
         })
+    }
+}
+
+function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum>) {
+    const includesField = activeAdditionalFields.value.includes(option.title)
+
+    if (includesField) {
+        form.reset(option.title.toLowerCase() as 'kicker' | 'cliff' | 'cap')
+
+        activeAdditionalFields.value = activeAdditionalFields.value.filter((field) => field !== option.title)
+    } else {
+        activeAdditionalFields.value = [...activeAdditionalFields.value, option.title]
     }
 }
 </script>
@@ -266,18 +278,12 @@ function submit() {
                         <CardOptions
                             :options-per-row="4"
                             :options="
-                                possibleAdditionalFields.map((type) => ({
+                                AdditionalPlanFieldEnumCases.map((type) => ({
                                     title: type,
                                     selected: activeAdditionalFields.includes(type),
                                 }))
                             "
-                            @option-clicked="(option: CardOptionsOption<AdditionalFieldTypes>) => {
-                                if (activeAdditionalFields.includes(option.title)) {
-                                    activeAdditionalFields = activeAdditionalFields.filter(field => field !== option.title)
-                                } else {
-                                    activeAdditionalFields = [...activeAdditionalFields, option.title]
-                                }
-                            }"
+                            @option-clicked="(option: CardOptionsOption<AdditionalPlanFieldEnum>) => toggleAdditionalField(option)"
                         />
                     </div>
 
@@ -349,7 +355,7 @@ function submit() {
                                 )
                             "
                             default-title="demo_set_by"
-                            @option-selected="(optionTitle: 'demo_set_by') => form.trigger = optionTitle"
+                            @option-selected="(optionTitle: string) => form.trigger = (optionTitle as 'demo_set_by')"
                         />
 
                         <InputError

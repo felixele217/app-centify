@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 
 const props = defineProps<{
-    modelValue: string
+    modelValue: string | null
     noTopMargin?: boolean
 }>()
 
