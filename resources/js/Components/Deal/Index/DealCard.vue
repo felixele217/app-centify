@@ -102,6 +102,7 @@ const noteText = ref<string>(props.deal.note ?? '')
             <TextInput
                 no-top-margin
                 v-model="noteText"
+                @keyup.enter="updateDeal"
             />
 
             <CheckIcon
