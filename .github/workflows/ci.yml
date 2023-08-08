@@ -97,6 +97,7 @@ jobs:
             - name: Save version to file
               run: |
                   version=$(git rev-parse HEAD)
+                  ls -lah
                   echo $version > ${{ env.DEPLOYED_VERSION_FILE }}
 
             - name: Upload version as artifact
