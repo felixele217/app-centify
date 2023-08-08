@@ -206,7 +206,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                     )
                                 "
                                 @option-selected="(optionTitle: string) => form.target_variable = (optionTitle as TargetVariableEnum)"
-                                :default-title="props.plan ? form.target_variable : undefined"
+                                v-model="form.target_variable"
                             />
                             <InputError
                                 class="mt-2"
@@ -250,7 +250,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                 )
                             "
                             @option-selected="(optionTitle: string) => form.payout_frequency = (optionTitle as PayoutFrequencyEnum)"
-                            :default-title="props.plan ? form.payout_frequency : undefined"
+                            v-model="form.payout_frequency"
                         />
 
                         <InputError
@@ -292,16 +292,8 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         </div>
 
                         <SelectWithDescription
-                            :options="
-                                enumOptionsToSelectOptionWithDescription(
-                                    [
-                                        'demo_set_by',
-                                        // 'deal_won'
-                                    ],
-                                    triggerToDescription
-                                )
-                            "
-                            default-title="demo_set_by"
+                            :options="enumOptionsToSelectOptionWithDescription(['demo_set_by'], triggerToDescription)"
+                            v-model="form.trigger"
                             @option-selected="(optionTitle: string) => form.trigger = (optionTitle as 'demo_set_by')"
                         />
 
