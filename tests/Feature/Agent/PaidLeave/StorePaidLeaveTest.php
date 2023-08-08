@@ -22,6 +22,7 @@ it('stores the paid leave when an agent is stored on vacation or sick', function
         'end_date' => $endDate = Carbon::parse('+1 week'),
         'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER->value,
         'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+        'employed_28_or_more_days' => true,
     ])->assertRedirect();
 
     $paidLeave = PaidLeave::whereAgentId($this->agent->id)->first();
@@ -63,6 +64,17 @@ it('can set end date to null if status is sick', function () {
     ])->fake();
 
     $this->post(route('agents.paid-leaves.store', $this->agent))->assertValid();
+});
+
+it('throws a validation error if status is sick and employed 28 or more days is false', function () {
+    StorePaidLeaveRequest::factory()->state([
+        'reason' => AgentStatusEnum::SICK->value,
+        'employed_28_or_more_days' => false,
+    ])->fake();
+
+    $this->post(route('agents.paid-leaves.store', $this->agent))->assertInvalid([
+        'employed_28_or_more_days' => 'The employee has to be employed for 28 or more days.',
+    ]);
 });
 
 it('cannot specify an end date that is before the start date', function () {

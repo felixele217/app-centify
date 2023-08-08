@@ -40,6 +40,12 @@ class StorePaidLeaveRequest extends FormRequest
                 'required',
                 'integer',
             ],
+
+            'employed_28_or_more_days' => [
+                'required_if:reason,sick',
+                'accepted',
+                'exclude',
+            ],
         ];
     }
 
@@ -47,6 +53,7 @@ class StorePaidLeaveRequest extends FormRequest
     {
         return [
             'end_date.before' => 'The end date needs to come after the start date.',
+            'employed_28_or_more_days' => 'The employee has to be employed for 28 or more days.',
         ];
     }
 }

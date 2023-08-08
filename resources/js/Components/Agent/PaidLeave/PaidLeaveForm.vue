@@ -15,7 +15,6 @@ import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/co
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
-import { ref } from 'vue'
 import PaidLeaveCard from './PaidLeaveCard.vue'
 
 const props = defineProps<{
@@ -25,6 +24,7 @@ const props = defineProps<{
         end_date: Date | null
         continuation_of_pay_time_scope: string
         sum_of_commissions: number | null
+        employed_28_or_more_days: boolean
     }>
     agentId?: number
 }>()
@@ -50,8 +50,6 @@ function agentPaidLeaveRanges() {
         ),
     ]
 }
-
-const employed28OrMoreDays = ref<boolean>(true)
 </script>
 
 <template>
@@ -145,12 +143,17 @@ const employed28OrMoreDays = ref<boolean>(true)
         >
             <Tooltip
                 text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
-        payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
+                payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
             >
                 <Checkbox
                     label="Employee has been employed for more than 28 calendar days"
                     name="employed_long_enough"
-                    v-model:checked="employed28OrMoreDays"
+                    v-model:checked="props.form.employed_28_or_more_days"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="props.form.errors.employed_28_or_more_days"
                 />
             </Tooltip>
         </div>
