@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Badge from '@/Components/Badge.vue'
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
@@ -41,7 +42,7 @@ function agentPaidLeaveRanges() {
     return [
         ...markedRangesFromRangeObjects(
             agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'sick'),
-            'green'
+            'purple'
         ),
         ...markedRangesFromRangeObjects(
             agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'on vacation'),
@@ -54,22 +55,6 @@ const employed28OrMoreDays = ref<boolean>(true)
 </script>
 
 <template>
-    <div
-        class="flex"
-        v-if="props.form.reason === 'sick'"
-    >
-        <Tooltip
-            text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
-        payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
-        >
-            <Checkbox
-                label="Employee has been employed for more than 28 calendar days"
-                name="employed_long_enough"
-                v-model:checked="employed28OrMoreDays"
-            />
-        </Tooltip>
-    </div>
-
     <div class="space-y-4">
         <div>
             <InputLabel
@@ -154,8 +139,35 @@ const employed28OrMoreDays = ref<boolean>(true)
             />
         </div>
 
+        <div
+            class="flex pt-1"
+            v-if="props.form.reason === 'sick'"
+        >
+            <Tooltip
+                text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
+        payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
+            >
+                <Checkbox
+                    label="Employee has been employed for more than 28 calendar days"
+                    name="employed_long_enough"
+                    v-model:checked="employed28OrMoreDays"
+                />
+            </Tooltip>
+        </div>
+
         <div>
-            <h4 class="mt-20">Recent Paid Leaves</h4>
+            <div class="mt-7 flex items-center gap-2">
+                <h4 class="">Recent Paid Leaves</h4>
+                <Badge
+                    text="Sick"
+                    color="purple"
+                />
+
+                <Badge
+                    text="Vacation"
+                    color="yellow"
+                />
+            </div>
 
             <PaidLeaveCard
                 class="mt-2"

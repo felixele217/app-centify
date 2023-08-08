@@ -17,7 +17,7 @@ function vCalendarMarkedRanges() {
     return props.markedRanges?.map((markedRange) => ({
         dates: [[markedRange.start_date, markedRange.end_date]],
         highlight: {
-            color: markedRange.color,
+            color: 'purple',
             fillMode: 'light',
         },
     }))

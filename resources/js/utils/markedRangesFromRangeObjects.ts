@@ -1,7 +1,7 @@
 export type MarkedRange = {
     start_date: Date
     end_date: Date
-    color: 'yellow' | 'green'
+    color: 'yellow' | 'green' | 'purple'
 }
 
 type RangeObject = {
