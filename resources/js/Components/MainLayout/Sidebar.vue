@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ApplicationLogo from '@/Components/Navigation/ApplicationLogo.vue'
 import type NavigationItem from '@/types/NavigationItem'
-import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import SidebarLink from './SidebarLink.vue'
+import UserMenu from './UserMenu.vue'
 
 const props = defineProps<{
     navigation: Array<NavigationItem>
@@ -32,14 +32,11 @@ const props = defineProps<{
                             </li>
                         </ul>
                     </li>
-                    <li class="mt-auto">
-                        <SidebarLink
-                            name="Settings"
-                            :href="route('profile.edit')"
-                            :icon="Cog6ToothIcon"
-                            :current="route().current('profile.edit')"
-                        />
-                    </li>
+
+                    <UserMenu
+                        class="-mx-2 cursor-pointer"
+                        :navigation="props.navigation"
+                    />
                 </ul>
             </nav>
         </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     name: string
-    href: string
+    href?: string
     current: boolean
     icon: any
 }>()
