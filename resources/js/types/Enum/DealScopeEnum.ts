@@ -1,1 +1,1 @@
-export type DealScopeEnum = 'open' | 'accepted' | 'declined'
+export type DealScopeEnum = 'open' | 'accepted' | 'rejected'

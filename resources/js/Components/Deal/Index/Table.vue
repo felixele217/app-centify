@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import Navigation from '@/Components/Deal/Index/Navigation.vue'
-import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import Integration from '@/types/Integration'
-import notify from '@/utils/notify'
 import queryParamValue from '@/utils/queryParamValue'
-import { router } from '@inertiajs/vue3'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import DealCard from './DealCard.vue'
 
 const props = defineProps<{
@@ -29,8 +26,8 @@ const noDealsText = computed(() => {
             return 'You do not have any open deals currently.'
         case 'accepted':
             return 'You do not have any accepted deals yet.'
-        case 'declined':
-            return 'You do not have any declined deals yet.'
+        case 'rejected':
+            return 'You do not have any rejected deals yet.'
     }
 })
 
@@ -42,7 +39,7 @@ const dealsText = computed(() => {
             return 'All open deals.'
         case 'accepted':
             return 'All accepted deals.'
-        case 'declined':
+        case 'rejected':
             return 'All rejected deals.'
     }
 })
@@ -101,7 +98,10 @@ const dealsText = computed(() => {
                     v-for="deal in props.deals"
                     class="grid grid-cols-12 items-center whitespace-nowrap text-sm"
                 >
-                    <DealCard :deal="deal" :integrations="props.integrations" />
+                    <DealCard
+                        :deal="deal"
+                        :integrations="props.integrations"
+                    />
                 </tr>
             </template>
         </TableWrapper>

@@ -29,7 +29,7 @@ class DealRepository
                 $query->active();
             })->get(),
             DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereNotNull('accepted_at')->doesntHave('rejections')->get(),
-            DealScopeEnum::DECLINED => $agentDealsOfOrganization->whereNull('accepted_at')->whereHas('rejections', function (Builder $query) {
+            DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereNull('accepted_at')->whereHas('rejections', function (Builder $query) {
                 $query->active();
             })->get(),
         };

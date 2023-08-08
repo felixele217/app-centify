@@ -7,7 +7,7 @@ import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
 
 defineEmits<{
     accepted: [id: number]
-    declined: [id: number]
+    rejected: [id: number]
 }>()
 
 const props = defineProps<{
@@ -25,7 +25,7 @@ const props = defineProps<{
             class="h-6 w-6 cursor-pointer hover:text-green-500"
         />
         <HandThumbDownIcon
-            @click="$emit('declined', deal.id)"
+            @click="$emit('rejected', deal.id)"
             class="h-6 w-6 cursor-pointer hover:text-red-600"
         />
     </div>
@@ -46,7 +46,7 @@ const props = defineProps<{
         v-else-if="props.deal.active_rejection?.created_at"
     >
         <Tooltip
-            :text="`This deal was declined at ${formatDate(props.deal.active_rejection.created_at)} due to: '${
+            :text="`This deal was rejected at ${formatDate(props.deal.active_rejection.created_at)} due to: '${
                 props.deal.active_rejection.reason
             }'`"
         >

@@ -28,8 +28,8 @@ const tabs = [
     },
     {
         name: 'Declined',
-        href: route('deals.index') + '?scope=declined',
-        current: window.location.href.includes('declined'),
+        href: route('deals.index') + '?scope=rejected',
+        current: window.location.href.includes('rejected'),
         icon: HandThumbDownIcon,
     },
 ]

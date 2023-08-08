@@ -54,7 +54,7 @@ function updateDeal(body: any) {
 }
 
 function notifyAcceptDecline() {
-    const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal declined!'
+    const title = dealIdBeingAccepted.value ? 'Deal accepted!' : 'Deal rejected!'
     const description = dealIdBeingAccepted.value
         ? "It now counts towards this agent's commission metrics."
         : "This deal will not affect this agent's commission metrics."
@@ -135,7 +135,7 @@ const rejectionForm = useForm({
         <DealStatus
             :deal="deal"
             @accepted="(id: number) => dealIdBeingAccepted = id"
-            @declined="(id: number) => dealIdBeingDeclined = id"
+            @rejected="(id: number) => dealIdBeingDeclined = id"
         />
     </td>
 

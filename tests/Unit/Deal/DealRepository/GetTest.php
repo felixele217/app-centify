@@ -54,5 +54,5 @@ it('accepted scope returns accepted deals', function () {
 });
 
 it('rejected scope returns deals with an active rejection', function () {
-    expect(DealRepository::get(DealScopeEnum::DECLINED))->toHaveCount($this->activeRejectedDealCount);
+    expect(DealRepository::get(DealScopeEnum::REJECTED))->toHaveCount($this->activeRejectedDealCount);
 });

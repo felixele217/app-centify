@@ -1,11 +1,11 @@
 <?php
 
 use App\Enum\DealScopeEnum;
-use App\Models\Agent;
 use App\Models\Deal;
 use App\Repositories\DealRepository;
 use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia;
+
 beforeEach(function () {
     $this->admin = signInAdmin();
 
@@ -71,11 +71,11 @@ it('passes the correct props for scope=accepted', function () {
     );
 });
 
-it('passes the correct props for scope=declined', function () {
-    $this->get(route('deals.index').'?scope='.DealScopeEnum::DECLINED->value)->assertInertia(
+it('passes the correct props for scope=rejected', function () {
+    $this->get(route('deals.index').'?scope='.DealScopeEnum::REJECTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::get(DealScopeEnum::DECLINED)->count())
+            ->has('deals', DealRepository::get(DealScopeEnum::REJECTED)->count())
             ->has('deals.1.agent')
     );
 });
