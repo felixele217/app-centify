@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 import { ref } from 'vue'
-const requiredColorsDeclaration =
-    'ring-purple-700 ring-green-700 ring-yellow-700 border-indigo-600 border-yellow-600 border-green-600'
 
-defineEmits(['option-clicked'])
+defineEmits<{
+    'radio-clicked': [option: string]
+}>()
 
 export type RadioCardOption<T = string> = {
     title: T
     description?: string
-    color?: string
+    backgroundColor?: string
+    ringColor?: string
 }
 
 const props = defineProps<{
-    label: string
+    label?: string
     options: Array<RadioCardOption>
     default: string
 }>()
@@ -25,20 +26,22 @@ const selected = (option: RadioCardOption) =>
 </script>
 
 <template>
-    <RadioGroup v-on:update:model-value="$emit('radio-clicked', currentOption)">
+    <RadioGroup v-on:update:model-value="$emit('radio-clicked', currentOption.title)">
         <RadioGroupLabel class="block text-sm font-medium text-gray-700">{{ props.label }}</RadioGroupLabel>
-        <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+        <div class="mt-4 flex gap-y-6 sm:grid-cols-3 sm:gap-x-4">
             <RadioGroupOption
                 as="template"
                 v-for="option in props.options"
                 :key="option.title"
                 :value="option.title"
+                class="w-1/2"
             >
                 <div
                     @click="currentOption = option"
                     :class="[
                         selected(option) ? 'border-transparent ring-2' : 'border-gray-300',
-                        option.color || '',
+                        option.backgroundColor || '',
+                        option.ringColor || '',
                         'relative flex cursor-pointer justify-center rounded-md border py-2 shadow-sm focus:outline-none',
                     ]"
                 >

@@ -91,7 +91,7 @@ function submit() {
                                     class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                                     @submit.prevent="submit"
                                 >
-                                    <div class="flex-1 overflow-y-hidden">
+                                    <div class="flex-1 overflow-y-scroll">
                                         <div class="bg-indigo-700 px-4 py-6 sm:px-6">
                                             <div class="flex items-center justify-between">
                                                 <DialogTitle class="text-base font-semibold leading-6 text-white"
@@ -120,7 +120,7 @@ function submit() {
                                         </div>
                                         <div class="flex h-full flex-1 flex-col justify-between overflow-y-auto">
                                             <div class="h-full divide-y divide-gray-200 px-6">
-                                                <div class="space-y-6 pb-5 pt-6">
+                                                <div class="space-y-6 pb-5 pt-3">
                                                     <PaidLeaveForm
                                                         :form="form"
                                                         :agentId="props.agentId"

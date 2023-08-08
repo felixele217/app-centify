@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Badge from '@/Components/Badge.vue'
 import Checkbox from '@/Components/Form/Checkbox.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
@@ -7,6 +6,7 @@ import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import InfoIcon from '@/Components/Icon/InfoIcon.vue'
+import RadioCards from '@/Components/RadioCards.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
@@ -53,6 +53,23 @@ function agentPaidLeaveRanges() {
 </script>
 
 <template>
+    <RadioCards
+        @radio-clicked="(optionTitle: string) => props.form.reason = (optionTitle as AgentStatusEnum)"
+        :options="[
+            {
+                title: 'sick',
+                backgroundColor: 'bg-purple-100',
+                ringColor: 'ring-purple-700',
+            },
+            {
+                title: 'on vacation',
+                backgroundColor: 'bg-yellow-100',
+                ringColor: 'ring-yellow-700',
+            },
+        ]"
+        :default="props.form.reason"
+    />
+
     <div class="space-y-4">
         <div>
             <InputLabel
@@ -160,16 +177,7 @@ function agentPaidLeaveRanges() {
 
         <div>
             <div class="mb-3 mt-7 flex items-center gap-2">
-                <h4 class="">Recent Paid Leaves</h4>
-                <Badge
-                    text="Sick"
-                    color="purple"
-                />
-
-                <Badge
-                    text="Vacation"
-                    color="yellow"
-                />
+                <h4>Recent Paid Leaves</h4>
             </div>
 
             <PaidLeaveCard
