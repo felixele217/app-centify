@@ -98,6 +98,10 @@ jobs:
               run: |
                   version=$(git rev-parse HEAD)
                   ls -lah
+                  echo now storage
+                  ls -lah storage
+                  echo now storage/app
+                  ls -lah storage/app
                   echo $version > ${{ env.DEPLOYED_VERSION_FILE }}
 
             - name: Upload version as artifact
