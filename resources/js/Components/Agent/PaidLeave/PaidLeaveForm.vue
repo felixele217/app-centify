@@ -156,7 +156,7 @@ const employed28OrMoreDays = ref<boolean>(true)
         </div>
 
         <div>
-            <div class="mt-7 flex items-center gap-2">
+            <div class="mb-3 mt-7 flex items-center gap-2">
                 <h4 class="">Recent Paid Leaves</h4>
                 <Badge
                     text="Sick"
