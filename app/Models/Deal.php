@@ -35,10 +35,10 @@ class Deal extends Model
         return $this->hasMany(Rejection::class);
     }
 
-    public function latestRejection(): Attribute
+    public function activeRejection(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->rejections()->orderBy('created_at', 'desc')->first(),
+            get: fn () => $this->rejections()->active()->first(),
         );
     }
 }

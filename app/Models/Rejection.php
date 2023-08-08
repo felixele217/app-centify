@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rejection extends Model
 {
@@ -22,5 +23,12 @@ class Rejection extends Model
     public function deal(): BelongsTo
     {
         return $this->belongsTo(Deal::class);
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->orWhere('is_permanent', true);
     }
 }

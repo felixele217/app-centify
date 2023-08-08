@@ -37,7 +37,7 @@ it('passes the correct props for all deals if no scope is specified', function (
             ->component('Deal/Index')
             ->has('deals', $this->openDealCount + $this->acceptedDealCount + $this->declinedDealCount)
             ->has('deals.1.agent')
-            ->has('deals.1.latest_rejection')
+            ->has('deals.1.active_rejection')
             ->has('integrations')
     );
 });

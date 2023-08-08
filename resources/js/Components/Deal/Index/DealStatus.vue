@@ -18,7 +18,7 @@ const props = defineProps<{
 <template>
     <div
         class="flex justify-center gap-2 text-gray-500"
-        v-if="!props.deal.accepted_at && !props.deal.latest_rejection?.created_at"
+        v-if="!props.deal.accepted_at && !props.deal.active_rejection?.created_at"
     >
         <HandThumbUpIcon
             @click="$emit('accepted', deal.id)"
@@ -43,11 +43,15 @@ const props = defineProps<{
 
     <div
         class="flex justify-center"
-        v-else-if="props.deal.latest_rejection?.created_at"
+        v-else-if="props.deal.active_rejection?.created_at"
     >
-        <Tooltip :text="`This deal was declined at ${formatDate(props.deal.latest_rejection.created_at)} due to: '${props.deal.latest_rejection.reason}'`">
+        <Tooltip
+            :text="`This deal was declined at ${formatDate(props.deal.active_rejection.created_at)} due to: '${
+                props.deal.active_rejection.reason
+            }'`"
+        >
             <Badge
-                :text="formatDate(props.deal.latest_rejection.created_at)"
+                :text="formatDate(props.deal.active_rejection.created_at)"
                 color="red"
             />
         </Tooltip>
