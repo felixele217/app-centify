@@ -33,7 +33,10 @@ const props = defineProps<{
                         </ul>
                     </li>
 
-                    <UserMenu :navigation="props.navigation" />
+                    <UserMenu
+                        class="-mx-2 cursor-pointer"
+                        :navigation="props.navigation"
+                    />
                 </ul>
             </nav>
         </div>
