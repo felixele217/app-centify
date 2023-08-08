@@ -55,7 +55,7 @@ const props = defineProps<{
                                 >
                                     <span class="sr-only">Close</span>
                                     <XMarkIcon
-                                        class="h-6 w-6"
+                                        class="h-8 w-8 rounded-full p-1 hover:bg-gray-100"
                                         aria-hidden="true"
                                     />
                                 </button>
