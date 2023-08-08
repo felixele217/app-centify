@@ -105,6 +105,13 @@ class Agent extends Authenticatable
         );
     }
 
+    public function activePlansNames(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->plans()->active()->get()->map(fn (Plan $plan) => $plan->name),
+        );
+    }
+
     protected function quotaAttainment(): Attribute
     {
         return Attribute::make(

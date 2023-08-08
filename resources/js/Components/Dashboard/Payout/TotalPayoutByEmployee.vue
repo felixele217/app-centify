@@ -46,18 +46,28 @@ function quotaDisplay(quotaAttainment: number) {
                                 >
                                     Name
                                 </th>
+
+                                <th
+                                    scope="col"
+                                    class="px-5 py-3.5 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                                >
+                                    Plan
+                                </th>
+
                                 <th
                                     scope="col"
                                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                 >
                                     Commission
                                 </th>
+
                                 <th
                                     scope="col"
                                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                 >
                                     Quota Attainment
                                 </th>
+
                                 <th
                                     scope="col"
                                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -73,6 +83,10 @@ function quotaDisplay(quotaAttainment: number) {
                             >
                                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                                     <AgentNameColumn :agent="agent" />
+                                </td>
+
+                                <td class="whitespace-pre-wrap py-5 pl-4 pr-3 text-gray-500 text-sm sm:pl-0">
+                                   {{ agent.active_plans_names!.join('\n') }}
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
