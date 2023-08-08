@@ -15,6 +15,7 @@ import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/co
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
+import { watch } from 'vue'
 import PaidLeaveCard from './PaidLeaveCard.vue'
 
 const props = defineProps<{
@@ -22,12 +23,21 @@ const props = defineProps<{
         reason: AgentStatusEnum
         start_date: Date | null
         end_date: Date | null
-        continuation_of_pay_time_scope: string
+        continuation_of_pay_time_scope: ContinuationOfPayTimeScopeEnum | ''
         sum_of_commissions: number | null
         employed_28_or_more_days: boolean
     }>
     agentId?: number
 }>()
+
+watch(
+    () => props.form.reason,
+    async (reason: AgentStatusEnum) => {
+        if (reason === 'on vacation') {
+            props.form.continuation_of_pay_time_scope = 'last quarter'
+        }
+    }
+)
 
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
@@ -129,9 +139,9 @@ function agentPaidLeaveRanges() {
                         continuationOfPayTimeScopeToDescription
                     )
                 "
-                @option-selected="(optionTitle: string) => props.form.continuation_of_pay_time_scope = optionTitle"
-                :default-title="props.form.reason === 'on vacation' ? 'last quarter' : undefined"
+                @option-selected="(optionTitle: string) => props.form.continuation_of_pay_time_scope = (optionTitle as ContinuationOfPayTimeScopeEnum)"
                 :disabled="props.form.reason === 'on vacation'"
+                v-model="props.form.continuation_of_pay_time_scope"
             />
 
             <InputError

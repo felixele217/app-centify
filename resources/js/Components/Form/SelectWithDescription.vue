@@ -14,6 +14,7 @@ const props = defineProps<{
     options: Array<SelectOptionWithDescription>
     defaultTitle?: string
     disabled?: boolean
+    modelValue: string
 }>()
 
 const emit = defineEmits<{
@@ -24,7 +25,7 @@ const selected = ref<null | {
     title: string
     description?: string
     current: boolean
-}>(props.defaultTitle ? props.options.filter((option) => option.title === props.defaultTitle)[0] : null)
+}>(props.modelValue ? props.options.filter((option) => option.title === props.modelValue)[0] : null)
 
 function clearSelect() {
     if (props.disabled) {
@@ -70,7 +71,7 @@ function clearSelect() {
                     <XMarkIcon
                         @click.prevent="clearSelect"
                         class="h-5 w-5 text-gray-400 hover:text-gray-600"
-                        v-if="selected?.title"
+                        v-if="!props.disabled && selected?.title"
                     />
 
                     <ChevronDownIcon
