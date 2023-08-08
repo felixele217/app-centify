@@ -219,10 +219,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
-                            <CurrencyInput
-                                :value="form.target_amount_per_month"
-                                @set-value="(value: number) => (form.target_amount_per_month = value)"
-                            />
+                            <CurrencyInput v-model="form.target_amount_per_month" />
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.target_amount_per_month"
@@ -327,10 +324,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             required
                         />
 
-                        <CurrencyInput
-                            :value="form.cap"
-                            @set-value="(newValue: number) => form.cap = newValue"
-                        />
+                        <CurrencyInput v-model="form.cap" />
 
                         <InputError
                             class="mt-2"

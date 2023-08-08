@@ -147,8 +147,7 @@ const employed28OrMoreDays = ref<boolean>(true)
             />
 
             <CurrencyInput
-                :value="props.form.sum_of_commissions"
-                @set-value="(value: number) => (props.form.sum_of_commissions = value)"
+            v-model="props.form.sum_of_commissions"
             />
 
             <InputError

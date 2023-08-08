@@ -188,10 +188,7 @@ function submit() {
                                                             required
                                                         />
 
-                                                        <CurrencyInput
-                                                            :value="form.base_salary"
-                                                            @set-value="(value: number) => (form.base_salary = value)"
-                                                        />
+                                                        <CurrencyInput v-model="form.base_salary" />
 
                                                         <InputError
                                                             class="mt-2"
@@ -211,10 +208,7 @@ function submit() {
                                                             />
                                                         </div>
 
-                                                        <CurrencyInput
-                                                            :value="form.on_target_earning"
-                                                            @set-value="(value: number) => (form.on_target_earning = value)"
-                                                        />
+                                                        <CurrencyInput v-model="form.on_target_earning" />
 
                                                         <InputError
                                                             class="mt-2"
