@@ -102,7 +102,7 @@ jobs:
                   ls -lah storage
                   echo now storage/app
                   ls -lah storage/app
-                  echo $version > ${{ env.DEPLOYED_VERSION_FILE }}
+                  echo $version > storage/app/${{ env.DEPLOYED_VERSION_FILE }}
 
             - name: Upload version as artifact
               uses: actions/upload-artifact@v3
