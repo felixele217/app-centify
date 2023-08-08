@@ -14,6 +14,8 @@ uses(TestCase::class)->group('unit')->in('Unit');
 uses(TestCase::class)->group('staging')->in('Staging');
 uses(RefreshDatabase::class)->in('Feature', 'Unit', 'Staging', 'Integration');
 
+uses(TestCase::class)->group('local')->in('Local');
+
 function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, Carbon $addTime = null): array
 {
     $plan = Plan::factory()->active()->create([
