@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import Agent from '@/types/Agent'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import getRollingQuota from '@/utils/Date/rollingQuota'
@@ -24,7 +25,15 @@ const averageAchievedQuotaAttainment =
             <p class="font-semibold">Average Quota Attainment</p>
             <div>
                 <h2 class="mb-3">All Teams</h2>
-                <p class="font-semibold text-gray-400">rolling quota: {{ roundFloat(rollingQuota * 100) }}%</p>
+                <div class="flex items-center gap-1">
+                    <InfoIcon
+                        placement="bottom"
+                        hoverText="This is the target that needs to be achieved until today in order to hit 100%.
+                        It changes based on your filter settings."
+                        class="max-w-5 whitespace-pre-line text-gray-400"
+                    />
+                    <p class="font-semibold text-gray-400">rolling quota: {{ roundFloat(rollingQuota * 100) }}%</p>
+                </div>
             </div>
         </div>
 

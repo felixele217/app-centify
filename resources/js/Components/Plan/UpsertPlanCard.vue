@@ -17,6 +17,7 @@ import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import Plan from '@/types/Plan/Plan'
+import { additionalPlanFieldToDescription } from '@/utils/Descriptions/additionalPlanFieldToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
@@ -184,11 +185,19 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                     </div>
                     <div class="flex gap-5">
                         <div class="w-1/2">
-                            <InputLabel
-                                for="target_variable"
-                                value="Target Variable"
-                                required
-                            />
+                            <div class="flex gap-1">
+                                <InputLabel
+                                    for="target_variable"
+                                    value="Target Variable"
+                                    required
+                                />
+
+                                <InfoIcon
+                                    :hover-text="`The target variable links a plan to a specific field from your integration.`"
+                                    class="max-w-5 whitespace-pre-line text-gray-700"
+                                />
+                            </div>
+
                             <SelectWithDescription
                                 :options="
                                     enumOptionsToSelectOptionWithDescription(
@@ -213,9 +222,8 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                 />
 
                                 <InfoIcon
-                                    :hover-text="`Set a monthly target for the target variable that you are going to select in the next step.
-                                                Example: Quarterly ARR Target is 90k.
-                                                You have to insert 30K`"
+                                    :hover-text="`Set a monthly target for the target variable.
+                                                Example: If you have a quarterly ARR Target of 90k, you have to insert 30k here.`"
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
@@ -270,17 +278,52 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                     </div>
 
                     <div>
+                        <div class="flex items-center gap-1">
+                            <InputLabel
+                                value="Trigger"
+                                required
+                            />
+
+                            <InfoIcon
+                                :hover-text="`Select the trigger event that this plan applies to.
+                                Deals will only be taken into account if this condition is met.`"
+                                class="max-w-5 whitespace-pre-line text-gray-700"
+                            />
+                        </div>
+
+                        <SelectWithDescription
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    [
+                                        'demo_set_by',
+                                        // 'deal_won'
+                                    ],
+                                    triggerToDescription
+                                )
+                            "
+                            default-title="demo_set_by"
+                            @option-selected="(optionTitle: string) => form.trigger = (optionTitle as 'demo_set_by')"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.trigger"
+                        />
+                    </div>
+
+                    <div>
                         <InputLabel value="Need more complexity? Add one of the following..." />
 
                         <CardOptions
-                            :options-per-row="4"
+                            :options-per-row="3"
                             :options="
                                 AdditionalPlanFieldEnumCases.map((type) => ({
                                     title: type,
                                     selected: activeAdditionalFields.includes(type),
+                                    description: additionalPlanFieldToDescription[type],
                                 }))
                             "
-                            @option-clicked="(option: CardOptionsOption<AdditionalPlanFieldEnum>) => toggleAdditionalField(option)"
+                            @option-clicked="(option: CardOptionsOption<string>) => toggleAdditionalField(option as CardOptionsOption<AdditionalPlanFieldEnum>)"
                         />
                     </div>
 
@@ -326,32 +369,6 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         <InputError
                             class="mt-2"
                             :message="form.errors.cap"
-                        />
-                    </div>
-
-                    <div>
-                        <InputLabel
-                            value="Trigger"
-                            required
-                        />
-
-                        <SelectWithDescription
-                            :options="
-                                enumOptionsToSelectOptionWithDescription(
-                                    [
-                                        'demo_set_by',
-                                        // 'deal_won'
-                                    ],
-                                    triggerToDescription
-                                )
-                            "
-                            default-title="demo_set_by"
-                            @option-selected="(optionTitle: string) => form.trigger = (optionTitle as 'demo_set_by')"
-                        />
-
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.trigger"
                         />
                     </div>
                 </div>

@@ -19,8 +19,8 @@ const props = defineProps<{
     kicker: {
         type: KickerTypeEnum
         salary_type: SalaryTypeEnum
-        threshold_in_percent: number
-        payout_in_percent: number
+        threshold_in_percent: number | null
+        payout_in_percent: number | null 
     }
     errors: Record<string, string>
 }>()
