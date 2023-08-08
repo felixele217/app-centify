@@ -91,28 +91,7 @@ it('requires all kicker fields if at least one is specified', function (array $p
             'kicker.threshold_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'kicker.payout_in_percent' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
         ],
-    ]
-]);
-
-it('does not throw validation errors if you send 0 as values in either of the percent fields', function (?int $thresholdInPercent, ?int $payoutInPercent) {
-    $plan = Plan::factory()->create([
-        'organization_id' => $this->admin->organization->id,
-    ]);
-
-    UpdatePlanRequest::factory()->state([
-        'kicker' => [
-            'salary_type' => null,
-            'type' => null,
-            'threshold_in_percent' => $thresholdInPercent,
-            'payout_in_percent' => $payoutInPercent,
-        ],
-    ])->fake();
-
-    $this->put(route('plans.update', $plan))->assertValid();
-})->with([
-    [0, null],
-    [null, 0],
-    [0, 0],
+    ],
 ]);
 
 it('does not update a kicker when an array with empty values is sent', function () {

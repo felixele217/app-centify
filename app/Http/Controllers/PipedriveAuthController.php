@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\GetPipedriveSubdomainAction;
-use App\Actions\SetPipedriveSubdomainAction;
 use App\Facades\Pipedrive;
 use App\Repositories\IntegrationRepository;
 use Illuminate\Http\RedirectResponse;
@@ -32,7 +31,7 @@ class PipedriveAuthController extends Controller
         $integration = IntegrationRepository::update(Auth::user()->organization->id, [
             'subdomain' => GetPipedriveSubdomainAction::execute(),
         ]);
-       
+
         return to_route('integrations.custom-fields.index', $integration);
     }
 }

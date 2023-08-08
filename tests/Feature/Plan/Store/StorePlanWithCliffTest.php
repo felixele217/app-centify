@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Plan;
-use App\Models\Cliff;
 use App\Enum\TimeScopeEnum;
 use App\Http\Requests\StorePlanRequest;
+use App\Models\Cliff;
+use App\Models\Plan;
 
 it('can store a plan with a cliff as an admin', function (TimeScopeEnum $timeScope) {
     signInAdmin();
@@ -21,25 +21,12 @@ it('can store a plan with a cliff as an admin', function (TimeScopeEnum $timeSco
     expect(Plan::first()->cliff->time_scope->value)->toBe($timeScope->value);
 })->with(TimeScopeEnum::cases());
 
-it('does not throw validation errors if you send 0 as values in either of the percent fields', function () {
-    signInAdmin();
-
-    StorePlanRequest::factory()->state([
-        'cliff' => [
-            'threshold_in_percent' => 0,
-            'time_scope' => null,
-        ],
-    ])->fake();
-
-    $this->post(route('plans.store'))->assertValid();
-});
-
 it('does not store a cliff when an array with empty values is sent', function () {
     signInAdmin();
 
     StorePlanRequest::factory()->state([
         'cliff' => [
-            'threshold_in_percent' => 0,
+            'threshold_in_percent' => null,
             'time_scope' => TimeScopeEnum::MONTHLY->value,
         ],
     ])->fake();

@@ -72,7 +72,7 @@ it('does not use deals that lie out of the current time scope', function (TimeSc
 
 it('returns null if the agent has no active plan', function () {
     signInAdmin();
-   
+
     expect((new QuotaAttainmentService())->calculate(Agent::factory()->create(), TimeScopeEnum::MONTHLY, 0))->toBeNull();
 });
 

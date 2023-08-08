@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\RequestFactories;
 
-use App\Enum\AgentStatusEnum;
 use Illuminate\Support\Facades\Auth;
 use Worksome\RequestFactories\RequestFactory;
 

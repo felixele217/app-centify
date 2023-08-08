@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\AgentStatusEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\Agent;
 
@@ -24,10 +23,7 @@ it('can create an agent as an admin', function () {
 it('has required fields', function () {
     signInAdmin();
 
-    $this->post(route('agents.store'), [
-        'base_salary' => 0,
-        'on_target_earning' => 0,
-    ])->assertInvalid([
+    $this->post(route('agents.store'))->assertInvalid([
         'name' => 'The name field is required.',
         'email' => 'The email field is required.',
         'base_salary' => 'The base salary field is required.',

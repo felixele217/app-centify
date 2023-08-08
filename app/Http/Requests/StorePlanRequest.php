@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Actions\NullZeroNumbersAction;
 use App\Enum\KickerTypeEnum;
 use App\Enum\PayoutFrequencyEnum;
 use App\Enum\SalaryTypeEnum;
@@ -118,19 +117,8 @@ class StorePlanRequest extends FormRequest
     {
         $data = $this->all();
 
-
         if (isset($data['start_date'])) {
             $data['start_date'] = Carbon::createFromDate($data['start_date']);
-        }
-
-        $data = NullZeroNumbersAction::execute($data, ['cap']);
-
-        if (isset($data['kicker'])) {
-            $data['kicker'] = NullZeroNumbersAction::execute($data['kicker'], ['payout_in_percent', 'threshold_in_percent']);
-        }
-
-        if (isset($data['cliff'])) {
-            $data['cliff'] = NullZeroNumbersAction::execute($data['cliff'], ['threshold_in_percent']);
         }
 
         $this->replace($data);

@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\AgentStatusEnum;
 use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
 
@@ -44,10 +43,7 @@ it('has required fields', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $this->put(route('agents.update', $agent), [
-        'base_salary' => 0,
-        'on_target_earning' => 0,
-    ])->assertInvalid([
+    $this->put(route('agents.update', $agent))->assertInvalid([
         'name' => 'The name field is required.',
         'email' => 'The email field is required.',
         'base_salary' => 'The base salary field is required.',

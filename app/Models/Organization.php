@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Integration;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Organization extends Model
 {
@@ -34,6 +31,6 @@ class Organization extends Model
 
     public function integrations(): HasMany
     {
-      return $this->hasMany(Integration::class);
+        return $this->hasMany(Integration::class);
     }
 }

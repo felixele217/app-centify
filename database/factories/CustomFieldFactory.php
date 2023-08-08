@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enum\CustomFieldEnum;
-use App\Enum\IntegrationTypeEnum;
 use App\Models\Integration;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;

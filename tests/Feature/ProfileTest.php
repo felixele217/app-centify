@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Admin;
-
 use function Pest\Laravel\withoutExceptionHandling;
 
 test('profile page is displayed', function () {

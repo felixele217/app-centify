@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enum\DealScopeEnum;
+use App\Http\Requests\UpdateDealRequest;
 use App\Models\Deal;
+use App\Repositories\DealRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Enum\DealScopeEnum;
-use App\Repositories\DealRepository;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\UpdateDealRequest;
 
 class DealController extends Controller
 {

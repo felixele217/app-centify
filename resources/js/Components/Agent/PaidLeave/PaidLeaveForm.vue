@@ -146,9 +146,7 @@ const employed28OrMoreDays = ref<boolean>(true)
                 required
             />
 
-            <CurrencyInput
-            v-model="props.form.sum_of_commissions"
-            />
+            <CurrencyInput v-model="props.form.sum_of_commissions" />
 
             <InputError
                 class="mt-2"

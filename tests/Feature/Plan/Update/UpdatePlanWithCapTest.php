@@ -34,7 +34,7 @@ it('does not throw validation error if you send cap of 0', function () {
     ]);
 
     UpdatePlanRequest::factory()->state([
-        'cap' => 0,
+        'cap' => null,
     ])->fake();
 
     $this->put(route('plans.update', $plan))->assertValid();

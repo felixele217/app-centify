@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Actions\NullZeroNumbersAction;
 use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -42,13 +41,6 @@ class StorePaidLeaveRequest extends FormRequest
                 'integer',
             ],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $data = NullZeroNumbersAction::execute($this->all(), ['sum_of_commissions']);
-
-        $this->replace($data);
     }
 
     public function messages(): array

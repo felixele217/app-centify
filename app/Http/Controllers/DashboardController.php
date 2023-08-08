@@ -27,7 +27,7 @@ class DashboardController extends Controller
                 'commission_change',
                 'sick_leaves_days_count',
                 'vacation_leaves_days_count',
-                'active_plans_names'
+                'active_plans_names',
             ]),
             'time_scopes' => array_column(TimeScopeEnum::cases(), 'value'),
             'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),

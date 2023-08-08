@@ -90,7 +90,7 @@ const form = useForm({
         time_scope: 'quarterly' as TimeScopeEnum,
     },
 
-    cap: props.plan?.cap?.value || 0,
+    cap: props.plan?.cap?.value || null,
     trigger: 'demo_set_by',
 })
 

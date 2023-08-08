@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
-import Badge from '@/Components/Badge.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -75,7 +74,7 @@ const agentBeingEdited = ref<Agent>()
                 </th>
                 <th
                     scope="col"
-                    class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
                     Plans
                 </th>
@@ -110,7 +109,7 @@ const agentBeingEdited = ref<Agent>()
                     />
                 </td>
 
-                <td class="whitespace-pre-wrap py-5 px-3 text-sm text-gray-500">
+                <td class="whitespace-pre-wrap px-3 py-5 text-sm text-gray-500">
                     {{ agent.active_plans_names!.join('\n') }}
                 </td>
 

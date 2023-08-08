@@ -2,8 +2,6 @@
 
 use App\Models\Deal;
 
-use function Pest\Laravel\withoutExceptionHandling;
-
 it('stores the correct rejection upon rejecting a deal', function (bool $isPermanent) {
     signInAdmin();
 
