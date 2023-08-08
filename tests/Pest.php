@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 uses(TestCase::class)->group('architecture')->in('Architecture');
+uses(TestCase::class)->group('integration')->in('Integration');
 uses(TestCase::class)->group('feature')->in('Feature');
 uses(TestCase::class)->group('unit')->in('Unit');
 uses(TestCase::class)->group('staging')->in('Staging');
-uses(TestCase::class)->group('integration')->in('Integration');
 uses(RefreshDatabase::class)->in('Feature', 'Unit', 'Staging', 'Integration');
 
 function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, Carbon $addTime = null): array

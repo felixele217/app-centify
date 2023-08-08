@@ -27,11 +27,11 @@ jobs:
               run: |
                   mkdir -p database
                   touch database/database.sqlite
-            - name: Execute tests (Unit and Feature tests) via Pest
+            - name: Execute tests (Unit, Feature, Architecture, Integration) via Pest
               env:
                   DB_CONNECTION: sqlite
                   DB_DATABASE: database/database.sqlite
-              run: vendor/bin/pest --group=feature,unit,architecture --type-coverage --min=100
+              run: vendor/bin/pest --group=feature,unit,architecture,integration --type-coverage --min=100
 
     frontend-tests:
         runs-on: ubuntu-latest
