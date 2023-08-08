@@ -35,4 +35,13 @@ class DealFactory extends Factory
             'accepted_at' => Carbon::yesterday(),
         ]);
     }
+
+    public function withAgentOfOrganization(int $organizationId): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'agent_id' => Agent::factory()->create([
+                'organization_id' => $organizationId,
+            ]),
+        ]);
+    }
 }

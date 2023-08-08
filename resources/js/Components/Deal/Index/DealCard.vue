@@ -153,9 +153,9 @@ const rejectionForm = useForm({
         is-negative-action
         :isOpen="!!dealIdBeingDeclined"
         @close-modal="dealIdBeingDeclined = null"
-        button-text="Decline"
-        title="Decline Deal"
-        :description="'Are you sure you want to decline this deal? \nThe deal will reappear the following month, unless you reject it permanently.'"
+        button-text="Reject"
+        title="Reject Deal"
+        :description="'Are you sure you want to reject this deal? \nThe deal will reappear the following month, unless you reject it permanently.'"
     >
         <div class="mt-8">
             <InputLabel
