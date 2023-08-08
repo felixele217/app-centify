@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version=$(cat $1)
-   
+
 for i in {1..30}; do # Try for 5 minutes
     sleep 10
 
