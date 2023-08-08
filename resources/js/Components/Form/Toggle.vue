@@ -6,6 +6,7 @@ const props = defineProps<{
     modelValue: boolean
     title: string
     description: string
+    color?: 'red' | 'indigo'
 }>()
 
 const emit = defineEmits<{
@@ -20,6 +21,11 @@ watch(
         emit('update:modelValue', newValue)
     }
 )
+
+const toggleColor =
+    props.color === 'red'
+        ? 'bg-red-600 focus:ring-red-600 focus:ring-2 focus:ring-offset-2'
+        : 'bg-indigo-600 focus:ring-indigo-600 focus:ring-2 focus:ring-offset-2'
 </script>
 
 <template>
@@ -46,8 +52,8 @@ watch(
         <Switch
             v-model="enabled"
             :class="[
-                enabled ? 'bg-indigo-600' : 'bg-gray-200',
-                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+                enabled ? toggleColor : 'bg-gray-200',
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ',
             ]"
         >
             <span

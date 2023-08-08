@@ -155,19 +155,17 @@ const rejectionForm = useForm({
         @close-modal="dealIdBeingDeclined = null"
         button-text="Decline"
         title="Decline Deal"
-        :description="'Are you sure you want to decline this deal? \nThis will affect the agent\'s quota and commission and is currently irreversible.'"
+        :description="'Are you sure you want to decline this deal? \nThe deal will reappear the following month, unless you reject it permanently.'"
     >
-        <div class="mt-5">
+        <div class="mt-8">
             <InputLabel
                 value="Reason"
                 required
             />
-
             <TextInput
                 v-model="rejectionForm.reason"
                 autofocus
             />
-
             <InputError
                 class="mt-2"
                 :message="usePage().props.errors.rejection_reason"
@@ -175,6 +173,7 @@ const rejectionForm = useForm({
         </div>
 
         <Toggle
+            color="red"
             class="mt-5"
             title="Reject permanently"
             description="After rejecting a deal permanently, it ceases to reappear each month."
