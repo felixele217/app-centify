@@ -18,6 +18,7 @@ it('passes the correct props', function () {
                 ->component('Agent/Index')
                 ->has('agents', $agents->count())
                 ->has('agents.0.active_paid_leave')
+                ->has('agents.0.active_plans_names')
                 ->where('possible_statuses', array_column(AgentStatusEnum::cases(), 'value'))
                 ->where('continuation_of_pay_time_scope_options', array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'))
         );

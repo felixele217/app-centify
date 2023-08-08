@@ -75,6 +75,12 @@ const agentBeingEdited = ref<Agent>()
                 </th>
                 <th
                     scope="col"
+                    class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                >
+                    Plans
+                </th>
+                <th
+                    scope="col"
                     class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                 >
                     Base Salary
@@ -84,12 +90,6 @@ const agentBeingEdited = ref<Agent>()
                     class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                 >
                     On Target Earning
-                </th>
-                <th
-                    scope="col"
-                    class="hidden py-3.5 pl-3 pr-14 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-                >
-                    Status
                 </th>
                 <th />
             </tr>
@@ -109,6 +109,11 @@ const agentBeingEdited = ref<Agent>()
                         class="absolute -top-px left-6 right-0 h-px bg-gray-200"
                     />
                 </td>
+
+                <td class="whitespace-pre-wrap py-5 px-3 text-sm text-gray-500">
+                    {{ agent.active_plans_names!.join('\n') }}
+                </td>
+
                 <td
                     :class="[
                         agentId === 0 ? '' : 'border-t border-gray-200',
@@ -124,17 +129,6 @@ const agentBeingEdited = ref<Agent>()
                     ]"
                 >
                     {{ euroDisplay(agent.on_target_earning) }}
-                </td>
-                <td
-                    :class="[
-                        agentId === 0 ? '' : 'border-t border-gray-200',
-                        'hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell',
-                    ]"
-                >
-                    <Badge
-                        :text="agent.status"
-                        :color="color(agent.status)"
-                    />
                 </td>
                 <td class="absolute lg:table-cell">
                     <EditAndDeleteOptions
