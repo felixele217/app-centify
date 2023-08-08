@@ -3,7 +3,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const props = withDefaults(
     defineProps<{
-        align?: 'left' | 'right'
+        align?: 'left' | 'right' | 'top'
         width?: '48'
         contentClasses?: string
         closeOnContentClick?: boolean
@@ -38,6 +38,8 @@ const alignmentClasses = computed(() => {
         return 'origin-top-left left-0'
     } else if (props.align === 'right') {
         return 'origin-top-right right-0'
+    } else if (props.align === 'top') {
+        return 'origin-bottom bottom-full'
     } else {
         return 'origin-top'
     }
