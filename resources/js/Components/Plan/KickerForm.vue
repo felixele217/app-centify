@@ -47,10 +47,7 @@ const props = defineProps<{
                     required
                 />
 
-                <PercentageInput
-                    :value="props.kicker.threshold_in_percent"
-                    @set-value="(thresholdInPercent: number) => $emit('set-threshold-in-percent', thresholdInPercent)"
-                />
+                <PercentageInput v-model="props.kicker.threshold_in_percent" />
             </div>
         </div>
 
@@ -73,10 +70,7 @@ const props = defineProps<{
                     required
                 />
 
-                <PercentageInput
-                    :value="props.kicker.payout_in_percent"
-                    @set-value="(payoutInPercent: number) => $emit('set-payout-in-percent', payoutInPercent)"
-                />
+                <PercentageInput v-model="props.kicker.payout_in_percent" />
             </div>
         </div>
         <InputError
