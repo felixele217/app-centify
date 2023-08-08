@@ -31,6 +31,7 @@ const form = useForm({
     end_date: null as Date | null,
     continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
     sum_of_commissions: null,
+    employed_28_or_more_days: true,
 })
 
 watch(
@@ -56,6 +57,7 @@ function submit() {
                 'Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email.'
             )
         },
+        preserveScroll: true,
     })
 }
 </script>
