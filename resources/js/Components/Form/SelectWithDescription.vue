@@ -2,7 +2,7 @@
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 export type SelectOptionWithDescription = {
     title: string
@@ -18,29 +18,24 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-    'option-selected': [title: string]
+    'update:modelValue': [title: string]
 }>()
-
-const selected = ref<null | {
-    title: string
-    description?: string
-    current: boolean
-}>(props.modelValue ? props.options.filter((option) => option.title === props.modelValue)[0] : null)
 
 function clearSelect() {
     if (props.disabled) {
         return
     }
 
-    emit('option-selected', '')
-    selected.value = null
+    emit('update:modelValue', '')
 }
+
+const selected = computed(() => props.options.filter((option) => option.title === props.modelValue)[0])
 </script>
 
 <template>
     <Listbox
         as="div"
-        v-model="selected"
+        v-model="props.modelValue"
     >
         <ListboxLabel class="sr-only">Change published status</ListboxLabel>
 
@@ -91,7 +86,7 @@ function clearSelect() {
                     class="absolute left-0 top-10 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                     <ListboxOption
-                        @click.prevent="$emit('option-selected', option.title)"
+                        @click.prevent="$emit('update:modelValue', option.title)"
                         as="template"
                         v-for="option in props.options"
                         :key="option.title"

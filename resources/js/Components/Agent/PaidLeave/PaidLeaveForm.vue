@@ -35,6 +35,8 @@ watch(
     async (reason: AgentStatusEnum) => {
         if (reason === 'on vacation') {
             props.form.continuation_of_pay_time_scope = 'last quarter'
+        } else {
+            props.form.continuation_of_pay_time_scope = ''
         }
     }
 )
