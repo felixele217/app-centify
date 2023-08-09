@@ -17,11 +17,13 @@ import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import Plan from '@/types/Plan/Plan'
+import formatDate from '@/utils/Date/formatDate'
 import { additionalPlanFieldToDescription } from '@/utils/Descriptions/additionalPlanFieldToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { triggerToDescription } from '@/utils/Descriptions/triggerToDescription'
+import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -39,7 +41,7 @@ export interface AdditionalField {
 
 const props = defineProps<{
     plan?: Plan
-    agents: Array<Pick<Agent, 'id' | 'name'>>
+    agents: Array<Agent>
     target_variable_options: Array<TargetVariableEnum>
     payout_frequency_options: Array<PayoutFrequencyEnum>
     kicker_type_options: Array<KickerTypeEnum>
@@ -95,10 +97,6 @@ const form = useForm({
     trigger: 'demo_set_by',
 })
 
-function handleDateChange(newDate: Date) {
-    form.start_date = newDate
-}
-
 function handleAgentSelect(id: number) {
     if (form.assigned_agent_ids.includes(id)) {
         form.assigned_agent_ids = form.assigned_agent_ids.filter((agentId) => agentId !== id)
@@ -131,6 +129,10 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
     } else {
         activeAdditionalFields.value = [...activeAdditionalFields.value, option.title]
     }
+}
+
+function firstAssignedAgent() {
+    return props.agents.filter((agent) => agent.id === form.assigned_agent_ids[0])[0]
 }
 </script>
 
@@ -175,7 +177,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             />
                             <DateInput
                                 :current-date="form.start_date"
-                                @date-changed="handleDateChange"
+                                @date-changed="(newDate: Date) => (form.start_date = newDate)"
                             />
                             <InputError
                                 class="mt-2"
@@ -363,6 +365,71 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :message="form.errors.cap"
                         />
                     </div>
+                </div>
+
+                <div class="mb-5 pt-5 text-sm">
+                    <p class="text-base font-semibold">Description</p>
+
+                    <p class="mt-2">
+                        The plan
+                        <span class="font-semibold">{{ form.name || '{plan_name}' }}</span>
+                        will be renewed automatically for each
+                        <span class="font-semibold">{{ form.payout_frequency || '{interval}' }},</span>
+                        starting on
+                        <span class="font-semibold">{{ formatDate(form.start_date) || '{start_date}' }}</span>
+                        and is assigned to
+                        <span class="font-semibold">{{ form.assigned_agent_ids.length }}</span>
+                        agents.
+                    </p>
+
+                    <p class="mt-2">
+                        The variable
+                        <span class="font-semibold">{{ form.target_variable || '{target_variable}' }}</span>
+                        is attributed to the plan and triggered by
+                        <span class="font-semibold">{{ form.trigger || '{trigger}' }}</span>
+
+                        For this variable, you set the individual monthly target at
+                        <span class="font-semibold"
+                            >{{ form.target_amount_per_month || '{target_amount_per_month}' }}.
+                        </span>
+                    </p>
+
+                    <p class="mt-5 text-base font-semibold">Example</p>
+
+                    <p class="mt-2">
+                        If
+                        <span class="font-semibold">{{
+                            props.agents.filter((agent) => agent.id === form.assigned_agent_ids[0])[0]?.name ||
+                            '{assigned_agent}'
+                        }}</span>
+                        of the plan achieves
+                        <span class="font-semibold">
+                            {{ form.target_amount_per_month || '{target_amount_per_month}' }}
+                            {{ form.payout_frequency === 'quarterly' ? '*3' : '' }}
+                        </span>
+                        of
+                        <span class="font-semibold">{{ form.target_variable || '{target_variable}' }}</span>
+                        within a
+                        <span class="font-semibold">{{ form.payout_frequency || '{payout_frequency}' }},</span>
+                        the commission equals to
+                        <br />
+                    </p>
+                    <p class="mt-2">
+                        <span class="font-semibold">
+                            ({{
+                                `${euroDisplay(firstAssignedAgent()?.on_target_earning) || ''} (${
+                                    firstAssignedAgent()?.name || ''
+                                }On Target Earning)` || "(Agent's On Target Earning)"
+                            }}
+                            -
+                            {{
+                                `${euroDisplay(firstAssignedAgent()?.base_salary) || ''} (${
+                                    firstAssignedAgent()?.name || ''
+                                }Base Salary)` || "(Agent's Base Salary)"
+                            }}
+                            / 12 (months))€.
+                        </span>
+                    </p>
                 </div>
 
                 <FormButtons

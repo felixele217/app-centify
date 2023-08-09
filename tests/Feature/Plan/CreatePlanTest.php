@@ -17,15 +17,7 @@ it('passes the correct props', function () {
     $this->get(route('plans.create'))->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Plan/Create')
-            ->has('agents', $agentCount, fn (AssertableInertia $page) => $page
-                ->has('id')
-                ->has('name')
-                ->has('organization_id')
-                ->missing('email')
-                ->missing('base_salary')
-                ->missing('on_target_earning')
-                ->etc()
-            )
+            ->has('agents', $agentCount)
             ->where('target_variable_options', array_column(TargetVariableEnum::cases(), 'value'))
             ->where('payout_frequency_options', array_column(PayoutFrequencyEnum::cases(), 'value'))
             ->where('kicker_type_options', array_column(KickerTypeEnum::cases(), 'value'))
