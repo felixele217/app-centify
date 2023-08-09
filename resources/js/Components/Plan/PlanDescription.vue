@@ -21,7 +21,7 @@ function firstAssignedAgent() {
         <p class="mt-2">
             The plan
             <span class="font-semibold">{{ form.name || '{plan_name}' }}</span>
-            will be renewed automatically for each
+            will be renewed
             <span class="font-semibold">{{ form.payout_frequency || '{interval}' }},</span>
             starting on
             <span class="font-semibold">{{
@@ -29,7 +29,7 @@ function firstAssignedAgent() {
             }}</span>
             and is assigned to
             <span class="font-semibold">{{ form.assigned_agent_ids.length }}</span>
-            agents.
+            agent(s).
         </p>
 
         <p class="mt-2">
@@ -39,8 +39,9 @@ function firstAssignedAgent() {
             <span class="font-semibold">{{ form.trigger || '{trigger}' }}.</span>
 
             For this variable, you set the individual monthly target at
-            <span class="font-semibold">{{ form.target_amount_per_month || '{target_amount_per_month}' }}€. </span>
+            <span class="font-semibold"
+                >{{ euroDisplay(form.target_amount_per_month, 0) || '{target_amount_per_month}' }}.
+            </span>
         </p>
-
     </div>
 </template>
