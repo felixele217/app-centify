@@ -77,7 +77,7 @@ const dealsText = computed(() => {
                         scope="col"
                         class="col-span-2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                        Payment Cycle
+                        Payout Cycle
                     </th>
                     <th
                         scope="col"
