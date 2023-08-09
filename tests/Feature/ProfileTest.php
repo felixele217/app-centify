@@ -1,11 +1,10 @@
 <?php
 
 use App\Models\Admin;
-use function Pest\Laravel\withoutExceptionHandling;
+use App\Models\Agent;
 
 test('profile page is displayed', function () {
     $user = Admin::factory()->create();
-    withoutExceptionHandling();
 
     $response = $this
         ->actingAs($user)
