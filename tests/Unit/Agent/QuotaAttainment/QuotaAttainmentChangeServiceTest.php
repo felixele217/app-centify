@@ -37,8 +37,11 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
     [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear()->subDays(5), 1],
 ]);
 
-it('quota attainment change returns null when previous scope has no quota', function (TimeScopeEnum $timeScope) {
-    $plan = Plan::factory()->active()->create();
+it('quota attainment change returns null when previous scope had no active plans', function (TimeScopeEnum $timeScope) {
+    $plan = Plan::factory()->create([
+        'start_date' => Carbon::now()->firstOfMonth(),
+        'end_date' => Carbon::now()->lastOfMonth(),
+    ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
         'accepted_at' => Carbon::now(),

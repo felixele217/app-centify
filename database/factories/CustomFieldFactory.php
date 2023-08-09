@@ -14,7 +14,7 @@ class CustomFieldFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
+            'id' => fake()->unique()->randomNumber() + 1,
             'name' => fake()->randomElement(CustomFieldEnum::cases())->value,
             'api_key' => Str::random(40),
             'integration_id' => Integration::factory()->create()->id,

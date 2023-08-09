@@ -14,7 +14,7 @@ class IntegrationFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
+            'id' => fake()->unique()->randomNumber() + 1,
             'name' => fake()->randomElement(IntegrationTypeEnum::cases())->value,
             'access_token' => 'some token',
             'refresh_token' => 'some token',
