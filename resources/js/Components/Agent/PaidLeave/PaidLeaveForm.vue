@@ -103,11 +103,20 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <InputLabel
-                for="end_date"
-                value="End Date"
-                :required="props.form.reason === 'on vacation'"
-            />
+            <div class="flex items-center gap-1">
+                <InputLabel
+                    for="end_date"
+                    value="End Date"
+                    :required="props.form.reason === 'on vacation'"
+                />
+
+                <InfoIcon
+                    hover-text="Please add the end date of the sickness. If not done immediately, this will pop up as a task in your to-dos.
+                    Only if the end date is entered a proper calculation can run."
+                    class="whitespace-pre-line"
+                    v-if="props.form.reason === 'sick'"
+                />
+            </div>
 
             <DateInput
                 :current-date="props.form.end_date"
@@ -122,15 +131,20 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <div class="flex gap-1">
+            <div class="flex items-center gap-1">
                 <InputLabel
                     value="Continuation of pay based on.."
-                    required
+                    :required="props.form.reason === 'on vacation'"
                 />
 
                 <InfoIcon
-                    hover-text="Pay is based on the last quarter as per German law."
+                    hover-text="The law prescribes the earned commission of the last quarter as basis."
                     v-if="props.form.reason === 'on vacation'"
+                />
+
+                <InfoIcon
+                    hover-text="You have to select a basis for the calculation as the law does not directly prescribe what to do."
+                    v-else
                 />
             </div>
 
@@ -153,10 +167,18 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <InputLabel
-                value="Sum of commissions earned during this time.."
-                required
-            />
+            <div class="items-center gap-1">
+                <InputLabel
+                    value="Sum of commissions earned during this time.."
+                    required
+                />
+
+                <InfoIcon
+                    hover-text="If the field is empty, please look up the number from your payroll and insert it.
+                    An empty field means that you are new to Centify and we don't have enough data yet."
+                    class="whitespace-pre-line"
+                />
+            </div>
 
             <CurrencyInput v-model="props.form.sum_of_commissions" />
 
@@ -188,7 +210,10 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <div class="mb-3 mt-7 flex items-center gap-2" v-if="agent.paid_leaves.length">
+            <div
+                class="mb-3 mt-7 flex items-center gap-2"
+                v-if="agent.paid_leaves.length"
+            >
                 <h4>Recent Paid Leaves</h4>
             </div>
 
