@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import Card from '@/Components/Card.vue'
 import CustomFieldRow from '@/Components/CustomField/CustomFieldRow.vue'
+import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
+import { computed } from 'vue'
 
 const props = defineProps<{
     integration: Integration
     available_custom_field_names: Array<CustomFieldEnum>
 }>()
+
+const hasMissingCustomFieldsValues = computed(
+    () => props.integration.custom_fields!.length !== props.available_custom_field_names.length
+)
 </script>
 
 <template>
@@ -43,7 +48,11 @@ const props = defineProps<{
             <div class="mb-8 flex justify-between">
                 <h3>Your Integration API Keys</h3>
 
-                <PrimaryButton text="Test & Sync" />
+                <SyncIntegrationButton
+                    text="Test & Sync"
+                    :disabled="hasMissingCustomFieldsValues"
+                    :integrationName="props.integration.name"
+                />
             </div>
 
             <CustomFieldRow

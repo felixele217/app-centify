@@ -2,14 +2,14 @@ use App\Models\Integration;
 <script setup lang="ts">
 import { IntegrationTypeEnum } from '@/types/Enum/IntegrationTypeEnum'
 import Integration from '@/types/Integration'
-import notify from '@/utils/notify'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
-import { router, usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
 import IntegrationLogo from '../Logos/IntegrationLogo.vue'
 import Tooltip from '../Tooltip.vue'
+import SyncIntegrationButton from './SyncIntegrationButton.vue'
 
 const props = defineProps<{
     integrationName: IntegrationTypeEnum
@@ -17,19 +17,6 @@ const props = defineProps<{
 }>()
 
 const authenticate = () => (window.location.href = route(`authenticate.${props.integrationName}.create`))
-
-function syncIntegration() {
-    router.get(
-        route(`${props.integrationName}.sync`),
-        {},
-        {
-            onSuccess: () =>
-                notify('Sychronization successful', 'Our application now uses your latest integration data.'),
-            onError: () =>
-                notify('Sychronization failed', usePage().props.errors[Object.keys(usePage().props.errors)[0]], false),
-        }
-    )
-}
 
 function hasMissingCustomField() {
     if (!props.activeIntegration) {
@@ -79,10 +66,10 @@ function hasMissingCustomField() {
                     <p class="-mt-0.5 text-sm font-semibold">active</p>
                 </div>
 
-                <PrimaryButton
+                <SyncIntegrationButton
                     text="Sync"
-                    @click="syncIntegration"
                     :disabled="hasMissingCustomField()"
+                    :integrationName="props.integrationName"
                 />
             </div>
 

@@ -56,6 +56,7 @@ function updateCustomField(customField: CustomField) {
         {
             onSuccess: () => {
                 notify('Api key updated!', 'We can now access the value of your custom field.')
+                isEditing.value = false
             },
             onError: () => {
                 notify(
@@ -69,25 +70,40 @@ function updateCustomField(customField: CustomField) {
 }
 
 const isEditing = ref<boolean>(false)
-const apiKey = ref<string>(customField(props.integration.custom_fields!, props.customFieldName).api_key)
+const apiKey = ref<string>(customField(props.integration.custom_fields!, props.customFieldName)?.api_key)
 </script>
 
 <template>
     <div class="flex items-center gap-5 rounded-md py-2">
         <p class="whitespace-nowrap">{{ customFieldName }}:</p>
 
-        <TextInput
-            type="text"
-            v-model="apiKey"
-            class="ml-3"
-            no-top-margin
-        />
+        <div
+            v-if="!isEditing"
+            class="flex w-full items-center justify-between gap-5"
+        >
+            <p>{{ apiKey }}</p>
 
+            <SecondaryButton
+                @click="isEditing = true"
+                text="Edit"
+            />
+        </div>
 
-        <SecondaryButton
-        
-            @click="upsertCustomField(customFieldName)"
-            text="Save"
-        />
+        <div
+            v-else
+            class="flex w-full items-center justify-between gap-5"
+        >
+            <TextInput
+                type="text"
+                v-model="apiKey"
+                class="ml-3"
+                no-top-margin
+            />
+
+            <SecondaryButton
+                @click="upsertCustomField(customFieldName)"
+                text="Save"
+            />
+        </div>
     </div>
 </template>
