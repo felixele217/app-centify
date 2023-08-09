@@ -36,46 +36,11 @@ function firstAssignedAgent() {
             The variable
             <span class="font-semibold">{{ form.target_variable || '{target_variable}' }}</span>
             is attributed to the plan and triggered by
-            <span class="font-semibold">{{ form.trigger || '{trigger}' }}</span>
+            <span class="font-semibold">{{ form.trigger || '{trigger}' }}.</span>
 
             For this variable, you set the individual monthly target at
-            <span class="font-semibold">{{ form.target_amount_per_month || '{target_amount_per_month}' }}. </span>
+            <span class="font-semibold">{{ form.target_amount_per_month || '{target_amount_per_month}' }}€. </span>
         </p>
 
-        <p class="mt-5 text-base font-semibold">Example</p>
-
-        <p class="mt-2">
-            If
-            <span class="font-semibold">{{
-                props.agents.filter((agent) => agent.id === form.assigned_agent_ids[0])[0]?.name || '{assigned_agent}'
-            }}</span>
-            of the plan achieves
-            <span class="font-semibold">
-                {{ form.target_amount_per_month || '{target_amount_per_month}' }}
-                {{ form.payout_frequency === 'quarterly' ? '*3' : '' }}
-            </span>
-            of
-            <span class="font-semibold">{{ form.target_variable || '{target_variable}' }}</span>
-            within a
-            <span class="font-semibold">{{ form.payout_frequency || '{payout_frequency}' }},</span>
-            the commission equals to
-            <br />
-        </p>
-        <p class="mt-2">
-            <span class="font-semibold">
-                ({{
-                    `${euroDisplay(firstAssignedAgent()?.on_target_earning) || ''} (${
-                        firstAssignedAgent()?.name || ''
-                    }On Target Earning)` || "(Agent's On Target Earning)"
-                }}
-                -
-                {{
-                    `${euroDisplay(firstAssignedAgent()?.base_salary) || ''} (${
-                        firstAssignedAgent()?.name || ''
-                    }Base Salary)` || "(Agent's Base Salary)"
-                }}
-                / 12 (months))€.
-            </span>
-        </p>
     </div>
 </template>
