@@ -86,7 +86,11 @@ function quotaDisplay(quotaAttainment: number) {
                                 </td>
 
                                 <td class="whitespace-pre-wrap py-5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                                    {{ agent.active_plans_names!.join('\n') }}
+                                    {{
+                                        agent.active_plans_names!.length
+                                            ? agent.active_plans_names!.join('\n')
+                                            : 'no active plans'
+                                    }}
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
