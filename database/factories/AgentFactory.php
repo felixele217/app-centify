@@ -31,4 +31,11 @@ class AgentFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function ofOrganization(int $organizationId): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'organization_id' => $organizationId,
+        ]);
+    }
 }
