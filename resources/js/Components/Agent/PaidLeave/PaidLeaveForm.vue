@@ -188,7 +188,7 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <div class="mb-3 mt-7 flex items-center gap-2">
+            <div class="mb-3 mt-7 flex items-center gap-2" v-if="agent.paid_leaves.length">
                 <h4>Recent Paid Leaves</h4>
             </div>
 
