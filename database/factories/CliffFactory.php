@@ -12,7 +12,7 @@ class CliffFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
+            'id' => fake()->unique()->randomNumber() + 1,
             'threshold_in_percent' => fake()->numberBetween(0, 1),
             'time_scope' => fake()->randomElement(TimeScopeEnum::cases())->value,
         ];

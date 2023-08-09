@@ -15,7 +15,7 @@ class KickerFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
+            'id' => fake()->unique()->randomNumber() + 1,
             'type' => fake()->randomElement(KickerTypeEnum::cases())->value,
             'threshold_in_percent' => 200,
             'payout_in_percent' => 25,
