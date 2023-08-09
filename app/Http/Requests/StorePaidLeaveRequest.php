@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
+use App\Rules\DateRangeDoesntOverlapRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -22,6 +23,7 @@ class StorePaidLeaveRequest extends FormRequest
             'start_date' => [
                 'required',
                 'date',
+                new DateRangeDoesntOverlapRule,
             ],
 
             'end_date' => [
@@ -29,6 +31,7 @@ class StorePaidLeaveRequest extends FormRequest
                 'date',
                 'required_if:reason,'.AgentStatusEnum::VACATION->value,
                 'after:start_date',
+                new DateRangeDoesntOverlapRule,
             ],
 
             'continuation_of_pay_time_scope' => [
