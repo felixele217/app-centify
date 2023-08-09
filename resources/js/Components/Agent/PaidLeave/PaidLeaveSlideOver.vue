@@ -58,6 +58,7 @@ function submit() {
             )
         },
         preserveScroll: true,
+        preserveState: false,
     })
 }
 </script>
