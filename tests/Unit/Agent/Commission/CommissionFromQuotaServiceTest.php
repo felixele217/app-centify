@@ -1,7 +1,8 @@
 <?php
 
-use App\Enum\TimeScopeEnum;
+use App\Models\Plan;
 use App\Models\Agent;
+use App\Enum\TimeScopeEnum;
 use App\Services\Commission\CommissionFromQuotaService;
 
 it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope, float $quotaAttainment) {
@@ -36,4 +37,16 @@ it('calculates the commission correctly for the respective scopes if the quota a
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,
     TimeScopeEnum::ANNUALY,
+]);
+
+it('returns normal commission from quota even if there is a cliff that was not met', function (TimeScopeEnum $timeScope, float $achievedQuotaThisTimeScope) {
+    $plan = Plan::factory()->hasAgents()->hasCliff([
+        'threshold_in_percent' => 20,
+    ])->active()->create();
+
+    expect((new CommissionFromQuotaService())->calculate($plan->agents()->first(), $timeScope, $achievedQuotaThisTimeScope))->not()->toBe(0);
+})->with([
+    [TimeScopeEnum::MONTHLY, 0.15],
+    [TimeScopeEnum::QUARTERLY, 0.15],
+    [TimeScopeEnum::ANNUALY, 0.15],
 ]);

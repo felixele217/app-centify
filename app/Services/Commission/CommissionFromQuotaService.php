@@ -9,6 +9,10 @@ use App\Models\Agent;
 
 class CommissionFromQuotaService
 {
+    public function __construct()
+    {
+    }
+
     public function calculate(Agent $agent, TimeScopeEnum $timeScope, ?float $quotaAttainmentForTimeScope): ?int
     {
         if (is_null($quotaAttainmentForTimeScope)) {
