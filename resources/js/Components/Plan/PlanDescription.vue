@@ -24,7 +24,9 @@ function firstAssignedAgent() {
             will be renewed automatically for each
             <span class="font-semibold">{{ form.payout_frequency || '{interval}' }},</span>
             starting on
-            <span class="font-semibold">{{ formatDate(form.start_date) || '{start_date}' }}</span>
+            <span class="font-semibold">{{
+                formatDate(form.start_date) !== '-' ? formatDate(form.start_date) : '' || '{start_date}'
+            }}</span>
             and is assigned to
             <span class="font-semibold">{{ form.assigned_agent_ids.length }}</span>
             agents.
