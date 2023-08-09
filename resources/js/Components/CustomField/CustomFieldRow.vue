@@ -4,6 +4,7 @@ import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
 import customField from '@/utils/CustomField/customField'
 import notify from '@/utils/notify'
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import SecondaryButton from '../Buttons/SecondaryButton.vue'
@@ -81,7 +82,15 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
             v-if="!isEditing"
             class="flex w-full items-center justify-between gap-5"
         >
-            <p>{{ apiKey }}</p>
+            <p v-if="apiKey">{{ apiKey }}</p>
+
+            <div
+                class="flex items-center gap-2"
+                v-else
+            >
+                <ExclamationCircleIcon class="h-5 w-5 text-red-500" />
+                <p>Please enter your api key!</p>
+            </div>
 
             <SecondaryButton
                 @click="isEditing = true"

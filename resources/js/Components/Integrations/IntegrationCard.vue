@@ -1,4 +1,3 @@
-use App\Models\Integration;
 <script setup lang="ts">
 import { IntegrationTypeEnum } from '@/types/Enum/IntegrationTypeEnum'
 import Integration from '@/types/Integration'
