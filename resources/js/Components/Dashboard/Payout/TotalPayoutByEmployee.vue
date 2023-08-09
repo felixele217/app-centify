@@ -51,7 +51,7 @@ function quotaDisplay(quotaAttainment: number) {
                                     scope="col"
                                     class="px-5 py-3.5 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                                 >
-                                    Plans
+                                    Active Plans
                                 </th>
 
                                 <th
