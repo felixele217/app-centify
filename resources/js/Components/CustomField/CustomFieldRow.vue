@@ -75,14 +75,16 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
 </script>
 
 <template>
-    <div class="flex items-center gap-5 rounded-md py-2">
+    <div class="flex items-center gap-4 rounded-md py-2">
         <p class="whitespace-nowrap">{{ customFieldName }}:</p>
 
         <div
             v-if="!isEditing"
             class="flex w-full items-center justify-between gap-5"
         >
-            <p v-if="apiKey">{{ apiKey }}</p>
+            <p v-if="apiKey">
+                {{ apiKey }}
+            </p>
 
             <div
                 class="flex items-center gap-2"

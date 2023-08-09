@@ -17,7 +17,7 @@ const hasMissingCustomFieldsValues = computed(
 </script>
 
 <template>
-    <div class="w-2/3">
+    <div class="w-3/4">
         <Card>
             <h2>How to create and add Custom Integration Fields in {{ props.integration.name }}</h2>
 
@@ -31,7 +31,7 @@ const hasMissingCustomFieldsValues = computed(
                 </a>
             </div>
             <div class="mt-2 flex gap-0.5">
-                <p class="">2.</p>
+                <p>2.</p>
                 <div class="">
                     You should see a green
                     <span class="font-bold"> 'Add custom field'</span>
