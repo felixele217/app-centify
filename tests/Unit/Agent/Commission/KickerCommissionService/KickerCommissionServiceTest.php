@@ -55,7 +55,7 @@ it('returns null for the kicker commission if user has no plan', function () {
     expect((new KickerCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY, null))->toBeNull();
 });
 
-it('returns 0 for the kicker commission if the plan has no kicker', function () {
+it('returns null for the kicker commission if the plan has no kicker', function () {
     $admin = signInAdmin();
 
     $plan = Plan::factory()->active()
@@ -68,5 +68,5 @@ it('returns 0 for the kicker commission if the plan has no kicker', function () 
             'creator_id' => $admin->id,
         ]);
 
-    expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::QUARTERLY, 10))->toBe(0);
+    expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::QUARTERLY, 10))->toBeNull();
 });
