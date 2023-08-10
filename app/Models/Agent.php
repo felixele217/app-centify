@@ -77,14 +77,22 @@ class Agent extends Authenticatable
     public function sickLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::SICK)),
+            get: function () {
+                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
+
+                return count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::tryFrom($timeScope), AgentStatusEnum::SICK));
+            }
         );
     }
 
     public function vacationLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::MONTHLY, AgentStatusEnum::VACATION)),
+            get: function () {
+                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
+
+                return count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::tryFrom($timeScope), AgentStatusEnum::VACATION));
+            }
         );
     }
 

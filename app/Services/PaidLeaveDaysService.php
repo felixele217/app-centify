@@ -29,8 +29,8 @@ class PaidLeaveDaysService
     {
         $paidLeaveDays = [];
 
-        foreach ($paidLeaves as $sickLeave) {
-            $paidLeaveDays[] = $this->weekdaysBetweenDates($sickLeave->start_date, $sickLeave->end_date);
+        foreach ($paidLeaves as $paidLeave) {
+            $paidLeaveDays[] = $this->weekdaysBetweenDates($paidLeave->start_date, $paidLeave->end_date);
         }
 
         $paidLeaveDays = array_merge(...$paidLeaveDays);
