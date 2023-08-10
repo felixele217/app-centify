@@ -66,9 +66,7 @@ function hasMissingCustomField() {
                 </div>
 
                 <SyncIntegrationButton
-                    text="Sync"
                     :disabled="hasMissingCustomField()"
-                    :redirect-url="route('integrations.index')"
                     :integrationName="props.integrationName"
                 />
             </div>

@@ -4,12 +4,20 @@ import notify from '@/utils/notify'
 import { router, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '../Buttons/PrimaryButton.vue'
 
-const props = defineProps<{
-    text: string
-    integrationName: IntegrationTypeEnum
-    redirectUrl: string
-    disabled?: boolean
-}>()
+const props = withDefaults(
+    defineProps<{
+        integrationName?: IntegrationTypeEnum
+        redirectUrl: string
+        text?: string
+        disabled?: boolean
+    }>(),
+    {
+        text: 'Sync',
+        integrationName: 'pipedrive',
+        redirectUrl: window.location.href,
+        disabled: false,
+    }
+)
 
 function syncIntegration() {
     router.get(

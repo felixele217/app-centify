@@ -44,8 +44,6 @@ const dealsText = computed(() => {
             return 'All rejected deals.'
     }
 })
-
-const currentUrl = window.location.href
 </script>
 
 <template>
@@ -59,12 +57,7 @@ const currentUrl = window.location.href
             />
 
             <div class="flex gap-10">
-                <SyncIntegrationButton
-                    text="Sync"
-                    :redirect-url="currentUrl"
-                    integrationName="pipedrive"
-                    class="h-10 "
-                />
+                <SyncIntegrationButton class="h-10" />
 
                 <Navigation />
             </div>
