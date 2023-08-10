@@ -51,11 +51,12 @@ class DealRepository
 
     public static function update(Deal $deal, UpdateDealRequest $request): void
     {
-        $hasAcceptedDeal = $request->validated('has_accepted_deal');
+        if (array_key_exists('note', $request->validated())) {
+            $deal->update(['note' => $request->validated('note')]);
+        }
 
-        $deal->update([
-            'accepted_at' => $hasAcceptedDeal === true ? Carbon::now() : null,
-            'note' => $request->validated('note'),
-        ]);
+        if (array_key_exists('has_accepted_deal', $request->validated())) {
+            $deal->update(['accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null]);
+        }
     }
 }

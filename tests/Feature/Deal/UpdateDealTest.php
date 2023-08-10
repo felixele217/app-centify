@@ -44,3 +44,18 @@ it('can update the note of a deal setting it to null', function () {
 
     expect($deal->fresh()->note)->toBeNull();
 });
+
+it('does not remove the note upon accepting a deal', function () {
+    signInAdmin();
+
+    $deal = Deal::factory()->create([
+        'accepted_at' => null,
+        'note' => $note = 'some note',
+    ]);
+
+    $this->put(route('deals.update', $deal), [
+        'has_accepted_deal' => true,
+    ])->assertRedirect();
+
+    expect($deal->fresh()->note)->toBe($note);
+});
