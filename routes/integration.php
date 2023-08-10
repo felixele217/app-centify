@@ -8,13 +8,13 @@ use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    Route::get('salesforce-auth', [SalesforceAuthController::class, 'create'])->name('authenticate.salesforce.create');
-    Route::get('salesforce-callback', [SalesforceAuthController::class, 'store'])->name('authenticate.salesforce.store');
-    Route::get('salesforce-test', function () {
-        return back()->withErrors([
-            'implementation' => 'not yet implemented',
-        ]);
-    })->name('salesforce.test');
+    // Route::get('salesforce-auth', [SalesforceAuthController::class, 'create'])->name('authenticate.salesforce.create');
+    // Route::get('salesforce-callback', [SalesforceAuthController::class, 'store'])->name('authenticate.salesforce.store');
+    // Route::get('salesforce-test', function () {
+    //     return back()->withErrors([
+    //         'implementation' => 'not yet implemented',
+    //     ]);
+    // })->name('salesforce.test');
 
     Route::get('pipedrive-auth', [PipedriveAuthController::class, 'create'])->name('authenticate.pipedrive.create');
     Route::get('pipedrive-callback', [PipedriveAuthController::class, 'store'])->name('authenticate.pipedrive.store');
@@ -30,6 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::get('pipedrive-sync', function () {
         (new PipedriveIntegrationService())->syncAgentDeals();
 
-        return back();
+        return to_route('integrations.index');
     })->name('pipedrive.sync');
 });
