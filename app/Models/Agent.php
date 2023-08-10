@@ -77,22 +77,14 @@ class Agent extends Authenticatable
     public function sickLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
-
-                return count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::tryFrom($timeScope), AgentStatusEnum::SICK));
-            }
+            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, queryTimeScope(), AgentStatusEnum::SICK)),
         );
     }
 
     public function vacationLeavesDaysCount(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
-
-                return count((new PaidLeaveDaysService())->paidLeaveDays($this, TimeScopeEnum::tryFrom($timeScope), AgentStatusEnum::VACATION));
-            }
+            get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, queryTimeScope(), AgentStatusEnum::VACATION)),
         );
     }
 
@@ -124,9 +116,7 @@ class Agent extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
-
-                return (new QuotaAttainmentService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                return (new QuotaAttainmentService())->calculate($this, queryTimeScope());
             }
         );
     }
@@ -135,24 +125,22 @@ class Agent extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
-
-                return (new QuotaAttainmentChangeService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                return (new QuotaAttainmentChangeService())->calculate($this, queryTimeScope());
             }
         );
     }
 
     protected function commission(): Attribute
     {
-        $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
+        $timeScope = queryTimeScope();
 
         return Attribute::make(
             get: function () use ($timeScope) {
-                $commissionFromQuota = (new CommissionFromQuotaService())->calculate($this, TimeScopeEnum::tryFrom($timeScope), $this->quotaAttainment);
+                $commissionFromQuota = (new CommissionFromQuotaService())->calculate($this, $timeScope, $this->quotaAttainment);
 
-                $kickerCommission = (new KickerCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope), $this->quotaAttainment);
+                $kickerCommission = (new KickerCommissionService())->calculate($this, $timeScope, $this->quotaAttainment);
 
-                $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, $timeScope);
 
                 return $commissionFromQuota + $kickerCommission + $paidLeaveCommission;
             }
@@ -163,9 +151,7 @@ class Agent extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $timeScope = request()->query('time_scope') ?? TimeScopeEnum::MONTHLY->value;
-
-                return (new CommissionChangeService())->calculate($this, TimeScopeEnum::tryFrom($timeScope));
+                return (new CommissionChangeService())->calculate($this, queryTimeScope());
             }
         );
     }
