@@ -14,6 +14,8 @@ const paidLeaveRange = computed(() => {
 
     return `${firstDate} ${secondDate ? '-' : ''} ${secondDate ? secondDate : ''}`
 })
+
+
 </script>
 
 <template>

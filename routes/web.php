@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('{agent}/paid-leaves')->name('paid-leaves.')->controller(PaidLeaveController::class)->group(function () {
             Route::post('/', 'store')->name('store');
+            Route::delete('/{paidLeave}', 'destroy')->name('destroy');
         });
     });
 
