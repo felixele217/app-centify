@@ -167,7 +167,7 @@ function agentPaidLeaveRanges() {
         </div>
 
         <div>
-            <div class="items-center gap-1">
+            <div class="flex items-center gap-1">
                 <InputLabel
                     value="Sum of commissions earned during this time.."
                     required
