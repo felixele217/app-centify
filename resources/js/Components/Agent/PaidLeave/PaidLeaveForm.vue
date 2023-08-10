@@ -30,6 +30,10 @@ const props = defineProps<{
     agentId?: number
 }>()
 
+defineEmits<{
+    deleted: []
+}>()
+
 watch(
     () => props.form.reason,
     async (reason: AgentStatusEnum) => {
@@ -221,6 +225,8 @@ function agentPaidLeaveRanges() {
                 class="mt-2"
                 v-for="paidLeave of agent.paid_leaves"
                 :paid-leave="paidLeave"
+                :key="paidLeave.id"
+                @deleted="$emit('deleted')"
             />
         </div>
     </div>

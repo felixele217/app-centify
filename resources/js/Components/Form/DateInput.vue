@@ -52,7 +52,9 @@ const dropdownIsOpen = ref(false)
                 :color="selectedColor"
                 :model-value="props.currentDate"
                 @update:model-value="(newDate: Date) => {
-                    newDate.setHours(15)
+                    if (newDate) {
+                        newDate.setHours(15)
+                    }
 
                     dropdownIsOpen = false
 

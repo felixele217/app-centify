@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+
 const props = defineProps<{
     text: string
     color: 'green' | 'red' | 'indigo' | 'yellow' | 'purple'
+    withDelete?: boolean
+}>()
+
+defineEmits<{
+    delete: []
 }>()
 
 function color() {
@@ -21,10 +28,20 @@ function color() {
 </script>
 
 <template>
-    <p
+    <div
+        class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium"
         :class="color()"
-        class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
     >
-        {{ props.text }}
-    </p>
+        <p>
+            {{ props.text }}
+        </p>
+
+        <XMarkIcon
+            v-if="props.withDelete"
+            :class="color()"
+            class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-400 hover:bg-red-100 hover:text-red-500"
+            aria-hidden="true"
+            @click="$emit('delete')"
+        />
+    </div>
 </template>

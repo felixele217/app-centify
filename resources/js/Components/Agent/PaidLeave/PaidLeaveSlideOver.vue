@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FormButtons from '@/Components/Form/FormButtons.vue'
+import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import notify from '@/utils/notify'
@@ -58,7 +59,7 @@ function submit() {
             )
         },
         preserveScroll: true,
-        preserveState: !form.employed_28_or_more_days,
+        preserveState: true,
     })
 }
 </script>
@@ -125,6 +126,7 @@ function submit() {
                                                     <PaidLeaveForm
                                                         :form="form"
                                                         :agentId="props.agentId"
+                                                        @deleted="closeSlideOver"
                                                     />
                                                 </div>
                                             </div>

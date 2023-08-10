@@ -3,6 +3,7 @@ import { ContinuationOfPayTimeScopeEnum } from './Enum/ContinuationOfPayTimeScop
 
 export default interface PaidLeave {
     id: number
+    agent_id: number
     created_at: string
     updated_at: string
     start_date: string

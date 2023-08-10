@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import Badge from '@/Components/Badge.vue'
+import Modal from '@/Components/Modal.vue'
 import PaidLeave from '@/types/PaidLeave'
 import formatDate from '@/utils/Date/formatDate'
-import { computed } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
     paidLeave: PaidLeave
+}>()
+
+const emit = defineEmits<{
+    deleted: []
 }>()
 
 const paidLeaveRange = computed(() => {
@@ -15,7 +21,18 @@ const paidLeaveRange = computed(() => {
     return `${firstDate} ${secondDate ? '-' : ''} ${secondDate ? secondDate : ''}`
 })
 
+function handleDelete() {
+    router.delete(route('agents.paid-leaves.destroy', [props.paidLeave.agent_id, props.paidLeave.id]), {
+        onSuccess: (page) => {
+            emit('deleted')
+            isDeletingPaidLeave.value = false
+        },
+        preserveState: true,
+        preserveScroll: true,
+    })
+}
 
+const isDeletingPaidLeave = ref<boolean>(false)
 </script>
 
 <template>
@@ -23,6 +40,18 @@ const paidLeaveRange = computed(() => {
         <Badge
             :text="paidLeaveRange"
             :color="props.paidLeave.reason === 'sick' ? 'purple' : 'yellow'"
+            with-delete
+            @delete="isDeletingPaidLeave = true"
         />
     </div>
+
+    <Modal
+        :is-open="isDeletingPaidLeave"
+        title="Delete Paid Leave"
+        description="Are you sure you want to delete this Paid Leave? This is irrevocable."
+        button-text="Delete"
+        is-negative-action
+        @close-modal="isDeletingPaidLeave = false"
+        @modal-action="handleDelete"
+    />
 </template>
