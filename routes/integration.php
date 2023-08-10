@@ -30,6 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::get('pipedrive-sync', function () {
         (new PipedriveIntegrationService())->syncAgentDeals();
 
-        return to_route('integrations.index');
+        return redirect(request()->query('redirect_url') ?? route('integrations.index'));
     })->name('pipedrive.sync');
 });

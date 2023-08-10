@@ -50,6 +50,7 @@ const hasMissingCustomFieldsValues = computed(
 
                 <SyncIntegrationButton
                     text="Test & Sync"
+                    :redirect-url="route('integrations.index')"
                     :disabled="hasMissingCustomFieldsValues"
                     :integrationName="props.integration.name"
                 />

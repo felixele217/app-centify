@@ -7,12 +7,13 @@ import PrimaryButton from '../Buttons/PrimaryButton.vue'
 const props = defineProps<{
     text: string
     integrationName: IntegrationTypeEnum
+    redirectUrl: string
     disabled?: boolean
 }>()
 
 function syncIntegration() {
     router.get(
-        route(`${props.integrationName}.sync`),
+        route(`${props.integrationName}.sync`) + `?redirect_url=${props.redirectUrl}`,
         {},
         {
             onSuccess: () =>
