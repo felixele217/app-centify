@@ -10,6 +10,7 @@ use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
@@ -103,5 +104,9 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                 }
             }
         }
+
+        Auth::user()->organization->integrations()->whereName(IntegrationTypeEnum::PIPEDRIVE->value)->first()->update([
+            'last_synced_at' => Carbon::now(),
+        ]);
     }
 }

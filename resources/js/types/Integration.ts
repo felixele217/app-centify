@@ -11,4 +11,5 @@ export default interface Integration {
     expires_at: string
     subdomain: string
     custom_fields?: Array<CustomField>
+    last_synced_at: string
 }

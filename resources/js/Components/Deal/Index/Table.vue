@@ -9,6 +9,7 @@ import Integration from '@/types/Integration'
 import queryParamValue from '@/utils/queryParamValue'
 import { computed } from 'vue'
 import DealCard from './DealCard.vue'
+import LastSynced from '@/Components/Integrations/LastSynced.vue'
 
 const props = defineProps<{
     deals: Array<Deal>
@@ -56,8 +57,12 @@ const dealsText = computed(() => {
                 no-bottom-margin
             />
 
-            <div class="flex gap-10">
-                <SyncIntegrationButton class="h-10" />
+            <div class="flex gap-10 pb-5">
+                <div class="flex items-end gap-5">
+                    <LastSynced :last-synced="new Date(props.integrations.filter(integration => integration.name === 'pipedrive')[0].last_synced_at)" />
+
+                    <SyncIntegrationButton class="h-10"/>
+                </div>
 
                 <Navigation />
             </div>

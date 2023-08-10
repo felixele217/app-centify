@@ -21,6 +21,7 @@ class IntegrationFactory extends Factory
             'expires_at' => Carbon::parse('+10 minutes'),
             'subdomain' => null,
             'organization_id' => Organization::factory()->create()->id,
+            'last_synced_at' => null,
         ];
     }
 }

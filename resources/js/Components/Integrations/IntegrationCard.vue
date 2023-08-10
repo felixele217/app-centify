@@ -8,6 +8,7 @@ import PrimaryButton from '../Buttons/PrimaryButton.vue'
 import Card from '../Card.vue'
 import IntegrationLogo from '../Logos/IntegrationLogo.vue'
 import Tooltip from '../Tooltip.vue'
+import LastSynced from './LastSynced.vue'
 import SyncIntegrationButton from './SyncIntegrationButton.vue'
 
 const props = defineProps<{
@@ -27,7 +28,7 @@ function hasMissingCustomField() {
 </script>
 
 <template>
-    <Card class="relative w-72">
+    <Card class="relative w-80">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <IntegrationLogo :integrationName="props.integrationName" />
@@ -57,13 +58,15 @@ function hasMissingCustomField() {
 
         <div class="mt-10">
             <div
-                class="flex items-center justify-between gap-5"
+                class="flex items-end justify-between gap-5"
                 v-if="props.activeIntegration"
             >
-                <div class="-mb-1 flex items-center gap-3">
+                <div class="flex items-center gap-3">
                     <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
                     <p class="-mt-0.5 text-sm font-semibold">active</p>
                 </div>
+
+                <LastSynced :last-synced="new Date(props.activeIntegration.last_synced_at)" />
 
                 <SyncIntegrationButton
                     :disabled="hasMissingCustomField()"
