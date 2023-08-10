@@ -1,10 +1,12 @@
 <?php
 
+use App\Enum\IntegrationTypeEnum;
 use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\IntegrationCustomFieldController;
 use App\Http\Controllers\PipedriveAuthController;
 use App\Http\Controllers\SalesforceAuthController;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -28,7 +30,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('pipedrive-sync', function () {
-        (new PipedriveIntegrationService())->syncAgentDeals();
+        if ($pipedriveIntegration = Auth::user()->organization->integrations()->whereName(IntegrationTypeEnum::PIPEDRIVE->value)->first()) {
+            (new PipedriveIntegrationService($pipedriveIntegration))->syncAgentDeals();
+        }
 
         return redirect(request()->query('redirect_url') ?? route('integrations.index'));
     })->name('pipedrive.sync');
