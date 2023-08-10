@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Navigation from '@/Components/Deal/Index/Navigation.vue'
+import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
@@ -43,6 +44,8 @@ const dealsText = computed(() => {
             return 'All rejected deals.'
     }
 })
+
+const currentUrl = window.location.href
 </script>
 
 <template>
@@ -55,7 +58,16 @@ const dealsText = computed(() => {
                 no-bottom-margin
             />
 
-            <Navigation />
+            <div class="flex gap-10">
+                <SyncIntegrationButton
+                    text="Sync"
+                    :redirect-url="currentUrl"
+                    integrationName="pipedrive"
+                    class="h-10 "
+                />
+
+                <Navigation />
+            </div>
         </div>
 
         <TableWrapper :no-items-text="noDealsText">
