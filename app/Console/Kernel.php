@@ -7,13 +7,12 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-// @codeCoverageIgnoreStart
 class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('sync-integration-data')
-            ->dailyAt('00:05')
+        $schedule->command('sync-pipedrive')
+            ->dailyAt('06:00')
             ->emailOutputOnFailure(env('TECH_MAIL', 'tech@centify.de'));
     }
 
@@ -24,4 +23,3 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
-// @codeCoverageIgnoreEnd

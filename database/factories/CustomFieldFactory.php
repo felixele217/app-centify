@@ -20,4 +20,11 @@ class CustomFieldFactory extends Factory
             'integration_id' => Integration::factory()->create()->id,
         ];
     }
+
+    public function ofIntegration(int $integrationId): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'integration_id' => $integrationId,
+        ]);
+    }
 }

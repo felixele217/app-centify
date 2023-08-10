@@ -10,19 +10,16 @@ use App\Facades\Pipedrive;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
+use App\Models\Integration;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
-    private string $demoSetByApiKey;
+    private ?string $demoSetByApiKey;
 
-    public function __construct()
+    public function __construct(private Integration $pipedriveIntegration)
     {
-        $this->demoSetByApiKey = Auth::user()->organization->integrations()
-            ->whereName(IntegrationTypeEnum::PIPEDRIVE->value)
-            ->first()
-            ->customFields()
+        $this->demoSetByApiKey = $pipedriveIntegration->customFields()
             ->whereName(CustomFieldEnum::DEMO_SET_BY->value)
             ->first()?->api_key;
     }
@@ -105,7 +102,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
             }
         }
 
-        Auth::user()->organization->integrations()->whereName(IntegrationTypeEnum::PIPEDRIVE->value)->first()->update([
+        $this->pipedriveIntegration->update([
             'last_synced_at' => Carbon::now(),
         ]);
     }
