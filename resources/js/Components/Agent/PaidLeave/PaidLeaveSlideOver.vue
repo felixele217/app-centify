@@ -58,7 +58,7 @@ function submit() {
             )
         },
         preserveScroll: true,
-        preserveState: false,
+        preserveState: !form.employed_28_or_more_days,
     })
 }
 </script>
