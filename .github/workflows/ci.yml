@@ -27,11 +27,15 @@ jobs:
               run: |
                   mkdir -p database
                   touch database/database.sqlite
+
+            - name: Check Type Coverage
+              run: vendor/bin/pest --type-coverage --min=100
+
             - name: Execute tests (Unit, Feature, Architecture, Integration) via Pest
               env:
                   DB_CONNECTION: sqlite
                   DB_DATABASE: database/database.sqlite
-              run: vendor/bin/pest --group=feature,unit,architecture,integration --type-coverage --min=100
+              run: vendor/bin/pest --group=feature,unit,architecture,integration
 
     frontend-tests:
         runs-on: ubuntu-latest
