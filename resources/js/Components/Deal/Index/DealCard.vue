@@ -14,6 +14,10 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 
+const vFocus = {
+    mounted: (el: HTMLInputElement) => el.focus(),
+}
+
 const props = defineProps<{
     deal: Deal
     integrations: Array<Integration>
@@ -122,6 +126,8 @@ const rejectionForm = useForm({
                 no-top-margin
                 v-model="noteText"
                 @keyup.enter="updateDealNote"
+                v-focus
+                @blur="dealIdOfNoteBeingEdited = undefined"
             />
 
             <CheckIcon
