@@ -1,11 +1,11 @@
 <?php
 
+use App\Enum\AgentStatusEnum;
+use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\PaidLeave;
-use App\Enum\TimeScopeEnum;
-use Carbon\CarbonImmutable;
-use App\Enum\AgentStatusEnum;
 use App\Services\PaidLeaveDaysService;
+use Carbon\CarbonImmutable;
 
 it('returns correct vacation days count for timescope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDayInScope) {
     $agent = Agent::factory()->has(
@@ -18,7 +18,7 @@ it('returns correct vacation days count for timescope', function (TimeScopeEnum 
 
     $vacationDays = (new PaidLeaveDaysService())->paidLeaveDays($agent, $timeScope, AgentStatusEnum::VACATION);
 
-    $this->get(route('dashboard') . '?time_scope=' . $timeScope->value);
+    $this->get(route('dashboard').'?time_scope='.$timeScope->value);
     expect($agent->vacationLeavesDaysCount)->toBe(count($vacationDays));
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()],

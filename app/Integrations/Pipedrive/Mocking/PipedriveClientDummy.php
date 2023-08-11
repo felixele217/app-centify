@@ -2,12 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Integrations\Pipedrive;
+namespace App\Integrations\Pipedrive\Mocking;
 
+use App\Integrations\Pipedrive\PipedriveTokenIO;
+use App\Models\Organization;
 use Devio\Pipedrive\PipedriveToken;
 
 class PipedriveClientDummy
 {
+    public function __construct(
+        private Organization $organization,
+    ) {
+    }
+
     public function deals(): CustomResponse
     {
         $dealsArray = [
@@ -367,52 +374,14 @@ class PipedriveClientDummy
         return new CustomResponse($dealsArray);
     }
 
-    public static function dealCount(string $email): int
+    public function authorize(string $code): void
     {
-        $emailCount = 0;
-
-        foreach ((new PipedriveClientDummy())->deals()->getData() as $deal) {
-            if ($deal['creator_user_id']['email'] === $email) {
-                $emailCount++;
-            }
-        }
-
-        return $emailCount;
-    }
-
-    public static function authorize(): void
-    {
-        $pipedriveTokenIO = new PipedriveTokenIO();
+        $pipedriveTokenIO = new PipedriveTokenIO($this->organization);
 
         $pipedriveTokenIO->setToken(new PipedriveToken([
             'accessToken' => 'test access token',
             'refreshToken' => 'test refresh token',
             'expiresAt' => 1691157785,
         ]));
-    }
-}
-
-class CustomResponse
-{
-    private array $data;
-
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
-    public function all(): static
-    {
-        return $this;
-    }
-
-    public function toArray(): array
-    {
-        return json_decode(json_encode($this->getData()), true);
-    }
-
-    public function getData(): array
-    {
-        return $this->data;
     }
 }

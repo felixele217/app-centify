@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
-use App\Enum\TimeScopeEnum;
 use App\Services\Commission\CommissionChangeService;
 use App\Services\Commission\CommissionFromQuotaService;
 use App\Services\Commission\KickerCommissionService;

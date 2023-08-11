@@ -1,8 +1,6 @@
 <?php
 
-use App\Facades\Pipedrive;
 use App\Providers\PipedriveServiceProvider;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
@@ -170,7 +168,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        PipedriveServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -183,9 +180,4 @@ return [
     | the aliases are "lazy" loaded so they don't hinder performance.
     |
     */
-
-    'aliases' => Facade::defaultAliases()->merge([
-        'Pipedrive' => Pipedrive::class,
-    ])->toArray(),
-
 ];

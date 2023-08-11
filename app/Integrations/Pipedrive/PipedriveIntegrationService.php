@@ -6,27 +6,40 @@ namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
-use App\Facades\Pipedrive;
+use App\Facades\PipedriveFacade;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
 use App\Models\Integration;
+use App\Models\Organization;
 use Carbon\Carbon;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
+    private PipedriveFacade $pipedriveClient;
+
+    private Integration $pipedriveIntegration;
+
     private ?string $demoSetByApiKey;
 
-    public function __construct(private Integration $pipedriveIntegration)
+    public function __construct(private Organization $organization)
     {
-        $this->demoSetByApiKey = $pipedriveIntegration->customFields()
+        $this->pipedriveClient = new PipedriveFacade($organization);
+
+        $this->pipedriveIntegration = $organization
+            ->integrations()
+            ->whereName(IntegrationTypeEnum::PIPEDRIVE->value)
+            ->first();
+
+        $this->demoSetByApiKey = $this->pipedriveIntegration
+            ->customFields()
             ->whereName(CustomFieldEnum::DEMO_SET_BY->value)
             ->first()?->api_key;
     }
 
     public function agentDeals(array $deals = null): array
     {
-        $deals = json_decode(json_encode(Pipedrive::deals()->all()->getData()), true);
+        $deals = $this->pipedriveClient->deals();
 
         $agentDeals = [];
 

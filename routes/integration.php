@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\IntegrationTypeEnum;
 use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\IntegrationCustomFieldController;
 use App\Http\Controllers\PipedriveAuthController;
@@ -30,9 +29,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('pipedrive-sync', function () {
-        if ($pipedriveIntegration = Auth::user()->organization->integrations()->whereName(IntegrationTypeEnum::PIPEDRIVE->value)->first()) {
-            (new PipedriveIntegrationService($pipedriveIntegration))->syncAgentDeals();
-        }
+        (new PipedriveIntegrationService(Auth::user()->organization))->syncAgentDeals();
 
         return redirect(request()->query('redirect_url') ?? route('integrations.index'));
     })->name('pipedrive.sync');

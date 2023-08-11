@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DealController;
-use App\Http\Controllers\PlanController;
 use App\Http\Controllers\AgentController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PaidLeaveController;
-use App\Http\Middleware\AppendTimeScopeQuery;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealRejectionController;
 use App\Http\Controllers\DeployedVersionController;
+use App\Http\Controllers\PaidLeaveController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AppendTimeScopeQuery;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => to_route('dashboard'));
 Route::get('/deployed-version', DeployedVersionController::class)->name('deployed-version');

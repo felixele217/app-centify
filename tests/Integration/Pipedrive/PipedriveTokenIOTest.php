@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Devio\Pipedrive\PipedriveToken;
 
 it('tokens are saved and retrieved with encryption so they return the original', function () {
-    signInAdmin();
+    $admin = signInAdmin();
 
-    $io = new PipedriveTokenIO();
+    $io = new PipedriveTokenIO($admin->organization_id);
 
     $io->setToken(new PipedriveToken([
         'accessToken' => $accessToken = 'asdfko12ijasdfml',
@@ -24,9 +24,9 @@ it('tokens are saved and retrieved with encryption so they return the original',
 });
 
 it('updates the existing token model instead of creating a new one on setToken', function () {
-    signInAdmin();
+    $admin = signInAdmin();
 
-    $io = new PipedriveTokenIO();
+    $io = new PipedriveTokenIO($admin->organization_id);
 
     $io->setToken(new PipedriveToken([
         'accessToken' => 'asdfko12ijasdfml',

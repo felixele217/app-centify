@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\GetPipedriveSubdomainAction;
-use App\Facades\Pipedrive;
+use App\Facades\PipedriveFacade;
+use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Repositories\IntegrationRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +24,14 @@ class PipedriveAuthController extends Controller
 
     public function store(): RedirectResponse
     {
+        $pipedriveFacade = new PipedriveFacade(Auth::user()->organization);
+
         if (! empty(request()->query('code'))) {
-            Pipedrive::authorize(request()->query('code'));
+            $pipedriveFacade->authorize(request()->query('code'));
         }
 
         $integration = IntegrationRepository::update(Auth::user()->organization->id, [
-            'subdomain' => GetPipedriveSubdomainAction::execute(),
+            'subdomain' => PipedriveHelper::organizationSubdomain($pipedriveFacade->deals()[0]),
         ]);
 
         return to_route('integrations.custom-fields.index', $integration);

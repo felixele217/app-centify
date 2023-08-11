@@ -37,7 +37,7 @@ class DateRangeDoesntOverlapRule implements ValidationRule
 
     private function reachesOutOfExistingPaidLeave(PaidLeave $paidLeave): bool
     {
-        return  $paidLeave->start_date->lt(request()->get('start_date'))
+        return $paidLeave->start_date->lt(request()->get('start_date'))
         && $paidLeave->end_date->gt(request()->get('start_date'));
     }
 }

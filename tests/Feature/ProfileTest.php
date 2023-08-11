@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Admin;
-use App\Models\Agent;
 
 test('profile page is displayed', function () {
     $user = Admin::factory()->create();

@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Plan;
-use App\Models\Agent;
 use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
+use App\Models\Plan;
 use App\Services\Commission\CommissionFromQuotaService;
 
 it('calculates the commission correctly for the respective scopes', function (TimeScopeEnum $timeScope, float $quotaAttainment) {

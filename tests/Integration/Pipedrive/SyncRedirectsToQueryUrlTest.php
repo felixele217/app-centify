@@ -2,7 +2,6 @@
 
 use App\Models\CustomField;
 use App\Models\Integration;
-use function Pest\Laravel\withoutExceptionHandling;
 
 it('redirects to the url in the query after syncing successfully', function () {
     $admin = signInAdmin();

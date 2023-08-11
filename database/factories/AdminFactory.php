@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class AdminFactory extends Factory
