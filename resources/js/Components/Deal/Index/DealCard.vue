@@ -128,6 +128,7 @@ const rejectionForm = useForm({
                 @keyup.enter="updateDealNote"
                 v-focus
                 @blur="dealIdOfNoteBeingEdited = undefined"
+                @keyup.escape="dealIdOfNoteBeingEdited = undefined"
             />
 
             <CheckIcon
