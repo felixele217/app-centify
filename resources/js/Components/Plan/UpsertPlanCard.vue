@@ -193,7 +193,7 @@ const test = ref<Date>()
                                 />
 
                                 <InfoIcon
-                                    :hover-text="`The target variable links a plan to a specific field from your integration.`"
+                                    hover-text="This variable will contribute to your agents commission."
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
@@ -222,8 +222,7 @@ const test = ref<Date>()
                                 />
 
                                 <InfoIcon
-                                    :hover-text="`Set a monthly target for the target variable.
-                                                Example: If you have a quarterly ARR Target of 90k, you have to insert 30k here.`"
+                                    hover-text="Set a monthly goal for your agent."
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
@@ -285,8 +284,7 @@ const test = ref<Date>()
                             />
 
                             <InfoIcon
-                                :hover-text="`Select the trigger event that this plan applies to.
-                                Deals will only be taken into account if this condition is met.`"
+                                hover-text="Set a condition for your target variable."
                                 class="max-w-5 whitespace-pre-line text-gray-700"
                             />
                         </div>
