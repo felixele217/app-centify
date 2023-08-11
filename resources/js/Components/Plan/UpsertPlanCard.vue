@@ -130,6 +130,8 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
         activeAdditionalFields.value = [...activeAdditionalFields.value, option.title]
     }
 }
+
+const test = ref<Date>()
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-export default function paymentCycle(originalDate?: string | null): string {
+export default function payoutCycle(originalDate?: string | null | Date): string {
     if (!originalDate) {
         return '-'
     }

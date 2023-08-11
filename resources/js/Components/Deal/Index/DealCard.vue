@@ -6,7 +6,7 @@ import Toggle from '@/Components/Form/Toggle.vue'
 import Modal from '@/Components/Modal.vue'
 import Deal from '@/types/Deal'
 import Integration from '@/types/Integration'
-import paymentCycle from '@/utils/Date/paymentCycle'
+import payoutCycle from '@/utils/Date/payoutCycle'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
@@ -100,7 +100,7 @@ const rejectionForm = useForm({
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
-        {{ paymentCycle(deal.add_time) }}
+        {{ payoutCycle(deal.add_time) }}
     </td>
 
     <td class="col-span-4 px-3 py-4 text-gray-500">
