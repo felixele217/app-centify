@@ -34,6 +34,12 @@ watch(
             emit('update:modelValue', euroValue(localValue.value))
         }
 
+        if (addedZero(localValue.value)) {
+            localValue.value = localValue.value.substring(0, localValue.value.indexOf(',')) + '0,00€'
+
+            emit('update:modelValue', euroValue(localValue.value))
+        }
+
         if (enteredNumber(localValue.value)) {
             localValue.value =
                 localValue.value.slice(0, localValue.value.indexOf(',')) +
@@ -48,9 +54,11 @@ watch(
     }
 )
 
-const deletedLastElement = (value: string) => value[value.length - 1] === '€' && value[value.length - 2] === '0'
+const deletedLastElement = (value: string) =>
+    value[value.length - 1] === '€' && value[value.length - 2] === '0' && value[value.length - 3] !== '€'
 const enteredNumber = (value: string) => !isNaN(parseInt(value[value.length - 1])) && value[value.length - 1] !== '0'
 const deletedComma = (value: string) => value.includes('€€') && !value.includes(',')
+const addedZero = (value: string) => value.includes('€0€')
 const euroValue = (value: string) =>
     parseInt(value[0] === '0' ? value.slice(1) : value.split(',')[0].replaceAll('.', '')) * 100
 
@@ -65,7 +73,7 @@ function formatCurrencyWithDots(input: string): string {
         return '0'
     }
 
-    // Reverse the cleaned string for easier processing
+    // Reverse the cleaWned string for easier processing
     const reversedChars = input.split('').reverse()
 
     // Process every 3 characters and join with a dot
