@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import formatCurrencyWithDots from '@/utils/formatCurrencyWithDots'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -66,29 +67,6 @@ const displayValue = () => {
     let clearedValue = localValue.value.slice(0, localValue.value.indexOf(','))
 
     return `${formatCurrencyWithDots(clearedValue)},00€`
-}
-
-function formatCurrencyWithDots(input: string): string {
-    if (!input) {
-        return '0'
-    }
-
-    // Reverse the cleaWned string for easier processing
-    const reversedChars = input.split('').reverse()
-
-    // Process every 3 characters and join with a dot
-    const formattedChunks: string[] = []
-    for (let i = 0; i < reversedChars.length; i += 3) {
-        formattedChunks.push(
-            reversedChars
-                .slice(i, i + 3)
-                .reverse()
-                .join('')
-        )
-    }
-
-    // Reverse the chunks back and join into a string
-    return formattedChunks.reverse().join('.')
 }
 </script>
 
