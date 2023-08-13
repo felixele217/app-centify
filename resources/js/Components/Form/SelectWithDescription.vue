@@ -2,6 +2,7 @@
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
 import { computed } from 'vue'
 
 export type SelectOptionWithDescription = {
@@ -26,16 +27,20 @@ function clearSelect() {
         return
     }
 
+    current.value.current = false
     emit('update:modelValue', '')
 }
 
 const selected = computed(() => props.options.filter((option) => option.title === props.modelValue)[0])
+
+const current = ref<SelectOptionWithDescription>(props.options.filter((option) => option.title === props.modelValue)[0])
 </script>
 
 <template>
     <Listbox
         as="div"
-        v-model="props.modelValue"
+        v-model="current"
+        @keyup.enter.prevent="$emit('update:modelValue', current.title)"
     >
         <ListboxLabel class="sr-only">Change published status</ListboxLabel>
 
