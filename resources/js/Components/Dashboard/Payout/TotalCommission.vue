@@ -21,7 +21,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 <template>
     <Card class="flex h-full flex-col justify-between">
         <div class="flex justify-between">
-            <p class="font-semibold">Total Payout</p>
+            <p class="font-semibold">Total Commission</p>
 
             <BanknotesIcon class="h-8 w-8" />
         </div>

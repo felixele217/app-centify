@@ -1,4 +1,4 @@
-export default function payoutCycle(originalDate?: string | null | Date): string {
+export default function attributionPeriod(originalDate?: string | null | Date): string {
     if (!originalDate) {
         return '-'
     }
