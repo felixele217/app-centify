@@ -16,7 +16,7 @@ import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveCard from './PaidLeaveCard.vue'
-import { CurrencyInputVue } from 'vue-simple-currency'
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 
 const props = defineProps<{
     form: InertiaForm<{
@@ -184,7 +184,7 @@ function agentPaidLeaveRanges() {
                 />
             </div>
 
-            <CurrencyInputVue v-model="props.form.sum_of_commissions" />
+            <CurrencyInput v-model="props.form.sum_of_commissions" />
 
             <InputError
                 class="mt-2"

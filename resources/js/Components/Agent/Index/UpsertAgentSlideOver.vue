@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
@@ -11,7 +12,6 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
-import { CurrencyInputVue } from 'vue-simple-currency'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -188,7 +188,7 @@ function submit() {
                                                             required
                                                         />
 
-                                                        <CurrencyInputVue v-model="form.base_salary" />
+                                                        <CurrencyInput v-model="form.base_salary" />
 
                                                         <InputError
                                                             class="mt-2"
@@ -207,7 +207,7 @@ function submit() {
                                                                 hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
                                                             />
                                                         </div>
-                                                        <CurrencyInputVue v-model="form.on_target_earning" />
+                                                        <CurrencyInput v-model="form.on_target_earning" />
 
                                                         <InputError
                                                             class="mt-2"
