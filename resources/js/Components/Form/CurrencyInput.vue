@@ -15,8 +15,10 @@ function handleChange(value: string) {
 
     localValue.value = clearedValue + '€'
 
-    if (value[value.length - 1] === '€' && value.includes(',')) {
-        emit('update:modelValue', euroValue(value))
+    if (value[value.length - 1] === '€' && value.includes(',00')) {
+        console.log(0, euroValue(localValue.value))
+
+        emitUpdate()
     }
 }
 
@@ -32,13 +34,15 @@ watch(
         if (deletedLastElement(localValue.value)) {
             localValue.value = localValue.value.slice(0, localValue.value.indexOf(',') - 1) + ',00€'
 
-            emit('update:modelValue', euroValue(localValue.value))
+            console.log(1, localValue.value, euroValue(localValue.value))
+            emitUpdate()
         }
 
         if (addedZero(localValue.value)) {
             localValue.value = localValue.value.substring(0, localValue.value.indexOf(',')) + '0,00€'
 
-            emit('update:modelValue', euroValue(localValue.value))
+            console.log(2, localValue.value, euroValue(localValue.value))
+            emitUpdate()
         }
 
         if (enteredNumber(localValue.value)) {
@@ -47,13 +51,24 @@ watch(
                 localValue.value[localValue.value.length - 1] +
                 ',00€'
 
-            emit('update:modelValue', euroValue(localValue.value))
+            console.log(3, localValue.value, euroValue(localValue.value))
+            emitUpdate()
         }
 
         // remove all non-digits except the ','
         localValue.value = localValue.value.replace(/[^0-9,]/g, '')
     }
 )
+
+function emitUpdate() {
+    const value = euroValue(localValue.value)
+
+    if (!isNaN(value)) {
+        emit('update:modelValue', value)
+    } else {
+        emit('update:modelValue', 0)
+    }
+}
 
 const deletedLastElement = (value: string) =>
     value[value.length - 1] === '€' && value[value.length - 2] === '0' && value[value.length - 3] !== '€'
