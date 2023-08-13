@@ -7,4 +7,5 @@ export default interface Rejection {
     deal_id: number
     deal?: Deal
     reason: string
+    is_permanent: boolean
 }

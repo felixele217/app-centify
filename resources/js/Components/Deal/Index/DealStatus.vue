@@ -46,9 +46,9 @@ const props = defineProps<{
         v-else-if="props.deal.active_rejection?.created_at"
     >
         <Tooltip
-            :text="`This deal was rejected at ${formatDate(props.deal.active_rejection.created_at)} due to: '${
-                props.deal.active_rejection.reason
-            }'`"
+            :text="`This deal was rejected ${
+                props.deal.active_rejection.is_permanent ? 'permanently' : 'temporarily'
+            } on ${formatDate(props.deal.active_rejection.created_at)} due to: '${props.deal.active_rejection.reason}'`"
         >
             <Badge
                 :text="formatDate(props.deal.active_rejection.created_at)"
