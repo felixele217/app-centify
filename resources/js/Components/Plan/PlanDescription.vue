@@ -6,12 +6,7 @@ import euroDisplay from '@/utils/euroDisplay'
 
 const props = defineProps<{
     form: UpsertPlanForm
-    agents: Array<Agent>
 }>()
-
-function firstAssignedAgent() {
-    return props.agents.filter((agent) => agent.id === props.form.assigned_agent_ids[0])[0]
-}
 </script>
 
 <template>
@@ -20,27 +15,27 @@ function firstAssignedAgent() {
 
         <p class="mt-2">
             The plan
-            <span class="font-semibold">{{ form.name || '{plan_name}' }}</span>
+            <span class="font-semibold">{{ props.form.name || '{plan_name}' }}</span>
             will be renewed
-            <span class="font-semibold">{{ form.plan_cycle || '{interval}' }},</span>
+            <span class="font-semibold">{{ props.form.plan_cycle || '{interval}' }},</span>
             starting on
             <span class="font-semibold">{{
-                formatDate(form.start_date) !== '-' ? formatDate(form.start_date) : '' || '{start_date}'
+                formatDate(form.start_date) !== '-' ? formatDate(props.form.start_date) : '' || '{start_date}'
             }}</span>
             and is assigned to
-            <span class="font-semibold">{{ form.assigned_agent_ids.length }}</span>
+            <span class="font-semibold">{{ props.form.assigned_agent_ids.length }}</span>
             agent(s).
         </p>
 
         <p class="mt-2">
             The variable
-            <span class="font-semibold">{{ form.target_variable || '{target_variable}' }}</span>
+            <span class="font-semibold">{{ props.form.target_variable || '{target_variable}' }}</span>
             is attributed to the plan and triggered by
-            <span class="font-semibold">{{ form.trigger || '{trigger}' }}.</span>
+            <span class="font-semibold">{{ props.form.trigger || '{trigger}' }}.</span>
 
             For this variable, you set the individual monthly target at
             <span class="font-semibold"
-                >{{ euroDisplay(form.target_amount_per_month, 0) || '{target_amount_per_month}' }}.
+                >{{ euroDisplay(props.form.target_amount_per_month, 0) || '{target_amount_per_month}' }}.
             </span>
         </p>
     </div>

@@ -1,10 +1,10 @@
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import payoutCycle from './payoutCycle'
+import attributionPeriod from './attributionPeriod'
 import quarter from './quarter'
 
 export default function currentScope(scope: TimeScopeEnum | '') {
     if (!scope || scope === 'monthly') {
-        return payoutCycle(new Date())
+        return attributionPeriod(new Date())
     }
 
     if (scope === 'quarterly') {

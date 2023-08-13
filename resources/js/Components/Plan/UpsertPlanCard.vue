@@ -41,7 +41,7 @@ export interface AdditionalField {
 
 const props = defineProps<{
     plan?: Plan
-    agents: Array<Agent>
+    agents: Array<Pick<Agent, 'id' | 'name'>>
     target_variable_options: Array<TargetVariableEnum>
     payout_frequency_options: Array<PlanCycleEnum>
     kicker_type_options: Array<KickerTypeEnum>
@@ -361,10 +361,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                     </div>
                 </div>
 
-                <PlanDescription
-                    :agents="props.agents"
-                    :form="form"
-                />
+                <PlanDescription :form="form" />
 
                 <FormButtons
                     :positiveButtonText="props.plan ? 'Save' : 'Create'"

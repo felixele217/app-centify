@@ -1,13 +1,13 @@
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import currentScope from '@/utils/Date/currentScope'
-import payoutCycle from '@/utils/Date/payoutCycle'
+import attributionPeriod from '@/utils/Date/attributionPeriod'
 import quarter from '@/utils/Date/quarter'
 import { expect, it, test } from 'vitest'
 
 it('returns correct format for month scope', () => {
     const scope: TimeScopeEnum = 'monthly'
 
-    expect(currentScope(scope)).toBe(payoutCycle(new Date()))
+    expect(currentScope(scope)).toBe(attributionPeriod(new Date()))
 })
 
 it('returns correct format for quarter scope', () => {
@@ -23,5 +23,5 @@ it('returns correct format for year scope', () => {
 })
 
 test('empty string as input returns the monthly scope', () => {
-    expect(currentScope('')).toBe(payoutCycle(new Date()))
+    expect(currentScope('')).toBe(attributionPeriod(new Date()))
 })

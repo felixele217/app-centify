@@ -112,7 +112,7 @@ const updatePassword = () => {
                 <Transition
                     enter-from-class="opacity-0"
                     leave-to-class="opacity-0"
-                    class="transition ease-in-out"
+                    leave-active-class="transition ease-in duration-100"
                 >
                     <p
                         v-if="form.recentlySuccessful"
