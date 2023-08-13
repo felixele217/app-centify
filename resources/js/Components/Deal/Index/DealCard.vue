@@ -13,6 +13,7 @@ import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
+import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -87,9 +88,12 @@ const rejectionForm = useForm({
 </script>
 
 <template>
-    <td class="col-span-3 py-4 pl-6 pr-3">
-        <p class="text-gray-900">{{ deal.agent!.name }}</p>
-        <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
+    <td class="col-span-3 flex items-center justify-between py-4 pl-6 pr-3">
+        <div>
+            <p class="text-gray-900">{{ deal.agent!.name }}</p>
+            <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
+        </div>
+        <SplitArrowsIcon class="mr-3 cursor-pointer" />
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
