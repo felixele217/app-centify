@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
-import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
+import { CurrencyInputVue } from 'vue-simple-currency'
 import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
@@ -226,7 +226,7 @@ const test = ref<Date>()
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
-                            <CurrencyInput v-model="form.target_amount_per_month" />
+                            <CurrencyInputVue  v-model="form.target_amount_per_month" />
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.target_amount_per_month"
@@ -354,7 +354,7 @@ const test = ref<Date>()
                             required
                         />
 
-                        <CurrencyInput v-model="form.cap" />
+                        <CurrencyInputVue v-model="form.cap" />
 
                         <InputError
                             class="mt-2"
