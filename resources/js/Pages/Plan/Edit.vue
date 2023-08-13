@@ -2,7 +2,7 @@
 import UpsertPlanCard from '@/Components/Plan/UpsertPlanCard.vue'
 import Agent from '@/types/Agent'
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
-import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
+import { PlanCycleEnum } from '@/types/Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import Plan from '@/types/Plan/Plan'
@@ -10,7 +10,7 @@ import Plan from '@/types/Plan/Plan'
 const props = defineProps<{
     agents: Array<Pick<Agent, 'id' | 'name'>>
     target_variable_options: Array<TargetVariableEnum>
-    payout_frequency_options: Array<PayoutFrequencyEnum>
+    payout_frequency_options: Array<PlanCycleEnum>
     kicker_type_options: Array<KickerTypeEnum>
     salary_type_options: Array<SalaryTypeEnum>
     plan: Plan

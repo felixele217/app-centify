@@ -1,13 +1,12 @@
 <?php
 
-use App\Models\CustomField;
-use App\Models\Integration;
 use App\Enum\CustomFieldEnum;
-use App\Facades\PipedriveFacade;
 use App\Enum\IntegrationTypeEnum;
 use App\Exceptions\InvalidApiKeyException;
+use App\Facades\PipedriveFacade;
 use App\Integrations\Pipedrive\PipedriveHelper;
-use App\Integrations\Pipedrive\PipedriveClientDummy;
+use App\Models\CustomField;
+use App\Models\Integration;
 
 beforeEach(function () {
     $this->admin = signInAdmin();

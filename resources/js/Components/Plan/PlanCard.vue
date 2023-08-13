@@ -63,7 +63,7 @@ const planIdBeingDeleted = ref<number | null>()
             <p class="-mb-0.5 text-sm text-gray-600">
                 occurs
                 <span class="font-semibold text-gray-900">
-                    {{ props.plan.payout_frequency }}
+                    {{ props.plan.plan_cycle }}
                 </span>
             </p>
         </div>

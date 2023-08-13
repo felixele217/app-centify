@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->bigInteger('target_amount_per_month');
             $table->string('target_variable');
-            $table->string('payout_frequency');
+            $table->string('plan_cycle');
             $table->foreignIdFor(Admin::class, 'creator_id');
             $table->foreignIdFor(Organization::class);
             $table->timestamps();

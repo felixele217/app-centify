@@ -1,15 +1,15 @@
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
-import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
+import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { expect, test } from 'vitest'
 
-test('receives the proper response for PayoutFrequencyOptions', function () {
-    expect(enumOptionsToSelectOptionWithDescription(['monthly'], payoutFrequencyToDescription).length).toBe(1)
-    expect(enumOptionsToSelectOptionWithDescription(['monthly'], payoutFrequencyToDescription)[0].title).toBe('monthly')
-    expect(enumOptionsToSelectOptionWithDescription(['monthly'], payoutFrequencyToDescription)[0].description).toBe(
-        payoutFrequencyToDescription['monthly']
+test('receives the proper response for PlanCycleOptions', function () {
+    expect(enumOptionsToSelectOptionWithDescription(['monthly'], planCycleToDescription).length).toBe(1)
+    expect(enumOptionsToSelectOptionWithDescription(['monthly'], planCycleToDescription)[0].title).toBe('monthly')
+    expect(enumOptionsToSelectOptionWithDescription(['monthly'], planCycleToDescription)[0].description).toBe(
+        planCycleToDescription['monthly']
     )
-    expect(enumOptionsToSelectOptionWithDescription(['monthly'], payoutFrequencyToDescription)[0].current).toBeFalsy()
+    expect(enumOptionsToSelectOptionWithDescription(['monthly'], planCycleToDescription)[0].current).toBeFalsy()
 })
 
 test('receives the proper response for TargetVariableOptions', function () {

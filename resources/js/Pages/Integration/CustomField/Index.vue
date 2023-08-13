@@ -50,7 +50,7 @@ const goBack = () => window.history.back()
         <div class="flex w-1/4 items-start justify-end">
             <XMarkIcon
                 @click="goBack"
-                class="h-10 w-10 rounded-full p-1 text-gray-400 hover:bg-gray-200 cursor-pointer"
+                class="h-10 w-10 cursor-pointer rounded-full p-1 text-gray-400 hover:bg-gray-200"
                 aria-hidden="true"
             />
         </div>

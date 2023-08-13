@@ -22,7 +22,7 @@ function firstAssignedAgent() {
             The plan
             <span class="font-semibold">{{ form.name || '{plan_name}' }}</span>
             will be renewed
-            <span class="font-semibold">{{ form.payout_frequency || '{interval}' }},</span>
+            <span class="font-semibold">{{ form.plan_cycle || '{interval}' }},</span>
             starting on
             <span class="font-semibold">{{
                 formatDate(form.start_date) !== '-' ? formatDate(form.start_date) : '' || '{start_date}'

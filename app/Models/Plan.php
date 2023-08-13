@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +22,7 @@ class Plan extends Model
 
     protected $casts = [
         'target_variable' => TargetVariableEnum::class,
-        'payout_frequency' => PayoutFrequencyEnum::class,
+        'plan_cycle' => PlanCycleEnum::class,
         'start_date' => 'datetime:Y-m-d',
     ];
 

@@ -1,6 +1,5 @@
 <?php
 
-use App\Providers\PipedriveServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 return [

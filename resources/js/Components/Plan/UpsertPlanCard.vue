@@ -11,7 +11,7 @@ import { AdditionalPlanFieldEnumCases } from '@/EnumCases/AdditionalPlanFieldEnu
 import Agent from '@/types/Agent'
 import { AdditionalPlanFieldEnum } from '@/types/Enum/AdditionalPlanFieldEnum'
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
-import { PayoutFrequencyEnum } from '@/types/Enum/PayoutFrequencyEnum'
+import { PlanCycleEnum } from '@/types/Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
@@ -19,7 +19,7 @@ import { UpsertPlanForm } from '@/types/Form/UpsertPlanForm'
 import Plan from '@/types/Plan/Plan'
 import { additionalPlanFieldToDescription } from '@/utils/Descriptions/additionalPlanFieldToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
-import { payoutFrequencyToDescription } from '@/utils/Descriptions/payoutFrequencyToDescription'
+import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { triggerToDescription } from '@/utils/Descriptions/triggerToDescription'
 import notify from '@/utils/notify'
@@ -43,7 +43,7 @@ const props = defineProps<{
     plan?: Plan
     agents: Array<Agent>
     target_variable_options: Array<TargetVariableEnum>
-    payout_frequency_options: Array<PayoutFrequencyEnum>
+    payout_frequency_options: Array<PlanCycleEnum>
     kicker_type_options: Array<KickerTypeEnum>
     salary_type_options: Array<SalaryTypeEnum>
 }>()
@@ -73,7 +73,7 @@ const form = useForm<UpsertPlanForm>({
     start_date: props.plan?.start_date ? new Date(props.plan.start_date) : null,
     target_amount_per_month: props.plan?.target_amount_per_month || null,
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
-    payout_frequency: props.plan?.payout_frequency || ('' as PayoutFrequencyEnum),
+    plan_cycle: props.plan?.plan_cycle || ('' as PlanCycleEnum),
     assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
 
     cliff: {
@@ -224,7 +224,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
-                            <CurrencyInput  v-model="form.target_amount_per_month" />
+                            <CurrencyInput v-model="form.target_amount_per_month" />
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.target_amount_per_month"
@@ -234,7 +234,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
 
                     <div>
                         <InputLabel
-                            for="payout_frequency"
+                            for="plan_cycle"
                             value="Payout Frequency"
                             required
                         />
@@ -243,16 +243,16 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :options="
                                 enumOptionsToSelectOptionWithDescription(
                                     props.payout_frequency_options,
-                                    payoutFrequencyToDescription
+                                    planCycleToDescription
                                 )
                             "
-                            @option-selected="(optionTitle: string) => form.payout_frequency = (optionTitle as PayoutFrequencyEnum)"
-                            v-model="form.payout_frequency"
+                            @option-selected="(optionTitle: string) => form.plan_cycle = (optionTitle as PlanCycleEnum)"
+                            v-model="form.plan_cycle"
                         />
 
                         <InputError
                             class="mt-2"
-                            :message="form.errors.payout_frequency"
+                            :message="form.errors.plan_cycle"
                         />
                     </div>
 

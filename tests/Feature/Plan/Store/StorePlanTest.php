@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Agent;
@@ -17,7 +17,7 @@ it('can store a plan as an admin', function () {
         'start_date' => $startDate = Carbon::tomorrow(),
         'target_amount_per_month' => $targetAmountPerMonth = 500000,
         'target_variable' => $targetVariable = TargetVariableEnum::DEAL_VALUE->value,
-        'payout_frequency' => $payoutFrequency = PayoutFrequencyEnum::MONTHLY->value,
+        'plan_cycle' => $planCycle = PlanCycleEnum::MONTHLY->value,
         'assigned_agent_ids' => $assignedAgents = $agents->pluck('id')->toArray(),
     ])->assertRedirect(route('plans.index'));
 
@@ -26,7 +26,7 @@ it('can store a plan as an admin', function () {
     expect($plan->start_date)->toEqual($startDate);
     expect($plan->target_amount_per_month)->toEqual($targetAmountPerMonth);
     expect($plan->target_variable->value)->toEqual($targetVariable);
-    expect($plan->payout_frequency->value)->toEqual($payoutFrequency);
+    expect($plan->plan_cycle->value)->toEqual($planCycle);
     expect($plan->agents->pluck('id')->toArray())->toEqual($assignedAgents);
     expect($plan->creator_id)->toEqual($admin->id);
     expect($plan->organization->id)->toEqual($admin->organization->id);
@@ -40,7 +40,7 @@ it('has required fields', function () {
         'start_date' => 'The start date field is required.',
         'target_amount_per_month' => 'The target amount per month field is required.',
         'target_variable' => 'The target variable field is required.',
-        'payout_frequency' => 'The payout frequency field is required.',
+        'plan_cycle' => 'The plan cycle field is required.',
     ]);
 });
 

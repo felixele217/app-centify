@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Enum\KickerTypeEnum;
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Enum\TimeScopeEnum;
@@ -39,9 +39,9 @@ class UpdatePlanRequest extends FormRequest
                 new Enum(TargetVariableEnum::class),
             ],
 
-            'payout_frequency' => [
+            'plan_cycle' => [
                 'required',
-                new Enum(PayoutFrequencyEnum::class),
+                new Enum(PlanCycleEnum::class),
             ],
 
             'assigned_agent_ids' => [

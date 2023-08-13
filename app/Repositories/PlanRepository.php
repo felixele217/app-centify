@@ -16,7 +16,7 @@ class PlanRepository
         'start_date',
         'target_amount_per_month',
         'target_variable',
-        'payout_frequency',
+        'plan_cycle',
     ];
 
     public static function create(StorePlanRequest $request): Plan

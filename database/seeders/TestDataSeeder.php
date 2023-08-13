@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Models\Admin;
 use App\Models\Agent;
@@ -72,7 +72,7 @@ class TestDataSeeder extends Seeder
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
-            'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
+            'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'target_amount_per_month' => 35_000_00,
         ])->first();
 
@@ -84,7 +84,7 @@ class TestDataSeeder extends Seeder
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
-            'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
+            'plan_cycle' => PlanCycleEnum::MONTHLY->value,
         ])->first();
 
         Plan::create([
@@ -94,7 +94,7 @@ class TestDataSeeder extends Seeder
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
-            'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
+            'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'target_amount_per_month' => 15_000_00,
         ])->first();
 

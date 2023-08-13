@@ -1,7 +1,7 @@
 <?php
 
 use App\Enum\KickerTypeEnum;
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Models\Plan;
@@ -24,7 +24,7 @@ it('passes the correct props', function () {
             ->component('Plan/Edit')
             ->has('agents', $agentCount)
             ->where('target_variable_options', array_column(TargetVariableEnum::cases(), 'value'))
-            ->where('payout_frequency_options', array_column(PayoutFrequencyEnum::cases(), 'value'))
+            ->where('payout_frequency_options', array_column(PlanCycleEnum::cases(), 'value'))
             ->where('kicker_type_options', array_column(KickerTypeEnum::cases(), 'value'))
             ->where('salary_type_options', array_column(SalaryTypeEnum::cases(), 'value'))
             ->has('plan')

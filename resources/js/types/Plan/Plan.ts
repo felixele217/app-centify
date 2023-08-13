@@ -1,6 +1,6 @@
 import Admin from '../Admin'
 import Agent from '../Agent'
-import { PayoutFrequencyEnum } from '../Enum/PayoutFrequencyEnum'
+import { PlanCycleEnum } from '../Enum/PlanCycleEnum'
 import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
 import Cap from './Cap'
 import Cliff from './Cliff'
@@ -13,7 +13,7 @@ export default interface Plan {
     start_date: Date
     target_amount_per_month: number
     target_variable: TargetVariableEnum
-    payout_frequency: PayoutFrequencyEnum
+    plan_cycle: PlanCycleEnum
     agents_count?: number
     agents?: Array<Agent>
     creator: Admin

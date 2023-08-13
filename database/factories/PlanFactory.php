@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Models\Admin;
 use App\Models\Organization;
@@ -21,7 +21,7 @@ class PlanFactory extends Factory
             'start_date' => Carbon::parse('-1 week'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
-            'payout_frequency' => PayoutFrequencyEnum::MONTHLY->value,
+            'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'organization_id' => Organization::factory()->create(),
             'creator_id' => Admin::factory()->create(),
         ];

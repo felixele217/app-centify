@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enum\KickerTypeEnum;
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
@@ -32,7 +32,7 @@ class PlanController extends Controller
     {
         return Inertia::render('Plan/Create', [
             'agents' => Auth::user()->organization->agents,
-            'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
+            'payout_frequency_options' => array_column(PlanCycleEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
             'kicker_type_options' => array_column(KickerTypeEnum::cases(), 'value'),
             'salary_type_options' => array_column(SalaryTypeEnum::cases(), 'value'),
@@ -50,7 +50,7 @@ class PlanController extends Controller
     {
         return Inertia::render('Plan/Edit', [
             'agents' => Auth::user()->organization->agents,
-            'payout_frequency_options' => array_column(PayoutFrequencyEnum::cases(), 'value'),
+            'payout_frequency_options' => array_column(PlanCycleEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),
             'kicker_type_options' => array_column(KickerTypeEnum::cases(), 'value'),
             'salary_type_options' => array_column(SalaryTypeEnum::cases(), 'value'),

@@ -1,5 +1,5 @@
 import { KickerTypeEnum } from '../Enum/KickerTypeEnum'
-import { PayoutFrequencyEnum } from '../Enum/PayoutFrequencyEnum'
+import { PlanCycleEnum } from '../Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '../Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '../Enum/TimeScopeEnum'
@@ -9,7 +9,7 @@ export type UpsertPlanForm = {
     start_date: Date | null
     target_amount_per_month: number | null
     target_variable: TargetVariableEnum
-    payout_frequency: PayoutFrequencyEnum
+    plan_cycle: PlanCycleEnum
     assigned_agent_ids: Array<number>
     cliff: {
         threshold_in_percent: number | null

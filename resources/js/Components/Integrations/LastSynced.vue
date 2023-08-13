@@ -7,5 +7,8 @@ const props = defineProps<{
 </script>
 
 <template>
-    <p class="text-xs text-gray-500 text-right">last synced:<br/> {{ formatTime(props.lastSynced) }}</p>
+    <p class="text-right text-xs text-gray-500">
+        last synced:<br />
+        {{ formatTime(props.lastSynced) }}
+    </p>
 </template>

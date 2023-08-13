@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\PayoutFrequencyEnum;
+use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Agent;
@@ -19,7 +19,7 @@ it('can update a plan as an admin', function () {
         'start_date' => $startDate = Carbon::tomorrow(),
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
-        'payout_frequency' => $payoutFrequency = fake()->randomElement(PayoutFrequencyEnum::cases())->value,
+        'plan_cycle' => $planCycle = fake()->randomElement(PlanCycleEnum::cases())->value,
         'assigned_agent_ids' => [],
     ])->assertRedirect(route('plans.index'));
 
@@ -29,7 +29,7 @@ it('can update a plan as an admin', function () {
     expect($plan->start_date->toDateString())->toBe($startDate->toDateString());
     expect($plan->target_amount_per_month)->toBe($targetAmountPerMonth);
     expect($plan->target_variable->value)->toBe($targetVariable);
-    expect($plan->payout_frequency->value)->toBe($payoutFrequency);
+    expect($plan->plan_cycle->value)->toBe($planCycle);
 });
 
 it('can assign more agents to the plan', function () {
@@ -83,7 +83,7 @@ it('has required fields', function () {
         'start_date' => 'The start date field is required.',
         'target_amount_per_month' => 'The target amount per month field is required.',
         'target_variable' => 'The target variable field is required.',
-        'payout_frequency' => 'The payout frequency field is required.',
+        'plan_cycle' => 'The plan cycle field is required.',
         'assigned_agent_ids' => 'The assigned agent ids field must be present',
     ]);
 });
