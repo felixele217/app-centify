@@ -56,7 +56,7 @@ class StorePaidLeaveRequest extends FormRequest
     {
         return [
             'end_date.before' => 'The end date needs to come after the start date.',
-            'employed_28_or_more_days' => 'The employee has to be employed for 28 or more days.',
+            'employed_28_or_more_days' => 'Newly hired employees are not entitled to continuation of pay in the event of illness during the first four weeks (28 calendar days) of employment.',
         ];
     }
 }

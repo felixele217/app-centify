@@ -159,7 +159,6 @@ function agentPaidLeaveRanges() {
                         continuationOfPayTimeScopeToDescription
                     )
                 "
-                @option-selected="(optionTitle: string) => props.form.continuation_of_pay_time_scope = (optionTitle as ContinuationOfPayTimeScopeEnum)"
                 :disabled="props.form.reason === 'on vacation'"
                 v-model="props.form.continuation_of_pay_time_scope"
             />

@@ -203,7 +203,6 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                         targetVariableToDescription
                                     )
                                 "
-                                @option-selected="(optionTitle: string) => form.target_variable = (optionTitle as TargetVariableEnum)"
                                 v-model="form.target_variable"
                             />
                             <InputError
@@ -235,7 +234,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                     <div>
                         <InputLabel
                             for="plan_cycle"
-                            value="Payout Frequency"
+                            value="Plan Cycle"
                             required
                         />
 
@@ -246,7 +245,6 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                     planCycleToDescription
                                 )
                             "
-                            @option-selected="(optionTitle: string) => form.plan_cycle = (optionTitle as PlanCycleEnum)"
                             v-model="form.plan_cycle"
                         />
 
@@ -290,7 +288,6 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         <SelectWithDescription
                             :options="enumOptionsToSelectOptionWithDescription(['demo_set_by'], triggerToDescription)"
                             v-model="form.trigger"
-                            @option-selected="(optionTitle: string) => form.trigger = (optionTitle as 'demo_set_by')"
                         />
 
                         <InputError

@@ -71,7 +71,7 @@ it('throws a validation error if status is sick and employed 28 or more days is 
     ])->fake();
 
     $this->post(route('agents.paid-leaves.store', $this->agent))->assertInvalid([
-        'employed_28_or_more_days' => 'The employee has to be employed for 28 or more days.',
+        'employed_28_or_more_days' => 'Newly hired employees are not entitled to continuation of pay in the event of illness during the first four weeks (28 calendar days) of employment.',
     ]);
 });
 
