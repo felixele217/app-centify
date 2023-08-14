@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\DealScopeEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Repositories\DealRepository;
 use Carbon\Carbon;
@@ -43,11 +44,15 @@ beforeEach(function () {
 });
 
 it('passes the correct props for all deals if no scope is specified', function () {
-    $this->get(route('deals.index'))->assertInertia(
+    Agent::factory($agentCount = 5)->ofOrganization($this->admin->organization_id)->create();
+
+    $this->get(route('deals.index'))
+    ->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', DealRepository::get()->count())
             ->has('deals.1.agent')
+            ->has('agents')
             ->has('deals.1.active_rejection')
             ->has('integrations')
     );

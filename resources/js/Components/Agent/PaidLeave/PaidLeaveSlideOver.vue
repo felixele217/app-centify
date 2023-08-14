@@ -74,10 +74,12 @@ function submit() {
         description="Add or remove paid leaves for your agents"
         buttonText="Create"
     >
-        <PaidLeaveForm
-            :form="form"
-            :agentId="props.agentId"
-            @deleted="closeSlideOver"
-        />
+        <div class="space-y-6 pb-5 px-6 pt-3">
+            <PaidLeaveForm
+                :form="form"
+                :agentId="props.agentId"
+                @deleted="closeSlideOver"
+            />
+        </div>
     </SlideOver>
 </template>

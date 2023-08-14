@@ -14,6 +14,7 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
+import SplitDealSlideOver from './SplitDealSlideOver.vue'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -85,6 +86,8 @@ const rejectionForm = useForm({
     reason: '',
     is_permanent: false,
 })
+
+const isSplittingDeal = ref<boolean>(false)
 </script>
 
 <template>
@@ -93,7 +96,8 @@ const rejectionForm = useForm({
             <p class="text-gray-900">{{ deal.agent!.name }}</p>
             <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
         </div>
-        <SplitArrowsIcon class="mr-3 cursor-pointer" />
+
+        <SplitArrowsIcon class="mr-3 cursor-pointer" @click="isSplittingDeal = true" />
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
@@ -149,6 +153,12 @@ const rejectionForm = useForm({
             @rejected="(id: number) => dealIdBeingDeclined = id"
         />
     </td>
+
+    <SplitDealSlideOver
+    @close-slide-over="isSplittingDeal = false"
+    :deal="props.deal"
+    :is-open="isSplittingDeal"
+    />
 
     <Modal
         @modal-action="acceptDeal"

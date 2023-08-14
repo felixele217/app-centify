@@ -55,7 +55,7 @@ const props = defineProps<{
                                     class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                                     @submit.prevent="$emit('submit')"
                                 >
-                                    <div class="h-0 flex-1 overflow-y-auto">
+                                    <div class="flex h-0 flex-1 flex-col overflow-y-auto">
                                         <div class="bg-indigo-700 px-4 py-6 sm:px-6">
                                             <div class="flex items-center justify-between">
                                                 <DialogTitle class="text-base font-semibold leading-6 text-white">{{
@@ -80,12 +80,8 @@ const props = defineProps<{
                                                 <p class="text-sm text-indigo-300">{{ props.description }}</p>
                                             </div>
                                         </div>
-                                        <div class="flex flex-1 flex-col justify-between">
-                                            <div class="divide-y divide-gray-200 overflow-y-scroll px-6">
-                                                <div class="space-y-6 pb-5 pt-6">
-                                                    <slot />
-                                                </div>
-                                            </div>
+                                        <div class="grow overflow-y-scroll">
+                                            <slot />
                                         </div>
                                     </div>
 

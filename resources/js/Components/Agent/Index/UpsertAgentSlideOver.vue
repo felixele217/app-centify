@@ -89,79 +89,81 @@ function submit() {
                 : 'Create a new Agent for your Organization.'
         "
     >
-        <div class="leading-6">
-            <InputLabel
-                for="name"
-                value="Full Name"
-                required
-            />
-
-            <TextInput
-                type="text"
-                v-model="form.name"
-                name="name"
-            />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.name"
-            />
-        </div>
-        <div>
-            <div class="flex gap-1">
+        <div class="space-y-6 pb-5 pt-6 px-6">
+            <div class="leading-6">
                 <InputLabel
-                    for="email"
-                    value="Work Email"
+                    for="name"
+                    value="Full Name"
                     required
                 />
 
-                <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
+                <TextInput
+                    type="text"
+                    v-model="form.name"
+                    name="name"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.name"
+                />
             </div>
+            <div>
+                <div class="flex gap-1">
+                    <InputLabel
+                        for="email"
+                        value="Work Email"
+                        required
+                    />
 
-            <TextInput
-                id="email"
-                type="text"
-                v-model="form.email"
-                name="email"
-            />
+                    <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
+                </div>
 
-            <InputError
-                class="mt-2"
-                :message="form.errors.email"
-            />
-        </div>
-        <div>
-            <InputLabel
-                for="base_salary"
-                value="Annual Base Salary"
-                required
-            />
+                <TextInput
+                    id="email"
+                    type="text"
+                    v-model="form.email"
+                    name="email"
+                />
 
-            <CurrencyInput v-model="form.base_salary" />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.base_salary"
-            />
-        </div>
-        <div>
-            <div class="flex gap-1">
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.email"
+                />
+            </div>
+            <div>
                 <InputLabel
-                    for="on_target_earning"
-                    value="Annual On Target Earning (OTE)"
+                    for="base_salary"
+                    value="Annual Base Salary"
                     required
                 />
 
-                <InfoIcon
-                    hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
+                <CurrencyInput v-model="form.base_salary" />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.base_salary"
                 />
             </div>
-            <CurrencyInput v-model="form.on_target_earning" />
+            <div>
+                <div class="flex gap-1">
+                    <InputLabel
+                        for="on_target_earning"
+                        value="Annual On Target Earning (OTE)"
+                        required
+                    />
 
-            <InputError
-                class="mt-2"
-                :message="form.errors.on_target_earning"
-            />
+                    <InfoIcon
+                        hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
+                    />
+                </div>
+                <CurrencyInput v-model="form.on_target_earning" />
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.on_target_earning"
+                />
+            </div>
         </div>
     </SlideOver>
 </template>
