@@ -26,7 +26,7 @@ class Split extends Model
     {
         $acceptedBefore = $acceptedBefore ?? CarbonImmutable::now();
 
-        $query->whereHas('deal', function ($query) use ($acceptedBefore) {
+        $query->whereHas('deal', function (Builder $query) use ($acceptedBefore) {
             $query->where('accepted_at', '<', $acceptedBefore);
         });
     }

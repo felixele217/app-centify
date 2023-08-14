@@ -10,6 +10,7 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Split;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class SplitRepository
@@ -38,7 +39,7 @@ class SplitRepository
             TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
         };
 
-        return $agent->splits()->acceptedDeals($dateInScope)->whereHas('deal', function ($query) use ($firstDateInScope, $lastDateInScope) {
+        return $agent->splits()->acceptedDeals($dateInScope)->whereHas('deal', function (Builder $query) use ($firstDateInScope, $lastDateInScope) {
             $query->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
         })->get();
     }
