@@ -89,3 +89,68 @@ it('split partner also get the quota', function (int $sharedPercentage) {
     80,
     100,
 ]);
+
+it('deal owner gets his capped share', function (int $sharedPercentage) {
+    $plan = Plan::factory()
+        ->hasCap([
+            'value' => $cap = 5_000_00,
+        ])
+        ->create([
+            'target_amount_per_month' => 10_000_00,
+        ]);
+
+    $plan->agents()->attach($agent = Agent::factory()->has(
+        Deal::factory()->count(1)->state([
+            'accepted_at' => Carbon::now()->firstOfMonth(),
+            'add_time' => Carbon::now()->firstOfMonth(),
+            'value' => 10_000_00,
+        ]))->create());
+
+    $agent->deals()->first()->splits()->create([
+        'agent_id' => Agent::factory()->ofOrganization($agent->organization_id)->create(),
+        'shared_percentage' => $sharedPercentage,
+    ]);
+
+    expect((new QuotaAttainmentService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(floatval(min(0.5, 1 - (($sharedPercentage) / 100))));
+})->with([
+    20,
+    40,
+    60,
+    80,
+    100
+]);
+
+it('split partner gets his capped share', function (int $sharedPercentage) {
+    $plan = Plan::factory()
+        ->hasCap([
+            'value' => $cap = 5_000_00,
+        ])
+        ->create([
+            'target_amount_per_month' => 10_000_00,
+        ]);
+
+
+    $plan->agents()->attach($agent = Agent::factory()->has(
+        Deal::factory()->count(1)->state([
+            'accepted_at' => Carbon::now()->firstOfMonth(),
+            'add_time' => Carbon::now()->firstOfMonth(),
+            'value' => 10_000_00,
+        ]))->create());
+
+    $agent->deals()->first()->splits()->create([
+        'agent_id' => ($splitPartner = Agent::factory()
+            ->ofOrganization($agent->organization_id)
+            ->create())->id,
+        'shared_percentage' => $sharedPercentage,
+    ]);
+
+    $plan->agents()->attach($splitPartner);
+
+    expect((new QuotaAttainmentService())->calculate($splitPartner, TimeScopeEnum::MONTHLY))->toBe(floatval(min(0.5, (($sharedPercentage) / 100))));
+})->with([
+    20,
+    40,
+    60,
+    80,
+    100,
+]);

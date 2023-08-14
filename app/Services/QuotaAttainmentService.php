@@ -49,8 +49,8 @@ class QuotaAttainmentService
     {
         $dealValue = $this->splittedValue($deal);
 
-        if ((bool) $cap && $dealValue >= $cap) {
-            return $cap;
+        if ((bool) $cap) {
+            return min($dealValue, $cap);
         }
 
         return $dealValue;
@@ -75,8 +75,8 @@ class QuotaAttainmentService
     {
         $splitValue = $this->sharedValue($split);
 
-        if ((bool) $cap && $splitValue >= $cap) {
-            return $cap;
+        if ((bool) $cap) {
+            return min($splitValue, $cap);
         }
 
         return $splitValue;
