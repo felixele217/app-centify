@@ -10,6 +10,7 @@ use App\Models\Deal;
 use App\Models\Plan;
 use App\Models\Split;
 use App\Repositories\DealRepository;
+use App\Repositories\SplitRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -32,7 +33,11 @@ class QuotaAttainmentService
 
         $deals = DealRepository::dealsForAgent($agent, $timeScope, $this->dateInScope);
 
-        return $this->cappedSumOfDeals($deals, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $timeScope->monthCount());
+        $splits = SplitRepository::splitsForAgent($agent, $timeScope, $this->dateInScope);
+
+        return (
+            $this->cappedSumOfDeals($deals, $latestActivePlan) + $this->cappedSumOfSplits($splits, $latestActivePlan)
+        ) / ($latestActivePlan->target_amount_per_month * $timeScope->monthCount());
     }
 
     private function cappedSumOfDeals(Collection $deals, ?Plan $latestActivePlan): float
@@ -59,5 +64,26 @@ class QuotaAttainmentService
             $deal->value * (1 - $sharedPercentage),
             0
         );
+    }
+
+    private function cappedSumOfSplits(Collection $splits, ?Plan $latestActivePlan): float
+    {
+        return array_sum($splits->map(fn (Split $split) => $this->cappedSplitValue($split, $latestActivePlan->cap?->value))->toArray());
+    }
+
+    private function cappedSplitValue(Split $split, ?int $cap): float
+    {
+        $splitValue = $this->sharedValue($split);
+
+        if ((bool) $cap && $splitValue >= $cap) {
+            return $cap;
+        }
+
+        return $splitValue;
+    }
+
+    private function sharedValue(Split $split): float
+    {
+        return $split->deal->value * $split->shared_percentage;
     }
 }

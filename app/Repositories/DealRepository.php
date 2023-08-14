@@ -42,10 +42,10 @@ class DealRepository
         $baseQuery = $agent->deals()->whereNotNull('accepted_at');
 
         return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $baseQuery->whereMonth('add_time', $dateInScope->month)->get(),
+            TimeScopeEnum::MONTHLY => $dealsInMonth = $baseQuery->whereMonth('add_time', $dateInScope->month)->get(),
             TimeScopeEnum::QUARTERLY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfQuarter(), $dateInScope->endOfQuarter()])->get(),
             TimeScopeEnum::ANNUALY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()])->get(),
-            default => $monthlyDealsQuery
+            default => $dealsInMonth
         };
     }
 

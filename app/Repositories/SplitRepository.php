@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Models\Deal;
-use App\Models\Agent;
-use App\Models\Split;
 use App\Enum\TimeScopeEnum;
+use App\Http\Requests\StoreSplitRequest;
+use App\Models\Agent;
+use App\Models\Deal;
+use App\Models\Split;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
-use App\Http\Requests\StoreSplitRequest;
 
 class SplitRepository
 {
@@ -32,13 +32,14 @@ class SplitRepository
     {
         $dateInScope = $dateInScope ?? CarbonImmutable::now();
 
-        $baseQuery = $agent->deals()->whereNotNull('accepted_at')->doesntHave('rejections');
-
-        return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $monthlyDealsQuery = $baseQuery->whereMonth('add_time', $dateInScope->month)->get(),
-            TimeScopeEnum::QUARTERLY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfQuarter(), $dateInScope->endOfQuarter()])->get(),
-            TimeScopeEnum::ANNUALY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()])->get(),
-            default => $monthlyDealsQuery
+        [$firstDateInScope, $lastDateInScope] = match ($timeScope) {
+            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth(), $dateInScope->lastOfMonth()],
+            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter(), $dateInScope->lastOfQuarter()],
+            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
         };
+
+        return $agent->splits()->acceptedDeals($dateInScope)->whereHas('deal', function ($query) use ($firstDateInScope, $lastDateInScope) {
+            $query->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
+        })->get();
     }
 }

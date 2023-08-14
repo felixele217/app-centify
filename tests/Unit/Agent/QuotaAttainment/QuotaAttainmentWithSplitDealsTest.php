@@ -61,7 +61,7 @@ it('minimum quota of the agent is 0', function () {
 });
 
 it('split partner also get the quota', function (int $sharedPercentage) {
-    $plan = Plan::factory()->create([
+    $plan = Plan::factory()->active()->create([
         'target_amount_per_month' => 1_000_00,
     ]);
 
@@ -73,16 +73,19 @@ it('split partner also get the quota', function (int $sharedPercentage) {
         ]))->create());
 
     $agent->deals()->first()->splits()->create([
-        'agent_id' => $splitPartner = Agent::factory()
-            ->has(
-                Plan::factory()->active()->count(1)
-            )
+        'agent_id' => ($splitPartner = Agent::factory()
             ->ofOrganization($agent->organization_id)
-            ->create(),
+            ->create())->id,
         'shared_percentage' => $sharedPercentage,
     ]);
 
+    $plan->agents()->attach($splitPartner);
+
     expect((new QuotaAttainmentService())->calculate($splitPartner, TimeScopeEnum::MONTHLY))->toBe(floatval($sharedPercentage / 100));
 })->with([
-    20, 40, 60, 80, 100,
-])->todo();
+    20,
+    40,
+    60,
+    80,
+    100,
+]);
