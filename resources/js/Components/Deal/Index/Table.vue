@@ -61,11 +61,13 @@ const dealsText = computed(() => {
                 <div class="flex items-end gap-5">
                     <LastSynced
                         :last-synced="
-                            new Date(
-                                props.integrations.filter(
-                                    (integration) => integration.name === 'pipedrive'
-                                )[0].last_synced_at
-                            )
+                            props.integrations.filter((integration) => integration.name === 'pipedrive')[0]
+                                ? new Date(
+                                      props.integrations.filter(
+                                          (integration) => integration.name === 'pipedrive'
+                                      )[0].last_synced_at
+                                  )
+                                : undefined
                         "
                     />
 

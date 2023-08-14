@@ -2,13 +2,15 @@
 import formatTime from '@/utils/Date/formatTime'
 
 const props = defineProps<{
-    lastSynced: Date | null
+    lastSynced?: Date | null
 }>()
+console.log(props.lastSynced);
+
 </script>
 
 <template>
     <p class="text-right text-xs text-gray-500">
         last synced:<br />
-        {{ formatTime(props.lastSynced) }}
+        {{ props.lastSynced ? formatTime(props.lastSynced) : '-' }}
     </p>
 </template>
