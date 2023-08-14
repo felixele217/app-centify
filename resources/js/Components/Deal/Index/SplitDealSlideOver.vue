@@ -17,6 +17,8 @@ import Deal from '@/types/Deal'
 import PercentageInput from '@/Components/Form/PercentageInput.vue'
 import Select from '@/Components/Form/Select.vue'
 import { computed } from 'vue'
+import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
+import sum from '@/utils/sum'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -27,16 +29,31 @@ const props = defineProps<{
     deal: Deal
 }>()
 
-const agents = computed(() => usePage().props.agents as Record<string, number>)
+const newPartner = {
+    name: '',
+    id: null as number | null,
+    shared_percentage: 0,
+}
+
+const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
+const agentIdsToNames = computed(() => {
+    const idsToNames: Record<number, string> = {}
+
+    for (const name in agentNamesToIds.value) {
+        idsToNames[agentNamesToIds.value[name]] = name
+    }
+
+    return idsToNames
+})
 
 const form = useForm({
-    partners: [
-        {
-            name: '',
-            id: null as number | null,
-            shared_percentage: 0,
-        },
-    ],
+    partners: props.deal.splits!.length
+        ? props.deal.splits!.map((split) => ({
+              name: agentIdsToNames.value[split.agent_id],
+              id: split.agent_id,
+              shared_percentage: split.shared_percentage,
+          }))
+        : [newPartner],
 })
 
 function closeSlideOver() {
@@ -50,14 +67,24 @@ function submit() {
         onSuccess: () => {
             closeSlideOver()
 
-            notify('Deal splitted', 'This deal will now be splitted between the specified agents.')
+            notify('Deal splitted', 'This deal will now be splitted as specified by you.')
         },
     })
 }
 
-function handlePartnerSelection(name: string): void {
-    form.partners[0].name = name
-    form.partners[0].id = agents.value[name]
+function handlePartnerSelection(name: string, index: number): void {
+    form.partners[index].name = name
+    form.partners[index].id = agentNamesToIds.value[name]
+}
+
+const addPartner = () => form.partners.push(newPartner)
+
+const removePartner = (index: number) => {
+    const partners = form.partners
+
+    partners.splice(index, 1)
+
+    form.partners = partners
 }
 </script>
 
@@ -70,47 +97,69 @@ function handlePartnerSelection(name: string): void {
         button-text="Split"
         description="You can split deals to accomodate the profit of more than one agent for a deal."
     >
-        <div class="space-y-6 px-6 pb-5 pt-3">
-            <p class="mt-3 text-gray-700">
+        <div class="px-6">
+            <p class="my-5 text-gray-700">
                 <span class="font-semibold">
                     {{ props.deal.agent!.name }}
                 </span>
                 retains
-                <span class="font-semibold"> {{ 100 - (form.partners[0].shared_percentage || 0) }}% </span>
+                <span class="font-semibold">
+                    {{ 100 - sum(form.partners.map((partner) => partner.shared_percentage || 0)) }}%
+                </span>
                 of the deal.
             </p>
-            <div>
-                <InputLabel
-                    for="partner"
-                    value="Partner"
-                    required
-                />
 
-                <Select
-                    :options="Object.keys(agents).filter(name => name !== deal.agent!.name)"
-                    :selected-option="form.partners[0].name"
-                    @option-selected="handlePartnerSelection"
-                />
+            <div
+                class="mb-8 space-y-4"
+                v-for="(partner, index) in form.partners"
+            >
+                <div>
+                    <div class="flex justify-between">
+                        <InputLabel
+                            for="partner"
+                            :value="'Partner ' + (index + 1)"
+                            required
+                        />
 
-                <InputError
-                    class="mt-2"
-                    :message="(form.errors as Record<string, string>)['partners.0.id']"
-                />
+                        <XMarkIcon
+                            class="h-6 w-6 cursor-pointer rounded-full p-1 hover:bg-gray-100"
+                            @click="() => removePartner(index)"
+                        />
+                    </div>
+
+                    <Select
+                        :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
+                        :selected-option="partner.name"
+                        @option-selected="(newName) => handlePartnerSelection(newName, index)"
+                    />
+
+                    <InputError
+                        class="mt-2"
+                        :message="(form.errors as Record<string, string>)[`partners.${index}.id`]"
+                    />
+                </div>
+                <div>
+                    <InputLabel
+                        for="shared_percentage"
+                        value="Shared Percentage"
+                        required
+                    />
+
+                    <PercentageInput v-model="partner.shared_percentage" />
+
+                    <InputError
+                        class="mt-2"
+                        :message="(form.errors as Record<string, string>)[`partners.${index}.shared_percentage`]"
+                    />
+                </div>
             </div>
-            <div>
-                <InputLabel
-                    for="shared_percentage"
-                    value="Shared Percentage"
-                    required
-                />
 
-                <PercentageInput v-model="form.partners[0].shared_percentage" :maximum="100" />
-
-                <InputError
-                    class="mt-2"
-                    :message="(form.errors as Record<string, string>)['partners.0.shared_percentage']"
-                />
-            </div>
+            <p
+                class="cursor-pointer text-sm text-gray-700 hover:underline hover:underline-offset-2"
+                @click="addPartner"
+            >
+                Add Partner +
+            </p>
         </div>
     </SlideOver>
 </template>

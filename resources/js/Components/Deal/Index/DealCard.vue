@@ -36,8 +36,6 @@ const agentIdsToNames = computed(() => {
     return idsToNames
 })
 
-console.log(agentIdsToNames.value)
-
 const acceptDeal = () => updateDeal({ has_accepted_deal: true })
 const updateDealNote = () => updateDeal({ note: noteText.value })
 
