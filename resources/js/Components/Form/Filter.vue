@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { TimeScopeEnumCases } from '@/EnumCases/TimeScopeEnum'
 import queryParamValue from '@/utils/queryParamValue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
-const sortOptions = usePage().props.time_scopes!.map((timeScope) => {
+const sortOptions = TimeScopeEnumCases!.map((timeScope) => {
     return {
         name: timeScope,
         href: route('dashboard') + '?time_scope=' + timeScope,
