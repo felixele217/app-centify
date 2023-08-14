@@ -85,11 +85,13 @@ function handlePartnerSelection(name: string): void {
                     value="Partner"
                     required
                 />
+
                 <Select
-                    :options="Object.keys(agents)"
+                    :options="Object.keys(agents).filter(name => name !== deal.agent!.name)"
                     :selected-option="form.partners[0].name"
                     @option-selected="handlePartnerSelection"
                 />
+
                 <InputError
                     class="mt-2"
                     :message="(form.errors as Record<string, string>)['partners.0.id']"
