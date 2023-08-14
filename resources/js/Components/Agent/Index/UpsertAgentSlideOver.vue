@@ -12,6 +12,7 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
+import SlideOver from '@/Components/SlideOver.vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -76,160 +77,91 @@ function submit() {
 </script>
 
 <template>
-    <TransitionRoot
-        as="template"
-        :show="isOpen"
+    <SlideOver
+        :is-open="props.isOpen"
+        @close-slide-over="closeSlideOver"
+        @submit="submit"
+        :title="props.agent ? 'Update Agent' : 'Create Agent'"
+        :button-text="props.agent ? 'Save' : 'Create'"
+        :description="
+            props.agent
+                ? 'Update an existing agent\s data (this will change our calculations).'
+                : 'Create a new Agent for your Organization.'
+        "
     >
-        <Dialog
-            as="div"
-            class="relative z-10"
-            @close="closeSlideOver"
-        >
-            <div class="fixed inset-0" />
+        <div class="leading-6">
+            <InputLabel
+                for="name"
+                value="Full Name"
+                required
+            />
 
-            <div class="fixed inset-0 overflow-auto">
-                <div class="absolute inset-0 overflow-auto">
-                    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
-                        <TransitionChild
-                            as="template"
-                            enter="transform transition ease-in-out duration-500 sm:duration-700"
-                            enter-from="translate-x-full"
-                            enter-to="translate-x-0"
-                            leave="transform transition ease-in-out duration-500 sm:duration-700"
-                            leave-from="translate-x-0"
-                            leave-to="translate-x-full"
-                        >
-                            <DialogPanel class="pointer-events-auto w-screen max-w-md">
-                                <form
-                                    class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
-                                    @submit.prevent="submit"
-                                >
-                                    <div class="h-0 flex-1 overflow-y-auto">
-                                        <div class="bg-indigo-700 px-4 py-6 sm:px-6">
-                                            <div class="flex items-center justify-between">
-                                                <DialogTitle class="text-base font-semibold leading-6 text-white">{{
-                                                    props.agent ? 'Update Agent' : 'Create Agent'
-                                                }}</DialogTitle>
-                                                <div class="ml-3 flex h-7 items-center">
-                                                    <button
-                                                        type="button"
-                                                        class="rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                                                        @click="closeSlideOver"
-                                                    >
-                                                        <span class="sr-only">Close panel</span>
-                                                        <XMarkIcon
-                                                            class="h-6 w-6"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </button>
-                                                </div>
-                                            </div>
+            <TextInput
+                type="text"
+                v-model="form.name"
+                name="name"
+            />
 
-                                            <div class="mt-1">
-                                                <p class="text-sm text-indigo-300">
-                                                    {{
-                                                        props.agent
-                                                            ? 'Update an existing agent\s data (this will change our calculations).'
-                                                            : 'Create a new Agent for your Organization.'
-                                                    }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-1 flex-col justify-between">
-                                            <div class="divide-y divide-gray-200 overflow-y-scroll px-6">
-                                                <div class="space-y-6 pb-5 pt-6">
-                                                    <div class="leading-6">
-                                                        <InputLabel
-                                                            for="name"
-                                                            value="Full Name"
-                                                            required
-                                                        />
+            <InputError
+                class="mt-2"
+                :message="form.errors.name"
+            />
+        </div>
+        <div>
+            <div class="flex gap-1">
+                <InputLabel
+                    for="email"
+                    value="Work Email"
+                    required
+                />
 
-                                                        <TextInput
-                                                            type="text"
-                                                            v-model="form.name"
-                                                            name="name"
-                                                        />
-
-                                                        <InputError
-                                                            class="mt-2"
-                                                            :message="form.errors.name"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <div class="flex gap-1">
-                                                            <InputLabel
-                                                                for="email"
-                                                                value="Work Email"
-                                                                required
-                                                            />
-
-                                                            <InfoIcon
-                                                                hover-text="This email will be used to synchronize agent data from your integrations."
-                                                            />
-                                                        </div>
-
-                                                        <TextInput
-                                                            id="email"
-                                                            type="text"
-                                                            v-model="form.email"
-                                                            name="email"
-                                                        />
-
-                                                        <InputError
-                                                            class="mt-2"
-                                                            :message="form.errors.email"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <InputLabel
-                                                            for="base_salary"
-                                                            value="Annual Base Salary"
-                                                            required
-                                                        />
-
-                                                        <CurrencyInput v-model="form.base_salary" />
-
-                                                        <InputError
-                                                            class="mt-2"
-                                                            :message="form.errors.base_salary"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <div class="flex gap-1">
-                                                            <InputLabel
-                                                                for="on_target_earning"
-                                                                value="Annual On Target Earning (OTE)"
-                                                                required
-                                                            />
-
-                                                            <InfoIcon
-                                                                hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
-                                                            />
-                                                        </div>
-                                                        <CurrencyInput v-model="form.on_target_earning" />
-
-                                                        <InputError
-                                                            class="mt-2"
-                                                            :message="form.errors.on_target_earning"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <FormButtons
-                                        :positiveButtonText="props.agent ? 'Save' : 'Create'"
-                                        class="pr-4"
-                                        @cancel-button-clicked="closeSlideOver"
-                                    />
-                                </form>
-                            </DialogPanel>
-                        </TransitionChild>
-                    </div>
-                </div>
+                <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
             </div>
-        </Dialog>
-    </TransitionRoot>
+
+            <TextInput
+                id="email"
+                type="text"
+                v-model="form.email"
+                name="email"
+            />
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.email"
+            />
+        </div>
+        <div>
+            <InputLabel
+                for="base_salary"
+                value="Annual Base Salary"
+                required
+            />
+
+            <CurrencyInput v-model="form.base_salary" />
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.base_salary"
+            />
+        </div>
+        <div>
+            <div class="flex gap-1">
+                <InputLabel
+                    for="on_target_earning"
+                    value="Annual On Target Earning (OTE)"
+                    required
+                />
+
+                <InfoIcon
+                    hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
+                />
+            </div>
+            <CurrencyInput v-model="form.on_target_earning" />
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.on_target_earning"
+            />
+        </div>
+    </SlideOver>
 </template>
