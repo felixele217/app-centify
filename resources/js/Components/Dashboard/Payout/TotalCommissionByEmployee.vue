@@ -9,6 +9,7 @@ import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import ValueChange from './ValueChange.vue'
+import { router, usePage } from '@inertiajs/vue3'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -26,13 +27,21 @@ function quotaDisplay(quotaAttainment: number) {
 <template>
     <Card>
         <PageHeader
-            title="Total Payout by Employee"
+            title="Total Commission by Employee"
             description="Overview of your agents' performances."
         >
             <template #custom-button>
                 <Filter />
             </template>
         </PageHeader>
+
+        <a
+            v-if="usePage().props.ENVIRONMENT !== 'production'"
+            class="bg-red-500 p-2"
+            :href="route('commission-export')"
+        >
+            export test
+        </a>
 
         <div class="mt-8 flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
