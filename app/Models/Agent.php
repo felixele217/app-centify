@@ -73,6 +73,11 @@ class Agent extends Authenticatable
         return $this->hasMany(Split::class);
     }
 
+    public function payouts(): HasMany
+    {
+        return $this->hasMany(Payout::class);
+    }
+
     public function activePaidLeave(): HasOne
     {
         return $this->hasOne(PaidLeave::class)->active();
