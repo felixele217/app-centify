@@ -53,7 +53,7 @@ watch(
             ? props.deal.splits!.map((split) => ({
                   name: agentIdsToNames.value[split.agent_id],
                   id: split.agent_id,
-                  shared_percentage: split.shared_percentage,
+                  shared_percentage: split.shared_percentage * 100,
               }))
             : [newPartner]
     }

@@ -25,6 +25,7 @@ const props = defineProps<{
     deal: Deal
     integrations: Array<Integration>
 }>()
+
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 const agentIdsToNames = computed(() => {
     const idsToNames: Record<number, string> = {}
