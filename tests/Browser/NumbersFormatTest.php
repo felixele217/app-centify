@@ -22,7 +22,7 @@ class NumbersFormatTest extends DuskTestCase
             $browser->loginAs($admin)
                 ->visit(route('dashboard'))
                 ->assertUrlIs(route('dashboard'))
-                ->waitForText('Total Payout')
+                ->waitForText('Total Commission')
                 ->assertSee('5.000,00€');
         });
     }

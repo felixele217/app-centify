@@ -27,7 +27,7 @@ class RenderPagesTest extends DuskTestCase
         $admin = $this->setupDatabase();
 
         $urlsToText = [
-            route('dashboard') => 'Total Payout',
+            route('dashboard') => 'Total Commission',
             route('deals.index') => 'Users',
             route('agents.index') => 'Dashboard',
             route('integrations.index') => 'pipedrive',
