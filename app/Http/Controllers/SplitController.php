@@ -13,7 +13,7 @@ class SplitController extends Controller
 {
     public function store(StoreSplitRequest $request, Deal $deal): RedirectResponse
     {
-        SplitRepository::create($deal, $request);
+        SplitRepository::upsert($deal, $request);
 
         return back();
     }

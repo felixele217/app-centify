@@ -10,10 +10,13 @@ use App\Models\Split;
 
 class SplitRepository
 {
-    public static function create(Deal $deal, StoreSplitRequest $request): void
+    public static function upsert(Deal $deal, StoreSplitRequest $request): void
     {
         foreach ($request->validated('partners') as $partner) {
-            Split::create([
+            Split::updateOrCreate([
+                'deal_id' => $deal->id,
+                'agent_id' => $partner['id'],
+            ], [
                 'agent_id' => $partner['id'],
                 'shared_percentage' => $partner['shared_percentage'],
                 'deal_id' => $deal->id,
