@@ -108,7 +108,7 @@ const isSplittingDeal = ref<boolean>(false)
 
             <Tooltip
                 v-if="props.deal.splits!.length"
-                :text="props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage + '%').join('\n')"
+                :text="props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage * 100 + '%').join('\n')"
                 placement="bottom"
                 class="whitespace-pre-wrap"
             >
