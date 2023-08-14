@@ -35,6 +35,11 @@ class Deal extends Model
         return $this->hasMany(Rejection::class);
     }
 
+    public function splits(): HasMany
+    {
+        return $this->hasMany(Split::class);
+    }
+
     public function activeRejection(): Attribute
     {
         return Attribute::make(

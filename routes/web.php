@@ -8,6 +8,7 @@ use App\Http\Controllers\DeployedVersionController;
 use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SplitController;
 use App\Http\Middleware\AppendTimeScopeQuery;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/{deal}', 'update')->name('update');
 
         Route::prefix('{deal}/rejections')->name('rejections.')->controller(DealRejectionController::class)->group(function () {
+            Route::post('', 'store')->name('store');
+        });
+
+        Route::prefix('{deal}/splits')->name('splits.')->controller(SplitController::class)->group(function () {
             Route::post('', 'store')->name('store');
         });
     });
