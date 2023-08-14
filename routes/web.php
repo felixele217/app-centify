@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\CommissionExportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealRejectionController;
 use App\Http\Controllers\DeployedVersionController;
 use App\Http\Controllers\PaidLeaveController;
+use App\Http\Controllers\PayoutsExportController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SplitController;
@@ -17,6 +19,8 @@ Route::get('/deployed-version', DeployedVersionController::class)->name('deploye
 
 Route::middleware('auth')->group(function () {
     Route::middleware(AppendTimeScopeQuery::class)->get('/dashboard', DashboardController::class)->name('dashboard');
+
+    Route::get('/payouts-export', PayoutsExportController::class)->name('payouts-export');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

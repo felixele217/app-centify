@@ -38,7 +38,7 @@ function quotaDisplay(quotaAttainment: number) {
         <a
             v-if="usePage().props.ENVIRONMENT !== 'production'"
             class="bg-red-500 p-2"
-            :href="route('commission-export')"
+            :href="route('payouts-export')"
         >
             export test
         </a>
