@@ -140,7 +140,6 @@ class PipedriveClientDummy
                     'owner_id' => 17524624,
                     'value' => 2,
                 ],
-
             ],
             1 => [
                 'id' => 2,
