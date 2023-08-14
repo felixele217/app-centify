@@ -68,6 +68,11 @@ class Agent extends Authenticatable
         return $this->hasMany(PaidLeave::class)->orderBy('start_date');
     }
 
+    public function splits(): HasMany
+    {
+        return $this->hasMany(Split::class);
+    }
+
     public function activePaidLeave(): HasOne
     {
         return $this->hasOne(PaidLeave::class)->active();
