@@ -43,18 +43,27 @@ beforeEach(function () {
     Deal::factory($this->foreignDealCount = 1)->create();
 });
 
-it('passes the correct props for all deals if no scope is specified', function () {
-    Agent::factory($agentCount = 5)->ofOrganization($this->admin->organization_id)->create();
-
+it('passes the correct props', function () {
     $this->get(route('deals.index'))
     ->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', DealRepository::get()->count())
             ->has('deals.1.agent')
+            ->has('deals.1.splits')
             ->has('agents')
             ->has('deals.1.active_rejection')
             ->has('integrations')
+    );
+});
+
+it('passes the correct props for all deals if no scope is specified', function () {
+    $this->get(route('deals.index'))
+    ->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Deal/Index')
+            ->has('deals', DealRepository::get()->count())
+            ->has('deals.1.agent')
     );
 });
 

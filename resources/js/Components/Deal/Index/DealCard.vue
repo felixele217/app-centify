@@ -15,6 +15,7 @@ import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
+import Tooltip from '@/Components/Tooltip.vue'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -24,6 +25,18 @@ const props = defineProps<{
     deal: Deal
     integrations: Array<Integration>
 }>()
+const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
+const agentIdsToNames = computed(() => {
+    const idsToNames: Record<number, string> = {}
+
+    for (const name in agentNamesToIds.value) {
+        idsToNames[agentNamesToIds.value[name]] = name
+    }
+
+    return idsToNames
+})
+
+console.log(agentIdsToNames.value)
 
 const acceptDeal = () => updateDeal({ has_accepted_deal: true })
 const updateDealNote = () => updateDeal({ note: noteText.value })
@@ -93,11 +106,28 @@ const isSplittingDeal = ref<boolean>(false)
 <template>
     <td class="col-span-3 flex items-center justify-between py-4 pl-6 pr-3">
         <div>
-            <p class="text-gray-900">{{ deal.agent!.name }}</p>
-            <p class="mt-1 text-gray-500">{{ deal.agent!.email }}</p>
+            <p class="text-gray-900">{{ props.deal.agent!.name }}</p>
+
+            <Tooltip
+                v-if="props.deal.splits!.length"
+                :text="props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage + '%').join('\n')"
+                placement="bottom"
+                class="whitespace-pre-wrap"
+            >
+                <p class="mt-1 text-gray-500">+{{ props.deal.splits!.length }} more due to split</p>
+            </Tooltip>
+            <p
+                v-else
+                class="mt-1 text-gray-500"
+            >
+                {{ props.deal.agent!.email }}
+            </p>
         </div>
 
-        <SplitArrowsIcon class="mr-3 cursor-pointer" @click="isSplittingDeal = true" />
+        <SplitArrowsIcon
+            class="mr-3 cursor-pointer"
+            @click="isSplittingDeal = true"
+        />
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
@@ -106,22 +136,22 @@ const isSplittingDeal = ref<boolean>(false)
             :href="`https://${pipedriveSubdomain}.pipedrive.com/deal/${deal.integration_deal_id}`"
             target="_blank"
         >
-            {{ deal.title }}
+            {{ props.deal.title }}
         </a>
-        <p>{{ euroDisplay(deal.value) }}</p>
+        <p>{{ euroDisplay(props.deal.value) }}</p>
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
-        {{ attributionPeriod(deal.add_time) }}
+        {{ attributionPeriod(props.deal.add_time) }}
     </td>
 
     <td class="col-span-4 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
             class="flex cursor-pointer items-center gap-1.5 hover:text-black"
-            @click="dealIdOfNoteBeingEdited = deal.id"
+            @click="dealIdOfNoteBeingEdited = props.deal.id"
         >
-            <p class="truncate">{{ deal.note ?? 'Add Note' }}</p>
+            <p class="truncate">{{ props.deal.note ?? 'Add Note' }}</p>
 
             <PencilSquareIcon class="h-4 w-4" />
         </div>
@@ -155,9 +185,9 @@ const isSplittingDeal = ref<boolean>(false)
     </td>
 
     <SplitDealSlideOver
-    @close-slide-over="isSplittingDeal = false"
-    :deal="props.deal"
-    :is-open="isSplittingDeal"
+        @close-slide-over="isSplittingDeal = false"
+        :deal="props.deal"
+        :is-open="isSplittingDeal"
     />
 
     <Modal

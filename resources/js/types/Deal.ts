@@ -2,6 +2,7 @@ import Agent from './Agent'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
 import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
 import Rejection from './Rejection'
+import Split from './Split'
 
 export default interface Deal {
     id: number
@@ -18,4 +19,5 @@ export default interface Deal {
     note: string | null
     rejections?: Array<Rejection>
     active_rejection?: Rejection
+    splits?: Array<Split>
 }
