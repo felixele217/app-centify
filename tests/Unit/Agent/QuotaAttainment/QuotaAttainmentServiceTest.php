@@ -4,10 +4,11 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
+use App\Models\Split;
 use App\Services\QuotaAttainmentService;
 use Carbon\Carbon;
 
-it('calculates the quota attainment properly for the active plan with the most recent start_date', function () {
+it('calculates the quota attainment correctly for the active plan with the most recent start_date', function () {
     $agent = Agent::factory()->hasDeals([
         'accepted_at' => Carbon::yesterday(),
         'add_time' => Carbon::yesterday(),

@@ -46,6 +46,19 @@ const agentIdsToNames = computed(() => {
     return idsToNames
 })
 
+watch(
+    () => props.isOpen,
+    async () => {
+        form.partners = props.deal.splits!.length
+            ? props.deal.splits!.map((split) => ({
+                  name: agentIdsToNames.value[split.agent_id],
+                  id: split.agent_id,
+                  shared_percentage: split.shared_percentage,
+              }))
+            : [newPartner]
+    }
+)
+
 const form = useForm({
     partners: props.deal.splits!.length
         ? props.deal.splits!.map((split) => ({

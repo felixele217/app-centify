@@ -24,8 +24,8 @@ it('can store a split for a deal', function () {
         ],
     ]);
 
-    expect($deal->fresh()->splits()->whereAgentId($agentId)->first()->shared_percentage)->toBe($sharedPercentage);
-    expect($deal->fresh()->splits()->whereAgentId($agentId2)->first()->shared_percentage)->toBe($sharedPercentage2);
+    expect($deal->fresh()->splits()->whereAgentId($agentId)->first()->shared_percentage)->toBe($sharedPercentage / 100);
+    expect($deal->fresh()->splits()->whereAgentId($agentId2)->first()->shared_percentage)->toBe($sharedPercentage2 / 100);
 });
 
 it('can updates the splits correctly if there already were some', function () {
@@ -55,5 +55,5 @@ it('can updates the splits correctly if there already were some', function () {
     ]);
 
     expect($deal->fresh()->splits()->count())->toBe(2);
-    expect($split->fresh()->shared_percentage)->toBe($newSharedPercentage);
+    expect($split->fresh()->shared_percentage)->toBe($newSharedPercentage / 100);
 });
