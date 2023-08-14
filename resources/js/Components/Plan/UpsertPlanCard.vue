@@ -136,10 +136,10 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
     <div class="flex justify-center gap-20">
         <Card class="w-144">
             <h2 class="text-base font-semibold leading-7 text-gray-900">
-                {{ props.plan ? 'Update Straight-Line Commission Plan' : 'Create Straight-Line Commission Plan' }}
+                {{ props.plan ? 'Update Quota Attainment Plan' : 'Create Quota Attainment Plan' }}
             </h2>
             <p class="mt-1 text-sm leading-6 text-gray-600">
-                Receive a fixed percentage of a certain variable such as ARR.
+                Your agents receive a commission tied to their quota attainment.
             </p>
             <form
                 @submit.prevent="submit"
