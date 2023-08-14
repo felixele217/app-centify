@@ -55,6 +55,9 @@ class QuotaAttainmentService
     {
         $sharedPercentage = array_sum($deal->load('splits')->splits?->map(fn (Split $split) => $split->shared_percentage)->toArray());
 
-        return $deal->value * (1 - $sharedPercentage);
+        return max(
+            $deal->value * (1 - $sharedPercentage),
+            0
+        );
     }
 }
