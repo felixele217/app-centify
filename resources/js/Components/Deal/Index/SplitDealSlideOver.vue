@@ -6,8 +6,8 @@ import PercentageInput from '@/Components/Form/PercentageInput.vue'
 import Select from '@/Components/Form/Select.vue'
 import SlideOver from '@/Components/SlideOver.vue'
 import Deal from '@/types/Deal'
-import { dealOwnerShare } from '@/utils/Deal/dealOwnerShare'
 import notify from '@/utils/notify'
+import sum from '@/utils/sum'
 import { PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, watch } from 'vue'
@@ -110,7 +110,7 @@ const removePartner = (index: number) => {
             <div class="my-5 text-gray-700">
                 <AgentDealShare
                     :agent-name="props.deal.agent!.name"
-                    :agent-share-percentage="dealOwnerShare(props.deal)"
+                    :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
                 />
 
                 <div v-for="partner in form.partners">
