@@ -3,21 +3,20 @@ import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import Toggle from '@/Components/Form/Toggle.vue'
+import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 import Modal from '@/Components/Modal.vue'
+import Tooltip from '@/Components/Tooltip.vue'
 import Deal from '@/types/Deal'
 import Integration from '@/types/Integration'
 import attributionPeriod from '@/utils/Date/attributionPeriod'
+import { dealOwnerShare } from '@/utils/Deal/dealOwnerShare'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
-import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
-import Tooltip from '@/Components/Tooltip.vue'
-import sum from '@/utils/sum'
-import { dealOwnerShare } from '@/utils/Deal/dealOwnerShare'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -146,13 +145,13 @@ const isSplittingDeal = ref<boolean>(false)
         {{ attributionPeriod(props.deal.add_time) }}
     </td>
 
-    <td class="col-span-4 px-3 py-4 text-gray-500">
+    <p class="col-span-4 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
             class="flex cursor-pointer items-center gap-1.5 hover:text-black"
             @click="dealIdOfNoteBeingEdited = props.deal.id"
         >
-            <p class="truncate">{{ props.deal.note ?? 'Add Note' }}</p>
+            <p class="line-clamp-2">{{ props.deal.note ?? 'Add Note' }}</p>
 
             <PencilSquareIcon class="h-4 w-4" />
         </div>
@@ -175,7 +174,7 @@ const isSplittingDeal = ref<boolean>(false)
                 @click="updateDealNote"
             />
         </div>
-    </td>
+    </p>
 
     <td class="px-3">
         <DealStatus

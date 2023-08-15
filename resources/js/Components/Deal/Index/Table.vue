@@ -110,7 +110,7 @@ const pipedriveIntegration = computed(() => {
             <template #body>
                 <tr
                     v-for="deal in props.deals"
-                    class="grid grid-cols-12 items-center whitespace-nowrap text-sm"
+                    class="grid grid-cols-12 items-center text-sm"
                 >
                     <DealCard
                         :deal="deal"
