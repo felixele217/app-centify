@@ -8,8 +8,7 @@ import { router } from '@inertiajs/vue3'
 import Card from '../Card.vue'
 import IntegrationLogo from '../Logos/IntegrationLogo.vue'
 import Tooltip from '../Tooltip.vue'
-import ConnectIntegration from './ConnectIntegration.vue'
-import SyncIntegration from './SyncIntegration.vue'
+import SyncOrConnectIntegration from './SyncOrConnectIntegration.vue'
 
 const props = defineProps<{
     integrationName: IntegrationTypeEnum
@@ -47,15 +46,9 @@ const props = defineProps<{
         </div>
 
         <div class="mt-10">
-            <ConnectIntegration
-                v-if="props.activeIntegration"
+            <SyncOrConnectIntegration
                 :integration-name="props.integrationName"
                 :active-integration="props.activeIntegration"
-            />
-
-            <SyncIntegration
-                v-else
-                :integration-name="props.integrationName"
             />
         </div>
     </Card>
