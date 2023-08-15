@@ -20,6 +20,7 @@ import { computed } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import sum from '@/utils/sum'
 import AgentDealShare from './AgentDealShare.vue'
+import { dealOwnerShare } from '@/utils/Deal/dealOwnerShare'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -118,7 +119,7 @@ const removePartner = (index: number) => {
             <div class="my-5 text-gray-700">
                 <AgentDealShare
                     :agent-name="props.deal.agent!.name"
-                    :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
+                    :agent-share-percentage="dealOwnerShare(props.deal)"
                 />
 
                 <div v-for="partner in form.partners">

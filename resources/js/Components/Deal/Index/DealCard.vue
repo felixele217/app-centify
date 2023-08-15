@@ -17,6 +17,7 @@ import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import sum from '@/utils/sum'
+import { dealOwnerShare } from '@/utils/Deal/dealOwnerShare'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -110,7 +111,7 @@ const isSplittingDeal = ref<boolean>(false)
 
             <Tooltip
                 v-if="props.deal.splits!.length"
-                :text="[props.deal.agent!.name + ': ' + (100 - sum(props.deal.splits!.map((split) => split.shared_percentage * 100 || 0))) + '%' ,...props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage * 100 + '%')].join('\n')"
+                :text="[props.deal.agent!.name + ': ' + dealOwnerShare(props.deal) + '%' ,...props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage * 100 + '%')].join('\n')"
                 placement="bottom"
                 class="whitespace-pre-wrap"
             >
