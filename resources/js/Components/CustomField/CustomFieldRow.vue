@@ -81,8 +81,12 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
         <div
             v-if="!isEditing"
             class="flex w-full items-center justify-between gap-5"
+            @click="isEditing = true"
         >
-            <p v-if="apiKey">
+            <p
+                v-if="apiKey"
+                class="hover:cursor-pointer"
+            >
                 {{ apiKey }}
             </p>
 
@@ -94,10 +98,7 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
                 <p>Please enter your api key!</p>
             </div>
 
-            <SecondaryButton
-                @click="isEditing = true"
-                text="Edit"
-            />
+            <SecondaryButton text="Edit" />
         </div>
 
         <div
