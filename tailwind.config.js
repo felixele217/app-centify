@@ -1,5 +1,4 @@
 import forms from '@tailwindcss/forms'
-import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
     content: [
@@ -24,7 +23,16 @@ export default {
                 0.75: '0.1875rem',
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [
+                    'Poppins',
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    'Segoe UI',
+                    'Roboto',
+                    'Helvetica Neue',
+                    'Arial',
+                    'sans-serif',
+                ],
             },
             colors: {
                 primary: '#4E77F9',
