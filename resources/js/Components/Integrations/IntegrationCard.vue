@@ -46,10 +46,17 @@ const props = defineProps<{
         </div>
 
         <div class="mt-10">
-            <SyncOrConnectIntegration
-                :integration-name="props.integrationName"
-                :active-integration="props.activeIntegration"
-            />
+            <div class="flex items-end justify-between">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
+                    <p class="-mt-0.5 text-sm font-semibold">active</p>
+                </div>
+
+                <SyncOrConnectIntegration
+                    :integration-name="props.integrationName"
+                    :active-integration="props.activeIntegration"
+                />
+            </div>
         </div>
     </Card>
 </template>

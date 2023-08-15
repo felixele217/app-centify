@@ -21,7 +21,7 @@ class DealController extends Controller
             'deals' => DealRepository::get(DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
                 ->append('active_rejection')
                 ->load('splits'),
-            'integrations' => Auth::user()->organization->integrations,
+            'integrations' => Auth::user()->organization->integrations->load('customFields'),
             'agents' => Auth::user()->organization->agents->pluck('id', 'name'),
         ]);
     }
