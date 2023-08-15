@@ -120,16 +120,18 @@ const removePartner = (index: number) => {
                     of the deal.
                 </p>
 
-                <p v-for="partner in form.partners" class="text-gray-700">
-                    <span class="font-semibold">
-                        {{ partner.name }}
-                    </span>
-                    retains
-                    <span class="font-semibold">
-                        {{ partner.shared_percentage }}%
-                    </span>
-                    of the deal.
-                </p>
+                <div v-for="partner in form.partners" class="text-gray-700">
+                    <p v-if="partner.name && partner.shared_percentage">
+                        <span class="font-semibold">
+                            {{ partner.name }}
+                        </span>
+                        retains
+                        <span class="font-semibold">
+                            {{ partner.shared_percentage }}%
+                        </span>
+                        of the deal.
+                    </p>
+                </div>
             </div>
 
             <div
