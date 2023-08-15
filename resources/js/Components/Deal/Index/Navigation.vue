@@ -63,7 +63,7 @@ const tabs = [
 
                 <span
                     aria-hidden="true"
-                    :class="[tab.current ? 'bg-indigo-500' : 'bg-transparent', 'absolute inset-x-0 bottom-0 h-0.5']"
+                    :class="[tab.current ? 'bg-primary-500' : 'bg-transparent', 'absolute inset-x-0 bottom-0 h-0.5']"
                 />
             </a>
         </nav>

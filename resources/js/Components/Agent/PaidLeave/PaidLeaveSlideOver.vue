@@ -71,7 +71,7 @@ function submit() {
         @submit="submit"
         :is-open="props.isOpen"
         title="Manage Paid Leaves"
-        description="Add or remove paid leaves for your agents"
+        description="Add or remove paid leaves for your agents."
         buttonText="Create"
     >
         <div class="space-y-6 pb-5 px-6 pt-3">

@@ -60,7 +60,7 @@ const pipedriveIntegration = computed(() => {
                 no-bottom-margin
             />
 
-            <div class="flex gap-10 pb-5">
+            <div class="flex items-center gap-10 pb-5">
                 <div class="flex items-end gap-5">
                     <SyncOrConnectIntegration
                         integration-name="pipedrive"
