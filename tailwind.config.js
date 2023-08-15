@@ -27,8 +27,12 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: '#4f46e5', // indigo-600
-                'primary-hover': '#6366f1', // indigo-500
+                primary: '#4E77F9',
+                'primary-hover': '#6b8ffa',
+
+                'primary-600': '#4E77F9',
+                'primary-500': '#4E77F9',
+                'primary-400': '#6b8ffa',
             },
         },
     },
