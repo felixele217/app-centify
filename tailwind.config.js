@@ -31,8 +31,18 @@ export default {
                 'primary-hover': '#6b8ffa',
 
                 'primary-600': '#4E77F9',
+                // hsl(226, 93%, 64%)
                 'primary-500': '#4E77F9',
                 'primary-400': '#6b8ffa',
+
+                // hsl(225, 95%, 71%)
+                'primary-300': '#6f92fb',
+
+                // hsla(224, 95%, 78%)
+                'primary-200': '#92aefc',
+
+                // hsl(223, 95%, 84%)
+                'primary-100': '#afc5fd',
             },
         },
     },

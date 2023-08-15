@@ -54,7 +54,7 @@ const props = defineProps<{
                                                 <div class="ml-3 flex h-7 items-center">
                                                     <button
                                                         type="button"
-                                                        class="rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                                        class="rounded-md text-primary-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                                                         @click="$emit('close-slide-over')"
                                                     >
                                                         <span class="sr-only">Close panel</span>
@@ -67,7 +67,7 @@ const props = defineProps<{
                                             </div>
 
                                             <div class="mt-1">
-                                                <p class="text-sm text-indigo-300">{{ props.description }}</p>
+                                                <p class="text-sm text-primary-100">{{ props.description }}</p>
                                             </div>
                                         </div>
                                         <div class="grow overflow-y-scroll">
