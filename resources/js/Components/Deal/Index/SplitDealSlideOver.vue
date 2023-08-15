@@ -90,12 +90,8 @@ function closeSlideOver() {
 }
 
 function handlePartnerSelection(name: string, index: number): void {
-    console.log('before')
-    console.log(form.partners)
     form.partners[index].name = name
     form.partners[index].id = agentNamesToIds.value[name]
-    console.log('after')
-    console.log(form.partners)
 }
 
 const addPartner = () => form.partners.push(newPartner)
