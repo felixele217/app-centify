@@ -19,6 +19,7 @@ import Select from '@/Components/Form/Select.vue'
 import { computed } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import sum from '@/utils/sum'
+import AgentDealShare from './AgentDealShare.vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -48,19 +49,16 @@ const agentIdsToNames = computed(() => {
 })
 
 const form = useForm({
-    partners: props.deal.splits!.length
-        ? loadExistingAgentsFromSplits()
-        : [newPartner],
+    partners: props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner],
 })
 
 function loadExistingAgentsFromSplits() {
     return props.deal.splits!.map((split) => ({
-              name: agentIdsToNames.value[split.agent_id],
-              id: split.agent_id,
-              shared_percentage: split.shared_percentage,
-          }))
+        name: agentIdsToNames.value[split.agent_id],
+        id: split.agent_id,
+        shared_percentage: split.shared_percentage,
+    }))
 }
-
 
 function submit() {
     form.post(route('deals.splits.store', props.deal.id), {
@@ -109,28 +107,17 @@ const removePartner = (index: number) => {
     >
         <div class="px-6">
             <div class="my-5 text-gray-700">
-                <p>
-                    <span class="font-semibold">
-                        {{ props.deal.agent!.name }}
-                    </span>
-                    retains
-                    <span class="font-semibold">
-                        {{ 100 - sum(form.partners.map((partner) => partner.shared_percentage || 0)) }}%
-                    </span>
-                    of the deal.
-                </p>
+                <AgentDealShare
+                    :agent-name="props.deal.agent!.name"
+                    :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
+                />
 
-                <div v-for="partner in form.partners" class="text-gray-700">
-                    <p v-if="partner.name && partner.shared_percentage">
-                        <span class="font-semibold">
-                            {{ partner.name }}
-                        </span>
-                        retains
-                        <span class="font-semibold">
-                            {{ partner.shared_percentage }}%
-                        </span>
-                        of the deal.
-                    </p>
+                <div v-for="partner in form.partners">
+                    <AgentDealShare
+                        v-if="partner.name && partner.shared_percentage"
+                        :agent-name="partner.name"
+                        :agent-share-percentage="partner.shared_percentage"
+                    />
                 </div>
             </div>
 
@@ -147,7 +134,7 @@ const removePartner = (index: number) => {
                         />
 
                         <XMarkIcon
-                            class="h-6 w-6 text-gray-700 hover:text-black cursor-pointer rounded-full p-1 hover:bg-gray-100"
+                            class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-100 hover:text-black"
                             @click="() => removePartner(index)"
                         />
                     </div>
