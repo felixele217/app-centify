@@ -43,6 +43,9 @@ export default {
 
                 // hsl(223, 95%, 84%)
                 'primary-100': '#afc5fd',
+
+                // hsla(221, 95%, 91%)
+                'primary-50': '#d2e0fe',
             },
         },
     },
