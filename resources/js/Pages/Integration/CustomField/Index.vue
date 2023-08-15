@@ -4,8 +4,7 @@ import CustomFieldRow from '@/Components/CustomField/CustomFieldRow.vue'
 import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { router } from '@inertiajs/vue3'
+import { ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -48,9 +47,9 @@ const goBack = () => window.history.back()
         </Card>
 
         <div class="flex w-1/4 items-start justify-end">
-            <XMarkIcon
+            <ArrowUturnLeftIcon
                 @click="goBack"
-                class="h-10 w-10 cursor-pointer rounded-full p-1 text-gray-400 hover:bg-gray-200"
+                class="h-10 w-10 cursor-pointer rounded-full p-1.5 text-gray-400 hover:bg-gray-200 hover:text-black"
                 aria-hidden="true"
             />
         </div>

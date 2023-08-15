@@ -13,7 +13,7 @@ console.log(props.activeIntegration)
 
 <template>
     <div
-        class="flex items-end justify-between gap-5"
+        class="flex items-center justify-between gap-5"
         v-if="props.activeIntegration"
     >
         <LastSynced :last-synced="new Date(props.activeIntegration.last_synced_at)" />

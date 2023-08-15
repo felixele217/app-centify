@@ -17,6 +17,7 @@ function activeIntegration(availableIntegrationName: IntegrationTypeEnum) {
 
 <template>
     <Head title="Integrations" />
+
     <div class="flex gap-5">
         <IntegrationCard
             v-for="availableIntegrationName in availableIntegrationNames"
