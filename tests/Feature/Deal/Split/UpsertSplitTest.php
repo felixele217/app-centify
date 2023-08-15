@@ -14,12 +14,12 @@ it('can store a split for a deal', function () {
     $this->post(route('deals.splits.store', $deal), [
         'partners' => [
             [
-                'shared_percentage' => $sharedPercentage = 50,
                 'id' => $agentId = Agent::factory()->ofOrganization($admin->organization_id)->create()->id,
+                'shared_percentage' => $sharedPercentage = 50,
             ],
             [
-                'shared_percentage' => $sharedPercentage2 = 20,
                 'id' => $agentId2 = Agent::factory()->ofOrganization($admin->organization_id)->create()->id,
+                'shared_percentage' => $sharedPercentage2 = 20,
             ],
         ],
     ]);

@@ -36,6 +36,7 @@ const newPartner = {
 }
 
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
+
 const agentIdsToNames = computed(() => {
     const idsToNames: Record<number, string> = {}
 
@@ -46,34 +47,20 @@ const agentIdsToNames = computed(() => {
     return idsToNames
 })
 
-watch(
-    () => props.isOpen,
-    async () => {
-        form.partners = props.deal.splits!.length
-            ? props.deal.splits!.map((split) => ({
-                  name: agentIdsToNames.value[split.agent_id],
-                  id: split.agent_id,
-                  shared_percentage: split.shared_percentage * 100,
-              }))
-            : [newPartner]
-    }
-)
-
 const form = useForm({
     partners: props.deal.splits!.length
-        ? props.deal.splits!.map((split) => ({
+        ? loadExistingAgentsFromSplits()
+        : [newPartner],
+})
+
+function loadExistingAgentsFromSplits() {
+    return props.deal.splits!.map((split) => ({
               name: agentIdsToNames.value[split.agent_id],
               id: split.agent_id,
               shared_percentage: split.shared_percentage,
           }))
-        : [newPartner],
-})
-
-function closeSlideOver() {
-    form.reset()
-
-    emit('close-slide-over')
 }
+
 
 function submit() {
     form.post(route('deals.splits.store', props.deal.id), {
@@ -85,9 +72,19 @@ function submit() {
     })
 }
 
+function closeSlideOver() {
+    form.reset()
+
+    emit('close-slide-over')
+}
+
 function handlePartnerSelection(name: string, index: number): void {
+    console.log('before')
+    console.log(form.partners)
     form.partners[index].name = name
     form.partners[index].id = agentNamesToIds.value[name]
+    console.log('after')
+    console.log(form.partners)
 }
 
 const addPartner = () => form.partners.push(newPartner)
@@ -135,7 +132,7 @@ const removePartner = (index: number) => {
                         />
 
                         <XMarkIcon
-                            class="h-6 w-6 cursor-pointer rounded-full p-1 hover:bg-gray-100"
+                            class="h-6 w-6 text-gray-700 hover:text-black cursor-pointer rounded-full p-1 hover:bg-gray-100"
                             @click="() => removePartner(index)"
                         />
                     </div>
@@ -144,6 +141,7 @@ const removePartner = (index: number) => {
                         :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
                         :selected-option="partner.name"
                         @option-selected="(newName) => handlePartnerSelection(newName, index)"
+                        no-options-text="All available Agents are already involved..."
                     />
 
                     <InputError
