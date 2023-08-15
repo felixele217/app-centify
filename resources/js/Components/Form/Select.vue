@@ -85,7 +85,7 @@ defineEmits<{
                         >
                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{
                                 option
-                            }}hallo</span>
+                            }}</span>
 
                             <span
                                 v-if="selected"

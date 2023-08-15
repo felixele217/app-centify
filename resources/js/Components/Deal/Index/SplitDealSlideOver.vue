@@ -108,16 +108,29 @@ const removePartner = (index: number) => {
         description="You can split deals to accomodate the profit of more than one agent for a deal."
     >
         <div class="px-6">
-            <p class="my-5 text-gray-700">
-                <span class="font-semibold">
-                    {{ props.deal.agent!.name }}
-                </span>
-                retains
-                <span class="font-semibold">
-                    {{ 100 - sum(form.partners.map((partner) => partner.shared_percentage || 0)) }}%
-                </span>
-                of the deal.
-            </p>
+            <div class="my-5 text-gray-700">
+                <p>
+                    <span class="font-semibold">
+                        {{ props.deal.agent!.name }}
+                    </span>
+                    retains
+                    <span class="font-semibold">
+                        {{ 100 - sum(form.partners.map((partner) => partner.shared_percentage || 0)) }}%
+                    </span>
+                    of the deal.
+                </p>
+
+                <p v-for="partner in form.partners" class="text-gray-700">
+                    <span class="font-semibold">
+                        {{ partner.name }}
+                    </span>
+                    retains
+                    <span class="font-semibold">
+                        {{ partner.shared_percentage }}%
+                    </span>
+                    of the deal.
+                </p>
+            </div>
 
             <div
                 class="mb-8 space-y-4"
