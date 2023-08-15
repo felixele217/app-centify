@@ -9,7 +9,7 @@ import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import notify from '@/utils/notify'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import SlideOver from '@/Components/SlideOver.vue'
@@ -133,7 +133,7 @@ const removePartner = (index: number) => {
                             required
                         />
 
-                        <XMarkIcon
+                        <TrashIcon
                             class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-100 hover:text-black"
                             @click="() => removePartner(index)"
                         />
@@ -167,12 +167,10 @@ const removePartner = (index: number) => {
                 </div>
             </div>
 
-            <p
-                class="cursor-pointer text-sm text-gray-700 hover:underline hover:underline-offset-2"
-                @click="addPartner"
-            >
-                Add Partner +
-            </p>
+            <SecondaryButton @click.prevent="addPartner">
+                <PlusIcon class="mr-0.5 h-4 w-4 stroke-2" />
+                Add Partner
+            </SecondaryButton>
         </div>
     </SlideOver>
 </template>
