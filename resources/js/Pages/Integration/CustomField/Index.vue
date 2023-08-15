@@ -4,17 +4,13 @@ import CustomFieldRow from '@/Components/CustomField/CustomFieldRow.vue'
 import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
+import hasMissingCustomField from '@/utils/Integration/hasMissingCustomField'
 import { ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
 
 const props = defineProps<{
     integration: Integration
     available_custom_field_names: Array<CustomFieldEnum>
 }>()
-
-const hasMissingCustomFieldsValues = computed(
-    () => props.integration.custom_fields!.length !== props.available_custom_field_names.length
-)
 
 const goBack = () => window.history.back()
 </script>
@@ -49,7 +45,7 @@ const goBack = () => window.history.back()
         <div class="flex w-1/4 items-start justify-end">
             <ArrowUturnLeftIcon
                 @click="goBack"
-                class="h-10 w-10 cursor-pointer rounded-full p-1.5 text-gray-400 hover:bg-gray-200 hover:text-black"
+                class="h-10 w-10 cursor-pointer rounded-full p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-500"
                 aria-hidden="true"
             />
         </div>
@@ -62,7 +58,7 @@ const goBack = () => window.history.back()
                 <SyncIntegrationButton
                     text="Test & Sync"
                     :redirect-url="route('integrations.index')"
-                    :disabled="hasMissingCustomFieldsValues"
+                    :disabled="hasMissingCustomField(props.integration)"
                     :integrationName="props.integration.name"
                 />
             </div>
