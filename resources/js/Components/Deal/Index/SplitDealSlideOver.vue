@@ -102,7 +102,7 @@ const removePartner = (index: number) => {
         :is-open="props.isOpen"
         @close-slide-over="closeSlideOver"
         @submit="submit"
-        title="Split Deal"
+        :title="`Split ${props.deal.title}`"
         button-text="Split"
         description="You can split deals to accomodate the profit of more than one agent for a deal."
     >
