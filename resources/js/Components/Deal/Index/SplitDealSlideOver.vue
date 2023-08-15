@@ -52,6 +52,19 @@ const form = useForm({
     partners: props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner],
 })
 
+watch(
+    () => props.isOpen,
+    async () => {
+        form.partners = props.deal.splits!.length
+            ? props.deal.splits!.map((split) => ({
+                  name: agentIdsToNames.value[split.agent_id],
+                  id: split.agent_id,
+                  shared_percentage: split.shared_percentage * 100,
+              }))
+            : [newPartner]
+    }
+)
+
 function loadExistingAgentsFromSplits() {
     return props.deal.splits!.map((split) => ({
         name: agentIdsToNames.value[split.agent_id],
