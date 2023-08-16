@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Badge from '@/Components/Badge.vue'
-import Tooltip from '@/Components/Tooltip.vue'
 import Deal from '@/types/Deal'
 import formatDate from '@/utils/Date/formatDate'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
+import AcceptedOrRejectedBadge from './AcceptedOrRejectedBadge.vue'
 
 defineEmits<{
     accepted: [id: number]
@@ -29,31 +28,19 @@ const props = defineProps<{
             class="h-6 w-6 cursor-pointer hover:text-red-600"
         />
     </div>
-    <div
-        class="flex justify-center"
-        v-else-if="props.deal.accepted_at"
-    >
-        <Tooltip :text="`This deal was accepted at ${formatDate(props.deal.accepted_at)}.`">
-            <Badge
-                :text="formatDate(props.deal.accepted_at)"
-                color="green"
-            />
-        </Tooltip>
-    </div>
 
-    <div
-        class="flex justify-center"
+    <AcceptedOrRejectedBadge
+        :text="`This deal was rejected ${props.deal.active_rejection?.is_permanent ? 'permanently' : 'temporarily'}
+        on ${formatDate(props.deal.active_rejection?.created_at)} due to: '${props.deal.active_rejection?.reason}'`"
+        :acted_at="props.deal.active_rejection!.created_at"
+        color="red"
         v-else-if="props.deal.active_rejection?.created_at"
-    >
-        <Tooltip
-            :text="`This deal was rejected ${
-                props.deal.active_rejection.is_permanent ? 'permanently' : 'temporarily'
-            } on ${formatDate(props.deal.active_rejection.created_at)} due to: '${props.deal.active_rejection.reason}'`"
-        >
-            <Badge
-                :text="formatDate(props.deal.active_rejection.created_at)"
-                color="red"
-            />
-        </Tooltip>
-    </div>
+    />
+
+    <AcceptedOrRejectedBadge
+        :text="`This deal was accepted at ${formatDate(props.deal.accepted_at)}.`"
+        :acted_at="props.deal.accepted_at"
+        color="green"
+        v-else-if="props.deal.accepted_at"
+    />
 </template>
