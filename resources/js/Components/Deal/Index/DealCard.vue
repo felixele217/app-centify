@@ -59,6 +59,8 @@ const declineDeal = () => {
 }
 
 function updateDeal(body: any) {
+    isUpdatingDeal.value = true
+
     router.put(route('deals.update', props.deal.id), body, {
         onSuccess: () => {
             if (dealIdOfNoteBeingEdited.value) {
@@ -69,6 +71,7 @@ function updateDeal(body: any) {
                 dealIdBeingAccepted.value = null
             }
         },
+        onFinish: () => isUpdatingDeal.value = false
     })
 }
 
@@ -93,6 +96,7 @@ const pipedriveSubdomain = computed(() => props.integrations[0].subdomain)
 const dealIdBeingAccepted = ref<number | null>()
 const dealIdBeingDeclined = ref<number | null>()
 const dealIdOfNoteBeingEdited = ref<number>()
+const isUpdatingDeal = ref<boolean>(false)
 const noteText = ref<string>(props.deal.note ?? '')
 
 const rejectionForm = useForm({
@@ -102,7 +106,11 @@ const rejectionForm = useForm({
 
 const isSplittingDeal = ref<boolean>(false)
 
-const handleBlur = () => setTimeout(() => dealIdOfNoteBeingEdited.value = undefined, 100 )
+const handleBlur = () => setTimeout(() => {
+    if (!isUpdatingDeal.value) {
+        dealIdOfNoteBeingEdited.value = undefined
+    }
+    }, 100 )
 </script>
 
 <template>
