@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import FormButtons from '@/Components/Form/FormButtons.vue'
-import Agent from '@/types/Agent'
+import SlideOver from '@/Components/SlideOver.vue'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
 import notify from '@/utils/notify'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
-import SlideOver from '@/Components/SlideOver.vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -55,8 +51,8 @@ function submit() {
             closeSlideOver()
 
             notify(
-                'Agent updated',
-                'Your agent still has the same deals as before, but be aware of errors when trying to sync new data if you changed the email.'
+                'Paid Leave stored!',
+                "You stored a paid leave for the selected agent. It will influence the agent's commission."
             )
         },
         preserveScroll: true,
@@ -74,11 +70,11 @@ function submit() {
         description="Add or remove paid leaves for your agents."
         buttonText="Create"
     >
-        <div class="space-y-6 pb-5 px-6 pt-3">
+        <div class="space-y-6 px-6 pb-5 pt-3">
             <PaidLeaveForm
                 :form="form"
                 :agentId="props.agentId"
-                @deleted="closeSlideOver"
+                @deleted-paid-leave="closeSlideOver"
             />
         </div>
     </SlideOver>

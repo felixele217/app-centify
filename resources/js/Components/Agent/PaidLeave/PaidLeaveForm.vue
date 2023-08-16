@@ -31,7 +31,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
-    deleted: []
+    'deleted-paid-leave': []
 }>()
 
 watch(
@@ -224,7 +224,7 @@ function agentPaidLeaveRanges() {
                 v-for="paidLeave of agent.paid_leaves"
                 :paid-leave="paidLeave"
                 :key="paidLeave.id"
-                @deleted="$emit('deleted')"
+                @deleted-paid-leave="$emit('deleted-paid-leave')"
             />
         </div>
     </div>
