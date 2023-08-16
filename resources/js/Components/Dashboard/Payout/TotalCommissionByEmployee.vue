@@ -7,7 +7,7 @@ import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
-import { PencilSquareIcon } from '@heroicons/vue/24/outline'
+import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { usePage } from '@inertiajs/vue3'
 import ValueChange from './ValueChange.vue'
 
@@ -31,17 +31,16 @@ function quotaDisplay(quotaAttainment: number) {
             description="Overview of your agents' performances."
         >
             <template #custom-button>
+                <a
+                    v-if="usePage().props.env !== 'production'"
+                    class="mr-5 rounded-full hover:bg-primary-100 bg-primary-50 p-2"
+                    :href="route('payouts-export')"
+                >
+                    <FolderArrowDownIcon class="h-5 w-5" />
+                </a>
                 <Filter />
             </template>
         </PageHeader>
-
-        <a
-            v-if="usePage().props.env !== 'production'"
-            class="bg-red-500 p-2"
-            :href="route('payouts-export')"
-        >
-            export test
-        </a>
 
         <div class="mt-8 flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -86,9 +85,12 @@ function quotaDisplay(quotaAttainment: number) {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                           <div class="my-3 mt-7" v-if="! props.agents.length">
-                            You do not have any agents yet.
-                           </div>
+                            <div
+                                class="my-3 mt-7"
+                                v-if="!props.agents.length"
+                            >
+                                You do not have any agents yet.
+                            </div>
                             <tr
                                 v-for="agent in props.agents"
                                 :key="agent.email"
