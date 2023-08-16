@@ -36,14 +36,13 @@ const isDeletingPaidLeave = ref<boolean>(false)
 </script>
 
 <template>
-    <div>
-        <Badge
-            :text="paidLeaveRange"
-            :color="props.paidLeave.reason === 'sick' ? 'purple' : 'yellow'"
-            with-delete
-            @delete="isDeletingPaidLeave = true"
-        />
-    </div>
+    <Badge
+        class="mt-2"
+        :text="paidLeaveRange"
+        :color="props.paidLeave.reason === 'sick' ? 'purple' : 'yellow'"
+        with-delete
+        @delete="isDeletingPaidLeave = true"
+    />
 
     <Modal
         :is-open="isDeletingPaidLeave"
