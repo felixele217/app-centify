@@ -101,6 +101,8 @@ const rejectionForm = useForm({
 })
 
 const isSplittingDeal = ref<boolean>(false)
+
+const handleBlur = () => setTimeout(() => dealIdOfNoteBeingEdited.value = undefined, 100 )
 </script>
 
 <template>
@@ -165,7 +167,7 @@ const isSplittingDeal = ref<boolean>(false)
                 v-model="noteText"
                 @keyup.enter="updateDealNote"
                 v-focus
-                @blur="dealIdOfNoteBeingEdited = undefined"
+                @blur="handleBlur"
                 @keyup.escape="dealIdOfNoteBeingEdited = undefined"
             />
 
