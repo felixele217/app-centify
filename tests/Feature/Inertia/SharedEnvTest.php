@@ -8,6 +8,6 @@ it('shares env variables', function () {
     $this->get(route('dashboard'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
-                ->where('env.ENVIRONMENT', env('APP_ENV'))
+                ->where('env', env('APP_ENV'))
         );
 });

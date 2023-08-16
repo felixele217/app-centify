@@ -21,5 +21,11 @@ class Handler extends ExceptionHandler
                 'invalid_api_key' => $exception->getMessage(),
             ]);
         });
+
+        $this->renderable(function (SyncWithoutConnectionException $exception) {
+            return back()->withErrors([
+                'sync_without_connection' => $exception->getMessage(),
+            ]);
+        });
     }
 }

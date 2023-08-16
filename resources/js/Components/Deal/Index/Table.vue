@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Navigation from '@/Components/Deal/Index/Navigation.vue'
-import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
+import SyncOrConnectIntegration from '@/Components/Integrations/SyncOrConnectIntegration.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
@@ -9,7 +9,6 @@ import Integration from '@/types/Integration'
 import queryParamValue from '@/utils/queryParamValue'
 import { computed } from 'vue'
 import DealCard from './DealCard.vue'
-import LastSynced from '@/Components/Integrations/LastSynced.vue'
 
 const props = defineProps<{
     deals: Array<Deal>
@@ -45,6 +44,10 @@ const dealsText = computed(() => {
             return 'All rejected deals.'
     }
 })
+
+const pipedriveIntegration = computed(() => {
+    return props.integrations.filter((integration) => integration.name === 'pipedrive')[0]
+})
 </script>
 
 <template>
@@ -57,21 +60,12 @@ const dealsText = computed(() => {
                 no-bottom-margin
             />
 
-            <div class="flex gap-10 pb-5">
+            <div class="flex items-center gap-10 pb-5">
                 <div class="flex items-end gap-5">
-                    <LastSynced
-                        :last-synced="
-                            props.integrations.filter((integration) => integration.name === 'pipedrive')[0]
-                                ? new Date(
-                                      props.integrations.filter(
-                                          (integration) => integration.name === 'pipedrive'
-                                      )[0].last_synced_at
-                                  )
-                                : undefined
-                        "
+                    <SyncOrConnectIntegration
+                        integration-name="pipedrive"
+                        :active-integration="pipedriveIntegration"
                     />
-
-                    <SyncIntegrationButton class="h-10" />
                 </div>
 
                 <Navigation />
@@ -116,7 +110,7 @@ const dealsText = computed(() => {
             <template #body>
                 <tr
                     v-for="deal in props.deals"
-                    class="grid grid-cols-12 items-center whitespace-nowrap text-sm"
+                    class="grid grid-cols-12 items-center text-sm"
                 >
                     <DealCard
                         :deal="deal"

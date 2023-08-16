@@ -41,9 +41,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'env' => [
-                'ENVIRONMENT' => env('APP_ENV'),
-            ],
+            'env' => env('APP_ENV'),
         ]);
     }
 }

@@ -32,6 +32,7 @@
         "@headlessui/vue": "^1.7.14",
         "@heroicons/vue": "^2.0.18",
         "@popperjs/core": "^2.11.8",
+        "@tailwindcss/line-clamp": "^0.4.4",
         "chart.js": "^4.3.0",
         "notiwind": "^2.0.2",
         "v-calendar": "^3.0.3",

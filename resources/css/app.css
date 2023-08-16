@@ -14,11 +14,11 @@
     }
 
     h1 {
-        @apply text-3xl font-bold;
+        @apply text-3xl font-semibold;
     }
 
     h2 {
-        @apply text-2xl font-bold;
+        @apply text-2xl font-semibold;
     }
 
     h3 {

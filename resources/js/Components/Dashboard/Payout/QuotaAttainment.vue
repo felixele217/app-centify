@@ -22,7 +22,7 @@ const averageAchievedQuotaAttainment =
 <template>
     <Card class="flex justify-between">
         <div class="flex h-full flex-col justify-between">
-            <p class="font-semibold">Average Quota Attainment</p>
+            <p class="font-normal">Average Quota Attainment</p>
             <div>
                 <h2 class="mb-3">All Teams</h2>
                 <div class="flex items-center gap-1">

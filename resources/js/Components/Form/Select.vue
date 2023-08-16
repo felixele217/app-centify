@@ -6,6 +6,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 const props = defineProps<{
     options: Array<string>
     selectedOption: string
+    noOptionsText?: string
 }>()
 
 defineEmits<{
@@ -58,7 +59,18 @@ defineEmits<{
                     class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 >
                     <ListboxOption
+                        v-if="props.options.length === 0"
+                    >
+                        <li
+                            class="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9"
+                        >
+                          {{ props.noOptionsText || 'No Options...' }}
+                        </li>
+                    </ListboxOption>
+
+                    <ListboxOption
                         as="template"
+                        v-else
                         v-for="option in props.options"
                         :key="option"
                         :value="option"

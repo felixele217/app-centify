@@ -6,6 +6,7 @@ namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
+use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
 use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
@@ -26,10 +27,14 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         $this->pipedriveClient = new PipedriveFacade($organization);
 
-        $this->pipedriveIntegration = $organization
+        if ($pipedriveIntegration = $organization
             ->integrations()
             ->whereName(IntegrationTypeEnum::PIPEDRIVE->value)
-            ->first();
+            ->first()) {
+            $this->pipedriveIntegration = $pipedriveIntegration;
+        } else {
+            throw new SyncWithoutConnectionException();
+        }
 
         $this->demoSetByApiKey = $this->pipedriveIntegration
             ->customFields()

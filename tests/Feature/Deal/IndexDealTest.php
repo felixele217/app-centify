@@ -1,14 +1,18 @@
 <?php
 
-use App\Enum\DealScopeEnum;
-use App\Models\Agent;
-use App\Models\Deal;
-use App\Repositories\DealRepository;
 use Carbon\Carbon;
+use App\Models\Deal;
+use App\Enum\DealScopeEnum;
+use App\Models\Integration;
+use App\Repositories\DealRepository;
 use Inertia\Testing\AssertableInertia;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
+
+    Integration::factory()->hasCustomFields()->create([
+        'organization_id' => $this->admin->organization->id
+    ]);
 
     Deal::factory($this->openDealCount = 2)
         ->withAgentOfOrganization($this->admin->organization->id)
@@ -45,26 +49,26 @@ beforeEach(function () {
 
 it('passes the correct props', function () {
     $this->get(route('deals.index'))
-    ->assertInertia(
-        fn (AssertableInertia $page) => $page
-            ->component('Deal/Index')
-            ->has('deals', DealRepository::get()->count())
-            ->has('deals.1.agent')
-            ->has('deals.1.splits')
-            ->has('agents')
-            ->has('deals.1.active_rejection')
-            ->has('integrations')
-    );
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Deal/Index')
+                ->has('deals', DealRepository::get()->count())
+                ->has('deals.1.agent')
+                ->has('deals.1.splits')
+                ->has('agents')
+                ->has('deals.1.active_rejection')
+                ->has('integrations.0.custom_fields')
+        );
 });
 
 it('passes the correct props for all deals if no scope is specified', function () {
     $this->get(route('deals.index'))
-    ->assertInertia(
-        fn (AssertableInertia $page) => $page
-            ->component('Deal/Index')
-            ->has('deals', DealRepository::get()->count())
-            ->has('deals.1.agent')
-    );
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Deal/Index')
+                ->has('deals', DealRepository::get()->count())
+                ->has('deals.1.agent')
+        );
 });
 
 it('passes the correct props for scope=open', function () {

@@ -8,8 +8,8 @@ import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
+import { usePage } from '@inertiajs/vue3'
 import ValueChange from './ValueChange.vue'
-import { router, usePage } from '@inertiajs/vue3'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -36,7 +36,7 @@ function quotaDisplay(quotaAttainment: number) {
         </PageHeader>
 
         <a
-            v-if="usePage().props.ENVIRONMENT !== 'production'"
+            v-if="usePage().props.env !== 'production'"
             class="bg-red-500 p-2"
             :href="route('payouts-export')"
         >
