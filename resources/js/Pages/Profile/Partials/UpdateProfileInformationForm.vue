@@ -51,7 +51,11 @@ const form = useForm({
                 />
             </div>
 
-            <div>
+            <div class="text-sm">
+                Your current email is <span class="font-semibold">{{ user.email }}.</span>
+            </div>
+
+            <!-- <div>
                 <InputLabel
                     for="email"
                     value="Email"
@@ -69,7 +73,7 @@ const form = useForm({
                     class="mt-2"
                     :message="form.errors.email"
                 />
-            </div>
+            </div> -->
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
