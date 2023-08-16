@@ -41,13 +41,29 @@ const agentIdsToNames = computed(() => {
 })
 
 const form = useForm({
-    partners: props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner],
+    partners: props.deal.splits!.length
+        ? loadExistingAgentsFromSplits()
+        : [
+              {
+                  name: '',
+                  id: null,
+                  shared_percentage: 0,
+              },
+          ],
 })
 
 watch(
     () => props.isOpen,
     async () => {
-        form.partners = props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner]
+        form.partners = props.deal.splits!.length
+            ? loadExistingAgentsFromSplits()
+            : [
+                  {
+                      name: '',
+                      id: null,
+                      shared_percentage: 0,
+                  },
+              ]
     }
 )
 
@@ -80,7 +96,12 @@ function handlePartnerSelection(name: string, index: number): void {
     form.partners[index].id = agentNamesToIds.value[name]
 }
 
-const addPartner = () => form.partners.push({...newPartner})
+const addPartner = () =>
+    form.partners.push({
+        name: '',
+        id: null,
+        shared_percentage: 0,
+    })
 
 const removePartner = (index: number) => {
     const partners = form.partners
@@ -107,7 +128,10 @@ const removePartner = (index: number) => {
                     :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
                 />
 
-                <div v-for="partner in form.partners" :key="partner.name">
+                <div
+                    v-for="partner in form.partners"
+                    :key="partner.name"
+                >
                     <AgentDealShare
                         v-if="partner.name && partner.shared_percentage"
                         :agent-name="partner.name"
