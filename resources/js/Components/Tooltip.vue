@@ -4,7 +4,7 @@ import Popper from 'vue3-popper'
 const props = withDefaults(
     defineProps<{
         text: string
-        placement?: 'left' | 'right'
+        placement?: 'left' | 'right' | 'top' | 'bottom'
     }>(),
     {
         placement: 'left',

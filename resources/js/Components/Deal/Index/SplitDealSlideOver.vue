@@ -22,12 +22,11 @@ const props = defineProps<{
     deal: Deal
 }>()
 
-const newPartner = {
+const newPartner = () => ({
     name: '',
-    id: null as number | null,
+    id: null,
     shared_percentage: 0,
-}
-
+})
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 
 const agentIdsToNames = computed(() => {
@@ -41,29 +40,17 @@ const agentIdsToNames = computed(() => {
 })
 
 const form = useForm({
-    partners: props.deal.splits!.length
-        ? loadExistingAgentsFromSplits()
-        : [
-              {
-                  name: '',
-                  id: null,
-                  shared_percentage: 0,
-              },
-          ],
+    partners: existingAgents(),
 })
+
+function existingAgents() {
+    return props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner()]
+}
 
 watch(
     () => props.isOpen,
     async () => {
-        form.partners = props.deal.splits!.length
-            ? loadExistingAgentsFromSplits()
-            : [
-                  {
-                      name: '',
-                      id: null,
-                      shared_percentage: 0,
-                  },
-              ]
+        form.partners = existingAgents()
     }
 )
 
@@ -96,14 +83,10 @@ function handlePartnerSelection(name: string, index: number): void {
     form.partners[index].id = agentNamesToIds.value[name]
 }
 
-const addPartner = () =>
-    form.partners.push({
-        name: '',
-        id: null,
-        shared_percentage: 0,
-    })
+// @ts-ignore
+const addPartner = () => form.partners.push(newPartner())
 
-const removePartner = (index: number) => {
+function removePartner(index: number) {
     const partners = form.partners
 
     partners.splice(index, 1)
