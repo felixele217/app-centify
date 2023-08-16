@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import Popper from 'vue3-popper'
 
-const props = defineProps<{
-    text: string
-}>()
+const props = withDefaults(
+    defineProps<{
+        text: string
+        placement?: 'left' | 'right'
+    }>(),
+    {
+        placement: 'left',
+    }
+)
 </script>
 
 <template>
     <Popper
         hover
         arrow
-        placement="left"
+        :placement="props.placement"
         :content="props.text"
         class="text-sm"
     >
@@ -28,5 +34,6 @@ const props = defineProps<{
     --popper-theme-border-radius: 6px;
     --popper-theme-padding: 16px;
     --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+    --popper-theme-z-index: 50;
 }
 </style>

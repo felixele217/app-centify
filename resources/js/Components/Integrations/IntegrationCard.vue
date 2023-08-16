@@ -25,6 +25,7 @@ const props = defineProps<{
             </div>
             <div>
                 <Tooltip
+                    placement="right"
                     :text="
                         hasMissingCustomField(props.activeIntegration)
                             ? 'You did not configure all of the required fields to sync your integration data yet. To do so, please click the wheel and follow the instructions.'
@@ -48,8 +49,15 @@ const props = defineProps<{
         <div class="mt-10">
             <div class="flex items-end justify-between">
                 <div class="flex items-center justify-between gap-3">
-                    <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
-                    <p class="-mt-0.5 text-sm font-semibold">active</p>
+                    <template v-if="props.activeIntegration">
+                        <div class="h-2 w-2 rounded-full bg-green-500 ring-4 ring-green-100" />
+                        <p class="-mt-0.5 text-sm font-semibold">active</p>
+                    </template>
+
+                    <template v-else>
+                        <div class="h-2 w-2 rounded-full bg-gray-300" />
+                        <p class="-mt-0.5 text-sm">inactive</p>
+                    </template>
                 </div>
 
                 <SyncOrConnectIntegration
