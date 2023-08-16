@@ -11,7 +11,7 @@ const props = defineProps<{
             v-if="!props.noItemsText"
         >
             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                <div class="ring-1 ring-black ring-opacity-5 drop-shadow-md sm:rounded-lg">
+                <div class="drop-shadow-md sm:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-300">
                         <thead class="bg-gray-50">
                             <slot name="header" />
