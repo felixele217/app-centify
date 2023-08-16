@@ -15,8 +15,9 @@ const props = defineProps<{
 
 const rollingQuota = getRollingQuota(queryParamValue('time_scope') as TimeScopeEnum)
 
-const averageAchievedQuotaAttainment =
-    sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / rollingQuota
+const averageAchievedQuotaAttainment = props.agents.length
+    ? sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / rollingQuota
+    : 0
 </script>
 
 <template>

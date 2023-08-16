@@ -86,6 +86,9 @@ function quotaDisplay(quotaAttainment: number) {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
+                           <div class="my-3 mt-7" v-if="! props.agents.length">
+                            You do not have any agents yet.
+                           </div>
                             <tr
                                 v-for="agent in props.agents"
                                 :key="agent.email"

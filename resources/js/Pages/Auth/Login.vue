@@ -73,6 +73,7 @@ const submit = () => {
                 required
                 autocomplete="current-password"
                 name="password"
+                @keyup.enter="submit"
             />
 
             <InputError
