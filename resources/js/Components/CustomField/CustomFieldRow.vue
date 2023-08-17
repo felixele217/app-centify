@@ -36,6 +36,7 @@ function storeCustomField(customFieldName: CustomFieldEnum) {
         {
             onSuccess: () => {
                 notify('Api key stored!', 'We can now access the value of your custom field.')
+                isEditing.value = false
             },
             onError: () => {
                 notify(
