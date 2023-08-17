@@ -335,7 +335,10 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             required
                         />
 
-                        <PercentageInput v-model="form.cliff.threshold_in_percent" />
+                        <PercentageInput
+                            v-model="form.cliff.threshold_in_percent"
+                            :maximum="100"
+                        />
 
                         <InputError
                             class="mt-2"

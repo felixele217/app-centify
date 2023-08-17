@@ -1,11 +1,31 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+
 const props = defineProps<{
     modelValue: number | null
+    maximum?: number
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
     'update:modelValue': [newValue: number]
 }>()
+
+watch(
+    () => props.modelValue,
+    async (value) => {
+        if (!value) {
+            return
+        }
+
+        if (value < 0) {
+            emit('update:modelValue', -value)
+        }
+
+        if (props.maximum && value > props.maximum) {
+            emit('update:modelValue', props.maximum)
+        }
+    }
+)
 </script>
 
 <template>

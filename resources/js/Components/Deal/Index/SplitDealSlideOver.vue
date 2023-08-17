@@ -160,7 +160,7 @@ function removePartner(index: number) {
                         required
                     />
 
-                    <PercentageInput v-model="partner.shared_percentage" />
+                    <PercentageInput v-model="partner.shared_percentage" :maximum="100" />
 
                     <InputError
                         class="mt-2"
