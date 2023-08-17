@@ -8,7 +8,7 @@ use App\Models\Admin;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class RenderModalsTest extends DuskTestCase
+class RenderSlideOversTest extends DuskTestCase
 {
     public function testRender(): void
     {
