@@ -5,5 +5,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: Admin | Agent
     }
-    ENVIRONMENT: 'production' | 'staging' | 'local'
+    environment: 'production' | 'staging' | 'local'
 }

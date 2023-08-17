@@ -3,9 +3,9 @@ import { usePage } from '@inertiajs/vue3'
 </script>
 
 <template>
-    <div class="flex gap-1 items-center">
+    <div class="flex items-center gap-1">
         <p class="text-red-500">!</p>
-        <slot v-if="usePage().props.env !== 'production'" />
+        <slot v-if="usePage().props.environment !== 'production'" />
         <p class="text-red-500">!</p>
     </div>
 </template>
