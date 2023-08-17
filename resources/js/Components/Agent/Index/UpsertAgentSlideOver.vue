@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import InfoIcon from '@/Components/Icon/InfoIcon.vue'
+import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import notify from '@/utils/notify'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
-import SlideOver from '@/Components/SlideOver.vue'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -89,7 +86,7 @@ function submit() {
                 : 'Create a new Agent for your Organization.'
         "
     >
-        <div class="space-y-6 pb-5 pt-6 px-6">
+        <div class="space-y-6 px-6 pb-5 pt-6">
             <div class="leading-6">
                 <InputLabel
                     for="name"
@@ -116,7 +113,10 @@ function submit() {
                         required
                     />
 
-                    <InfoIcon hover-text="This email will be used to synchronize agent data from your integrations." />
+                    <InfoIcon
+                        hover-text="This email will be used to synchronize agent data from your integrations.
+                    Make sure it matches the mail of the agent in your CRM system."
+                    />
                 </div>
 
                 <TextInput
