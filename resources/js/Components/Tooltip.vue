@@ -14,11 +14,13 @@ const props = withDefaults(
 
 <template>
     <Popper
+        :open-delay="200"
         hover
         arrow
         :placement="props.placement"
         :content="props.text"
         class="text-sm"
+        :z-index="9999"
     >
         <slot />
     </Popper>
@@ -34,6 +36,5 @@ const props = withDefaults(
     --popper-theme-border-radius: 6px;
     --popper-theme-padding: 16px;
     --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
-    --popper-theme-z-index: 50;
 }
 </style>
