@@ -73,7 +73,7 @@ function updateDeal(body: any) {
         },
         onFinish: () => {
             isUpdatingDeal.value = false
-            noteText.value = ''
+            noteText.value = props.deal.note ?? ''
         }
     })
 }
