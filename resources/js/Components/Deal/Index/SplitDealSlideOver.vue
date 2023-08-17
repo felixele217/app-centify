@@ -108,7 +108,7 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
     const otherPartners = form.partners.filter((partner) => partner.id !== form.partners[partnerIndex].id)
     const equalPercentageForOtherPartners = Math.floor((100 - newValue) / otherPartners.length)
 
-    if (sum(otherPartners.map((partner) => partner.shared_percentage)) + newValue > 100) {
+    if (sum(otherPartners.map((partner) => partner.shared_percentage ?? 0)) + newValue > 100) {
         otherPartners.forEach((partner) => (partner.shared_percentage = equalPercentageForOtherPartners))
         form.partners.forEach((partner) =>
             partner.name === thisPartnersName ? newValue : equalPercentageForOtherPartners
