@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
@@ -30,7 +31,6 @@ import PercentageInput from '../Form/PercentageInput.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
-import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 
 export interface AdditionalField {
     id: number
@@ -303,7 +303,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :options-per-row="3"
                             :options="
                                 AdditionalPlanFieldEnumCases.map((type) => ({
-                                    title: type,
+                                    title: '+ Add ' + type,
                                     selected: activeAdditionalFields.includes(type),
                                     description: additionalPlanFieldToDescription[type],
                                 }))

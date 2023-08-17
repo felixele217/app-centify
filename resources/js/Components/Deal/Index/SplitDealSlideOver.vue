@@ -8,7 +8,7 @@ import SlideOver from '@/Components/SlideOver.vue'
 import Deal from '@/types/Deal'
 import notify from '@/utils/notify'
 import sum from '@/utils/sum'
-import { PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, watch } from 'vue'
 import AgentDealShare from './AgentDealShare.vue'
@@ -16,7 +16,7 @@ import AgentDealShare from './AgentDealShare.vue'
 type Partner = {
     id: number | null
     name: string
-    shared_percentage: number|null
+    shared_percentage: number | null
 }
 
 const emit = defineEmits<{
@@ -195,10 +195,10 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                 </div>
             </div>
 
-            <SecondaryButton @click.prevent="addPartner">
-                <PlusIcon class="mr-0.5 h-4 w-4 stroke-2" />
-                Add Partner
-            </SecondaryButton>
+            <SecondaryButton
+                @click.prevent="addPartner"
+                text="+ Add Partner"
+            />
         </div>
     </SlideOver>
 </template>
