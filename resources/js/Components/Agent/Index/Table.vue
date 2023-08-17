@@ -126,11 +126,12 @@ const agentBeingEdited = ref<Agent>()
                         </HideInProduction>
                     </div>
 
-                    <SecondaryButton
-                        class="h-7 text-xs"
-                        v-else
-                        text="+ Add Plan"
-                    />
+                    <HideInProduction v-else>
+                        <SecondaryButton
+                            class="h-7 text-xs"
+                            text="+ Add Plan"
+                        />
+                    </HideInProduction>
                 </td>
 
                 <td
