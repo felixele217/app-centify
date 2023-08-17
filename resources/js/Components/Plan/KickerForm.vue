@@ -4,6 +4,7 @@ import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import InputError from '../Form/InputError.vue'
 import InputLabel from '../Form/InputLabel.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
+import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import Select from '../Form/Select.vue'
 
 defineEmits<{
@@ -27,12 +28,10 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="space-y-4 border-y border-gray-200 py-6">
-        <div class="mb-5">
-            <h4 class="font-semibold">Kicker</h4>
-            <p class="mt-1 text-sm">Set an additional incentive for your agents achievements.</p>
-        </div>
-
+    <SectionWithDescription
+        heading="Kicker"
+        description="Set an additional incentive for your agents achievements."
+    >
         <div class="grid grid-cols-3 gap-5">
             <div class="col-span-2">
                 <InputLabel
@@ -86,5 +85,5 @@ const props = defineProps<{
                 props.errors['kicker.salary_type']
             "
         />
-    </div>
+    </SectionWithDescription>
 </template>

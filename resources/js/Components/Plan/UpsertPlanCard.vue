@@ -18,7 +18,6 @@ import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { UpsertPlanForm } from '@/types/Form/UpsertPlanForm'
 import Plan from '@/types/Plan/Plan'
-import { additionalPlanFieldToDescription } from '@/utils/Descriptions/additionalPlanFieldToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
@@ -313,9 +312,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         />
                     </div>
 
-                    <div
-                        v-if="activeAdditionalFields.includes('Kicker')"
-                    >
+                    <div v-if="activeAdditionalFields.includes('Kicker')">
                         <KickerForm
                             :kicker="form.kicker"
                             :kicker-type-options="props.kicker_type_options"
