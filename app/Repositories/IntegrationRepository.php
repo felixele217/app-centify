@@ -18,11 +18,11 @@ class IntegrationRepository
 
     public static function update(int $organizationId, array $integrationFields): Integration
     {
-        $integrationId = Integration::whereOrganizationId($organizationId)->update([
-            ...$integrationFields,
-        ]);
+        $integration = Integration::whereOrganizationId($organizationId)->first();
 
-        return Integration::find($integrationId);
+        $integration->update([...$integrationFields]);
+
+        return $integration;
     }
 
     public static function updateOrCreate(int $organizationId, array $integrationFields): void
