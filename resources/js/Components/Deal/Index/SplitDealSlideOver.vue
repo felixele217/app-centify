@@ -16,7 +16,7 @@ import AgentDealShare from './AgentDealShare.vue'
 type Partner = {
     id: number | null
     name: string
-    shared_percentage: number
+    shared_percentage: number|null
 }
 
 const emit = defineEmits<{
@@ -32,7 +32,7 @@ const newPartner = () =>
     ({
         name: '',
         id: null,
-        shared_percentage: 0,
+        shared_percentage: null,
     } as Partner)
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 
