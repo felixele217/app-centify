@@ -307,14 +307,15 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                                 AdditionalPlanFieldEnumCases.map((type) => ({
                                     title: '+ Add ' + type,
                                     selected: activeAdditionalFields.includes(type),
-                                    description: additionalPlanFieldToDescription[type],
                                 }))
                             "
                             @option-clicked="(option: CardOptionsOption<string>) => toggleAdditionalField(option as CardOptionsOption<AdditionalPlanFieldEnum>)"
                         />
                     </div>
 
-                    <div v-if="activeAdditionalFields.includes('Kicker')">
+                    <div
+                        v-if="activeAdditionalFields.includes('Kicker')"
+                    >
                         <KickerForm
                             :kicker="form.kicker"
                             :kicker-type-options="props.kicker_type_options"
@@ -322,11 +323,11 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             @set-type="(type: KickerTypeEnum) => (form.kicker.type = type)"
                             @set-salary-type="(salaryType: SalaryTypeEnum) => (form.kicker.salary_type = salaryType)"
                             @set-threshold-in-percent="
-                                (thresholdInPercent: number) => (form.kicker.threshold_in_percent = thresholdInPercent)
-                            "
+                                    (thresholdInPercent: number) => (form.kicker.threshold_in_percent = thresholdInPercent)
+                                "
                             @set-payout-in-percent="
-                                (payoutInPercent: number) => (form.kicker.payout_in_percent = payoutInPercent)
-                            "
+                                    (payoutInPercent: number) => (form.kicker.payout_in_percent = payoutInPercent)
+                                "
                             :errors="form.errors"
                         />
                     </div>

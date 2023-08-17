@@ -27,7 +27,12 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="space-y-4">
+    <div class="space-y-4 border-y border-gray-200 py-6">
+        <div class="mb-5">
+            <h4 class="font-semibold">Kicker</h4>
+            <p class="mt-1 text-sm">Set an additional incentive for your agents achievements.</p>
+        </div>
+
         <div class="grid grid-cols-3 gap-5">
             <div class="col-span-2">
                 <InputLabel
