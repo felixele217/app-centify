@@ -37,7 +37,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
                 >
                     <div
                         v-for="option in selectedOptions()"
-                        class="flex items-center gap-1 rounded-md bg-indigo-600 px-2 text-indigo-50"
+                        class="flex items-center gap-1 rounded-md bg-primary-500 px-2 text-white"
                     >
                         <p>
                             {{ option.name }}

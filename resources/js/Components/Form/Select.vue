@@ -18,7 +18,7 @@ defineEmits<{
     <Listbox as="div">
         <div class="relative mt-2">
             <ListboxButton
-                class="relative flex w-full cursor-pointer items-center justify-between rounded-md bg-white py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="relative flex w-full cursor-pointer items-center justify-between rounded-md bg-white py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm sm:leading-6"
             >
                 <div class="flex items-center gap-x-1.5">
                     <CheckIcon
@@ -58,13 +58,9 @@ defineEmits<{
                 <ListboxOptions
                     class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 >
-                    <ListboxOption
-                        v-if="props.options.length === 0"
-                    >
-                        <li
-                            class="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9"
-                        >
-                          {{ props.noOptionsText || 'No Options...' }}
+                    <ListboxOption v-if="props.options.length === 0">
+                        <li class="relative cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900">
+                            {{ props.noOptionsText || 'No Options...' }}
                         </li>
                     </ListboxOption>
 
