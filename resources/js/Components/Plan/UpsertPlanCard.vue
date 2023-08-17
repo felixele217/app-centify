@@ -120,6 +120,8 @@ function submit() {
 }
 
 function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum>) {
+    option.title = option.title.replace('+ Add ', '') as AdditionalPlanFieldEnum
+
     const includesField = activeAdditionalFields.value.includes(option.title)
 
     if (includesField) {
@@ -303,7 +305,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :options-per-row="3"
                             :options="
                                 AdditionalPlanFieldEnumCases.map((type) => ({
-                                    title: type,
+                                    title: '+ Add ' + type,
                                     selected: activeAdditionalFields.includes(type),
                                     description: additionalPlanFieldToDescription[type],
                                 }))
