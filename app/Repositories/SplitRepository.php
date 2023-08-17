@@ -17,6 +17,8 @@ class SplitRepository
 {
     public static function upsert(Deal $deal, StoreSplitRequest $request): void
     {
+        $requestPartnerIds = [];
+
         foreach ($request->validated('partners') as $partner) {
             Split::updateOrCreate([
                 'deal_id' => $deal->id,
@@ -26,6 +28,14 @@ class SplitRepository
                 'shared_percentage' => $partner['shared_percentage'],
                 'deal_id' => $deal->id,
             ]);
+
+            $requestPartnerIds[] = $partner['id'];
+        }
+
+        foreach ($deal->splits as $split) {
+            if (! in_array($split->agent_id, $requestPartnerIds)) {
+                $split->delete();
+            }
         }
     }
 

@@ -57,3 +57,19 @@ it('can updates the splits correctly if there already were some', function () {
     expect($deal->fresh()->splits()->count())->toBe(2);
     expect($split->fresh()->shared_percentage)->toBe($newSharedPercentage / 100);
 });
+
+it('removes the split if it is not present in the request', function () {
+    $admin = signInAdmin();
+
+    $deal = Deal::factory()
+        ->withAgentOfOrganization($admin->organization_id)
+        ->create();
+
+    Split::factory()->create(['deal_id' => $deal->id]);
+
+    $this->post(route('deals.splits.store', $deal), [
+        'partners' => [],
+    ]);
+
+    expect($deal->fresh()->splits()->count())->toBe(0);
+});
