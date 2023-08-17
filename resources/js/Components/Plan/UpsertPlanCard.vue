@@ -303,7 +303,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :options-per-row="3"
                             :options="
                                 AdditionalPlanFieldEnumCases.map((type) => ({
-                                    title: '+ Add ' + type,
+                                    title: type,
                                     selected: activeAdditionalFields.includes(type),
                                     description: additionalPlanFieldToDescription[type],
                                 }))
