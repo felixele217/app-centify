@@ -13,6 +13,12 @@ import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, watch } from 'vue'
 import AgentDealShare from './AgentDealShare.vue'
 
+type Partner = {
+    id: number | null
+    name: string
+    shared_percentage: number
+}
+
 const emit = defineEmits<{
     'close-slide-over': []
 }>()
@@ -22,11 +28,12 @@ const props = defineProps<{
     deal: Deal
 }>()
 
-const newPartner = () => ({
-    name: '',
-    id: null,
-    shared_percentage: 0,
-})
+const newPartner = () =>
+    ({
+        name: '',
+        id: null,
+        shared_percentage: 0,
+    } as Partner)
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 
 const agentIdsToNames = computed(() => {
@@ -93,6 +100,21 @@ function removePartner(index: number) {
 
     form.partners = partners
 }
+
+function handlePercentageChange(newValue: number, partnerIndex: number): void {
+    form.partners[partnerIndex].shared_percentage = newValue
+    const thisPartnersName = form.partners[partnerIndex].name
+
+    const otherPartners = form.partners.filter((partner) => partner.id !== form.partners[partnerIndex].id)
+    const equalPercentageForOtherPartners = Math.floor((100 - newValue) / otherPartners.length)
+
+    if (sum(otherPartners.map((partner) => partner.shared_percentage)) + newValue > 100) {
+        otherPartners.forEach((partner) => (partner.shared_percentage = equalPercentageForOtherPartners))
+        form.partners.forEach((partner) =>
+            partner.name === thisPartnersName ? newValue : equalPercentageForOtherPartners
+        )
+    }
+}
 </script>
 
 <template>
@@ -116,9 +138,9 @@ function removePartner(index: number) {
                     :key="partner.name"
                 >
                     <AgentDealShare
-                        v-if="partner.name && partner.shared_percentage"
+                        v-if="partner.name"
                         :agent-name="partner.name"
-                        :agent-share-percentage="partner.shared_percentage"
+                        :agent-share-percentage="partner.shared_percentage || 0"
                     />
                 </div>
             </div>
@@ -160,7 +182,11 @@ function removePartner(index: number) {
                         required
                     />
 
-                    <PercentageInput v-model="partner.shared_percentage" :maximum="100" />
+                    <PercentageInput
+                        v-model="partner.shared_percentage"
+                        :maximum="100"
+                        @update:model-value="(newValue) => handlePercentageChange(newValue, index)"
+                    />
 
                     <InputError
                         class="mt-2"

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Enum\TimeScopeEnum;
-use App\Http\Requests\StoreSplitRequest;
+use App\Http\Requests\UpsertSplitRequest;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Split;
@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 
 class SplitRepository
 {
-    public static function upsert(Deal $deal, StoreSplitRequest $request): void
+    public static function upsert(Deal $deal, UpsertSplitRequest $request): void
     {
         $requestPartnerIds = [];
 

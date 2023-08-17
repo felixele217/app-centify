@@ -73,3 +73,42 @@ it('removes the split if it is not present in the request', function () {
 
     expect($deal->fresh()->splits()->count())->toBe(0);
 });
+
+it('cannot store a split with a percentage_share of 0', function () {
+    $admin = signInAdmin();
+
+    $deal = Deal::factory()
+        ->withAgentOfOrganization($admin->organization_id)
+        ->create();
+
+    $this->post(route('deals.splits.store', $deal), [
+        'partners' => [
+            [
+                'id' => Agent::factory()->ofOrganization($admin->organization_id)->create()->id,
+                'shared_percentage' => 0,
+            ]
+        ],
+    ])->assertInvalid([
+        'partners.0.shared_percentage' => "The partners' shared percentage must be greater than 0."
+    ]);
+});
+
+it('returns correct validation error messages', function () {
+    $admin = signInAdmin();
+
+    $deal = Deal::factory()
+        ->withAgentOfOrganization($admin->organization_id)
+        ->create();
+
+    $this->post(route('deals.splits.store', $deal), [
+        'partners' => [
+            [
+                'id' => null,
+                'shared_percentage' => null,
+            ]
+        ],
+    ])->assertInvalid([
+        'partners.0.id' => "The partners' identifier field is required.",
+        'partners.0.shared_percentage' => "The partners' shared percentage field is required.",
+    ]);
+});
