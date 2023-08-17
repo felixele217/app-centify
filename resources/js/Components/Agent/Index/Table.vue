@@ -74,6 +74,7 @@ const agentBeingEdited = ref<Agent>()
         description="Overview of all your agents."
         button-text="Create Agent"
         @button-clicked="isUpsertingAgent = true"
+        button-dusk-identifier="upsert-agent-slide-over-button"
     />
 
     <TableWrapper :no-items-text="props.agents.length ? undefined : 'You have no agents yet.'">
@@ -144,6 +145,7 @@ const agentBeingEdited = ref<Agent>()
                             class="h-7 text-xs"
                             @click="openSlideOver(agent, 'manage-agent-plans')"
                             text="+ Add Plan"
+                            dusk="manage-agent-plans-slide-over-button"
                         />
                     </HideInProduction>
                 </td>

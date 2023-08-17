@@ -6,6 +6,7 @@ const props = defineProps<{
     description: string
     buttonText?: string
     noBottomMargin?: boolean
+    buttonDuskIdentifier?: string
 }>()
 </script>
 
@@ -24,7 +25,7 @@ const props = defineProps<{
             v-if="props.buttonText"
         >
             <PrimaryButton
-                dusk="slide-over-button"
+                :dusk="props.buttonDuskIdentifier"
                 @click="$emit('button-clicked')"
                 :text="props.buttonText"
             />

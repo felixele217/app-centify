@@ -34,8 +34,8 @@ class RenderModalsTest extends DuskTestCase
                     ->assertUrlIs($url)
                     ->waitForText($assertData['awaitedText'])
                     ->click('@'.$assertData['elementPrefix'].'-button')
-                    ->waitFor('@'.$assertData['elementPrefix'].'-modal')
-                    ->assertVisible('@'.$assertData['elementPrefix'].'-modal')
+                    ->waitFor('@'.$assertData['elementPrefix'].'-slide-over')
+                    ->assertVisible('@'.$assertData['elementPrefix'].'-slide-over')
 
                     ->waitForText($assertData['expectedText'])
                     ->assertSee($assertData['expectedText']);
