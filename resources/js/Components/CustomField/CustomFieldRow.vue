@@ -76,7 +76,7 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
 </script>
 
 <template>
-    <div class="flex items-center gap-4 rounded-md py-2">
+    <div class="flex items-center gap-4 rounded-md py-2 text-sm">
         <p class="whitespace-nowrap">{{ customFieldName }}:</p>
 
         <div
@@ -109,7 +109,6 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
             <TextInput
                 type="text"
                 v-model="apiKey"
-                class="ml-3"
                 no-top-margin
             />
 
