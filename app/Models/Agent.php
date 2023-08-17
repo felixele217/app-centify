@@ -124,7 +124,7 @@ class Agent extends Authenticatable
     public function activePlans(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->plans()->active()->get(),
+            get: fn () => $this->plans()->active()->select('plans.id', 'plans.name')->get(),
         );
     }
 
