@@ -26,13 +26,13 @@ const props = defineProps<{
                 @click="$emit('option-clicked', option)"
                 :class="[
                     option.selected
-                        ? 'border-indigo-200 bg-indigo-100 hover:bg-indigo-50'
-                        : 'border-gray-300 bg-white hover:bg-indigo-50',
-                    'relative flex cursor-pointer justify-center rounded-md border py-2 shadow-sm focus:outline-none',
+                        ? 'bg-primary-100 ring-2 ring-primary-600'
+                        : 'border border-gray-300 bg-white hover:bg-primary-50',
+                    'relative flex cursor-pointer justify-center rounded-md py-2 shadow-sm focus:outline-none',
                 ]"
             >
                 <span class="flex flex-col">
-                    <p :class="[option.selected ? 'text-indigo-900' : 'text-gray-900', 'flex text-sm font-medium']">
+                    <p :class="[option.selected ? 'text-black' : 'text-gray-900', 'flex text-sm font-medium']">
                         {{ option.title }}
                     </p>
                 </span>
