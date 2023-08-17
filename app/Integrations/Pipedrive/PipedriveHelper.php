@@ -9,9 +9,9 @@ use Illuminate\Http\RedirectResponse;
 
 class PipedriveHelper
 {
-    public static function demoSetByEmail(array $deal, string $demoSetByApiKey): string|RedirectResponse|null
+    public static function demoSetByEmail(array $deal, ?string $demoSetByApiKey): string|RedirectResponse|null
     {
-        if (! array_key_exists($demoSetByApiKey, $deal)) {
+        if (! $demoSetByApiKey || ! array_key_exists($demoSetByApiKey, $deal)) {
             throw new InvalidApiKeyException();
         }
 
