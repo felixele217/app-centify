@@ -246,20 +246,8 @@ class PipedriveClientDummy
                 env('PIPEDRIVE_DEMO_SET_BY') => [
                     'active_flag' => true,
                     'name' => 'Hashim Hardy',
-                    'email' => [
-                        0 => [
-                            'label' => 'work',
-                            'value' => 'phyllis.yang@gmial.com',
-                            'primary' => true,
-                        ],
-                    ],
-                    'phone' => [
-                        0 => [
-                            'label' => 'work',
-                            'value' => '313-428-3135',
-                            'primary' => true,
-                        ],
-                    ],
+                    'email' => 'phyllis.yang@gmial.com',
+                    'phone' => '313-428-3135',
                     'owner_id' => 17524624,
                     'value' => 2,
                 ],

@@ -78,15 +78,13 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
                 })
                 ->map(function (array $deal) {
-                    $demoSetBy = $this->demoSetByApiKey ? $deal[$this->demoSetByApiKey]['email'][0]['value'] : null;
-
                     return array_filter([
                         'id' => $deal['id'],
                         'title' => $deal['title'],
                         'value' => $deal['value'],
                         'add_time' => $deal['add_time'],
                         'status' => $deal['status'],
-                        'owner_email' => $demoSetBy,
+                        'owner_email' => PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey),
                     ], function (string $value) {
                         return $value !== null;
                     });

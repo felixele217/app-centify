@@ -47,7 +47,7 @@ it('returns the correct structure for agentDeals', function () {
 it('stores the data properly', function () {
     $deals = $this->pipedriveClient->deals();
 
-    $email = PipedriveHelper::demoSetByEmail($deals[0]);
+    $email = PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY'));
 
     $agent = Agent::factory()->create([
         'email' => $email,
@@ -72,7 +72,7 @@ it('updates the deal if it already existed and some data changed', function () {
     $deals = $this->pipedriveClient->deals();
 
     $agent = Agent::factory()->create([
-        'email' => PipedriveHelper::demoSetByEmail($deals[0]),
+        'email' => PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY')),
         'organization_id' => $this->admin->organization->id,
     ]);
 
@@ -92,10 +92,10 @@ it('updates the deal if it already existed and some data changed', function () {
 it('does not create the same entry twice', function () {
     $deals = $this->pipedriveClient->deals();
 
-    $email = PipedriveHelper::demoSetByEmail($deals[0]);
+    $email = PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY'));
 
     $agent = Agent::factory()->create([
-        'email' => PipedriveHelper::demoSetByEmail($deals[0]),
+        'email' => PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY')),
         'organization_id' => $this->admin->organization->id,
     ]);
 
@@ -114,7 +114,7 @@ it('does not create deal if no agent with the pipedrive email exists', function 
 it('does not create deal if demo_set_by has a value assigned to it', function () {
     $deals = $this->pipedriveClient->deals();
 
-    $email = PipedriveHelper::demoSetByEmail($deals[0]);
+    $email = PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY'));
 
     Agent::factory()->create([
         'email' => $email,
@@ -136,7 +136,7 @@ function emailCount($email, $deals): int
     $emailCount = 0;
 
     foreach ($deals as $deal) {
-        if (PipedriveHelper::demoSetByEmail($deal) === $email) {
+        if (PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email) {
             $emailCount++;
         }
     }

@@ -39,6 +39,29 @@ class PipedriveFacade
             return $this->pipedriveClient->deals()->toArray();
         }
 
-        return json_decode(json_encode($this->pipedriveClient->deals()->all()->getData()), true);
+        return $this->allDeals();
+    }
+
+    private function allDeals(): array
+    {
+        $allDeals = [];
+        $limit = 500;
+        $start = 0;
+
+        while (true) {
+            $deals = json_decode(json_encode($this->pipedriveClient->deals()->all([
+                'start' => $start,
+                'limit' => 500,
+            ])->getData()), true);
+
+            if (! $deals) {
+                break;
+            }
+
+            $allDeals[] = $deals;
+            $start += $limit;
+        }
+
+        return array_merge(...$allDeals);
     }
 }

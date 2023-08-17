@@ -9,17 +9,19 @@ use Illuminate\Http\RedirectResponse;
 
 class PipedriveHelper
 {
-    public static function demoSetByEmail(array $deal, string $demoSetByApiKey = null): string|RedirectResponse|null
+    public static function demoSetByEmail(array $deal, string $demoSetByApiKey): string|RedirectResponse|null
     {
-        $demoSetByApiKey = $demoSetByApiKey ?? env('PIPEDRIVE_DEMO_SET_BY');
-
         if (! array_key_exists($demoSetByApiKey, $deal)) {
             throw new InvalidApiKeyException();
         }
 
-        return isset($deal[$demoSetByApiKey])
-        ? $deal[$demoSetByApiKey]['email'][0]['value']
-        : null;
+        if (! isset($deal[$demoSetByApiKey])) {
+            return null;
+        }
+
+        return gettype($deal[$demoSetByApiKey]['email']) === 'string'
+        ? $deal[$demoSetByApiKey]['email']
+        : $deal[$demoSetByApiKey]['email'][0]['value'];
     }
 
     public static function organizationSubdomain(array $deal): string

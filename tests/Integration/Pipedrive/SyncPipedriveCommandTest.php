@@ -1,33 +1,35 @@
 <?php
 
-use App\Enum\CustomFieldEnum;
-use App\Integrations\Pipedrive\PipedriveClientDummy;
-use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Models\Agent;
 use App\Models\CustomField;
 use App\Models\Integration;
 use App\Models\Organization;
+use App\Enum\CustomFieldEnum;
+use App\Enum\IntegrationTypeEnum;
 use Illuminate\Support\Facades\Artisan;
+use App\Integrations\Pipedrive\PipedriveHelper;
+use App\Integrations\Pipedrive\Mocking\PipedriveClientDummy;
 
 it('sync correctly using the command', function () {
-    $organization = Organization::factory()->create();
+
+    $admin = signInAdmin();
 
     $integration = Integration::factory()->create([
-        'organization_id' => $organization->id,
+        'organization_id' => $admin->organization->id,
+        'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
 
-    CustomField::factory()
-        ->ofIntegration($integration->id)
-        ->create([
-            'api_key' => env('PIPEDRIVE_DEMO_SET_BY'),
-            'name' => CustomFieldEnum::DEMO_SET_BY->value,
-        ]);
+    CustomField::create([
+        'name' => CustomFieldEnum::DEMO_SET_BY->value,
+        'integration_id' => $integration->id,
+        'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
+    ]);
 
-    $deals = (new PipedriveClientDummy())->deals()->toArray();
-    $email = PipedriveHelper::demoSetByEmail($deals[0]);
+    $deals = (new PipedriveClientDummy($admin->organization))->deals()->toArray();
+    $email = PipedriveHelper::demoSetByEmail($deals[0], env('PIPEDRIVE_DEMO_SET_BY'));
     $agent = Agent::factory()->create([
         'email' => $email,
-        'organization_id' => $organization->id,
+        'organization_id' => $admin->organization->id,
     ]);
 
     Artisan::call('sync-pipedrive');
