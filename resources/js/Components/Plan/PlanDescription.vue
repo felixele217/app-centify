@@ -57,7 +57,13 @@ const props = defineProps<{
                 >% of the quota to qualify for a commission.
             </span>
 
-            <span v-if="props.form.kicker.threshold_in_percent && props.form.kicker.payout_in_percent">
+            <span
+                v-if="
+                    props.form.kicker.threshold_in_percent ||
+                    props.form.kicker.payout_in_percent ||
+                    props.form.kicker.salary_type
+                "
+            >
                 <br />
 
                 An agent must achieve at least

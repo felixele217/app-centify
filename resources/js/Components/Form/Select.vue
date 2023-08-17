@@ -2,43 +2,57 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
     options: Array<string>
-    selectedOption: string
+    modelValue: string
     noOptionsText?: string
 }>()
 
-defineEmits<{
-    'option-selected': [option: string]
+const emit = defineEmits<{
+    'update:modelValue': [title: string]
 }>()
+
+function handleClear() {
+    emit('update:modelValue', '')
+    current.value = ''
+}
+
+const current = ref<string>(props.modelValue)
 </script>
 
 <template>
-    <Listbox as="div">
+    <Listbox
+        as="div"
+        v-model="current"
+        @keyup.enter.prevent="$emit('update:modelValue', current)"
+    >
         <div class="relative mt-2">
             <ListboxButton
                 class="relative flex w-full cursor-pointer items-center justify-between rounded-md bg-white py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm sm:leading-6"
             >
                 <div class="flex items-center gap-x-1.5">
                     <CheckIcon
-                        v-if="props.selectedOption"
+                        v-if="current"
                         class="-ml-0.5 h-4 w-4"
-                        :class="props.selectedOption ? 'text-gray-600' : 'text-gray-300'"
+                        :class="current ? 'text-gray-600' : 'text-gray-300'"
                         aria-hidden="true"
                     />
+
                     <span
                         class="block truncate text-sm"
-                        :class="props.selectedOption ? 'text-gray-900' : 'text-gray-300'"
-                        >{{ props.selectedOption ? props.selectedOption : 'Select...' }}</span
+                        :class="current ? 'text-gray-900' : 'text-gray-300'"
+                        >{{ current || 'Select...' }}</span
                     >
                 </div>
 
                 <div>
                     <XMarkIcon
-                        @click.prevent="$emit('option-selected', '')"
+                        @click.prevent="handleClear"
                         class="-mr-3 h-5 w-5 text-gray-400 hover:text-gray-600"
-                        v-if="props.selectedOption"
+                        v-if="current"
                     />
 
                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -70,7 +84,7 @@ defineEmits<{
                         v-for="option in props.options"
                         :key="option"
                         :value="option"
-                        @click="$emit('option-selected', option)"
+                        @click="$emit('update:modelValue', option)"
                         v-slot="{ active, selected }"
                     >
                         <li

@@ -165,8 +165,8 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
 
                     <Select
                         :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
-                        :selected-option="partner.name"
-                        @option-selected="(newName) => handlePartnerSelection(newName, index)"
+                        v-model="partner.name"
+                        @update:model-value="(newName: string) => handlePartnerSelection(newName, index)"
                         no-options-text="All available Agents are already involved..."
                     />
 

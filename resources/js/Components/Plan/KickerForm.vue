@@ -8,8 +8,6 @@ import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import Select from '../Form/Select.vue'
 
 defineEmits<{
-    'set-type': [type: KickerTypeEnum]
-    'set-salary-type': [type: SalaryTypeEnum]
     'set-threshold-in-percent': [thresholdInPercent: number]
     'set-payout-in-percent': [payoutInPercent: number]
 }>()
@@ -41,8 +39,7 @@ const props = defineProps<{
 
                 <Select
                     :options="props.kickerTypeOptions"
-                    :selected-option="props.kicker.type"
-                    @option-selected="(kickerType: string) => $emit('set-type', kickerType)"
+                    v-model="props.kicker.type"
                 />
             </div>
             <div>
@@ -64,8 +61,7 @@ const props = defineProps<{
 
                 <Select
                     :options="props.salaryTypeOptions"
-                    :selected-option="props.kicker.salary_type"
-                    @option-selected="(salaryType: string) => $emit('set-salary-type', salaryType)"
+                    v-model="props.kicker.salary_type"
                 />
             </div>
             <div>
