@@ -65,7 +65,7 @@ const agentBeingEdited = ref<Agent>()
     <ManageAgentPlansSlideOver
         @close-slide-over="closeSlideOver"
         :is-open="!!isManagingAgentPlans"
-        dusk="manage-agent-plans-slide-over-modal"
+        dusk="manage-agent-plans-slide-over"
         :agent="agentBeingEdited"
     />
 

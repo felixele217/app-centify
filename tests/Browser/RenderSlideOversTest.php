@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Browser;
 
 use App\Models\Admin;
+use App\Models\Agent;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -21,7 +22,7 @@ class RenderSlideOversTest extends DuskTestCase
                 'expectedText' => 'Create a new Agent',
             ],
             route('agents.index') => [
-                'awaitedText' => 'Agents',
+                'awaitedText' => '+ Add Plan',
                 'elementPrefix' => 'manage-agent-plans-slide-over',
                 'expectedText' => 'Manage Plans',
             ],
@@ -34,9 +35,8 @@ class RenderSlideOversTest extends DuskTestCase
                     ->assertUrlIs($url)
                     ->waitForText($assertData['awaitedText'])
                     ->click('@'.$assertData['elementPrefix'].'-button')
-                    ->waitFor('@'.$assertData['elementPrefix'].'-slide-over')
-                    ->assertVisible('@'.$assertData['elementPrefix'].'-slide-over')
-
+                    ->waitFor('@'.$assertData['elementPrefix'])
+                    ->assertVisible('@'.$assertData['elementPrefix'])
                     ->waitForText($assertData['expectedText'])
                     ->assertSee($assertData['expectedText']);
 
@@ -47,6 +47,10 @@ class RenderSlideOversTest extends DuskTestCase
 
     private function setupDatabase(): Admin
     {
-        return Admin::factory()->create();
+        $admin =  Admin::factory()->create();
+
+        Agent::factory()->ofOrganization($admin->organization_id)->create();
+
+        return $admin;
     }
 }

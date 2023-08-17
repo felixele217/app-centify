@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import InputError from '@/Components/Form/InputError.vue'
-import InputLabel from '@/Components/Form/InputLabel.vue'
-import TextInput from '@/Components/Form/TextInput.vue'
-import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
 import notify from '@/utils/notify'
@@ -79,82 +74,6 @@ function submit() {
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <div class="leading-6">
-            <InputLabel
-                for="name"
-                value="Full Name"
-                required
-            />
-
-            <TextInput
-                type="text"
-                v-model="form.name"
-                name="name"
-            />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.name"
-            />
-        </div>
-        <div>
-            <div class="flex gap-1">
-                <InputLabel
-                    for="email"
-                    value="Work Email"
-                    required
-                />
-
-                <InfoIcon
-                    hover-text="This email will be used to synchronize agent data from your integrations.
-                Make sure it matches the mail of the agent in your CRM system."
-                />
-            </div>
-
-            <TextInput
-                id="email"
-                type="text"
-                v-model="form.email"
-                name="email"
-            />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.email"
-            />
-        </div>
-        <div>
-            <InputLabel
-                for="base_salary"
-                value="Annual Base Salary"
-                required
-            />
-
-            <CurrencyInput v-model="form.base_salary" />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.base_salary"
-            />
-        </div>
-        <div>
-            <div class="flex gap-1">
-                <InputLabel
-                    for="on_target_earning"
-                    value="Annual On Target Earning (OTE)"
-                    required
-                />
-
-                <InfoIcon
-                    hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
-                />
-            </div>
-            <CurrencyInput v-model="form.on_target_earning" />
-
-            <InputError
-                class="mt-2"
-                :message="form.errors.on_target_earning"
-            />
-        </div>
+        <p v-for="active_plan_name in props.agent?.active_plans_names">{{ active_plan_name }}</p>
     </SlideOver>
 </template>
