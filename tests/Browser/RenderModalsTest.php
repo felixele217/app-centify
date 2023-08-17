@@ -17,8 +17,13 @@ class RenderModalsTest extends DuskTestCase
         $urlsToText = [
             route('agents.index') => [
                 'awaitedText' => 'Agents',
-                'elementPrefix' => 'slide-over',
+                'elementPrefix' => 'upsert-agent-slide-over',
                 'expectedText' => 'Create a new Agent',
+            ],
+            route('agents.index') => [
+                'awaitedText' => 'Agents',
+                'elementPrefix' => 'manage-agent-plans-slide-over',
+                'expectedText' => 'Manage Plans',
             ],
         ];
 

@@ -12,7 +12,7 @@ const props = defineProps<{
     isOpen: boolean
     title: string
     description: string
-    buttonText: string
+    buttonText?: string
 }>()
 </script>
 
@@ -54,7 +54,7 @@ const props = defineProps<{
                                                 <div class="ml-3 flex h-7 items-center">
                                                     <button
                                                         type="button"
-                                                        class="rounded-md text-primary-50 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                                        class="rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                                                         @click="$emit('close-slide-over')"
                                                     >
                                                         <span class="sr-only">Close panel</span>
@@ -67,15 +67,18 @@ const props = defineProps<{
                                             </div>
 
                                             <div class="mt-1">
-                                                <p class="text-sm text-primary-50">{{ props.description }}</p>
+                                                <p class="text-sm text-white">{{ props.description }}</p>
                                             </div>
                                         </div>
                                         <div class="grow overflow-y-scroll">
-                                            <slot />
+                                            <div class="space-y-6 px-6 pb-5 pt-3 mt-4">
+                                                <slot />
+                                            </div>
                                         </div>
                                     </div>
 
                                     <FormButtons
+                                        v-if="props.buttonText"
                                         :positiveButtonText="props.buttonText"
                                         class="pr-4"
                                         @cancel-button-clicked="$emit('close-slide-over')"

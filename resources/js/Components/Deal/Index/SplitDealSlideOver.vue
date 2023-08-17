@@ -126,79 +126,77 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
         button-text="Split"
         description="You can split deals to accomodate the profit of more than one agent for a deal."
     >
-        <div class="px-6">
-            <div class="my-5 text-gray-700">
-                <AgentDealShare
-                    :agent-name="props.deal.agent!.name"
-                    :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
-                />
-
-                <div
-                    v-for="partner in form.partners"
-                    :key="partner.name"
-                >
-                    <AgentDealShare
-                        v-if="partner.name"
-                        :agent-name="partner.name"
-                        :agent-share-percentage="partner.shared_percentage || 0"
-                    />
-                </div>
-            </div>
+        <div class="text-gray-700">
+            <AgentDealShare
+                :agent-name="props.deal.agent!.name"
+                :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
+            />
 
             <div
-                class="mb-8 space-y-4"
-                v-for="(partner, index) in form.partners"
+                v-for="partner in form.partners"
+                :key="partner.name"
             >
-                <div>
-                    <div class="flex justify-between">
-                        <InputLabel
-                            for="partner"
-                            :value="'Partner ' + (index + 1)"
-                            required
-                        />
+                <AgentDealShare
+                    v-if="partner.name"
+                    :agent-name="partner.name"
+                    :agent-share-percentage="partner.shared_percentage || 0"
+                />
+            </div>
+        </div>
 
-                        <TrashIcon
-                            class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-100 hover:text-black"
-                            @click="() => removePartner(index)"
-                        />
-                    </div>
-
-                    <Select
-                        :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
-                        v-model="partner.name"
-                        @update:model-value="(newName: string) => handlePartnerSelection(newName, index)"
-                        no-options-text="All available Agents are already involved..."
-                    />
-
-                    <InputError
-                        class="mt-2"
-                        :message="(form.errors as Record<string, string>)[`partners.${index}.id`]"
-                    />
-                </div>
-                <div>
+        <div
+            class="mb-8 space-y-4"
+            v-for="(partner, index) in form.partners"
+        >
+            <div>
+                <div class="flex justify-between">
                     <InputLabel
-                        for="shared_percentage"
-                        value="Shared Percentage"
+                        for="partner"
+                        :value="'Partner ' + (index + 1)"
                         required
                     />
 
-                    <PercentageInput
-                        v-model="partner.shared_percentage"
-                        :maximum="100"
-                        @update:model-value="(newValue) => handlePercentageChange(newValue, index)"
-                    />
-
-                    <InputError
-                        class="mt-2"
-                        :message="(form.errors as Record<string, string>)[`partners.${index}.shared_percentage`]"
+                    <TrashIcon
+                        class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-100 hover:text-black"
+                        @click="() => removePartner(index)"
                     />
                 </div>
-            </div>
 
-            <SecondaryButton
-                @click.prevent="addPartner"
-                text="+ Add Partner"
-            />
+                <Select
+                    :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
+                    v-model="partner.name"
+                    @update:model-value="(newName: string) => handlePartnerSelection(newName, index)"
+                    no-options-text="All available Agents are already involved..."
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="(form.errors as Record<string, string>)[`partners.${index}.id`]"
+                />
+            </div>
+            <div>
+                <InputLabel
+                    for="shared_percentage"
+                    value="Shared Percentage"
+                    required
+                />
+
+                <PercentageInput
+                    v-model="partner.shared_percentage"
+                    :maximum="100"
+                    @update:model-value="(newValue) => handlePercentageChange(newValue, index)"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="(form.errors as Record<string, string>)[`partners.${index}.shared_percentage`]"
+                />
+            </div>
         </div>
+
+        <SecondaryButton
+            @click.prevent="addPartner"
+            text="+ Add Partner"
+        />
     </SlideOver>
 </template>

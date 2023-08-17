@@ -28,7 +28,7 @@ const selected = (option: RadioCardOption) =>
 <template>
     <RadioGroup v-on:update:model-value="$emit('radio-clicked', currentOption.title)">
         <RadioGroupLabel class="block text-sm font-medium text-gray-700">{{ props.label }}</RadioGroupLabel>
-        <div class="mt-4 flex gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+        <div class="flex gap-y-6 sm:grid-cols-3 sm:gap-x-4">
             <RadioGroupOption
                 as="template"
                 v-for="option in props.options"

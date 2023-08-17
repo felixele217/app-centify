@@ -86,84 +86,82 @@ function submit() {
                 : 'Create a new Agent for your Organization.'
         "
     >
-        <div class="space-y-6 px-6 pb-5 pt-6">
-            <div class="leading-6">
+        <div class="leading-6">
+            <InputLabel
+                for="name"
+                value="Full Name"
+                required
+            />
+
+            <TextInput
+                type="text"
+                v-model="form.name"
+                name="name"
+            />
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.name"
+            />
+        </div>
+        <div>
+            <div class="flex gap-1">
                 <InputLabel
-                    for="name"
-                    value="Full Name"
+                    for="email"
+                    value="Work Email"
                     required
                 />
 
-                <TextInput
-                    type="text"
-                    v-model="form.name"
-                    name="name"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.name"
+                <InfoIcon
+                    hover-text="This email will be used to synchronize agent data from your integrations.
+                Make sure it matches the mail of the agent in your CRM system."
                 />
             </div>
-            <div>
-                <div class="flex gap-1">
-                    <InputLabel
-                        for="email"
-                        value="Work Email"
-                        required
-                    />
 
-                    <InfoIcon
-                        hover-text="This email will be used to synchronize agent data from your integrations.
-                    Make sure it matches the mail of the agent in your CRM system."
-                    />
-                </div>
+            <TextInput
+                id="email"
+                type="text"
+                v-model="form.email"
+                name="email"
+            />
 
-                <TextInput
-                    id="email"
-                    type="text"
-                    v-model="form.email"
-                    name="email"
-                />
+            <InputError
+                class="mt-2"
+                :message="form.errors.email"
+            />
+        </div>
+        <div>
+            <InputLabel
+                for="base_salary"
+                value="Annual Base Salary"
+                required
+            />
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.email"
-                />
-            </div>
-            <div>
+            <CurrencyInput v-model="form.base_salary" />
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.base_salary"
+            />
+        </div>
+        <div>
+            <div class="flex gap-1">
                 <InputLabel
-                    for="base_salary"
-                    value="Annual Base Salary"
+                    for="on_target_earning"
+                    value="Annual On Target Earning (OTE)"
                     required
                 />
 
-                <CurrencyInput v-model="form.base_salary" />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.base_salary"
+                <InfoIcon
+                    hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
                 />
             </div>
-            <div>
-                <div class="flex gap-1">
-                    <InputLabel
-                        for="on_target_earning"
-                        value="Annual On Target Earning (OTE)"
-                        required
-                    />
+            <CurrencyInput v-model="form.on_target_earning" />
 
-                    <InfoIcon
-                        hover-text="On-target earning (OTE) is the expected total pay, including base salary and variable salary, if performance targets are met."
-                    />
-                </div>
-                <CurrencyInput v-model="form.on_target_earning" />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.on_target_earning"
-                />
-            </div>
+            <InputError
+                class="mt-2"
+                :message="form.errors.on_target_earning"
+            />
         </div>
     </SlideOver>
 </template>

@@ -13,6 +13,7 @@ import notify from '@/utils/notify'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import ManageAgentPlansSlideOver from './ManageAgentPlansSlideOver.vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 
 const props = defineProps<{
@@ -29,41 +30,50 @@ function deleteAgent(agentId: number): void {
     })
 }
 
-function closeModal(): void {
-    isOpen.value = false
+function closeSlideOver() {
+    isUpsertingAgent.value = false
+    isManagingAgentPlans.value = false
     agentBeingEdited.value = undefined
 }
 
-function color(status: AgentStatusEnum) {
-    switch (status) {
-        case 'active':
-            return 'green'
-        case 'sick':
-            return 'purple'
-        case 'on vacation':
-            return 'yellow'
+function openSlideOver(agentBeingEditedParam: Agent, modal: 'upsert-agent' | 'manage-agent-plans') {
+    agentBeingEdited.value = agentBeingEditedParam
+
+    if (modal === 'upsert-agent') {
+        isUpsertingAgent.value = true
+    } else {
+        isManagingAgentPlans.value = true
     }
 }
 
-const isOpen = ref(false)
+const isUpsertingAgent = ref(false)
+const isManagingAgentPlans = ref(false)
+
 const agentIdBeingDeleted = ref<number | null>()
 const agentBeingEdited = ref<Agent>()
 </script>
 
 <template>
     <upsert-agent-slide-over
-        @close-slide-over="closeModal"
-        :is-open="!!(isOpen || agentBeingEdited)"
-        dusk="slide-over-modal"
+        @close-slide-over="closeSlideOver"
+        :is-open="!!isUpsertingAgent"
+        dusk="upsert-agent-slide-over-modal"
         :agent="agentBeingEdited"
         :possible-statuses="props.possibleStatuses"
+    />
+
+    <ManageAgentPlansSlideOver
+        @close-slide-over="closeSlideOver"
+        :is-open="!!isManagingAgentPlans"
+        dusk="manage-agent-plans-slide-over-modal"
+        :agent="agentBeingEdited"
     />
 
     <page-header
         title="Agents"
         description="Overview of all your agents."
         button-text="Create Agent"
-        @button-clicked="isOpen = true"
+        @button-clicked="isUpsertingAgent = true"
     />
 
     <TableWrapper :no-items-text="props.agents.length ? undefined : 'You have no agents yet.'">
@@ -121,7 +131,10 @@ const agentBeingEdited = ref<Agent>()
 
                         <HideInProduction>
                             <div>
-                                <PencilSquareIcon class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black" />
+                                <PencilSquareIcon
+                                    class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black"
+                                    @click="openSlideOver(agent, 'manage-agent-plans')"
+                                />
                             </div>
                         </HideInProduction>
                     </div>
@@ -129,6 +142,7 @@ const agentBeingEdited = ref<Agent>()
                     <HideInProduction v-else>
                         <SecondaryButton
                             class="h-7 text-xs"
+                            @click="openSlideOver(agent, 'manage-agent-plans')"
                             text="+ Add Plan"
                         />
                     </HideInProduction>
@@ -152,7 +166,7 @@ const agentBeingEdited = ref<Agent>()
                 </td>
                 <td class="absolute lg:table-cell">
                     <EditAndDeleteOptions
-                        @edit-action="agentBeingEdited = agent"
+                        @edit-action="openSlideOver(agent, 'upsert-agent')"
                         @delete-action="agentIdBeingDeleted = agent.id"
                         relative-table-style="relative -mt-0.75 top-8 right-8"
                     />
