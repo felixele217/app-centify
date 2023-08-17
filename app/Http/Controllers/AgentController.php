@@ -20,7 +20,7 @@ class AgentController extends Controller
     public function index(): Response
     {
         return Inertia::render('Agent/Index', [
-            'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get()->append('active_plans_names'),
+            'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get()->append('active_plans'),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
             'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
         ]);

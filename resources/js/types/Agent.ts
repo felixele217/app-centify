@@ -22,5 +22,8 @@ export default interface Agent {
     organization: Organization
     organization_id: number
     paid_leaves: Array<PaidLeave>
-    active_plans_names?: Array<string>
+    active_plans?: Array<{
+        id: number
+        name: string
+    }>
 }

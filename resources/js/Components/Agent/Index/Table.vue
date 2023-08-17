@@ -125,10 +125,10 @@ const agentBeingEdited = ref<Agent>()
 
                 <td class="whitespace-pre-wrap px-3 py-5 text-sm text-gray-500">
                     <div
-                        v-if="agent.active_plans_names?.length"
+                        v-if="agent.active_plans?.length"
                         class="flex items-center gap-2"
                     >
-                        <p>{{ agent.active_plans_names!.join('\n') }}</p>
+                        <p>{{ agent.active_plans!.map((activePlan) => activePlan.name).join('\n') }}</p>
 
                         <HideInProduction>
                             <div>

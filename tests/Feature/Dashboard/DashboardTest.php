@@ -31,7 +31,7 @@ it('passes the correct props', function () {
                 ->component('Dashboard')
                 ->has('agents', $agentCount)
                 ->has('agents.1.deals')
-                ->has('agents.1.active_plans_names')
+                ->has('agents.1.active_plans')
                 ->has('agents.1.quota_attainment')
                 ->has('agents.1.quota_attainment_change')
                 ->has('agents.1.commission')

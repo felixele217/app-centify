@@ -74,6 +74,6 @@ function submit() {
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <p v-for="active_plan_name in props.agent?.active_plans_names">{{ active_plan_name }}</p>
+        <p v-for="active_plan in props.agent?.active_plans">{{ active_plan.name }}</p>
     </SlideOver>
 </template>
