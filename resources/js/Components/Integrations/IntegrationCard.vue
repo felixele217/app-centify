@@ -63,6 +63,7 @@ const props = defineProps<{
                 <SyncOrConnectIntegration
                     :integration-name="props.integrationName"
                     :active-integration="props.activeIntegration"
+                    :redirect-url="route('integrations.index')"
                 />
             </div>
         </div>

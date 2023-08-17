@@ -6,6 +6,7 @@ import SyncIntegration from './SyncIntegration.vue'
 const props = defineProps<{
     integrationName: 'pipedrive'
     activeIntegration: Integration | null
+    redirectUrl?: string
 }>()
 </script>
 
@@ -19,5 +20,6 @@ const props = defineProps<{
         v-else
         :integration-name="props.integrationName"
         :active-integration="props.activeIntegration"
+        :redirect-url="props.redirectUrl"
     />
 </template>

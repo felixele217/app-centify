@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import CustomFieldRow from '@/Components/CustomField/CustomFieldRow.vue'
+import SyncIntegration from '@/Components/Integrations/SyncIntegration.vue'
 import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
@@ -55,10 +56,9 @@ const goBack = () => window.history.back()
         <Card class="mt-6 w-3/4">
             <div class="mb-8 flex justify-between">
                 <h3>Your Integration API Keys</h3>
-                <SyncIntegrationButton
-                    text="Test & Sync"
+                <SyncIntegration
                     :redirect-url="route('integrations.index')"
-                    :disabled="hasMissingCustomField(props.integration)"
+                    :active-integration="props.integration"
                     :integrationName="props.integration.name"
                 />
             </div>

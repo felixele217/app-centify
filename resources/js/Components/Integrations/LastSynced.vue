@@ -9,6 +9,6 @@ const props = defineProps<{
 <template>
     <p class="text-right text-xs text-gray-500">
         synced on <br />
-        <span class="font-semibold">{{ props.lastSynced ? formatTime(props.lastSynced) : 'n/a' }}</span>
+        <span class="font-semibold">{{ props.lastSynced ? formatTime(props.lastSynced) : 'never' }}</span>
     </p>
 </template>

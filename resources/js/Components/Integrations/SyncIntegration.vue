@@ -7,8 +7,8 @@ import SyncIntegrationButton from './SyncIntegrationButton.vue'
 const props = defineProps<{
     integrationName: 'pipedrive'
     activeIntegration: Integration
+    redirectUrl?: string
 }>()
-console.log(props.activeIntegration)
 </script>
 
 <template>
@@ -21,6 +21,7 @@ console.log(props.activeIntegration)
         <SyncIntegrationButton
             :disabled="hasMissingCustomField(props.activeIntegration)"
             :integrationName="props.integrationName"
+            :redirect-url="props.redirectUrl"
         />
     </div>
 </template>
