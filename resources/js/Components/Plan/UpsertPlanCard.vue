@@ -27,6 +27,7 @@ import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
+import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
@@ -330,34 +331,46 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Cliff')">
-                        <InputLabel
-                            value="Cliff"
-                            required
-                        />
-
-                        <PercentageInput
-                            v-model="form.cliff.threshold_in_percent"
-                            :maximum="100"
-                        />
-
-                        <InputError
-                            class="mt-2"
-                            :message="(form.errors as Record<string, string>)['cliff.threshold_in_percent'] || (form.errors as Record<string, string>)['cliff.time_scope']"
-                        />
+                        <SectionWithDescription
+                            heading="Cliff"
+                            description="Set a minimum  threshold to qualify for a commission."
+                        >
+                            <div>
+                                <InputLabel
+                                    value="Cliff"
+                                    required
+                                />
+                                <PercentageInput
+                                    v-model="form.cliff.threshold_in_percent"
+                                    :maximum="100"
+                                />
+                                <InputError
+                                    class="mt-2"
+                                    :message="(form.errors as Record<string, string>)['cliff.threshold_in_percent'] || (form.errors as Record<string, string>)['cliff.time_scope']"
+                                />
+                            </div>
+                        </SectionWithDescription>
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Cap')">
-                        <InputLabel
-                            value="Deal Cap"
-                            required
-                        />
+                        <SectionWithDescription
+                            heading="Cap"
+                            description="Cap very high deals to a certain amount."
+                        >
+                            <div>
+                                <InputLabel
+                                    value="Deal Cap"
+                                    required
+                                />
 
-                        <CurrencyInput v-model="form.cap" />
+                                <CurrencyInput v-model="form.cap" />
 
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.cap"
-                        />
+                                <InputError
+                                    class="mt-2"
+                                    :message="form.errors.cap"
+                                />
+                            </div>
+                        </SectionWithDescription>
                     </div>
                 </div>
 
