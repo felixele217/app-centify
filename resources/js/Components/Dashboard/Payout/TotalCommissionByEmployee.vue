@@ -10,6 +10,7 @@ import roundFloat from '@/utils/roundFloat'
 import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { usePage } from '@inertiajs/vue3'
 import ValueChange from './ValueChange.vue'
+import HideInProduction from '@/Components/System/HideInProduction.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -31,13 +32,14 @@ function quotaDisplay(quotaAttainment: number) {
             description="Overview of your agents' performances."
         >
             <template #custom-button>
-                <a
-                    v-if="usePage().props.env !== 'production'"
-                    class="mr-5 rounded-full hover:bg-primary-100 bg-primary-50 p-2"
-                    :href="route('payouts-export')"
-                >
-                    <FolderArrowDownIcon class="h-5 w-5" />
-                </a>
+                <HideInProduction>
+                    <a
+                        class="mr-5 rounded-full hover:bg-primary-100 bg-primary-50 p-2"
+                        :href="route('payouts-export')"
+                    >
+                        <FolderArrowDownIcon class="h-5 w-5" />
+                    </a>
+                </HideInProduction>
                 <Filter />
             </template>
         </PageHeader>

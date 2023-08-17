@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
+import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
+import HideInProduction from '@/Components/System/HideInProduction.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
+import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
@@ -110,7 +113,24 @@ const agentBeingEdited = ref<Agent>()
                 </td>
 
                 <td class="whitespace-pre-wrap px-3 py-5 text-sm text-gray-500">
-                    {{ agent.active_plans_names!.join('\n') }}
+                    <div
+                        v-if="agent.active_plans_names?.length"
+                        class="flex items-center gap-2"
+                    >
+                        <p>{{ agent.active_plans_names!.join('\n') }}</p>
+
+                        <HideInProduction>
+                            <div>
+                                <PencilSquareIcon class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black" />
+                            </div>
+                        </HideInProduction>
+                    </div>
+
+                    <SecondaryButton
+                        class="h-7 text-xs"
+                        v-else
+                        text="+ Add Plan"
+                    />
                 </td>
 
                 <td
