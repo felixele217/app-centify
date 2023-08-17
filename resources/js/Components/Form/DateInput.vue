@@ -42,6 +42,7 @@ const dropdownIsOpen = ref(false)
         <template #trigger>
             <TextInput
                 readonly
+                @keyup.enter="dropdownIsOpen = true"
                 class="hover:cursor-pointer focus:outline-transparent"
                 :class="props.currentDate ? 'text-gray-900' : 'text-gray-300'"
                 :model-value="props.currentDate ? formatDate(props.currentDate) : 'Select a Date...'"

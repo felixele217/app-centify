@@ -261,7 +261,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         />
 
                         <MultiSelect
-                            @agent-clicked="handleAgentSelect"
+                            @option-clicked="handleAgentSelect"
                             :options="props.agents"
                             :selected-ids="form.assigned_agent_ids"
                         />

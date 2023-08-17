@@ -3,6 +3,11 @@ import SelectOption from '@/types/SelectOption'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import DeleteIcon from '../Icon/DeleteIcon.vue'
+import { ref } from 'vue'
+
+const emit = defineEmits<{
+    'option-clicked': [id: number]
+}>()
 
 const props = defineProps<{
     options: Array<SelectOption>
@@ -14,11 +19,24 @@ function isSelected(optionId: number) {
 }
 
 const selectedOptions = () => props.options.filter((option) => props.selectedIds.includes(option.id))
+
+function handleEnter() {
+    const activeElement = document.activeElement as HTMLUListElement
+    const activeDescendantId = activeElement.getAttribute('aria-activeDescendant') as string
+
+    const selectedTitle = document.getElementById(activeDescendantId)?.firstChild?.textContent
+
+    if (selectedTitle) {
+        const selectedId = props.options.filter((option) => option.name === selectedTitle)[0].id
+        emit('option-clicked', selectedId)
+    }
+}
 </script>
 
 <template>
     <Listbox
         as="div"
+        @keyup.enter.prevent="handleEnter"
         multiple
     >
         <div class="relative mt-2">
@@ -46,7 +64,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
                         <DeleteIcon
                             class="h-3.5 w-3.5 text-indigo-50 hover:text-gray-300"
                             version="mark"
-                            @click.stop="$emit('agent-clicked', option.id)"
+                            @click.stop="$emit('option-clicked', option.id)"
                         />
                     </div>
                 </div>
@@ -75,7 +93,7 @@ const selectedOptions = () => props.options.filter((option) => props.selectedIds
                         v-slot="{ active }"
                     >
                         <li
-                            @click="$emit('agent-clicked', option.id)"
+                            @click="$emit('option-clicked', option.id)"
                             :class="[
                                 active ? 'bg-primary text-white' : 'text-gray-900',
                                 'relative cursor-pointer select-none py-2 pl-8 pr-4',
