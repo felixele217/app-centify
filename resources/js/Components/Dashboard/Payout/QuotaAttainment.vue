@@ -28,7 +28,7 @@ const averageAchievedQuotaAttainment = props.agents.length
                 <h2 class="mb-3">All Teams</h2>
                 <div class="flex items-center gap-1">
                     <InfoIcon
-                        placement="left"
+                        placement="bottom"
                         hoverText="This is the target that needs to be achieved until today in order to hit 100%.
                         It changes based on your filter settings."
                         class="max-w-5 whitespace-pre-line text-gray-400"
