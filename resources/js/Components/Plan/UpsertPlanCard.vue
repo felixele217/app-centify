@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
+import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
@@ -17,7 +18,6 @@ import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { UpsertPlanForm } from '@/types/Form/UpsertPlanForm'
 import Plan from '@/types/Plan/Plan'
-import { additionalPlanFieldToDescription } from '@/utils/Descriptions/additionalPlanFieldToDescription'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescription'
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
@@ -27,10 +27,10 @@ import { router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
+import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
-import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
 
 export interface AdditionalField {
     id: number
@@ -120,6 +120,8 @@ function submit() {
 }
 
 function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum>) {
+    option.title = option.title.replace('+ Add ', '') as AdditionalPlanFieldEnum
+
     const includesField = activeAdditionalFields.value.includes(option.title)
 
     if (includesField) {
@@ -303,9 +305,8 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             :options-per-row="3"
                             :options="
                                 AdditionalPlanFieldEnumCases.map((type) => ({
-                                    title: type,
+                                    title: '+ Add ' + type,
                                     selected: activeAdditionalFields.includes(type),
-                                    description: additionalPlanFieldToDescription[type],
                                 }))
                             "
                             @option-clicked="(option: CardOptionsOption<string>) => toggleAdditionalField(option as CardOptionsOption<AdditionalPlanFieldEnum>)"
@@ -320,44 +321,56 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                             @set-type="(type: KickerTypeEnum) => (form.kicker.type = type)"
                             @set-salary-type="(salaryType: SalaryTypeEnum) => (form.kicker.salary_type = salaryType)"
                             @set-threshold-in-percent="
-                                (thresholdInPercent: number) => (form.kicker.threshold_in_percent = thresholdInPercent)
-                            "
+                                    (thresholdInPercent: number) => (form.kicker.threshold_in_percent = thresholdInPercent)
+                                "
                             @set-payout-in-percent="
-                                (payoutInPercent: number) => (form.kicker.payout_in_percent = payoutInPercent)
-                            "
+                                    (payoutInPercent: number) => (form.kicker.payout_in_percent = payoutInPercent)
+                                "
                             :errors="form.errors"
                         />
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Cliff')">
-                        <InputLabel
-                            value="Cliff"
-                            required
-                        />
-
-                        <PercentageInput
-                            v-model="form.cliff.threshold_in_percent"
-                            :maximum="100"
-                        />
-
-                        <InputError
-                            class="mt-2"
-                            :message="(form.errors as Record<string, string>)['cliff.threshold_in_percent'] || (form.errors as Record<string, string>)['cliff.time_scope']"
-                        />
+                        <SectionWithDescription
+                            heading="Cliff"
+                            description="Set a minimum  threshold to qualify for a commission."
+                        >
+                            <div>
+                                <InputLabel
+                                    value="Cliff"
+                                    required
+                                />
+                                <PercentageInput
+                                    v-model="form.cliff.threshold_in_percent"
+                                    :maximum="100"
+                                />
+                                <InputError
+                                    class="mt-2"
+                                    :message="(form.errors as Record<string, string>)['cliff.threshold_in_percent'] || (form.errors as Record<string, string>)['cliff.time_scope']"
+                                />
+                            </div>
+                        </SectionWithDescription>
                     </div>
 
                     <div v-if="activeAdditionalFields.includes('Cap')">
-                        <InputLabel
-                            value="Deal Cap"
-                            required
-                        />
+                        <SectionWithDescription
+                            heading="Cap"
+                            description="Cap very high deals to a certain amount."
+                        >
+                            <div>
+                                <InputLabel
+                                    value="Deal Cap"
+                                    required
+                                />
 
-                        <CurrencyInput v-model="form.cap" />
+                                <CurrencyInput v-model="form.cap" />
 
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.cap"
-                        />
+                                <InputError
+                                    class="mt-2"
+                                    :message="form.errors.cap"
+                                />
+                            </div>
+                        </SectionWithDescription>
                     </div>
                 </div>
 

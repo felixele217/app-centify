@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import Tooltip from './Tooltip.vue'
-
-const requiredTailwindDeclarations = 'sm:grid-cols-5 sm:grid-cols-4 sm:grid-cols-3'
-
 export type CardOptionsOption<T = string> = {
     title: T
     description?: string
@@ -21,10 +17,8 @@ const props = defineProps<{
 
 <template>
     <div :class="[`grid grid-cols-1 sm:grid-cols-${props.optionsPerRow || '3'}`, 'mt-2 gap-y-6 sm:gap-x-4']">
-        <Tooltip
-            :text="option.description || ''"
+        <div
             v-for="option in props.options"
-            placement="top"
             class="whitespace-pre-wrap"
         >
             <div
@@ -43,6 +37,6 @@ const props = defineProps<{
                     </p>
                 </span>
             </div>
-        </Tooltip>
+        </div>
     </div>
 </template>

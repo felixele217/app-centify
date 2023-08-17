@@ -161,12 +161,14 @@ const handleBlur = () => setTimeout(() => {
     <p class="col-span-4 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
-            class="flex cursor-pointer items-center gap-1.5 hover:text-black"
+            class="flex cursor-pointer items-center gap-1.5 break-words hover:text-black"
             @click="dealIdOfNoteBeingEdited = props.deal.id"
         >
             <p class="line-clamp-2">{{ props.deal.note ?? 'Add Note' }}</p>
 
-            <PencilSquareIcon class="h-4 w-4" />
+            <div>
+                <PencilSquareIcon class="h-4 w-4" />
+            </div>
         </div>
 
         <div
