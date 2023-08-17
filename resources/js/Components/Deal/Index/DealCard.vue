@@ -71,7 +71,10 @@ function updateDeal(body: any) {
                 dealIdBeingAccepted.value = null
             }
         },
-        onFinish: () => isUpdatingDeal.value = false
+        onFinish: () => {
+            isUpdatingDeal.value = false
+            noteText.value = ''
+        }
     })
 }
 
