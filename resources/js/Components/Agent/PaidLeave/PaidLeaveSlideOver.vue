@@ -27,7 +27,7 @@ const form = useForm({
     reason: props.reason as AgentStatusEnum,
     start_date: null as Date | null,
     end_date: null as Date | null,
-    continuation_of_pay_time_scope: '' as ContinuationOfPayTimeScopeEnum | '',
+    continuation_of_pay_time_scope: 'last quarter' as ContinuationOfPayTimeScopeEnum,
     sum_of_commissions: null,
     employed_28_or_more_days: true,
 })

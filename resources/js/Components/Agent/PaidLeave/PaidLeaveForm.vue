@@ -23,7 +23,7 @@ const props = defineProps<{
         reason: AgentStatusEnum
         start_date: Date | null
         end_date: Date | null
-        continuation_of_pay_time_scope: ContinuationOfPayTimeScopeEnum | ''
+        continuation_of_pay_time_scope: ContinuationOfPayTimeScopeEnum
         sum_of_commissions: number | null
         employed_28_or_more_days: boolean
     }>
@@ -33,17 +33,6 @@ const props = defineProps<{
 defineEmits<{
     'deleted-paid-leave': []
 }>()
-
-watch(
-    () => props.form.reason,
-    async (reason: AgentStatusEnum) => {
-        if (reason === 'on vacation') {
-            props.form.continuation_of_pay_time_scope = 'last quarter'
-        } else {
-            props.form.continuation_of_pay_time_scope = ''
-        }
-    }
-)
 
 const continuationOfPayTimeScopeOptions = usePage().props
     .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
@@ -138,17 +127,11 @@ function agentPaidLeaveRanges() {
             <div class="flex items-center gap-1">
                 <InputLabel
                     value="Continuation of pay based on.."
-                    :required="props.form.reason === 'on vacation'"
-                />
-
-                <InfoIcon
-                    hover-text="The law prescribes the earned commission of the last quarter as basis."
-                    v-if="props.form.reason === 'on vacation'"
+                    required
                 />
 
                 <InfoIcon
                     hover-text="You have to select a basis for the calculation as the law does not directly prescribe what to do."
-                    v-else
                 />
             </div>
 
@@ -159,7 +142,6 @@ function agentPaidLeaveRanges() {
                         continuationOfPayTimeScopeToDescription
                     )
                 "
-                :disabled="props.form.reason === 'on vacation'"
                 v-model="props.form.continuation_of_pay_time_scope"
             />
 
