@@ -164,18 +164,18 @@ jobs:
     #               DB_DATABASE: database/database.sqlite
     #           run: vendor/bin/pest --group=staging
 
-    # deploy-to-production:
-    #     needs: staging-tests
-    #     runs-on: ubuntu-latest
+    deploy-to-production:
+        needs: staging-tests
+        runs-on: ubuntu-latest
 
-    #     steps:
-    #         - name: Deploy to Production Environment
-    #           uses: jbrooksuk/laravel-forge-action@v1.0.2
-    #           with:
-    #               trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
+        steps:
+            - name: Deploy to Production Environment
+              uses: jbrooksuk/laravel-forge-action@v1.0.2
+              with:
+                  trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
 
     slack-notification:
-        # needs: deploy-to-production
+        needs: deploy-to-production
         runs-on: ubuntu-latest
         steps:
             - name: Set up Node.js v16
