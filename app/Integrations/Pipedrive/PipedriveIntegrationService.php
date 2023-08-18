@@ -47,12 +47,6 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         $deals = $this->pipedriveClient->deals();
 
-        // foreach ($deals as $deal) {
-        //     if ($deal['status'] === 'won') {
-        //         dd($deal);
-        //     }
-        // }
-
         $agentDeals = [];
 
         foreach ($this->organization->agents as $agent) {
@@ -62,29 +56,11 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         return $agentDeals;
     }
 
-    // private function agentEmails(array $deals): array
-    // {
-    //     $agentEmails = [];
-
-    //     foreach ($deals as $deal) {
-    //         $email = PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey);
-
-    //         if ($email && ! in_array($email, $agentEmails)) {
-    //             array_push($agentEmails, $email);
-    //         }
-    //     }
-
-    //     return $agentEmails;
-    // }
-
     public function dealsForAgent(Agent $agent, array $deals): array
     {
         return [
             $agent->email => collect($deals)
                 ->filter(function (array $deal) use ($agent) {
-                    //    foreach ($agent->plans()->active()->get() as $plan) {
-
-                    //    }
                     if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEAL_WON->value) {
                         return $agent->email === PipedriveHelper::ownerEmail($deal);
                     }
