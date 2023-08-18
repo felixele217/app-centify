@@ -6,6 +6,7 @@ namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
+use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
 use App\Helper\DateHelper;
@@ -46,36 +47,53 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         $deals = $this->pipedriveClient->deals();
 
+        // foreach ($deals as $deal) {
+        //     if ($deal['status'] === 'won') {
+        //         dd($deal);
+        //     }
+        // }
+
         $agentDeals = [];
 
-        foreach ($this->agentEmails($deals) as $email) {
-            array_push($agentDeals, $this->dealsForAgent($email, $deals));
+        foreach ($this->organization->agents as $agent) {
+            array_push($agentDeals, $this->dealsForAgent($agent, $deals));
         }
 
         return $agentDeals;
     }
 
-    private function agentEmails(array $deals): array
-    {
-        $agentEmails = [];
+    // private function agentEmails(array $deals): array
+    // {
+    //     $agentEmails = [];
 
-        foreach ($deals as $deal) {
-            $email = PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey);
+    //     foreach ($deals as $deal) {
+    //         $email = PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey);
 
-            if ($email && ! in_array($email, $agentEmails)) {
-                array_push($agentEmails, $email);
-            }
-        }
+    //         if ($email && ! in_array($email, $agentEmails)) {
+    //             array_push($agentEmails, $email);
+    //         }
+    //     }
 
-        return $agentEmails;
-    }
+    //     return $agentEmails;
+    // }
 
-    public function dealsForAgent(string $agentEmail, array $deals): array
+    public function dealsForAgent(Agent $agent, array $deals): array
     {
         return [
-            $agentEmail => collect($deals)
-                ->filter(function (array $deal) use ($agentEmail) {
-                    return $agentEmail === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
+            $agent->email => collect($deals)
+                ->filter(function (array $deal) use ($agent) {
+                    //    foreach ($agent->plans()->active()->get() as $plan) {
+
+                    //    }
+                    if ($agent->plans()->active()->first()->trigger->value === TriggerEnum::DEAL_WON->value) {
+                        return $agent->email === PipedriveHelper::ownerEmail($deal);
+                    }
+
+                    if ($agent->plans()->active()->first()->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
+                        return $agent->email === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
+                    }
+
+                    return false;
                 })
                 ->map(function (array $deal) {
                     return array_filter([

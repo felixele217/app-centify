@@ -275,20 +275,8 @@ class PipedriveClientDummy
                 'person_id' => [
                     'active_flag' => true,
                     'name' => 'Cora Santiago',
-                    'email' => [
-                        0 => [
-                            'label' => 'work',
-                            'value' => 'cora.santiago@lvie.com',
-                            'primary' => true,
-                        ],
-                    ],
-                    'phone' => [
-                        0 => [
-                            'label' => 'work',
-                            'value' => '862-252-9773',
-                            'primary' => true,
-                        ],
-                    ],
+                    'email' => 'cora.santiago@lvie.com',
+                    'phone' => '862-252-9773',
                     'owner_id' => 17524624,
                     'value' => 5,
                 ],

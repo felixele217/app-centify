@@ -24,6 +24,13 @@ class PipedriveHelper
         : $deal[$demoSetByApiKey]['email'][0]['value'];
     }
 
+    public static function ownerEmail(array $deal): string
+    {
+        return gettype($deal['person_id']['email']) === 'string'
+            ? $deal['person_id']['email']
+            : $deal['person_id']['email'][0]['value'];
+    }
+
     public static function organizationSubdomain(array $deal): string
     {
         return strtok($deal['org_id']['cc_email'], '@');
