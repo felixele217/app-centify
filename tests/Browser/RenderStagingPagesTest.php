@@ -8,8 +8,11 @@ use Database\Seeders\TestDataSeeder;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class StagingTest extends DuskTestCase
+class RenderStagingPagesTest extends DuskTestCase
 {
+    /**
+     * @group staging
+     */
     public function testUserCanLogin(): void
     {
         $this->browse(function (Browser $browser) {

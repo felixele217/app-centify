@@ -77,7 +77,7 @@ jobs:
             - name: Run Laravel Server
               run: php artisan serve --no-reload &
             - name: Run Dusk Tests
-              run: php artisan dusk
+              run: php artisan dusk --exclude-group staging
             - name: Upload Screenshots
               if: failure()
               uses: actions/upload-artifact@v2
@@ -245,7 +245,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Slack Notification
-              if: failure()
               uses: rtCamp/action-slack-notify@v2
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
