@@ -85,11 +85,11 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     //    foreach ($agent->plans()->active()->get() as $plan) {
 
                     //    }
-                    if ($agent->plans()->active()->first()->trigger->value === TriggerEnum::DEAL_WON->value) {
+                    if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEAL_WON->value) {
                         return $agent->email === PipedriveHelper::ownerEmail($deal);
                     }
 
-                    if ($agent->plans()->active()->first()->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
+                    if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
                         return $agent->email === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
                     }
 
