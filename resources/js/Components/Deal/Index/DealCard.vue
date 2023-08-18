@@ -74,7 +74,7 @@ function updateDeal(body: any) {
         onFinish: () => {
             isUpdatingDeal.value = false
             noteText.value = props.deal.note ?? ''
-        }
+        },
     })
 }
 
@@ -109,11 +109,12 @@ const rejectionForm = useForm({
 
 const isSplittingDeal = ref<boolean>(false)
 
-const handleBlur = () => setTimeout(() => {
-    if (!isUpdatingDeal.value) {
-        dealIdOfNoteBeingEdited.value = undefined
-    }
-    }, 100 )
+const handleBlur = () =>
+    setTimeout(() => {
+        if (!isUpdatingDeal.value) {
+            dealIdOfNoteBeingEdited.value = undefined
+        }
+    }, 100)
 </script>
 
 <template>
@@ -158,7 +159,7 @@ const handleBlur = () => setTimeout(() => {
         {{ attributionPeriod(props.deal.add_time) }}
     </td>
 
-    <p class="col-span-4 px-3 py-4 text-gray-500">
+    <td class="col-span-4 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
             class="flex cursor-pointer items-center gap-1.5 break-words hover:text-black"
@@ -189,9 +190,9 @@ const handleBlur = () => setTimeout(() => {
                 @click="updateDealNote"
             />
         </div>
-    </p>
+    </td>
 
-    <td class="px-3">
+    <td class="mr-10 px-3 2xl:mr-0">
         <DealStatus
             :deal="deal"
             @accepted="(id: number) => dealIdBeingAccepted = id"

@@ -10,7 +10,6 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Plan;
-use Illuminate\Support\Facades\Auth;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
