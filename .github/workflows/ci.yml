@@ -235,10 +235,11 @@ jobs:
         needs:
             [
                 backend-tests,
-                frontend-tests,
+                local-frontend-tests,
                 deploy-to-staging,
                 wait-for-staging-deployment-to-finish,
                 staging-tests,
+                staging-frontend-tests,
                 deploy-to-production,
             ]
         runs-on: ubuntu-latest
