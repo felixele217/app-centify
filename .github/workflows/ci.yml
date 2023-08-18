@@ -228,7 +228,7 @@ jobs:
                   trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
 
     slack-notification:
-        if: always() && (failure() || cancelled())
+        if: always() && (needs.deploy-to-production.result == 'failure' || needs.deploy-to-production.result == 'cancelled')
         needs:
             [
                 backend-tests,
@@ -245,4 +245,5 @@ jobs:
               uses: rtCamp/action-slack-notify@v2
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+                  SLACK_COLOR: #dc2626
                   MSG_MINIMAL: actions url, commit
