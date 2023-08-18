@@ -10,7 +10,7 @@ use App\Models\Plan;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class RenderPagesTest extends DuskTestCase
+class RenderLocalPagesTest extends DuskTestCase
 {
     public function testRenderLogin(): void
     {

@@ -37,7 +37,7 @@ jobs:
                   DB_DATABASE: database/database.sqlite
               run: vendor/bin/pest --group=feature,unit,architecture,integration
 
-    frontend-tests:
+    local-frontend-tests:
         runs-on: ubuntu-latest
         env:
             LARAVEL_BYPASS_ENV_CHECK: 1
@@ -92,7 +92,7 @@ jobs:
                   path: tests/Browser/console
 
     deploy-to-staging:
-        needs: [backend-tests, frontend-tests]
+        needs: [backend-tests, local-frontend-tests]
         runs-on: ubuntu-latest
 
         steps:
@@ -164,6 +164,62 @@ jobs:
                   DB_DATABASE: database/database.sqlite
               run: vendor/bin/pest --group=staging
 
+    staging-frontend-tests:
+        runs-on: ubuntu-latest
+        needs: wait-for-staging-deployment-to-finish
+
+        env:
+            LARAVEL_BYPASS_ENV_CHECK: 1
+        steps:
+            - uses: actions/checkout@v3
+            - name: Setup PHP with tools
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.2'
+            - name: Copy .env
+              run: php -r "file_exists('.env') || copy('.env.dusk.actions', '.env');"
+            - name: Create Database
+              run: |
+                  set -a
+                  . ./.env
+                  set +a
+                  sudo systemctl start mysql
+                  mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" -e "CREATE DATABASE \`$DB_DATABASE\` character set UTF8mb4 collate utf8mb4_bin;"
+            - name: Install Composer Dependencies
+              run: composer install --no-progress --prefer-dist --optimize-autoloader
+            - name: Generate Application Key
+              run: php artisan key:generate
+            - name: Upgrade Chrome Driver
+              run: php artisan dusk:chrome-driver --detect
+            - name: Start Chrome Driver
+              run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+
+            - name: Install Node.js dependencies
+              run: npm ci
+
+            - name: Build frontend assets with Vite
+              run: npm run build
+
+            - name: Run Vitests
+              run: npm run test
+
+            - name: Run Laravel Server
+              run: php artisan serve --no-reload &
+            - name: Run Dusk Tests
+              run: php artisan dusk tests/Browser/RenderStagingPagesTest.php
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                  name: screenshots
+                  path: tests/Browser/screenshots
+            - name: Upload Console Logs
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                  name: console
+                  path: tests/Browser/console
+
     deploy-to-production:
         needs: staging-tests
         runs-on: ubuntu-latest
@@ -175,7 +231,16 @@ jobs:
                   trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
 
     slack-notification:
-        needs: deploy-to-production
+        if: always() && (failure() || cancelled())
+        needs:
+            [
+                backend-tests,
+                frontend-tests,
+                deploy-to-staging,
+                wait-for-staging-deployment-to-finish,
+                staging-tests,
+                deploy-to-production,
+            ]
         runs-on: ubuntu-latest
         steps:
             - name: Slack Notification
