@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-enum CustomFieldEnum: string
+enum TriggerEnum: string
 {
     case DEMO_SET_BY = 'demo_set_by';
+    case DEAL_WON = 'deal_won';
 }

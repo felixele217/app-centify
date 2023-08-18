@@ -3,6 +3,7 @@ import CustomField from '@/types/CustomField'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
 import customField from '@/utils/CustomField/customField'
+import { customFieldToDescription } from '@/utils/Descriptions/customFieldToDescription'
 import notify from '@/utils/notify'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import { router } from '@inertiajs/vue3'
@@ -77,7 +78,7 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
 
 <template>
     <div class="flex items-center gap-4 rounded-md py-2 text-sm">
-        <p class="whitespace-nowrap">{{ customFieldName }}:</p>
+        <p class="whitespace-nowrap">{{ customFieldName }} {{ customFieldToDescription[customFieldName] }}:</p>
 
         <div
             v-if="!isEditing"

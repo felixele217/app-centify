@@ -16,7 +16,11 @@ const props = defineProps<{
         class="flex items-center justify-between gap-5"
         v-if="props.activeIntegration"
     >
-        <LastSynced :last-synced="props.activeIntegration.last_synced_at ? new Date(props.activeIntegration.last_synced_at) : null" />
+        <LastSynced
+            :last-synced="
+                props.activeIntegration.last_synced_at ? new Date(props.activeIntegration.last_synced_at) : null
+            "
+        />
 
         <SyncIntegrationButton
             :disabled="hasMissingCustomField(props.activeIntegration)"

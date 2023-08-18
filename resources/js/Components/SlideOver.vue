@@ -71,7 +71,7 @@ const props = defineProps<{
                                             </div>
                                         </div>
                                         <div class="grow overflow-y-scroll">
-                                            <div class="space-y-6 px-6 pb-5 pt-3 mt-4">
+                                            <div class="mt-4 space-y-6 px-6 pb-5 pt-3">
                                                 <slot />
                                             </div>
                                         </div>

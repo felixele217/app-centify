@@ -1,16 +1,16 @@
 <?php
 
-use App\Enum\CustomFieldEnum;
-use App\Enum\IntegrationTypeEnum;
-use App\Facades\PipedriveFacade;
+use App\Models\Deal;
+use App\Models\Agent;
 use App\Helper\DateHelper;
+use App\Models\CustomField;
+use App\Models\Integration;
+use App\Enum\CustomFieldEnum;
+use App\Facades\PipedriveFacade;
+use App\Enum\IntegrationTypeEnum;
+use Illuminate\Support\Facades\Auth;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
-use App\Models\Agent;
-use App\Models\CustomField;
-use App\Models\Deal;
-use App\Models\Integration;
-use Illuminate\Support\Facades\Auth;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
@@ -19,6 +19,13 @@ beforeEach(function () {
         'organization_id' => $this->admin->organization->id,
         'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
+
+    // $this->agent = Agent::factory()
+    //     ->ofOrganization($this->admin->organization_id)
+    //     ->has(Plan::factory()->active()->count(1)->state([
+    //         'trigger' =>
+    //     ]))
+    //     ->create()
 
     CustomField::create([
         'name' => CustomFieldEnum::DEMO_SET_BY->value,
@@ -29,7 +36,7 @@ beforeEach(function () {
     $this->pipedriveClient = new PipedriveFacade($this->admin->organization);
 });
 
-it('returns the correct structure for agentDeals', function () {
+it('returns deals where demo set by is set', function () {
     $agentDeals = (new PipedriveIntegrationService($this->admin->organization))->agentDeals();
 
     $firstDeal = $agentDeals[0][array_keys($agentDeals[0])[0]]->first();

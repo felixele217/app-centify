@@ -1,6 +1,6 @@
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import currentScope from '@/utils/Date/currentScope'
 import attributionPeriod from '@/utils/Date/attributionPeriod'
+import currentScope from '@/utils/Date/currentScope'
 import quarter from '@/utils/Date/quarter'
 import { expect, it, test } from 'vitest'
 
