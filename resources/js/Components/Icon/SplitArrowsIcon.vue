@@ -1,16 +1,23 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const fillColor = ref<string>('#64748b')
+
+const changeFillOnHover = (hover: boolean) => (fillColor.value = hover ? '#1e293b' : '#64748b')
+</script>
 
 <template>
-    <div class="h-5 w-5 -rotate-90">
+    <div
+        class="h-5 w-5 -rotate-90"
+        @mouseover="changeFillOnHover(true)"
+        @mouseleave="changeFillOnHover(false)"
+    >
         <svg
-            version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 512 512"
-            style="enable-background: new 0 0 512 512"
-            xml:space="preserve"
-            fill="gray"
+            :fill="fillColor"
         >
             <g>
                 <path
