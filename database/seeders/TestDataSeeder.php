@@ -18,16 +18,20 @@ use Illuminate\Support\Str;
 
 class TestDataSeeder extends Seeder
 {
+    const ADMIN_EMAIL = 'product@centify.de';
+
+    const ADMIN_PASSWORD = 'centify';
+
     public function run(): void
     {
         $admin = Admin::firstOrCreate([
-            'email' => 'product@centify.de',
+            'email' => self::ADMIN_EMAIL,
         ], [
             'name' => 'Alex Dosse',
-            'email' => 'product@centify.de',
+            'email' => self::ADMIN_EMAIL,
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'password' => Hash::make('centify'),
+            'password' => Hash::make(self::ADMIN_PASSWORD),
             'organization_id' => Organization::firstOrCreate([
                 'name' => 'Centify GmbH',
             ])->id,
