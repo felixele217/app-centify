@@ -12,6 +12,24 @@ use Tests\DuskTestCase;
 
 class RenderLocalPagesTest extends DuskTestCase
 {
+    const DASHBOARD_TEXT = 'Total Commission';
+
+    const DEALS_INDEX_TEXT = 'Deals';
+
+    const AGENTS_INDEX_TEXT = 'Agents';
+
+    const INTEGRATIONS_INDEX_TEXT = 'pipedrive';
+
+    const PROFILE_EDIT_TEXT = 'Profile Information';
+
+    const INTEGRATIONS_CUSTOM_FIELDS_INDEX_TEXT = 'Custom Integration Fields';
+
+    const PLANS_INDEX_TEXT = 'Plans';
+
+    const PLANS_CREATE_TEXT = 'Create Quota Attainment Plan';
+
+    const PLANS_EDIT_TEXT = 'Update Quota Attainment Plan';
+
     public function testRenderLogin(): void
     {
         $this->browse(function (Browser $browser) {
@@ -27,16 +45,16 @@ class RenderLocalPagesTest extends DuskTestCase
         $admin = $this->setupDatabase();
 
         $urlsToText = [
-            route('dashboard') => 'Total Commission',
-            route('deals.index') => 'Users',
-            route('agents.index') => 'Dashboard',
-            route('integrations.index') => 'pipedrive',
-            route('profile.edit') => 'Profile Information',
-            route('integrations.custom-fields.index', $admin->organization->integrations->first()) => 'Custom Integration Fields',
+            route('dashboard') => self::DASHBOARD_TEXT,
+            route('deals.index') => self::DEALS_INDEX_TEXT,
+            route('agents.index') => self::AGENTS_INDEX_TEXT,
+            route('integrations.index') => self::INTEGRATIONS_INDEX_TEXT,
+            route('profile.edit') => self::PROFILE_EDIT_TEXT,
+            route('integrations.custom-fields.index', $admin->organization->integrations->first()) => self::INTEGRATIONS_CUSTOM_FIELDS_INDEX_TEXT,
 
-            route('plans.index') => 'Plans',
-            route('plans.create') => 'Create Quota Attainment Plan',
-            route('plans.edit', $admin->organization->plans->first()) => 'Update Quota Attainment Plan',
+            route('plans.index') => self::PLANS_INDEX_TEXT,
+            route('plans.create') => self::PLANS_CREATE_TEXT,
+            route('plans.edit', $admin->organization->plans->first()) => self::PLANS_EDIT_TEXT,
         ];
 
         foreach ($urlsToText as $url => $text) {

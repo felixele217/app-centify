@@ -25,7 +25,13 @@ class RenderStagingPagesTest extends DuskTestCase
                 ->waitForRoute('dashboard')
                 ->assertRouteIs('dashboard');
 
-            $browser->visit('https://staging.centify.de/integrations')->assertSee('pipedrive');
+            $browser->visit('https://staging.centify.de/dashboard')->assertSee(RenderLocalPagesTest::DASHBOARD_TEXT);
+            $browser->visit('https://staging.centify.de/deals')->assertSee(RenderLocalPagesTest::DEALS_INDEX_TEXT);
+            $browser->visit('https://staging.centify.de/agents')->assertSee(RenderLocalPagesTest::AGENTS_INDEX_TEXT);
+            $browser->visit('https://staging.centify.de/integrations')->assertSee(RenderLocalPagesTest::INTEGRATIONS_INDEX_TEXT);
+            $browser->visit('https://staging.centify.de/profile')->assertSee(RenderLocalPagesTest::PROFILE_EDIT_TEXT);
+
+            $browser->visit('https://staging.centify.de/plans')->assertSee(RenderLocalPagesTest::PLANS_INDEX_TEXT);
         });
     }
 }
