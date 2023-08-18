@@ -9,6 +9,7 @@ use App\Enum\PlanCycleEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TargetVariableEnum;
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
@@ -37,6 +38,11 @@ class StorePlanRequest extends FormRequest
             'target_variable' => [
                 'required',
                 new Enum(TargetVariableEnum::class),
+            ],
+
+            'trigger' => [
+                'required',
+                new Enum(TriggerEnum::class),
             ],
 
             'plan_cycle' => [

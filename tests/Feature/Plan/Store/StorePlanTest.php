@@ -1,11 +1,12 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Plan;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use App\Http\Requests\StorePlanRequest;
-use App\Models\Agent;
-use App\Models\Plan;
-use Carbon\Carbon;
 
 it('can store a plan as an admin', function () {
     $admin = signInAdmin();
@@ -19,6 +20,7 @@ it('can store a plan as an admin', function () {
         'target_variable' => $targetVariable = TargetVariableEnum::DEAL_VALUE->value,
         'plan_cycle' => $planCycle = PlanCycleEnum::MONTHLY->value,
         'assigned_agent_ids' => $assignedAgents = $agents->pluck('id')->toArray(),
+        'trigger' => fake()->randomElement(TriggerEnum::cases())->value,
     ])->assertRedirect(route('plans.index'));
 
     expect(Plan::count())->toBe(1);

@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Organization;
 use Carbon\Carbon;
@@ -24,6 +25,7 @@ class PlanFactory extends Factory
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'organization_id' => Organization::factory()->create(),
             'creator_id' => Admin::factory()->create(),
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ];
     }
 

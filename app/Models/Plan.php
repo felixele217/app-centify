@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
+use App\Enum\TriggerEnum;
 use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class Plan extends Model
         'target_variable' => TargetVariableEnum::class,
         'plan_cycle' => PlanCycleEnum::class,
         'start_date' => 'datetime:Y-m-d',
+        'trigger' => TriggerEnum::class,
     ];
 
     public function creator(): BelongsTo

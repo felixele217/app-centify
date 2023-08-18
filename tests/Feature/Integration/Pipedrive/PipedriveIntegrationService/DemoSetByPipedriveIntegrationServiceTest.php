@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\Deal;
+use App\Models\Plan;
 use App\Models\Agent;
+use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\CustomField;
 use App\Models\Integration;
@@ -20,12 +22,12 @@ beforeEach(function () {
         'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
 
-    // $this->agent = Agent::factory()
-    //     ->ofOrganization($this->admin->organization_id)
-    //     ->has(Plan::factory()->active()->count(1)->state([
-    //         'trigger' =>
-    //     ]))
-    //     ->create()
+    $this->agent = Agent::factory()
+        ->ofOrganization($this->admin->organization_id)
+        ->has(Plan::factory()->active()->count(1)->state([
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        ]))
+        ->create();
 
     CustomField::create([
         'name' => CustomFieldEnum::DEMO_SET_BY->value,

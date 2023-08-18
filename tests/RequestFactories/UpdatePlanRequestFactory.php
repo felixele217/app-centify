@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\RequestFactories;
 
+use App\Enum\TriggerEnum;
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
 use Worksome\RequestFactories\RequestFactory;
@@ -19,6 +20,7 @@ class UpdatePlanRequestFactory extends RequestFactory
             'target_variable' => fake()->randomElement(TargetVariableEnum::cases())->value,
             'plan_cycle' => fake()->randomElement(PlanCycleEnum::cases())->value,
             'assigned_agent_ids' => [],
+            'trigger' => fake()->randomElement(TriggerEnum::cases())->value,
         ];
     }
 }

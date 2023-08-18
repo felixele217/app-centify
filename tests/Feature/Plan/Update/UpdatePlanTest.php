@@ -2,6 +2,7 @@
 
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
+use App\Enum\TriggerEnum;
 use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Agent;
 use App\Models\Plan;
@@ -21,6 +22,7 @@ it('can update a plan as an admin', function () {
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'plan_cycle' => $planCycle = fake()->randomElement(PlanCycleEnum::cases())->value,
         'assigned_agent_ids' => [],
+        'trigger' => fake()->randomElement(TriggerEnum::cases())->value,
     ])->assertRedirect(route('plans.index'));
 
     $plan->refresh();

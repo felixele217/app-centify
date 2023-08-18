@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Organization;
@@ -74,6 +75,7 @@ class TestDataSeeder extends Seeder
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'target_amount_per_month' => 35_000_00,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ])->first();
 
         Plan::create([
@@ -85,6 +87,7 @@ class TestDataSeeder extends Seeder
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ])->first();
 
         Plan::create([
@@ -96,6 +99,7 @@ class TestDataSeeder extends Seeder
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'target_amount_per_month' => 15_000_00,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ])->first();
 
         Plan::first()->agents()->attach([
