@@ -30,7 +30,6 @@ class RenderStagingPagesTest extends DuskTestCase
             $browser->visit('https://staging.centify.de/agents')->assertSee(RenderLocalPagesTest::AGENTS_INDEX_TEXT);
             $browser->visit('https://staging.centify.de/integrations')->assertSee(RenderLocalPagesTest::INTEGRATIONS_INDEX_TEXT);
             $browser->visit('https://staging.centify.de/profile')->assertSee(RenderLocalPagesTest::PROFILE_EDIT_TEXT);
-
             $browser->visit('https://staging.centify.de/plans')->assertSee(RenderLocalPagesTest::PLANS_INDEX_TEXT);
         });
     }
