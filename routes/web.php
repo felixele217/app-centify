@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\AgentController;
-use App\Http\Controllers\CommissionExportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealRejectionController;
 use App\Http\Controllers\DeployedVersionController;
 use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PayoutsExportController;
+use App\Http\Controllers\PlanAgentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SplitController;
@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/{plan}', 'update')->name('update');
         Route::delete('/{plan}', 'destroy')->name('destroy');
     });
+
+    Route::put('plans/{plan}/agents', [PlanAgentController::class, 'store'])->name('plans.agents.update');
 
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');

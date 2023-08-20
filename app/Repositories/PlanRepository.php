@@ -86,4 +86,9 @@ class PlanRepository
 
         return $plan;
     }
+
+    public static function addAgent(Plan $plan, int $agentId): void
+    {
+        $plan->agents()->attach($agentId);
+    }
 }
