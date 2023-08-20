@@ -9,6 +9,7 @@ use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Agent;
+use App\Models\Plan;
 use App\Repositories\AgentRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ class AgentController extends Controller
             'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get()->append('active_plans'),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
             'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
+            'plans' => Plan::whereOrganizationId(Auth::user()->organization->id)->select('id', 'name')->get(),
         ]);
     }
 

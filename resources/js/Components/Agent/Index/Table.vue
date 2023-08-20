@@ -8,6 +8,7 @@ import HideInProduction from '@/Components/System/HideInProduction.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import Plan from '@/types/Plan/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
@@ -19,6 +20,7 @@ import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 const props = defineProps<{
     agents: Array<Agent>
     possibleStatuses: Array<AgentStatusEnum>
+    plans: Array<Pick<Plan, 'id' | 'name'>>
 }>()
 
 function deleteAgent(agentId: number): void {
@@ -67,6 +69,7 @@ const agentBeingEdited = ref<Agent>()
         :is-open="!!isManagingAgentPlans"
         dusk="manage-agent-plans-slide-over"
         :agent="agentBeingEdited"
+        :plans="props.plans"
     />
 
     <page-header
