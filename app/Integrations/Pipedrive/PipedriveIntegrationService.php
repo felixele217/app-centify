@@ -65,12 +65,15 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
     private function shouldBeSyncedForThisAgent(Agent $agent, array $integrationDealArray): bool
     {
-        if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEAL_WON->value) {
-            return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray);
-        }
+        foreach ($agent->plans()->active()->get() as $plan) {
+            if ($plan->trigger->value === TriggerEnum::DEAL_WON->value) {
+                return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray);
+            }
 
-        if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
-            return $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey);
+            if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
+                return $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey);
+            }
+
         }
 
         return false;
@@ -101,7 +104,9 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         foreach ($agentDeals as $agentDeal) {
             $email = array_keys($agentDeal)[0];
 
-            $transformedAgentDeals[$email] = $agentDeal[$email];
+            if ($agentDeal[$email]->count()) {
+                $transformedAgentDeals[$email] = $agentDeal[$email];
+            }
         }
 
         return $transformedAgentDeals;

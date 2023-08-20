@@ -57,16 +57,6 @@ it('returns deals in the correct format', function () {
     expect(get_class($dealDTO))->toBe(PipedriveDTO::class);
 });
 
-it('returns no deals if agent has no active plan', function () {
-    $this->agent->plans()->active()->first()->delete();
-    $this->agent2->plans()->active()->first()->delete();
-    $dealsAgent1 = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email];
-    $dealsAgent2 = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent2->email];
-
-    expect(count($dealsAgent1))->toBe(0);
-    expect(count($dealsAgent2))->toBe(0);
-});
-
 it('stores the data properly', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
@@ -121,23 +111,23 @@ it('does not create deal if demo_set_by has no value assigned to it', function (
 
 function expectedDealCount(string $email, array $deals): int
 {
-    return min(emailCount($email, $deals), demoSetByCount($deals));
+    return min(dealsCountWhereDemoSetByAgent($email, $deals), demoSetByCount($deals));
 }
 
-function emailCount($email, $deals): int
+function dealsCountWhereDemoSetByAgent(string $email,array  $deals): int
 {
-    $emailCount = 0;
+    $dealsCountWhereDemoSetByAgent = 0;
 
     foreach ($deals as $deal) {
         if (PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email) {
-            $emailCount++;
+            $dealsCountWhereDemoSetByAgent++;
         }
     }
 
-    return $emailCount;
+    return $dealsCountWhereDemoSetByAgent;
 }
 
-function demoSetByCount($deals): int
+function demoSetByCount(array $deals): int
 {
     $demoSetByCount = 0;
 

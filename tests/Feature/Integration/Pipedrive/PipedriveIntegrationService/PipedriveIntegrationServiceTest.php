@@ -1,33 +1,73 @@
 <?php
 
+use App\Enum\CustomFieldEnum;
+use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
+use App\Enum\TriggerEnum;
 use App\Facades\PipedriveFacade;
+use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
+use App\Models\CustomField;
 use App\Models\Integration;
+use App\Models\Plan;
 
-it('does not throw an error on deals for agent if the agent has no active plan', function () {
-    $admin = signInAdmin();
+beforeEach(function () {
+    $this->admin = signInAdmin();
 
-    Integration::factory()->create([
-        'organization_id' => $admin->organization->id,
+    $integration = Integration::factory()->create([
+        'organization_id' => $this->admin->organization->id,
         'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
 
-    $pipedriveFacade = new PipedriveFacade($admin->organization);
+    CustomField::create([
+        'name' => CustomFieldEnum::DEMO_SET_BY->value,
+        'integration_id' => $integration->id,
+        'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
+    ]);
 
-    $deals = $pipedriveFacade->deals();
+    $this->pipedriveClient = new PipedriveFacade($this->admin->organization);
 
-    $agent = Agent::factory()
-        ->ofOrganization($admin->organization_id)
-        ->create();
+    $this->deals = $this->pipedriveClient->deals();
 
-    $pipedriveIntegrationService = new PipedriveIntegrationService($admin->organization);
+    $this->agent = Agent::factory()
+        ->ofOrganization($this->admin->organization_id)
+        ->create([
+            'email' => PipedriveHelper::ownerEmail($this->deals[3]),
+        ]);
+});
 
-    // TODO hier so die funktion refactoren, dass die $agent->email gar nicht erst gepushed wird.
-    expect($pipedriveIntegrationService->dealsForAgent($agent, $deals)[$agent->email])->toHaveCount(0);
+it('does not throw an error on deals for agent if the agent has no active plan', function () {
+    $pipedriveIntegrationService = new PipedriveIntegrationService($this->admin->organization);
+
+    expect(count($pipedriveIntegrationService->agentDeals($this->deals)))->toBe(0);
 });
 
 it('maps over all plans and not only the first active', function () {
+    $this->agent->plans()->attach([
+        Plan::factory()->active()->create([
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        ])->id,
+        Plan::factory()->active()->create([
+            'trigger' => TriggerEnum::DEAL_WON->value,
+        ])->id,
+    ]);
 
-})->todo();
+    $deals = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email];
+
+    expect(count($deals))->toBe(dealsCount($this->agent->email, $this->deals));
+});
+
+function dealsCount(string $email, array $deals): int
+{
+    $dealsCount = 0;
+
+    foreach ($deals as $deal) {
+        if (PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email
+        || (PipedriveHelper::ownerEmail($deal) === $email && $deal['status'] === DealStatusEnum::WON->value)) {
+            $dealsCount++;
+        }
+    }
+
+    return $dealsCount;
+}
