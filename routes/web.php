@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('plans')->name('plans.agents.')->controller(PlanAgentController::class)->group(function () {
-        Route::post('/{plan}/agents', 'store')->name('store');
-        Route::delete('/{plan}/agents', 'destroy')->name('destroy');
+        Route::post('/{plan}/agents/{agent}', 'store')->name('store');
+        Route::delete('/{plan}/agents/{agent}', 'destroy')->name('destroy');
     });
 
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {

@@ -23,10 +23,12 @@ function agentIsAssignedToPlan(planName: string) {
     return false
 }
 
-function handleUpdate(planId: number) {
-    router.post(route('plans.agents.store', planId), {
-        agent_id: props.agent!.id,
-    })
+function handleStore(planId: number) {
+    router.post(route('plans.agents.store', [planId, agentId]))
+}
+
+function handleDelete(planId: number) {
+    router.delete(route('plans.agents.destroy', [planId, agentId]))
 }
 </script>
 
@@ -41,7 +43,7 @@ function handleUpdate(planId: number) {
             <Checkbox
                 :label="plan.name"
                 :checked="agentIsAssignedToPlan(plan.name)"
-                @update:checked="handleUpdate(plan.id)"
+                @update:checked="agentIsAssignedToPlan(plan.name) ? handleStore() : handleDelete()"
             />
         </p>
     </SlideOver>
