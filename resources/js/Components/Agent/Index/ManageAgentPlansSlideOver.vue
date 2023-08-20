@@ -54,10 +54,7 @@ function handleStore(planId: number) {
         {},
         {
             onSuccess: () => {
-                notify(
-                    'Agent assigned to Plan!',
-                    "You succesfully assigned the agent to the plan. The plan will now affect the agent's' commission calculation."
-                )
+                notify('Agent assigned to Plan!', "The plan will now affect the agent's' commission calculation.")
             },
         }
     )
@@ -66,10 +63,7 @@ function handleStore(planId: number) {
 function handleDelete(planId: number) {
     router.delete(route('plans.agents.destroy', [planId, props.agent!.id]), {
         onSuccess: () => {
-            notify(
-                'Agent removed from Plan!',
-                "You succesfully removed the agent from the plan. The plan no longer affects the agent's' commission calculation."
-            )
+            notify('Agent removed from Plan!', "The plan no longer affects the agent's' commission calculation.")
         },
     })
 }
