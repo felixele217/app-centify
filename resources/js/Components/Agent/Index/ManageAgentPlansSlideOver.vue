@@ -3,6 +3,7 @@ import Checkbox from '@/Components/Form/Checkbox.vue'
 import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
 import Plan from '@/types/Plan/Plan'
+import { router } from '@inertiajs/vue3'
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -22,8 +23,10 @@ function agentIsAssignedToPlan(planName: string) {
     return false
 }
 
-function handleUpdate() {
-    console.log('hallo')
+function handleUpdate(planId: number) {
+    router.post(route('plans.agents.store', planId), {
+        agent_id: props.agent!.id,
+    })
 }
 </script>
 
@@ -38,7 +41,7 @@ function handleUpdate() {
             <Checkbox
                 :label="plan.name"
                 :checked="agentIsAssignedToPlan(plan.name)"
-                @update:checked="handleUpdate()"
+                @update:checked="handleUpdate(plan.id)"
             />
         </p>
     </SlideOver>

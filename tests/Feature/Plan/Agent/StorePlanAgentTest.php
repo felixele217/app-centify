@@ -10,7 +10,7 @@ it('can update a plan when only sending assigned agents', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $this->put(route('plans.agents.update', $plan), [
+    $this->post(route('plans.agents.store', $plan), [
         'agent_id' => Agent::factory()->ofOrganization($admin->organization->id)->create()->id,
     ])->assertRedirect();
 
