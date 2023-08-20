@@ -116,13 +116,6 @@ class Agent extends Authenticatable implements Auditable
         );
     }
 
-    public function activePlansNames(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->plans()->active()->get()->map(fn (Plan $plan) => $plan->name),
-        );
-    }
-
     public function activePlans(): Attribute
     {
         return Attribute::make(
