@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
+use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
@@ -67,13 +68,12 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         foreach ($agent->plans()->active()->get() as $plan) {
             if ($plan->trigger->value === TriggerEnum::DEAL_WON->value) {
-                return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray);
+                return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray) && $integrationDealArray['status'] === DealStatusEnum::WON->value;
             }
 
             if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
                 return $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey);
             }
-
         }
 
         return false;

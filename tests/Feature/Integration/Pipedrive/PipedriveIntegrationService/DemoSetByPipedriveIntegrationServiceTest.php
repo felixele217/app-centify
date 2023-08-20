@@ -86,38 +86,22 @@ it('updates the deal if it already existed and some data changed', function () {
 });
 
 it('does not create the same entry twice', function () {
-    $email = PipedriveHelper::demoSetByEmail($this->deals[0], env('PIPEDRIVE_DEMO_SET_BY'));
-
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($email, $this->deals, TriggerEnum::DEMO_SET_BY));
-});
-
-it('does not create deal if no agent with the pipedrive email exists', function () {
-    $this->agent->delete();
-    $this->agent2->delete();
-
-    (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
-
-    expect(Deal::count())->toBe(0);
+    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SET_BY));
 });
 
 it('does not create deal if demo_set_by has no value assigned to it', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    expect(Deal::count())->toBe(demoSetByCount($this->deals));
-});
+    $allDealsWhereDemoSetByHasAValueCount = 0;
 
-function demoSetByCount(array $deals): int
-{
-    $demoSetByCount = 0;
-
-    foreach ($deals as $deal) {
+    foreach ($this->deals as $deal) {
         if ($deal[env('PIPEDRIVE_DEMO_SET_BY')] !== null) {
-            $demoSetByCount++;
+            $allDealsWhereDemoSetByHasAValueCount++;
         }
     }
 
-    return $demoSetByCount;
-}
+    expect(Deal::count())->toBe($allDealsWhereDemoSetByHasAValueCount);
+});

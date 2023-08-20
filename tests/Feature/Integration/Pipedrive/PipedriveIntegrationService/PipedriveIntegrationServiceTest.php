@@ -1,15 +1,16 @@
 <?php
 
-use App\Enum\CustomFieldEnum;
-use App\Enum\IntegrationTypeEnum;
-use App\Enum\TriggerEnum;
-use App\Facades\PipedriveFacade;
-use App\Integrations\Pipedrive\PipedriveHelper;
-use App\Integrations\Pipedrive\PipedriveIntegrationService;
+use App\Models\Deal;
+use App\Models\Plan;
 use App\Models\Agent;
+use App\Enum\TriggerEnum;
 use App\Models\CustomField;
 use App\Models\Integration;
-use App\Models\Plan;
+use App\Enum\CustomFieldEnum;
+use App\Facades\PipedriveFacade;
+use App\Enum\IntegrationTypeEnum;
+use App\Integrations\Pipedrive\PipedriveHelper;
+use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\AssertionHelper;
 
 beforeEach(function () {
@@ -35,6 +36,14 @@ beforeEach(function () {
         ->create([
             'email' => PipedriveHelper::ownerEmail($this->deals[3]),
         ]);
+});
+
+it('does not create deal if no agent with the pipedrive email exists', function () {
+    $this->agent->delete();
+
+    (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
+
+    expect(Deal::count())->toBe(0);
 });
 
 it('does not throw an error on deals for agent if the agent has no active plan', function () {
