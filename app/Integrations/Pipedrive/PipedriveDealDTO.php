@@ -9,7 +9,7 @@ use App\Enum\IntegrationTypeEnum;
 use App\Helper\DateHelper;
 use Carbon\Carbon;
 
-class PipedriveDTO
+class PipedriveDealDTO
 {
     public int $integration_deal_id;
 

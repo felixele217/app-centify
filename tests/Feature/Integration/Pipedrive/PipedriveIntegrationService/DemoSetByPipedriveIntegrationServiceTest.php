@@ -4,8 +4,7 @@ use App\Enum\CustomFieldEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Facades\PipedriveFacade;
-use App\Helper\DateHelper;
-use App\Integrations\Pipedrive\PipedriveDTO;
+use App\Integrations\Pipedrive\PipedriveDealDTO;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
@@ -54,7 +53,7 @@ beforeEach(function () {
 it('returns deals in the correct format', function () {
     $dealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email][0];
 
-    expect(get_class($dealDTO))->toBe(PipedriveDTO::class);
+    expect(get_class($dealDTO))->toBe(PipedriveDealDTO::class);
 });
 
 it('returns no deals if agent has no active plan', function () {
