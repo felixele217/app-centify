@@ -51,10 +51,20 @@ beforeEach(function () {
         ]);
 });
 
-it('returns deals where demo set by is set in the correct format', function () {
+it('returns deals in the correct format', function () {
     $dealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email][0];
 
     expect(get_class($dealDTO))->toBe(PipedriveDTO::class);
+});
+
+it('returns no deals if agent has no active plan', function () {
+    $this->agent->plans()->active()->first()->delete();
+    $this->agent2->plans()->active()->first()->delete();
+    $dealsAgent1 = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email];
+    $dealsAgent2 = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent2->email];
+
+    expect(count($dealsAgent1))->toBe(0);
+    expect(count($dealsAgent2))->toBe(0);
 });
 
 it('stores the data properly', function () {
