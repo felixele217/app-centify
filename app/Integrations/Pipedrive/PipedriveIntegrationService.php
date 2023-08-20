@@ -60,7 +60,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         return collect($integrationDeals)
             ->filter(fn (array $integrationDealArray) => $this->shouldBeSyncedForThisAgent($agent, $integrationDealArray))
-            ->map(fn (array $integrationDealArray) => new PipedriveDTO($integrationDealArray));
+            ->map(fn (array $integrationDealArray) => new PipedriveDealDTO($integrationDealArray));
     }
 
     private function shouldBeSyncedForThisAgent(Agent $agent, array $integrationDealArray): bool

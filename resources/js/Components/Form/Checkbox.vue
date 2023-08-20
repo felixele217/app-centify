@@ -34,7 +34,7 @@ const proxyChecked = computed({
                 class="cursor-pointer rounded border-gray-300 text-primary shadow-sm focus:ring-primary-hover"
             />
 
-            <p class="-mt-0.5 whitespace-pre-wrap text-sm text-gray-600">{{ props.label }}</p>
+            <p class="-mt-0.5 whitespace-pre-wrap text-sm text-gray-700">{{ props.label }}</p>
         </label>
     </div>
 </template>
