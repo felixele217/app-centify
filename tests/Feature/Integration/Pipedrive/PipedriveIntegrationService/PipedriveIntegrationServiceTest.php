@@ -24,8 +24,7 @@ it('does not throw an error on deals for agent if the agent has no active plan',
 
     $pipedriveIntegrationService = new PipedriveIntegrationService($admin->organization);
 
-    // TODO hier so die funktion refactoren, dass die $agent->email gar nicht erst gepushed wird.
-    expect($pipedriveIntegrationService->dealsForAgent($agent, $deals)[$agent->email])->toHaveCount(0);
+    expect($pipedriveIntegrationService->dealsForAgent($agent, $deals))->toHaveCount(0);
 });
 
 it('maps over all plans and not only the first active', function () {
