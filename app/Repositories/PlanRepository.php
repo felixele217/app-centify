@@ -87,8 +87,13 @@ class PlanRepository
         return $plan;
     }
 
-    public static function addAgent(Plan $plan, int $agentId): void
+    public static function storeAgent(Plan $plan, int $agentId): void
     {
         $plan->agents()->sync($agentId);
+    }
+
+    public static function destroyAgent(Plan $plan, int $agentId): void
+    {
+        $plan->agents()->detach($agentId);
     }
 }

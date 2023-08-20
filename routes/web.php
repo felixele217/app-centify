@@ -35,7 +35,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{plan}', 'destroy')->name('destroy');
     });
 
-    Route::post('plans/{plan}/agents', [PlanAgentController::class, 'store'])->name('plans.agents.store');
+    Route::prefix('plans')->name('plans.agents.')->controller(PlanAgentController::class)->group(function () {
+        Route::post('/{plan}/agents', 'store')->name('store');
+        Route::delete('/{plan}/agents', 'destroy')->name('destroy');
+    });
 
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
