@@ -46,7 +46,6 @@ class PipedriveDTO
             'value' => $this->value,
             'add_time' => $this->add_time,
             'status' => $this->status->value,
-            'owner_email' => 'gc',
         ];
     }
 }

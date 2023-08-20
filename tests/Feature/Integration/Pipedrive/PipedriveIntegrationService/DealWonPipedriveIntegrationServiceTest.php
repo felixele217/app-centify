@@ -44,7 +44,6 @@ beforeEach(function () {
 //         'value',
 //         'add_time',
 //         'status',
-//         'owner_email',
 //     ]);
 // });
 
@@ -58,7 +57,6 @@ beforeEach(function () {
 //     expect($this->agent->deals->first()->title)->toBe($expectedData['title']);
 //     expect($this->agent->deals->first()->value)->toBe($expectedData['value']);
 //     expect($this->agent->deals->first()->status->value)->toBe($expectedData['status']);
-//     expect($this->agent->deals->first()->owner_email)->toBe($expectedData['owner_email']);
 //     expect($this->agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
 //     expect(DateHelper::parsePipedriveTime($expectedData['add_time'])->toDateTimeString())->toBe($this->agent->deals->first()->add_time->toDateTimeString());
 // });

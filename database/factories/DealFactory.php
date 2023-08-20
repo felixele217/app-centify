@@ -20,7 +20,6 @@ class DealFactory extends Factory
             'integration_deal_id' => 1,
             'title' => fake()->word(),
             'status' => fake()->randomElement(DealStatusEnum::cases())->value,
-            'owner_email' => fake()->email(),
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'accepted_at' => null,

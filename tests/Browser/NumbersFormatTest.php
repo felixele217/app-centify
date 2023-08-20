@@ -61,7 +61,6 @@ class NumbersFormatTest extends DuskTestCase
         Deal::factory()->create([
             'value' => 5_000_00,
             'agent_id' => $agent->id,
-            'owner_email' => $agent->email,
             'accepted_at' => Carbon::yesterday(),
         ]);
 
