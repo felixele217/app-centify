@@ -89,6 +89,6 @@ class PlanRepository
 
     public static function addAgent(Plan $plan, int $agentId): void
     {
-        $plan->agents()->attach($agentId);
+        $plan->agents()->sync($agentId);
     }
 }
