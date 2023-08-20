@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
+import Plan from '@/types/Plan/Plan'
 import notify from '@/utils/notify'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
@@ -18,6 +19,7 @@ function closeSlideOver() {
 const props = defineProps<{
     isOpen: boolean
     agent?: Agent
+    plans: Array<Pick<Plan, 'id' | 'name'>>
 }>()
 
 const form = useForm({
@@ -74,6 +76,8 @@ function submit() {
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <p v-for="active_plan in props.agent?.active_plans">{{ active_plan.name }}</p>
+        <p v-for="plan in props.plans">
+            {{ plan.name }}
+        </p>
     </SlideOver>
 </template>

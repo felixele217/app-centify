@@ -24,7 +24,10 @@ it('passes the correct props', function () {
                 ->has('agents', $agents->count())
                 ->has('agents.0.active_paid_leave')
                 ->has('agents.0.active_plans')
-                ->has('plans', $planCount)
+                ->has('plans', $planCount, fn (AssertableInertia $page) => $page
+                    ->has('id')
+                    ->has('name')
+                )
                 ->where('possible_statuses', array_column(AgentStatusEnum::cases(), 'value'))
                 ->where('continuation_of_pay_time_scope_options', array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'))
         );

@@ -24,7 +24,7 @@ class AgentController extends Controller
             'agents' => Agent::with('activePaidLeave')->whereOrganizationId(Auth::user()->organization->id)->get()->append('active_plans'),
             'possible_statuses' => array_column(AgentStatusEnum::cases(), 'value'),
             'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
-            'plans' => Plan::whereOrganizationId(Auth::user()->organization->id)->get()->pluck('name, id'),
+            'plans' => Plan::whereOrganizationId(Auth::user()->organization->id)->select('id', 'name')->get(),
         ]);
     }
 
