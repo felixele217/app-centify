@@ -9,12 +9,12 @@ use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
-use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
 use App\Models\Integration;
 use App\Models\Organization;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class PipedriveIntegrationService implements IntegrationServiceContract
 {
@@ -50,70 +50,60 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $agentDeals = [];
 
         foreach ($this->organization->agents as $agent) {
-            array_push($agentDeals, $this->dealsForAgent($agent, $deals));
+            array_push($agentDeals, [$agent->email => $this->dealsForAgent($agent, $deals)]);
         }
 
-        return $agentDeals;
+        return $this->transformAgentDealsArray($agentDeals);
     }
 
-    public function dealsForAgent(Agent $agent, array $deals): array
+    public function dealsForAgent(Agent $agent, array $integrationDeals): Collection
     {
-        return [
-            $agent->email => collect($deals)
-                ->filter(function (array $deal) use ($agent) {
-                    if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEAL_WON->value) {
-                        return $agent->email === PipedriveHelper::ownerEmail($deal);
-                    }
+        return collect($integrationDeals)
+            ->filter(fn (array $integrationDealArray) => $this->shouldBeSyncedForThisAgent($agent, $integrationDealArray))
+            ->map(fn (array $integrationDealArray) => new PipedriveDTO($integrationDealArray));
+    }
 
-                    if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
-                        return $agent->email === PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey) && isset($deal[$this->demoSetByApiKey]);
-                    }
+    private function shouldBeSyncedForThisAgent(Agent $agent, array $integrationDealArray): bool
+    {
+        if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEAL_WON->value) {
+            return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray);
+        }
 
-                    return false;
-                })
-                ->map(function (array $deal) {
-                    return array_filter([
-                        'id' => $deal['id'],
-                        'title' => $deal['title'],
-                        'value' => $deal['value'],
-                        'add_time' => $deal['add_time'],
-                        'status' => $deal['status'],
-                        'owner_email' => PipedriveHelper::demoSetByEmail($deal, $this->demoSetByApiKey),
-                    ], function (string $value) {
-                        return $value !== null;
-                    });
-                }),
-        ];
+        if ($agent->plans()->active()->first()?->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
+            return $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey);
+        }
+
+        return false;
     }
 
     public function syncAgentDeals(): void
     {
-        $agentDeals = $this->agentDeals();
+        $agentDealsDTOs = $this->agentDeals();
 
-        foreach ($agentDeals as $agentDeals) {
-            foreach ($agentDeals as $email => $deals) {
-                foreach ($deals as $deal) {
-                    Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
-                        [
-                            'integration_deal_id' => $deal['id'],
-                            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
-                        ],
-                        [
-                            'integration_deal_id' => $deal['id'],
-                            'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
-                            'title' => $deal['title'],
-                            'value' => $deal['value'] * 100,
-                            'add_time' => DateHelper::parsePipedriveTime($deal['add_time']),
-                            'status' => $deal['status'],
-                            'owner_email' => $deal['owner_email'],
-                        ]
-                    );
-                }
+        foreach ($agentDealsDTOs as $email => $dealDTOs) {
+            foreach ($dealDTOs as $dealDTO) {
+                Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
+                    $dealDTO->integrationIdentifiers(),
+                    $dealDTO->toArray(),
+                );
             }
         }
 
         $this->pipedriveIntegration->update([
             'last_synced_at' => Carbon::now(),
         ]);
+    }
+
+    private function transformAgentDealsArray(array $agentDeals): array
+    {
+        $transformedAgentDeals = [];
+
+        foreach ($agentDeals as $agentDeal) {
+            $email = array_keys($agentDeal)[0];
+
+            $transformedAgentDeals[$email] = $agentDeal[$email];
+        }
+
+        return $transformedAgentDeals;
     }
 }

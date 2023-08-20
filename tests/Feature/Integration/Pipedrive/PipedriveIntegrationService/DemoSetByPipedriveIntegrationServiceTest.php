@@ -5,6 +5,7 @@ use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Facades\PipedriveFacade;
 use App\Helper\DateHelper;
+use App\Integrations\Pipedrive\PipedriveDTO;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
@@ -39,36 +40,35 @@ beforeEach(function () {
         ->create([
             'email' => PipedriveHelper::demoSetByEmail($this->deals[0], env('PIPEDRIVE_DEMO_SET_BY')),
         ]);
+
+    $this->agent2 = Agent::factory()
+        ->ofOrganization($this->admin->organization_id)
+        ->has(Plan::factory()->active()->count(1)->state([
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        ]))
+        ->create([
+            'email' => PipedriveHelper::demoSetByEmail($this->deals[3], env('PIPEDRIVE_DEMO_SET_BY')),
+        ]);
 });
 
 it('returns deals where demo set by is set in the correct format', function () {
-    $agentDeals = (new PipedriveIntegrationService($this->admin->organization))->agentDeals();
+    $dealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email][0];
 
-    $firstDeal = $agentDeals[0][array_keys($agentDeals[0])[0]]->first();
-
-    expect($firstDeal)->toHaveKeys([
-        'id',
-        'title',
-        'value',
-        'add_time',
-        'status',
-        'owner_email',
-    ]);
+    expect(get_class($dealDTO))->toBe(PipedriveDTO::class);
 });
 
 it('stores the data properly', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    $expectedData = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[0][$this->agent->email][0];
+    $expectedDealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email][0];
 
     expect($this->agent->deals)->toHaveCount(expectedDealCount($this->agent->email, $this->deals));
-    expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedData['id']);
-    expect($this->agent->deals->first()->title)->toBe($expectedData['title']);
-    expect($this->agent->deals->first()->value)->toBe($expectedData['value']);
-    expect($this->agent->deals->first()->status->value)->toBe($expectedData['status']);
-    expect($this->agent->deals->first()->owner_email)->toBe($expectedData['owner_email']);
+    expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
+    expect($this->agent->deals->first()->title)->toBe($expectedDealDTO->title);
+    expect($this->agent->deals->first()->value)->toBe($expectedDealDTO->value);
+    expect($this->agent->deals->first()->status->value)->toBe($expectedDealDTO->status->value);
     expect($this->agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
-    expect(DateHelper::parsePipedriveTime($expectedData['add_time'])->toDateTimeString())->toBe($this->agent->deals->first()->add_time->toDateTimeString());
+    expect($this->agent->deals->first()->add_time->toDateTimeString())->toBe($expectedDealDTO->add_time->toDateTimeString());
 });
 
 it('updates the deal if it already existed and some data changed', function () {
@@ -96,6 +96,7 @@ it('does not create the same entry twice', function () {
 
 it('does not create deal if no agent with the pipedrive email exists', function () {
     $this->agent->delete();
+    $this->agent2->delete();
 
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
