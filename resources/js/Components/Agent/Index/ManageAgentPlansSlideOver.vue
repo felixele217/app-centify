@@ -5,6 +5,13 @@ import Agent from '@/types/Agent'
 import Plan from '@/types/Plan/Plan'
 import notify from '@/utils/notify'
 import { router } from '@inertiajs/vue3'
+import { ref, watch } from 'vue'
+
+type PlanWithAssignmentState = {
+    id: number
+    name: string
+    isAssigned: boolean
+}
 
 const emit = defineEmits<{
     'close-slide-over': []
@@ -17,12 +24,29 @@ const props = defineProps<{
     plans: Array<Pick<Plan, 'id' | 'name'>>
 }>()
 
+watch(
+    () => props.isOpen,
+    async () => {
+        plansWithAssignmentStates.value = plansWithAssignmentStates.value.map((plan) => ({
+            id: plan.id,
+            name: plan.name,
+            isAssigned: agentIsAssignedToPlan(plan.name),
+        }))
+    }
+)
+
 function agentIsAssignedToPlan(planName: string) {
-    if (props.agent?.active_plans?.map((active_plan) => active_plan.name).includes(planName)) {
-        return true
+    return !!props.agent?.active_plans?.filter((active_plan) => active_plan.name === planName).length
+}
+
+function handleUpdate(plan: PlanWithAssignmentState) {
+    if (plan.isAssigned) {
+        handleDelete(plan.id)
+    } else {
+        handleStore(plan.id)
     }
 
-    return false
+    plan.isAssigned = !plan.isAssigned
 }
 
 function handleStore(planId: number) {
@@ -50,6 +74,14 @@ function handleDelete(planId: number) {
         },
     })
 }
+
+const plansWithAssignmentStates = ref<Array<PlanWithAssignmentState>>(
+    props.plans.map((plan) => ({
+        id: plan.id,
+        name: plan.name,
+        isAssigned: agentIsAssignedToPlan(plan.name),
+    }))
+)
 </script>
 
 <template>
@@ -59,11 +91,11 @@ function handleDelete(planId: number) {
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <p v-for="plan in props.plans">
+        <p v-for="plan in plansWithAssignmentStates">
             <Checkbox
                 :label="plan.name"
                 :checked="agentIsAssignedToPlan(plan.name)"
-                @update:checked="agentIsAssignedToPlan(plan.name) ? handleDelete(plan.id) : handleStore(plan.id)"
+                @update:checked="handleUpdate(plan)"
             />
         </p>
     </SlideOver>
