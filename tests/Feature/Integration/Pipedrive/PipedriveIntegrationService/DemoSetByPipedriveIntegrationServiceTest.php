@@ -12,6 +12,7 @@ use App\Models\CustomField;
 use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Plan;
+use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\AssertionHelper;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
@@ -61,7 +62,7 @@ it('stores the data properly', function () {
 
     $expectedDealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email][0];
 
-    expect($this->agent->deals)->toHaveCount(expectedDealCount($this->agent->email, $this->deals));
+    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SET_BY));
     expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
     expect($this->agent->deals->first()->title)->toBe($expectedDealDTO->title);
     expect($this->agent->deals->first()->value)->toBe($expectedDealDTO->value);
@@ -90,7 +91,7 @@ it('does not create the same entry twice', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    expect($this->agent->deals)->toHaveCount(expectedDealCount($email, $this->deals));
+    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($email, $this->deals, TriggerEnum::DEMO_SET_BY));
 });
 
 it('does not create deal if no agent with the pipedrive email exists', function () {
@@ -107,24 +108,6 @@ it('does not create deal if demo_set_by has no value assigned to it', function (
 
     expect(Deal::count())->toBe(demoSetByCount($this->deals));
 });
-
-function expectedDealCount(string $email, array $deals): int
-{
-    return min(dealsCountWhereDemoSetByAgent($email, $deals), demoSetByCount($deals));
-}
-
-function dealsCountWhereDemoSetByAgent(string $email,array  $deals): int
-{
-    $dealsCountWhereDemoSetByAgent = 0;
-
-    foreach ($deals as $deal) {
-        if (PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email) {
-            $dealsCountWhereDemoSetByAgent++;
-        }
-    }
-
-    return $dealsCountWhereDemoSetByAgent;
-}
 
 function demoSetByCount(array $deals): int
 {

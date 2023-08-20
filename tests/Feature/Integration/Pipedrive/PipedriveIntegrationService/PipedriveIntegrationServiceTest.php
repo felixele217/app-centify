@@ -1,7 +1,6 @@
 <?php
 
 use App\Enum\CustomFieldEnum;
-use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Facades\PipedriveFacade;
@@ -11,6 +10,7 @@ use App\Models\Agent;
 use App\Models\CustomField;
 use App\Models\Integration;
 use App\Models\Plan;
+use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\AssertionHelper;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
@@ -55,19 +55,5 @@ it('maps over all plans and not only the first active', function () {
 
     $deals = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email];
 
-    expect(count($deals))->toBe(dealsCount($this->agent->email, $this->deals));
+    expect(count($deals))->toBe(AssertionHelper::dealsCountForAllTriggers($this->agent->email, $this->deals));
 });
-
-function dealsCount(string $email, array $deals): int
-{
-    $dealsCount = 0;
-
-    foreach ($deals as $deal) {
-        if (PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email
-        || (PipedriveHelper::ownerEmail($deal) === $email && $deal['status'] === DealStatusEnum::WON->value)) {
-            $dealsCount++;
-        }
-    }
-
-    return $dealsCount;
-}
