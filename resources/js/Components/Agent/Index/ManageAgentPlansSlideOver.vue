@@ -15,7 +15,6 @@ type PlanWithAssignmentState = {
 
 const emit = defineEmits<{
     'close-slide-over': []
-    'keep-slide-over-open': []
 }>()
 
 const props = defineProps<{
@@ -25,7 +24,7 @@ const props = defineProps<{
 }>()
 
 watch(
-    () => props.isOpen,
+    () => props.agent,
     async () => {
         plansWithAssignmentStates.value = plansWithAssignmentStates.value.map((plan) => ({
             id: plan.id,
