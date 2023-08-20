@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
-use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
@@ -49,7 +48,6 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         $deals = $this->pipedriveClient->deals();
 
         $agentDeals = [];
-
         foreach ($this->organization->agents as $agent) {
             array_push($agentDeals, [$agent->email => $this->dealsForAgent($agent, $deals)]);
         }
@@ -67,12 +65,14 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     private function shouldBeSyncedForThisAgent(Agent $agent, array $integrationDealArray): bool
     {
         foreach ($agent->plans()->active()->get() as $plan) {
-            if ($plan->trigger->value === TriggerEnum::DEAL_WON->value) {
-                return $agent->email === PipedriveHelper::ownerEmail($integrationDealArray) && $integrationDealArray['status'] === DealStatusEnum::WON->value;
+            if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value
+            && $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey)) {
+                return true;
             }
 
-            if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value) {
-                return $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey);
+            if ($plan->trigger->value === TriggerEnum::DEAL_WON->value
+            && PipedriveHelper::wonDeal($agent->email, $integrationDealArray)) {
+                return true;
             }
         }
 

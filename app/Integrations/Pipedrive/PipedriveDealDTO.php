@@ -15,7 +15,7 @@ class PipedriveDealDTO
 
     public string $title;
 
-    public int $value;
+    public float $value;
 
     public Carbon $add_time;
 

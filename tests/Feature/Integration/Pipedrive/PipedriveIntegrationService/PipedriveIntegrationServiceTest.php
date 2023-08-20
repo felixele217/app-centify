@@ -1,16 +1,16 @@
 <?php
 
-use App\Models\Deal;
-use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TriggerEnum;
-use App\Models\CustomField;
-use App\Models\Integration;
 use App\Enum\CustomFieldEnum;
-use App\Facades\PipedriveFacade;
 use App\Enum\IntegrationTypeEnum;
+use App\Enum\TriggerEnum;
+use App\Facades\PipedriveFacade;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
+use App\Models\Agent;
+use App\Models\CustomField;
+use App\Models\Deal;
+use App\Models\Integration;
+use App\Models\Plan;
 use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\AssertionHelper;
 
 beforeEach(function () {
@@ -52,7 +52,7 @@ it('does not throw an error on deals for agent if the agent has no active plan',
     expect(count($pipedriveIntegrationService->agentDeals($this->deals)))->toBe(0);
 });
 
-it('maps over all plans and not only the first active', function () {
+it('maps over all active plans and syncs all deals where one of the triggers is achieved', function () {
     $this->agent->plans()->attach([
         Plan::factory()->active()->create([
             'trigger' => TriggerEnum::DEMO_SET_BY->value,

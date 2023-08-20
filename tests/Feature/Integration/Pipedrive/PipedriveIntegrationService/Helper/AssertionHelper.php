@@ -13,7 +13,8 @@ class AssertionHelper
         $dealsForAgentCount = 0;
 
         foreach ($deals as $deal) {
-            if (self::wonDeal($email, $deal) || self::setDemoForDeal($email, $deal)) {
+
+            if (PipedriveHelper::wonDeal($email, $deal) || self::setDemoForDeal($email, $deal)) {
                 $dealsForAgentCount++;
             }
         }
@@ -26,7 +27,7 @@ class AssertionHelper
         $dealsCount = 0;
 
         foreach ($deals as $deal) {
-            if ($trigger === TriggerEnum::DEAL_WON && self::wonDeal($email, $deal)) {
+            if ($trigger === TriggerEnum::DEAL_WON && PipedriveHelper::wonDeal($email, $deal)) {
                 $dealsCount++;
             }
 
@@ -38,13 +39,9 @@ class AssertionHelper
         return $dealsCount;
     }
 
-    private static function wonDeal(string $email, array $deal): bool
-    {
-        return PipedriveHelper::ownerEmail($deal) === $email && $deal['status'] === DealStatusEnum::WON->value;
-    }
-
     private static function setDemoForDeal(string $email, array $deal): bool
     {
+
         return PipedriveHelper::demoSetByEmail($deal, env('PIPEDRIVE_DEMO_SET_BY')) === $email;
     }
 }

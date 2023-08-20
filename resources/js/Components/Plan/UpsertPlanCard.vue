@@ -23,7 +23,7 @@ import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescript
 import { targetVariableToDescription } from '@/utils/Descriptions/targetVariableToDescription'
 import { triggerToDescription } from '@/utils/Descriptions/triggerToDescription'
 import notify from '@/utils/notify'
-import { router, useForm } from '@inertiajs/vue3'
+import { router, useForm, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
@@ -31,6 +31,7 @@ import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
+import { TriggerEnumCases } from '@/EnumCases/TriggerEnum'
 
 export interface AdditionalField {
     id: number
@@ -288,7 +289,12 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         </div>
 
                         <SelectWithDescription
-                            :options="enumOptionsToSelectOptionWithDescription(['demo_set_by'], triggerToDescription)"
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    usePage().props.environment === 'production' ? ['demo_set_by'] : TriggerEnumCases,
+                                    triggerToDescription
+                                )
+                            "
                             v-model="form.trigger"
                         />
 

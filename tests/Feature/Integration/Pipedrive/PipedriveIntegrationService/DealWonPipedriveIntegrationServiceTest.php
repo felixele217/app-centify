@@ -49,7 +49,7 @@ it('stores the data properly', function () {
     expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
     expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
     expect($this->agent->deals->first()->title)->toBe($expectedDealDTO->title);
-    expect($this->agent->deals->first()->value)->toBe($expectedDealDTO->value);
+    expect(floatval($this->agent->deals->first()->value))->toBe($expectedDealDTO->value);
     expect($this->agent->deals->first()->status->value)->toBe($expectedDealDTO->status->value);
     expect($this->agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
     expect($this->agent->deals->first()->add_time->toDateTimeString())->toBe($expectedDealDTO->add_time->toDateTimeString());
