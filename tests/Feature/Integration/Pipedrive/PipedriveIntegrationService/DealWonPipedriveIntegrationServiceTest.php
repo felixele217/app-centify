@@ -19,9 +19,9 @@ beforeEach(function () {
         'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
 
-    $this->pipedriveClient = new PipedriveFacade($this->admin->organization);
+    $this->pipedriveFacade = new PipedriveFacade($this->admin->organization);
 
-    $this->deals = $this->pipedriveClient->deals();
+    $this->deals = $this->pipedriveFacade->deals();
 
     $this->agent = Agent::factory()
         ->ofOrganization($this->admin->organization_id)
