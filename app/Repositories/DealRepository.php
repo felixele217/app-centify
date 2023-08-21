@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Enum\DealScopeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
+use App\Helper\DateHelper;
 use App\Http\Requests\UpdateDealRequest;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -38,20 +39,13 @@ class DealRepository
 
     public static function dealsForAgent(Agent $agent, TimeScopeEnum $timeScope, CarbonImmutable $dateInScope = null): Collection
     {
-        $dateInScope = $dateInScope ?? CarbonImmutable::now();
-
         $baseQuery = $agent->deals()->whereNotNull('accepted_at');
 
         $deals = collect();
 
         $activePlans = $agent->plans()->active($dateInScope)->get();
 
-        [$firstDateInScope, $lastDateInScope] = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth(), $dateInScope->lastOfMonth()],
-            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter(), $dateInScope->lastOfQuarter()],
-            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
-        };
-
+        [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
         foreach ($activePlans as $plan) {
             $currentQuery = clone $baseQuery;
 

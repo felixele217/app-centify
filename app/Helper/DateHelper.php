@@ -34,4 +34,13 @@ class DateHelper
             TimeScopeEnum::ANNUALY => CarbonImmutable::now()->firstOfYear()->subDays(10),
         };
     }
+
+    public static function firstAndLastDateInScope(CarbonImmutable $dateInScope, TimeScopeEnum $timeScope): array
+    {
+        return match ($timeScope) {
+            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth(), $dateInScope->lastOfMonth()],
+            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter(), $dateInScope->lastOfQuarter()],
+            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
+        };
+    }
 }
