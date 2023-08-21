@@ -186,7 +186,7 @@ const handleBlur = () =>
             />
 
             <CheckIcon
-                class="h-7 w-7 rounded-full bg-gray-100 px-1.5 py-1 hover:bg-primary-50 hover:text-primary-500"
+                class="h-7 w-7 rounded-full bg-gray-100 px-1.5 mr-2 py-1 hover:bg-primary-50 hover:text-primary-500"
                 @click="updateDealNote"
             />
         </div>
