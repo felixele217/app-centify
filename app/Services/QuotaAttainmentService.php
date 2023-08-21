@@ -12,7 +12,7 @@ use App\Models\Split;
 use App\Repositories\DealRepository;
 use App\Repositories\SplitRepository;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class QuotaAttainmentService
 {

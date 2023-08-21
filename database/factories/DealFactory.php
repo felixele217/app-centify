@@ -22,6 +22,7 @@ class DealFactory extends Factory
             'status' => fake()->randomElement(DealStatusEnum::cases())->value,
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
+            'won_time' => null,
             'accepted_at' => null,
             'agent_id' => Agent::factory()->create(),
             'note' => null,

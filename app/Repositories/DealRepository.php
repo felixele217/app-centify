@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
+use App\Models\Deal;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
 use App\Enum\DealScopeEnum;
 use App\Enum\TimeScopeEnum;
-use App\Http\Requests\UpdateDealRequest;
-use App\Models\Agent;
-use App\Models\Deal;
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UpdateDealRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class DealRepository
 {
@@ -41,12 +42,34 @@ class DealRepository
 
         $baseQuery = $agent->deals()->whereNotNull('accepted_at');
 
-        return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => $dealsInMonth = $baseQuery->whereMonth('add_time', $dateInScope->month)->get(),
-            TimeScopeEnum::QUARTERLY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfQuarter(), $dateInScope->endOfQuarter()])->get(),
-            TimeScopeEnum::ANNUALY => $baseQuery->whereBetween('add_time', [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()])->get(),
-            default => $dealsInMonth
-        };
+        $deals = collect([]);
+
+        $activePlans = $agent->plans()->active($dateInScope)->get();
+
+        foreach ($activePlans as $plan) {
+            $currentQuery = clone $baseQuery;
+            switch ($plan->trigger) {
+                case TriggerEnum::DEMO_SET_BY:
+                    $currentQuery = match ($timeScope) {
+                        TimeScopeEnum::MONTHLY => $currentQuery->whereMonth('add_time', $dateInScope->month),
+                        TimeScopeEnum::QUARTERLY => $currentQuery->whereBetween('add_time', [$dateInScope->firstOfQuarter(), $dateInScope->endOfQuarter()]),
+                        TimeScopeEnum::ANNUALY => $currentQuery->whereBetween('add_time', [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()]),
+                        default => $currentQuery->whereMonth('add_time', $dateInScope->month)
+                    };
+                    break;
+                case TriggerEnum::DEAL_WON:
+                    $currentQuery = match ($timeScope) {
+                        TimeScopeEnum::MONTHLY => $currentQuery->whereMonth('won_time', $dateInScope->month),
+                        TimeScopeEnum::QUARTERLY => $currentQuery->whereBetween('won_time', [$dateInScope->firstOfQuarter(), $dateInScope->endOfQuarter()]),
+                        TimeScopeEnum::ANNUALY => $currentQuery->whereBetween('won_time', [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()]),
+                        default => $currentQuery->whereMonth('won_time', $dateInScope->month)
+                    };
+                    break;
+            }
+            $deals = $deals->concat($currentQuery->get());
+        }
+
+        return $deals->unique();
     }
 
     public static function update(Deal $deal, UpdateDealRequest $request): void
