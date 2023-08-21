@@ -69,6 +69,12 @@ it('stores the data properly', function () {
     expect($this->agent->deals->first()->status->value)->toBe($expectedDealDTO->status->value);
     expect($this->agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
     expect($this->agent->deals->first()->add_time->toDateTimeString())->toBe($expectedDealDTO->add_time->toDateTimeString());
+
+    if ($won_time = $this->agent->deals->first()->won_time) {
+        expect($won_time->toDateTimeString())->toBe($expectedDealDTO->won_time->toDateTimeString());
+    } else {
+        expect($expectedDealDTO->won_time)->toBeNull();
+    }
 });
 
 it('updates the deal if it already existed and some data changed', function () {

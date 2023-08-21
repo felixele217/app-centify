@@ -18,6 +18,7 @@ class PipedriveDealDTO
     public float $value;
 
     public Carbon $add_time;
+    public ?Carbon $won_time;
 
     public DealStatusEnum $status;
 
@@ -27,6 +28,7 @@ class PipedriveDealDTO
         $this->title = $integrationDealArray['title'];
         $this->value = $integrationDealArray['value'] ? $integrationDealArray['value'] * 100 : 0;
         $this->add_time = DateHelper::parsePipedriveTime($integrationDealArray['add_time']);
+        $this->won_time = $integrationDealArray['won_time'] ? DateHelper::parsePipedriveTime($integrationDealArray['won_time']) : null;
         $this->status = DealStatusEnum::tryFrom($integrationDealArray['status']);
     }
 
@@ -45,6 +47,7 @@ class PipedriveDealDTO
             'title' => $this->title,
             'value' => $this->value,
             'add_time' => $this->add_time,
+            'won_time' => $this->won_time,
             'status' => $this->status->value,
         ];
     }

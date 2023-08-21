@@ -46,13 +46,20 @@ it('stores the data properly', function () {
 
     $expectedDealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email]->first();
 
+    $agentDeal = $this->agent->deals()->whereIntegrationDealId($expectedDealDTO->integration_deal_id)->first();
     expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
-    expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
-    expect($this->agent->deals->first()->title)->toBe($expectedDealDTO->title);
-    expect(floatval($this->agent->deals->first()->value))->toBe($expectedDealDTO->value);
-    expect($this->agent->deals->first()->status->value)->toBe($expectedDealDTO->status->value);
-    expect($this->agent->deals->first()->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
-    expect($this->agent->deals->first()->add_time->toDateTimeString())->toBe($expectedDealDTO->add_time->toDateTimeString());
+    expect($agentDeal->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
+    expect($agentDeal->title)->toBe($expectedDealDTO->title);
+    expect(floatval($agentDeal->value))->toBe($expectedDealDTO->value);
+    expect($agentDeal->status->value)->toBe($expectedDealDTO->status->value);
+    expect($agentDeal->integration_type->value)->toBe(IntegrationTypeEnum::PIPEDRIVE->value);
+    expect($agentDeal->add_time->toDateTimeString())->toBe($expectedDealDTO->add_time->toDateTimeString());
+
+    if ($won_time = $agentDeal->won_time) {
+        expect($won_time->toDateTimeString())->toBe($expectedDealDTO->won_time->toDateTimeString());
+    } else {
+        expect($expectedDealDTO->won_time)->toBeNull();
+    }
 });
 
 it('updates the deal if it already existed and some data changed', function () {
