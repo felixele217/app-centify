@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Plan;
@@ -16,15 +17,17 @@ uses(RefreshDatabase::class)->in('Feature', 'Unit', 'Staging', 'Integration');
 
 uses(TestCase::class)->group('local')->in('Local');
 
-function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, Carbon $addTime = null): array
+function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPerMonth, TriggerEnum $trigger, Carbon $addTime = null): array
 {
     $plan = Plan::factory()->active()->create([
         'target_amount_per_month' => $targetAmountPerMonth = 1_000_00,
         'organization_id' => $organizationId,
+        'trigger' => $trigger->value,
     ]);
 
     $plan->agents()->attach($agent = Agent::factory()->hasDeals(1, [
         'add_time' => $addTime ?? Carbon::now()->firstOfMonth(),
+        'won_time' => $trigger === TriggerEnum::DEAL_WON ? Carbon::now()->firstOfMonth() : null,
         'accepted_at' => $addTime ?? Carbon::now()->firstOfMonth(),
         'value' => $targetAmountPerMonth * $quotaAttainmentPerMonth,
     ])->create([

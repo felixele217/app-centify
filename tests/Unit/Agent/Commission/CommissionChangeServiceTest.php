@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 it('total commission change is calculated correctly for commission from quota', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
 
-    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentThisMonth = 1.3);
+    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentThisMonth = 1.3, TriggerEnum::DEMO_SET_BY);
 
     Deal::factory()->create([
         'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),

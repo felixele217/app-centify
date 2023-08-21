@@ -4,16 +4,17 @@ use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Models\PaidLeave;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
 
-it('sums the commissions of deals and paid leaves and kicker correctly for the current month', function (TimeScopeEnum $timeScope) {
+it('sums the commissions of deals and paid leaves and kicker correctly for the current month and quarter', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
 
     $this->get(route('dashboard').'?time_scope='.$timeScope->value);
 
-    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6);
+    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6, TriggerEnum::DEAL_WON);
 
     $plan->kicker()->create([
         'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,
