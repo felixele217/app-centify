@@ -12,8 +12,6 @@ use Tests\DuskTestCase;
 
 class RenderLocalPagesTest extends DuskTestCase
 {
-    const LOCAL_URL = 'http://laravel.test';
-
     public function testRenderLogin(): void
     {
         $this->browse(function (Browser $browser) {
@@ -31,8 +29,8 @@ class RenderLocalPagesTest extends DuskTestCase
         foreach (PagesTestCases::testCases() as $routeConfig) {
             $this->browse(function (Browser $browser) use ($admin, $routeConfig) {
                 $browser->loginAs($admin)
-                    ->visit(self::LOCAL_URL.$routeConfig['slug'])
-                    ->assertUrlIs(self::LOCAL_URL.$routeConfig['slug'])
+                    ->visit(env('APP_URL').$routeConfig['slug'])
+                    ->assertUrlIs(env('APP_URL').$routeConfig['slug'])
                     ->waitForText($routeConfig['expected_text'])
                     ->assertSee($routeConfig['expected_text']);
 

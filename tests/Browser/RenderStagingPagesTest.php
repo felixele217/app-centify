@@ -16,7 +16,7 @@ class RenderStagingPagesTest extends DuskTestCase
     /**
      * @group staging
      */
-    public function testUserCanLogin(): void
+    public function testBasePagesRender(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('https://staging.centify.de/login')
