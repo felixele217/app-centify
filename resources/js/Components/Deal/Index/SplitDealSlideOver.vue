@@ -74,7 +74,7 @@ function submit() {
         onSuccess: () => {
             closeSlideOver()
 
-            notify('Deal splitted', 'This deal will now be splitted as specified by you.')
+            notify('Deal splitted!', 'This deal will now be splitted as specified by you.')
         },
     })
 }
