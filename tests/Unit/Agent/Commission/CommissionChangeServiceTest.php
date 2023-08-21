@@ -19,7 +19,7 @@ it('total commission change is calculated correctly for commission from quota', 
         'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
         'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
         'value' => $plan->target_amount_per_month * $quotaAttainmentMonthInPreviousTimeScope = 0.7,
-        'agent_id' => $agent->id,
+        'demo_set_by_agent_id' => $agent->id,
     ]);
 
     $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisMonth / $timeScope->monthCount());
@@ -52,7 +52,7 @@ it('returns null if there was no active plan last time scope', function (TimeSco
     Deal::factory()->create([
         'add_time' => Carbon::now(),
         'accepted_at' => Carbon::now(),
-        'agent_id' => $agent->id,
+        'demo_set_by_agent_id' => $agent->id,
         'value' => $plan->target_amount_per_month,
     ]);
 

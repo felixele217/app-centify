@@ -24,7 +24,7 @@ class DealFactory extends Factory
             'add_time' => Carbon::yesterday(),
             'won_time' => null,
             'accepted_at' => null,
-            'agent_id' => Agent::factory()->create(),
+            'demo_set_by_agent_id' => Agent::factory()->create(),
             'note' => null,
         ];
     }
@@ -39,7 +39,7 @@ class DealFactory extends Factory
     public function withAgentOfOrganization(int $organizationId): static
     {
         return $this->state(fn (array $attributes) => [
-            'agent_id' => Agent::factory()->create([
+            'demo_set_by_agent_id' => Agent::factory()->create([
                 'organization_id' => $organizationId,
             ]),
         ]);

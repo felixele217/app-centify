@@ -19,7 +19,7 @@ it('retrieves deals where the won_time is inside of the time scope', function (T
         ['won_time' => $firstDateInScope],
         ['won_time' => $lastDateInScope],
     )->create([
-        'agent_id' => $this->agent->id,
+        'demo_set_by_agent_id' => $this->agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(2);
@@ -34,7 +34,7 @@ it('does not retrieve deals where won_time is outside of scope', function (TimeS
         ['won_time' => $firstDateInScope->subDays(5)],
         ['won_time' => $lastDateInScope->addDays(5)],
     )->create([
-        'agent_id' => $this->agent->id,
+        'demo_set_by_agent_id' => $this->agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);
@@ -48,7 +48,7 @@ it('does not retrieve deals where won_time is null', function (TimeScopeEnum $ti
     Deal::factory()->accepted()->sequence(
         ['won_time' => null],
     )->create([
-        'agent_id' => $this->agent->id,
+        'demo_set_by_agent_id' => $this->agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);

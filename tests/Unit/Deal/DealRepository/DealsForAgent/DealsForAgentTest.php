@@ -23,7 +23,7 @@ it('retrieves only accepted deals', function () {
             'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
         ])
         ->create([
-            'agent_id' => $agent->id,
+            'demo_set_by_agent_id' => $agent->id,
             'accepted_at' => Carbon::now(),
         ]);
 
@@ -44,7 +44,7 @@ it('does not retrieve unaccepted deals', function () {
             'is_permanent' => false,
         ])
         ->create([
-            'agent_id' => $agent->id,
+            'demo_set_by_agent_id' => $agent->id,
             'accepted_at' => null,
         ]);
 
@@ -69,7 +69,7 @@ it('retrieves all deals where demo is set OR deal is won by the agent if he has 
             'won_time' => null,
         ],
     )->create([
-        'agent_id' => $agent->id,
+        'demo_set_by_agent_id' => $agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($agent, $timeScope))->toHaveCount(2);

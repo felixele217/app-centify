@@ -28,7 +28,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
         ]);
 
     Deal::factory()->create([
-        'agent_id' => $plan->agents()->first()->id,
+        'demo_set_by_agent_id' => $plan->agents()->first()->id,
         'value' => 60_000_000,
         'accepted_at' => $dealAcceptedDate,
         'add_time' => $dealAcceptedDate,

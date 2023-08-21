@@ -30,7 +30,7 @@ class Deal extends Model implements Auditable
 
     public function agent(): BelongsTo
     {
-        return $this->belongsTo(Agent::class);
+        return $this->belongsTo(Agent::class, 'demo_set_by_agent_id');
     }
 
     public function rejections(): HasMany

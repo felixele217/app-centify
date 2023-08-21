@@ -1,19 +1,19 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
-use App\Models\Plan;
-use App\Models\Agent;
-use App\Models\Payout;
-use App\Enum\TimeScopeEnum;
-use App\Models\Organization;
 use App\Enum\AgentStatusEnum;
+use App\Enum\TimeScopeEnum;
+use App\Models\Agent;
+use App\Models\Deal;
+use App\Models\Organization;
+use App\Models\Payout;
+use App\Models\Plan;
+use App\Services\Commission\CommissionFromQuotaService;
+use App\Services\Commission\KickerCommissionService;
+use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\FreezePayoutsService;
 use App\Services\PaidLeaveDaysService;
 use App\Services\QuotaAttainmentService;
-use App\Services\Commission\KickerCommissionService;
-use App\Services\Commission\CommissionFromQuotaService;
-use App\Services\Commission\PaidLeaveCommissionService;
+use Carbon\Carbon;
 
 it('freezes the current agent data in payouts', function (TimeScopeEnum $timeScope) {
     $organization = Organization::factory()->create();
@@ -33,7 +33,7 @@ it('freezes the current agent data in payouts', function (TimeScopeEnum $timeSco
     Deal::factory()->create([
         'add_time' => Carbon::now()->firstOfMonth(),
         'accepted_at' => Carbon::now(),
-        'agent_id' => fake()->randomElement($agents->pluck('id')),
+        'demo_set_by_agent_id' => fake()->randomElement($agents->pluck('id')),
     ]);
 
     (new FreezePayoutsService($organization, $timeScope))->freeze();

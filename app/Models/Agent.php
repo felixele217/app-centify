@@ -57,7 +57,7 @@ class Agent extends Authenticatable implements Auditable
 
     public function deals(): HasMany
     {
-        return $this->hasMany(Deal::class);
+        return $this->hasMany(Deal::class, 'demo_set_by_agent_id');
     }
 
     public function plans(): BelongsToMany

@@ -8,7 +8,6 @@ use App\Models\Plan;
 use App\Repositories\DealRepository;
 use Carbon\CarbonImmutable;
 
-
 beforeEach(function () {
     $plan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEMO_SET_BY->value]);
 
@@ -17,10 +16,10 @@ beforeEach(function () {
 
 it('retrieves only deals where the add_time is inside of the time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     Deal::factory(2)->accepted()->state(['add_time' => $firstDateInScope->subDays(10)])->sequence(
-            ['add_time' => $firstDateInScope],
-            ['add_time' => $lastDateInScope],
+        ['add_time' => $firstDateInScope],
+        ['add_time' => $lastDateInScope],
     )->create([
-        'agent_id' => $this->agent->id,
+        'demo_set_by_agent_id' => $this->agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(2);
@@ -35,7 +34,7 @@ it('does not retrieve deals where add_time is outside of scope', function (TimeS
         ['add_time' => $firstDateInScope->subDays(5)],
         ['add_time' => $lastDateInScope->addDays(5)],
     )->create([
-        'agent_id' => $this->agent->id,
+        'demo_set_by_agent_id' => $this->agent->id,
     ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);

@@ -14,6 +14,7 @@ use App\Models\Organization;
 use App\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -110,11 +111,6 @@ class TestDataSeeder extends Seeder
 
         Plan::first()->agents()->attach([
             ...$admin->organization->agents->pluck('id'),
-        ]);
-
-        $duskTestDummyIntegration = Integration::factory()->create([
-            'id' => 1,
-            'organization_id' => $admin->organization_id,
         ]);
     }
 }
