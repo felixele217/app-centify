@@ -9,6 +9,7 @@ use App\Enum\TargetVariableEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
+use App\Models\Integration;
 use App\Models\Organization;
 use App\Models\Plan;
 use Carbon\Carbon;
@@ -71,6 +72,7 @@ class TestDataSeeder extends Seeder
         ]);
 
         Plan::create([
+            'id' => 1,
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
             'name' => 'Jr. Account Executive Plan',
@@ -108,6 +110,11 @@ class TestDataSeeder extends Seeder
 
         Plan::first()->agents()->attach([
             ...$admin->organization->agents->pluck('id'),
+        ]);
+
+        $duskTestDummyIntegration = Integration::factory()->create([
+            'id' => 1,
+            'organization_id' => $admin->organization_id,
         ]);
     }
 }

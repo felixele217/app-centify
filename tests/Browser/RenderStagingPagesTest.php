@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
-use Database\Seeders\TestDataSeeder;
-use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use Tests\Browser\PagesTestCases;
+use Database\Seeders\TestDataSeeder;
 
 class RenderStagingPagesTest extends DuskTestCase
 {
+    const STAGING_BASE_URL = 'https://staging.centify.de';
+
     /**
      * @group staging
      */
@@ -25,12 +28,9 @@ class RenderStagingPagesTest extends DuskTestCase
                 ->waitForRoute('dashboard')
                 ->assertRouteIs('dashboard');
 
-            $browser->visit('https://staging.centify.de/dashboard')->assertSee(RenderLocalPagesTest::DASHBOARD_TEXT);
-            $browser->visit('https://staging.centify.de/deals')->assertSee(RenderLocalPagesTest::DEALS_INDEX_TEXT);
-            $browser->visit('https://staging.centify.de/agents')->assertSee(RenderLocalPagesTest::AGENTS_INDEX_TEXT);
-            $browser->visit('https://staging.centify.de/integrations')->assertSee(RenderLocalPagesTest::INTEGRATIONS_INDEX_TEXT);
-            $browser->visit('https://staging.centify.de/profile')->assertSee(RenderLocalPagesTest::PROFILE_EDIT_TEXT);
-            $browser->visit('https://staging.centify.de/plans')->assertSee(RenderLocalPagesTest::PLANS_INDEX_TEXT);
+            foreach (PagesTestCases::testCases() as $testCase) {
+                $browser->visit(self::STAGING_BASE_URL.$testCase['slug'])->assertSee($testCase['expected_text']);
+            }
         });
     }
 }

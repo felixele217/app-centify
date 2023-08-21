@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
+use App\Enum\TimeScopeEnum;
 use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
+use App\Services\Commission\CommissionFromQuotaService;
+use App\Services\QuotaAttainmentService;
 use Carbon\Carbon;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -35,7 +38,7 @@ class NumbersFormatTest extends DuskTestCase
             $browser->loginAs($admin)
                 ->visit(route('dashboard'))
                 ->assertUrlIs(route('dashboard'))
-                ->waitForText('Quota Attainment')
+                ->waitForText('50%')
                 ->assertSee('50%');
         });
     }
@@ -44,7 +47,7 @@ class NumbersFormatTest extends DuskTestCase
     {
         $admin = Admin::factory()->create();
 
-        $plan = Plan::factory()->create([
+        $plan = Plan::factory()->active()->create([
             'organization_id' => $admin->organization->id,
             'creator_id' => $admin->id,
             'target_amount_per_month' => 10_000_00,

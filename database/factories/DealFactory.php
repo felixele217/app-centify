@@ -19,7 +19,7 @@ class DealFactory extends Factory
             'integration_type' => IntegrationTypeEnum::PIPEDRIVE->value,
             'integration_deal_id' => 1,
             'title' => fake()->word(),
-            'status' => fake()->randomElement(DealStatusEnum::cases())->value,
+            'status' => DealStatusEnum::OPEN->value,
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'won_time' => null,
