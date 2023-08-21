@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('deals', function (Blueprint $table) {
-            $table->renameColumn('agent_id', 'demo_set_by_agent_id');
+            $table->renameColumn('agent_id', 'demo_set_by_agent_id')->nullable();
         });
     }
 
