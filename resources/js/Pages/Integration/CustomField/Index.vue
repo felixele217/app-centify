@@ -2,10 +2,8 @@
 import Card from '@/Components/Card.vue'
 import CustomFieldRow from '@/Components/CustomField/CustomFieldRow.vue'
 import SyncIntegration from '@/Components/Integrations/SyncIntegration.vue'
-import SyncIntegrationButton from '@/Components/Integrations/SyncIntegrationButton.vue'
 import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 import Integration from '@/types/Integration'
-import hasMissingCustomField from '@/utils/Integration/hasMissingCustomField'
 import { ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps<{
