@@ -131,7 +131,7 @@ function agentPaidLeaveRanges() {
                 />
 
                 <InfoIcon
-                    hover-text="You have to select a basis for the calculation as the law does not directly prescribe what to do."
+                    hover-text="This will be used to calculate an average commission."
                 />
             </div>
 
