@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Enum\TimeScopeEnum;
+use App\Helper\DateHelper;
 use App\Http\Requests\UpsertSplitRequest;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -41,13 +42,7 @@ class SplitRepository
 
     public static function splitsForAgent(Agent $agent, TimeScopeEnum $timeScope, CarbonImmutable $dateInScope = null): Collection
     {
-        $dateInScope = $dateInScope ?? CarbonImmutable::now();
-
-        [$firstDateInScope, $lastDateInScope] = match ($timeScope) {
-            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth(), $dateInScope->lastOfMonth()],
-            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter(), $dateInScope->lastOfQuarter()],
-            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
-        };
+        [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
 
         return $agent->splits()->acceptedDeals($dateInScope)->whereHas('deal', function (Builder $query) use ($firstDateInScope, $lastDateInScope) {
             $query->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
