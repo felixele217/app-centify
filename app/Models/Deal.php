@@ -34,6 +34,7 @@ class Deal extends Model implements Auditable
     public function agents(): BelongsToMany
     {
         return $this->belongsToMany(Agent::class)->withPivot([
+            'id',
             'deal_percentage',
             'triggered_by',
         ])->using(AgentDeal::class);

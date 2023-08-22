@@ -54,11 +54,13 @@ watch(
 )
 
 function loadExistingAgentsFromSplits() {
-    return props.deal.agents!.map((agent) => ({
-        name: agent.name,
-        id: agent.id,
-        shared_percentage: agent.pivot.deal_percentage * 100,
-    }))
+    return props.deal
+        .agents!.filter((agent) => !agent.pivot.triggered_by)
+        .map((agent) => ({
+            name: agent.name,
+            id: agent.id,
+            shared_percentage: agent.pivot.deal_percentage * 100,
+        }))
 }
 
 function submit() {

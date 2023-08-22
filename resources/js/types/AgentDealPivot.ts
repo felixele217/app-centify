@@ -1,6 +1,7 @@
 import { TriggerEnum } from './Enum/TriggerEnum'
 
 type AgentDealPivot = {
+    id: number
     agent_id: number
     deal_id: number
     deal_percentage: number

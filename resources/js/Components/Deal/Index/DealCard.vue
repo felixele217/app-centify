@@ -145,7 +145,7 @@ const agentThatTriggeredDeal = computed(() => {
                 placement="bottom"
                 class="whitespace-pre-wrap"
             >
-                <p class="mt-1 text-gray-500">+{{ props.deal.agents!.length > 1 }} more due to split</p>
+                <p class="mt-1 text-gray-500">+{{ props.deal.agents!.length - 1 }} more due to split</p>
             </Tooltip>
             <p
                 v-else

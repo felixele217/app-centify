@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Enum\TimeScopeEnum;
-use App\Helper\DateHelper;
 use App\Http\Requests\UpsertSplitRequest;
-use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
-use Carbon\CarbonImmutable;
-use Illuminate\Support\Collection;
 
 class SplitRepository
 {
@@ -23,11 +18,7 @@ class SplitRepository
             AgentDeal::updateOrCreate([
                 'deal_id' => $deal->id,
                 'agent_id' => $partner['id'],
-            ], [
-                'deal_id' => $deal->id,
-                'agent_id' => $partner['id'],
-                'deal_percentage' => $partner['shared_percentage'],
-            ]);
+            ], ['deal_percentage' => $partner['shared_percentage']]);
 
             $requestPartnerIds[] = $partner['id'];
         }
@@ -38,10 +29,11 @@ class SplitRepository
             }
         }
 
-        if ($deal->won_time) {
-            $deal->ae?->pivot->update(['deal_percentage' => 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners')))]);
+        if ($deal->ae) {
+            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))))]);
         } else {
-            $deal->sdr?->pivot->update(['deal_percentage' => 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners')))]);
+            // dd($deal->sdr?->pivot, 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))));
+            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))))]);
         }
     }
 }

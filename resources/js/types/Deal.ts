@@ -1,5 +1,5 @@
 import Agent from './Agent'
-import AgentDealPivot from './AgentDeal'
+import AgentDealPivot from './AgentDealPivot'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
 import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
 import Rejection from './Rejection'

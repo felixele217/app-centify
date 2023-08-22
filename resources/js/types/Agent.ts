@@ -1,4 +1,4 @@
-import AgentDealPivot from './AgentDeal'
+import AgentDealPivot from './AgentDealPivot'
 import Deal from './Deal'
 import { AgentStatusEnum } from './Enum/AgentStatusEnum'
 import Organization from './Organization'
