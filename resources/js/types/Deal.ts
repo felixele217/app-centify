@@ -3,7 +3,6 @@ import AgentDealPivot from './AgentDealPivot'
 import { DealStatusEnum } from './Enum/DealStatusEnum'
 import { IntegrationTypeEnum } from './Enum/IntegrationTypeEnum'
 import Rejection from './Rejection'
-import Split from './Split'
 
 export default interface Deal {
     id: number
@@ -14,9 +13,11 @@ export default interface Deal {
     value: number
     add_time: string
     agent_id: number
-    agents?: Array<Agent & {
-        pivot: AgentDealPivot
-    }>
+    agents?: Array<
+        Agent & {
+            pivot: AgentDealPivot
+        }
+    >
     accepted_at: string | null
     note: string | null
     rejections?: Array<Rejection>

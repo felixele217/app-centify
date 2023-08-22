@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
-use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\CommissionFromQuotaService;
-use App\Services\QuotaAttainmentService;
 use Carbon\Carbon;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -61,11 +59,12 @@ class NumbersFormatTest extends DuskTestCase
 
         $plan->agents()->attach($agent);
 
-        Deal::factory()->create([
-            'value' => 5_000_00,
-            'demo_set_by_agent_id' => $agent->id,
-            'accepted_at' => Carbon::yesterday(),
-        ]);
+        Deal::factory()
+            ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+            ->create([
+                'value' => 5_000_00,
+                'accepted_at' => Carbon::yesterday(),
+            ]);
 
         return $admin;
     }
