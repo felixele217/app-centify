@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -15,8 +16,11 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()->count(2)->sequence([
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->sequence([
             'accepted_at' => $dateInPreviousTimeScope,
             'add_time' => $dateInPreviousTimeScope,
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
@@ -24,8 +28,7 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
             'accepted_at' => Carbon::now(),
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
-        ]
-        ))->create());
+        ])->create();
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval(1 - $factorForLastScope));
 })->with([
@@ -43,10 +46,14 @@ it('quota attainment change returns null when previous scope had no active plans
         'end_date' => Carbon::now()->lastOfMonth(),
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => Carbon::now(),
-        'add_time' => Carbon::now(),
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'accepted_at' => Carbon::now(),
+            'add_time' => Carbon::now(),
+        ]);
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBeNull();
 })->with([
@@ -58,10 +65,14 @@ it('quota attainment change returns null when previous scope had no active plans
 it('quota attainment change is correct when previous scope has quota and current does not', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->active()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope(($timeScope)),
-        'add_time' => $dateInPreviousTimeScope,
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'accepted_at' => $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope(($timeScope)),
+            'add_time' => $dateInPreviousTimeScope,
+        ]);
 
     $expectedQuotaAttainmentChange = (new QuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
@@ -77,8 +88,11 @@ it('quota attainment change does not return null for very small quotas in the pr
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()->count(2)->sequence([
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->sequence([
             'accepted_at' => $dateInPreviousTimeScope,
             'add_time' => $dateInPreviousTimeScope,
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * 0.001,
@@ -86,8 +100,8 @@ it('quota attainment change does not return null for very small quotas in the pr
             'accepted_at' => Carbon::now(),
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
-        ]
-        ))->create());
+        ])
+        ->create();
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->not()->toBeNull();
 })->with([

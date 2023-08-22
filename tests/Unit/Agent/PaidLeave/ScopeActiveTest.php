@@ -16,14 +16,14 @@ it('returns the active paid leave', function () {
         'agent_id' => $agent->id,
     ]);
 
-    PaidLeave::factory()->create([
+    $inactivePaidLeave1 = PaidLeave::factory()->create([
         'start_date' => Carbon::parse('-1 month'),
         'end_date' => Carbon::parse('-3 weeks'),
         'reason' => AgentStatusEnum::SICK->value,
         'agent_id' => $agent->id,
     ]);
 
-    PaidLeave::factory()->create([
+    $inactivePaidLeave2 = PaidLeave::factory()->create([
         'start_date' => Carbon::parse('+1 month'),
         'end_date' => Carbon::parse('+2 months'),
         'reason' => AgentStatusEnum::VACATION->value,
