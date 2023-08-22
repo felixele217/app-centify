@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\AgentDeal;
 use App\Enum\AgentStatusEnum;
-use App\Services\Commission\CommissionChangeService;
-use App\Services\Commission\CommissionFromQuotaService;
-use App\Services\Commission\KickerCommissionService;
-use App\Services\Commission\PaidLeaveCommissionService;
-use App\Services\PaidLeaveDaysService;
-use App\Services\QuotaAttainmentChangeService;
-use App\Services\QuotaAttainmentService;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\PaidLeaveDaysService;
+use App\Services\QuotaAttainmentService;
+use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Services\QuotaAttainmentChangeService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\Commission\CommissionChangeService;
+use App\Services\Commission\KickerCommissionService;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Services\Commission\CommissionFromQuotaService;
+use App\Services\Commission\PaidLeaveCommissionService;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Agent extends Authenticatable implements Auditable
 {
@@ -55,9 +56,12 @@ class Agent extends Authenticatable implements Auditable
         return $this->belongsTo(Organization::class);
     }
 
-    public function deals(): HasMany
+    public function deals(): BelongsToMany
     {
-        return $this->hasMany(Deal::class, 'demo_set_by_agent_id');
+        return $this->belongsToMany(Deal::class)->withPivot([
+            'deal_percentage',
+            'triggered_by',
+        ])->using(AgentDeal::class);
     }
 
     public function plans(): BelongsToMany
@@ -68,11 +72,6 @@ class Agent extends Authenticatable implements Auditable
     public function paidLeaves(): HasMany
     {
         return $this->hasMany(PaidLeave::class)->orderBy('start_date');
-    }
-
-    public function splits(): HasMany
-    {
-        return $this->hasMany(Split::class);
     }
 
     public function payouts(): HasMany

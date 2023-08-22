@@ -6,10 +6,13 @@ namespace App\Models;
 
 use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
+use App\Enum\TriggerEnum;
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -28,9 +31,26 @@ class Deal extends Model implements Auditable
         'status' => DealStatusEnum::class,
     ];
 
-    public function agent(): BelongsTo
+    public function agents(): BelongsToMany
     {
-        return $this->belongsTo(Agent::class, 'demo_set_by_agent_id');
+        return $this->belongsToMany(Agent::class)->withPivot([
+            'deal_percentage',
+            'triggered_by',
+        ])->using(AgentDeal::class);
+    }
+
+    public function SDR(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY->value)->first(),
+        );
+    }
+
+    public function AE(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEAL_WON->value)->first(),
+        );
     }
 
     public function rejections(): HasMany
@@ -38,15 +58,17 @@ class Deal extends Model implements Auditable
         return $this->hasMany(Rejection::class);
     }
 
-    public function splits(): HasMany
-    {
-        return $this->hasMany(Split::class);
-    }
-
     public function activeRejection(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->rejections()->active()->first(),
         );
+    }
+
+    public function scopeAccepted(Builder $query, CarbonImmutable $acceptedBefore = null): void
+    {
+        $acceptedBefore = $acceptedBefore ?? CarbonImmutable::now();
+
+        $query->where('accepted_at', '<', $acceptedBefore);
     }
 }

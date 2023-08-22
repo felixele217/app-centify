@@ -8,15 +8,16 @@ use App\Models\Agent;
 use App\Models\Deal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class SplitFactory extends Factory
+class AgentDealFactory extends Factory
 {
     public function definition(): array
     {
         return [
             'id' => fake()->unique()->randomNumber() + 1,
-            'shared_percentage' => fake()->numberBetween(5, 80),
-            'deal_id' => Deal::factory()->create(),
             'agent_id' => Agent::factory()->create(),
+            'deal_id' => Deal::factory()->create(),
+            'deal_percentage' => fake()->numberBetween(0, 100),
+            'triggered_by' => null,
         ];
     }
 }

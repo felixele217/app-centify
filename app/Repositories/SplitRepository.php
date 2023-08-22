@@ -8,10 +8,9 @@ use App\Enum\TimeScopeEnum;
 use App\Helper\DateHelper;
 use App\Http\Requests\UpsertSplitRequest;
 use App\Models\Agent;
+use App\Models\AgentDeal;
 use App\Models\Deal;
-use App\Models\Split;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class SplitRepository
@@ -21,22 +20,28 @@ class SplitRepository
         $requestPartnerIds = [];
 
         foreach ($request->validated('partners') as $partner) {
-            Split::updateOrCreate([
+            AgentDeal::updateOrCreate([
                 'deal_id' => $deal->id,
                 'agent_id' => $partner['id'],
             ], [
-                'agent_id' => $partner['id'],
-                'shared_percentage' => $partner['shared_percentage'],
                 'deal_id' => $deal->id,
+                'agent_id' => $partner['id'],
+                'deal_percentage' => $partner['shared_percentage'],
             ]);
 
             $requestPartnerIds[] = $partner['id'];
         }
 
-        foreach ($deal->splits as $split) {
-            if (! in_array($split->agent_id, $requestPartnerIds)) {
-                $split->delete();
+        foreach ($deal->agents()->wherePivotNull('triggered_by')->get() as $agentDeal) {
+            if (! in_array($agentDeal->pivot->agent_id, $requestPartnerIds)) {
+                $agentDeal->pivot->delete();
             }
+        }
+
+        if ($deal->won_time) {
+            $deal->ae?->pivot->update(['deal_percentage' => 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners')))]);
+        } else {
+            $deal->sdr?->pivot->update(['deal_percentage' => 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners')))]);
         }
     }
 
@@ -44,8 +49,6 @@ class SplitRepository
     {
         [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
 
-        return $agent->splits()->acceptedDeals($dateInScope)->whereHas('deal', function (Builder $query) use ($firstDateInScope, $lastDateInScope) {
-            $query->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
-        })->get();
+        return $agent->deals()->accepted($dateInScope)->whereBetween('add_time', [$firstDateInScope, $lastDateInScope])->get();
     }
 }
