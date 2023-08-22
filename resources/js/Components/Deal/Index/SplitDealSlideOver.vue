@@ -12,6 +12,7 @@ import { TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, watch } from 'vue'
 import AgentDealShare from './AgentDealShare.vue'
+import Agent from '@/types/Agent'
 
 type Partner = {
     id: number | null
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 const props = defineProps<{
     isOpen: boolean
     deal: Deal
+    agentThatTriggeredDeal: Agent
 }>()
 
 const newPartner = () =>
@@ -36,22 +38,12 @@ const newPartner = () =>
     } as Partner)
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 
-const agentIdsToNames = computed(() => {
-    const idsToNames: Record<number, string> = {}
-
-    for (const name in agentNamesToIds.value) {
-        idsToNames[agentNamesToIds.value[name]] = name
-    }
-
-    return idsToNames
-})
-
 const form = useForm({
     partners: existingAgents(),
 })
 
 function existingAgents() {
-    return props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner()]
+    return props.deal.agents!.length > 1 ? loadExistingAgentsFromSplits() : [newPartner()]
 }
 
 watch(
@@ -62,10 +54,10 @@ watch(
 )
 
 function loadExistingAgentsFromSplits() {
-    return props.deal.splits!.map((split) => ({
-        name: agentIdsToNames.value[split.agent_id],
-        id: split.agent_id,
-        shared_percentage: split.shared_percentage * 100,
+    return props.deal.agents!.map((agent) => ({
+        name: agent.name,
+        id: agent.id,
+        shared_percentage: agent.pivot.deal_percentage * 100,
     }))
 }
 
@@ -128,7 +120,7 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
     >
         <div class="text-gray-700">
             <AgentDealShare
-                :agent-name="props.deal.agent!.name"
+                :agent-name="props.agentThatTriggeredDeal.name"
                 :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
             />
 
@@ -163,7 +155,13 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                 </div>
 
                 <Select
-                    :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
+                    :options="
+                        Object.keys(agentNamesToIds).filter(
+                            (name) =>
+                                name !== props.agentThatTriggeredDeal.name &&
+                                !form.partners.map((partner) => partner.name).includes(name)
+                        )
+                    "
                     v-model="partner.name"
                     @update:model-value="(newName: string) => handlePartnerSelection(newName, index)"
                     no-options-text="All available Agents are already involved..."

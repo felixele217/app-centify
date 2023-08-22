@@ -46,6 +46,10 @@ it('stores the data properly', function () {
 
     $expectedDealDTO = (new PipedriveIntegrationService($this->admin->organization))->agentDeals()[$this->agent->email]->first();
 
+    foreach ($this->agent->deals as $deal) {
+        expect($deal->AE->id)->toBe($this->agent->id);
+    }
+
     $agentDeal = $this->agent->deals()->whereIntegrationDealId($expectedDealDTO->integration_deal_id)->first();
     expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
     expect($agentDeal->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);

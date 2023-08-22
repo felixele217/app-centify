@@ -17,6 +17,7 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
+import Agent from '@/types/Agent'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -115,26 +116,42 @@ const handleBlur = () =>
             dealIdOfNoteBeingEdited.value = undefined
         }
     }, 100)
+
+const agentThatTriggeredDeal = computed(() => {
+    let agent: Agent
+
+    props.deal.agents!.forEach((currentAgent) => {
+        if (currentAgent.pivot.triggered_by === 'deal_won') {
+            agent = currentAgent
+        }
+
+        if (currentAgent.pivot.triggered_by === 'demo_set_by') {
+            agent = currentAgent
+        }
+    })
+
+    return agent!
+})
 </script>
 
 <template>
     <td class="col-span-3 flex items-center justify-between py-4 pl-6 pr-3">
         <div>
-            <p class="text-gray-900">{{ props.deal.agent!.name }}</p>
+            <p class="text-gray-900">{{ agentThatTriggeredDeal.name }}</p>
 
             <Tooltip
-                v-if="props.deal.splits!.length"
-                :text="[props.deal.agent!.name + ': ' + dealOwnerShare(props.deal) + '%' ,...props.deal.splits!.map(split => agentIdsToNames[split.agent_id] + ': ' + split.shared_percentage * 100 + '%')].join('\n')"
+                v-if="props.deal.agents!.length > 1"
+                :text="props.deal.agents!.map(agent => agent.name + ': ' + agent.pivot.deal_percentage * 100 + '%').join('\n')"
                 placement="bottom"
                 class="whitespace-pre-wrap"
             >
-                <p class="mt-1 text-gray-500">+{{ props.deal.splits!.length }} more due to split</p>
+                <p class="mt-1 text-gray-500">+{{ props.deal.agents!.length > 1 }} more due to split</p>
             </Tooltip>
             <p
                 v-else
                 class="mt-1 text-gray-500"
             >
-                {{ props.deal.agent!.email }}
+                {{ agentThatTriggeredDeal.email }}
             </p>
         </div>
 
@@ -186,7 +203,7 @@ const handleBlur = () =>
             />
 
             <CheckIcon
-                class="h-7 w-7 rounded-full bg-gray-100 px-1.5 mr-2 py-1 hover:bg-primary-50 hover:text-primary-500"
+                class="mr-2 h-7 w-7 rounded-full bg-gray-100 px-1.5 py-1 hover:bg-primary-50 hover:text-primary-500"
                 @click="updateDealNote"
             />
         </div>
@@ -204,6 +221,7 @@ const handleBlur = () =>
         @close-slide-over="isSplittingDeal = false"
         :deal="props.deal"
         :is-open="isSplittingDeal"
+        :agent-that-triggered-deal="agentThatTriggeredDeal"
     />
 
     <Modal

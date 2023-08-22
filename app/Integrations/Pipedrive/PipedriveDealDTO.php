@@ -18,6 +18,7 @@ class PipedriveDealDTO
     public float $value;
 
     public Carbon $add_time;
+
     public ?Carbon $won_time;
 
     public DealStatusEnum $status;

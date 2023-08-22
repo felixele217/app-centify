@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
+use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
+use App\Models\AgentDeal;
+use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Organization;
 use Carbon\Carbon;
@@ -85,9 +88,20 @@ class PipedriveIntegrationService implements IntegrationServiceContract
 
         foreach ($agentDealsDTOs as $email => $dealDTOs) {
             foreach ($dealDTOs as $dealDTO) {
-                Agent::whereEmail($email)->first()?->deals()->updateOrCreate(
+                $deal = Deal::updateOrCreate(
                     $dealDTO->integrationIdentifiers(),
                     $dealDTO->toArray(),
+                );
+
+                AgentDeal::firstOrCreate(
+                    [
+                        'agent_id' => Agent::whereEmail($email)->first()?->id,
+                        'deal_id' => $deal->id,
+                    ], [
+                        'triggered_by' => $dealDTO->status === DealStatusEnum::WON
+                        ? TriggerEnum::DEAL_WON->value
+                        : TriggerEnum::DEMO_SET_BY->value,
+                    ]
                 );
             }
         }
