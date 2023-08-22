@@ -13,12 +13,17 @@ export default interface Deal {
     value: number
     add_time: string
     agent_id: number
+    s_d_r?: Agent & {
+        pivot: AgentDealPivot
+    }
+    a_e?: Agent & {
+        pivot: AgentDealPivot
+    }
     agents?: Array<
         Agent & {
             pivot: AgentDealPivot
         }
     >
-    accepted_at: string | null
     note: string | null
     rejections?: Array<Rejection>
     active_rejection?: Rejection

@@ -65,6 +65,8 @@ it('passes the correct props', function () {
                 ->component('Deal/Index')
                 ->has('deals', DealRepository::get()->count())
                 ->has('deals.1.agents')
+                ->has('deals.1.s_d_r')
+                ->has('deals.1.a_e')
                 ->has('agents')
                 ->has('deals.1.active_rejection')
                 ->has('integrations.0.custom_fields')

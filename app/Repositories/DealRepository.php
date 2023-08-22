@@ -79,9 +79,15 @@ class DealRepository
         }
 
         if (array_key_exists('has_accepted_deal', $request->validated())) {
-            $deal->sdr?->pivot->update([
-                'accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null,
-            ]);
+            if ($deal->won_time) {
+                $deal->ae?->pivot->update([
+                    'accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null,
+                ]);
+            } else {
+                $deal->sdr?->pivot->update([
+                    'accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null,
+                ]);
+            }
         }
     }
 }
