@@ -2,6 +2,7 @@
 
 use App\Enum\AgentStatusEnum;
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Organization;
@@ -30,16 +31,17 @@ it('freezes the current agent data in payouts', function (TimeScopeEnum $timeSco
 
     $plan->agents()->attach($agents);
 
-    Deal::factory()->create([
+    Deal::factory()
+    ->withAgentDeal(fake()->randomElement($agents->pluck('id')), TriggerEnum::DEMO_SET_BY)
+    ->create([
         'add_time' => Carbon::now()->firstOfMonth(),
         'accepted_at' => Carbon::now(),
-        'demo_set_by_agent_id' => fake()->randomElement($agents->pluck('id')),
     ]);
 
     (new FreezePayoutsService($organization, $timeScope))->freeze();
 
     expect(Payout::count())->toBe($agentCount);
-    expect(floatval($agents->first()->payouts->first()->quota_attainment_percentage))->toBe($quotaAttainment = (new QuotaAttainmentService())->calculate($agents->first(), $timeScope));
+    expect(floatval($agents->first()->payouts->first()->quota_attainment_percentage))->toBe($quotaAttainment = (new QuotaAttainmentService($agents->first(), $timeScope))->calculate());
     expect($agents->first()->payouts->first()->commission_from_quota)->toBe((new CommissionFromQuotaService())->calculate($agents->first(), $timeScope, $quotaAttainment));
     expect($agents->first()->payouts->first()->kicker_commission)->toBe((new KickerCommissionService())->calculate($agents->first(), $timeScope, $quotaAttainment) ?? 0);
     expect($agents->first()->payouts->first()->absence_commission)->toBe((new PaidLeaveCommissionService())->calculate($agents->first(), $timeScope));

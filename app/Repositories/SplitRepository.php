@@ -44,11 +44,4 @@ class SplitRepository
             $deal->sdr?->pivot->update(['deal_percentage' => 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners')))]);
         }
     }
-
-    public static function splitsForAgent(Agent $agent, TimeScopeEnum $timeScope, CarbonImmutable $dateInScope = null): Collection
-    {
-        [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
-
-        return $agent->deals()->accepted($dateInScope)->whereBetween('add_time', [$firstDateInScope, $lastDateInScope])->get();
-    }
 }

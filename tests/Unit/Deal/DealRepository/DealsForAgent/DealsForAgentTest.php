@@ -68,21 +68,21 @@ it('retrieves all deals where demo is set OR deal is won by the agent if he has 
 
     $agent->plans()->attach([$aePlan->id, $sdrPlan->id]);
 
-    Deal::factory(2)
-    ->withAgentDeal($agent->id, )
-    ->accepted()
-    ->sequence(
-        [
-            'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-            'won_time' => $dateInScope,
-        ],
-        [
-            'add_time' => $dateInScope,
-            'won_time' => null,
-        ],
-    )->create([
-        'demo_set_by_agent_id' => $agent->id,
-    ]);
+    foreach ([TriggerEnum::DEMO_SET_BY, TriggerEnum::DEAL_WON] as $trigger) {
+        Deal::factory()
+            ->withAgentDeal($agent->id, $trigger)
+            ->accepted()
+            ->sequence(
+                [
+                    'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
+                    'won_time' => $dateInScope,
+                ],
+                [
+                    'add_time' => $dateInScope,
+                    'won_time' => null,
+                ],
+            )->create();
+    }
 
     expect(DealRepository::dealsForAgent($agent, $timeScope))->toHaveCount(2);
 })->with([
