@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Deal::class);
             $table->integer('deal_percentage')->default(100);
             $table->string('triggered_by')->nullable();
+            $table->timestampTz('accepted_at')->nullable();
             $table->timestamps();
         });
     }

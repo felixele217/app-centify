@@ -24,6 +24,8 @@ class AgentDeal extends Pivot implements Auditable
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
+        'accepted_at' => 'datetime:Y-m-d',
         'triggered_by' => TriggerEnum::class,
     ];
 

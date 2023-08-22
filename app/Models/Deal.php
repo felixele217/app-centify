@@ -26,7 +26,6 @@ class Deal extends Model implements Auditable
     protected $casts = [
         'add_time' => 'datetime',
         'won_time' => 'datetime',
-        'accepted_at' => 'datetime',
         'integration_type' => IntegrationTypeEnum::class,
         'status' => DealStatusEnum::class,
     ];

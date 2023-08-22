@@ -25,7 +25,6 @@ class DealFactory extends Factory
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'won_time' => null,
-            'accepted_at' => null,
             'note' => null,
         ];
     }
@@ -37,13 +36,14 @@ class DealFactory extends Factory
         ]);
     }
 
-    public function withAgentDeal(int $agentId, TriggerEnum $trigger = null): static
+    public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon $accepted_at = null): static
     {
-        return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger) {
+        return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {
             AgentDeal::create([
                 'agent_id' => $agentId,
                 'deal_id' => $deal->id,
                 'triggered_by' => $trigger->value,
+                'accepted_at' => $accepted_at,
             ]);
         });
     }
