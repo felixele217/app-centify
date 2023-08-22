@@ -15,12 +15,14 @@ beforeEach(function () {
 });
 
 it('retrieves deals where the won_time is inside of the time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
-    Deal::factory(2)->accepted()->state(['add_time' => $firstDateInScope->subDays(10)])->sequence(
-        ['won_time' => $firstDateInScope],
-        ['won_time' => $lastDateInScope],
-    )->create([
-        'demo_set_by_agent_id' => $this->agent->id,
-    ]);
+    Deal::factory(2)
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
+        ->accepted()
+        ->state(['add_time' => $firstDateInScope->subDays(10)])
+        ->sequence(
+            ['won_time' => $firstDateInScope],
+            ['won_time' => $lastDateInScope],
+        )->create();
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(2);
 })->with([
@@ -30,12 +32,13 @@ it('retrieves deals where the won_time is inside of the time scope', function (T
 ]);
 
 it('does not retrieve deals where won_time is outside of scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
-    Deal::factory(2)->accepted()->sequence(
-        ['won_time' => $firstDateInScope->subDays(5)],
-        ['won_time' => $lastDateInScope->addDays(5)],
-    )->create([
-        'demo_set_by_agent_id' => $this->agent->id,
-    ]);
+    Deal::factory(2)
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
+        ->accepted()
+        ->sequence(
+            ['won_time' => $firstDateInScope->subDays(5)],
+            ['won_time' => $lastDateInScope->addDays(5)],
+        )->create();
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);
 })->with([
@@ -45,11 +48,12 @@ it('does not retrieve deals where won_time is outside of scope', function (TimeS
 ]);
 
 it('does not retrieve deals where won_time is null', function (TimeScopeEnum $timeScope) {
-    Deal::factory()->accepted()->sequence(
-        ['won_time' => null],
-    )->create([
-        'demo_set_by_agent_id' => $this->agent->id,
-    ]);
+    Deal::factory()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
+        ->accepted()
+        ->sequence(
+            ['won_time' => null],
+        )->create();
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);
 })->with([

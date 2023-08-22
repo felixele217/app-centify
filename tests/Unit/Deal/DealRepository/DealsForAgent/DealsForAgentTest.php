@@ -10,22 +10,24 @@ use App\Repositories\DealRepository;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
-it('retrieves only accepted deals', function () {
+it('retrieves accepted deals', function () {
     $plan = Plan::factory()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals($acceptedWithoutRejectionsDealCount = 2, [
-        'accepted_at' => Carbon::now(),
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory($acceptedWithoutRejectionsDealCount = 2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->accepted()
+        ->create();
 
     Deal::factory($acceptedWithPriorRejectionsDealCount = 1)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->accepted()
         ->hasRejections(1, [
             'is_permanent' => false,
             'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
         ])
-        ->create([
-            'demo_set_by_agent_id' => $agent->id,
-            'accepted_at' => Carbon::now(),
-        ]);
+        ->create();
 
     $acceptedDealCount = $acceptedWithoutRejectionsDealCount + $acceptedWithPriorRejectionsDealCount;
 
@@ -35,22 +37,29 @@ it('retrieves only accepted deals', function () {
 it('does not retrieve unaccepted deals', function () {
     $plan = Plan::factory()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(1, [
-        'accepted_at' => null,
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
 
-    Deal::factory(3)
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'accepted_at' => null,
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
         ->hasRejections(1, [
             'is_permanent' => false,
         ])
         ->create([
-            'demo_set_by_agent_id' => $agent->id,
             'accepted_at' => null,
         ]);
 
     expect(DealRepository::dealsForAgent($agent, TimeScopeEnum::MONTHLY)->count())->toBe(0);
 });
 
+//TODO handle the second accepted_at timestamp here properly
 it('retrieves all deals where demo is set OR deal is won by the agent if he has plans with both triggers', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInScope) {
     $aePlan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEAL_WON->value]);
     $sdrPlan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEMO_SET_BY->value]);
@@ -59,7 +68,10 @@ it('retrieves all deals where demo is set OR deal is won by the agent if he has 
 
     $agent->plans()->attach([$aePlan->id, $sdrPlan->id]);
 
-    Deal::factory(2)->accepted()->sequence(
+    Deal::factory(2)
+    ->withAgentDeal($agent->id, )
+    ->accepted()
+    ->sequence(
         [
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
             'won_time' => $dateInScope,

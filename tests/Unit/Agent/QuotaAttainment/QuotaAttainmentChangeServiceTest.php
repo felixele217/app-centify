@@ -63,7 +63,7 @@ it('quota attainment change is correct when previous scope has quota and current
         'add_time' => $dateInPreviousTimeScope,
     ])->create());
 
-    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($dateInPreviousTimeScope))->calculate($agent, $timeScope);
+    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
 })->with([
