@@ -126,7 +126,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return (new QuotaAttainmentService())->calculate($this, queryTimeScope());
+                return (new QuotaAttainmentService($this, queryTimeScope()))->calculate();
             }
         );
     }

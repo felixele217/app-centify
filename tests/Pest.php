@@ -3,6 +3,7 @@
 use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
+use App\Models\Deal;
 use App\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,16 +26,20 @@ function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPe
         'trigger' => $trigger->value,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(1, [
-        'add_time' => $addTime ?? Carbon::now()->firstOfMonth(),
-        'won_time' => $trigger === TriggerEnum::DEAL_WON ? Carbon::now()->firstOfMonth() : null,
-        'accepted_at' => $addTime ?? Carbon::now()->firstOfMonth(),
-        'value' => $targetAmountPerMonth * $quotaAttainmentPerMonth,
-    ])->create([
+    $plan->agents()->attach($agent = Agent::factory()->create([
         'base_salary' => 50_000_00,
         'on_target_earning' => 170_000_00,
         'organization_id' => $organizationId,
     ]));
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, $trigger)
+        ->create([
+            'add_time' => $addTime ?? Carbon::now()->firstOfMonth(),
+            'won_time' => $trigger === TriggerEnum::DEAL_WON ? Carbon::now()->firstOfMonth() : null,
+            'accepted_at' => $addTime ?? Carbon::now()->firstOfMonth(),
+            'value' => $targetAmountPerMonth * $quotaAttainmentPerMonth,
+        ]);
 
     return [$plan, $agent];
 }

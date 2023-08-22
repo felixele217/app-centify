@@ -29,11 +29,9 @@ class DashboardController extends Controller
                 'vacation_leaves_days_count',
                 'active_plans',
             ]),
-            'time_scopes' => array_column(TimeScopeEnum::cases(), 'value'),
-            'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
-            'open_deal_count' => Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) {
+            'open_deal_count' => Deal::whereNull('accepted_at')->whereHas('agents', function (Builder $query) {
                 $query->whereOrganizationId(Auth::user()->organization->id);
-            })->count(),
+            })->count()
         ]);
     }
 }

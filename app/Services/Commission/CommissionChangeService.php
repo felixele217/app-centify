@@ -14,7 +14,7 @@ class CommissionChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
     {
-        $quotaAttainmentLastTimeScope = (new QuotaAttainmentService(DateHelper::dateInPreviousTimeScope($timeScope)))->calculate($agent, $timeScope);
+        $quotaAttainmentLastTimeScope = (new QuotaAttainmentService($agent, $timeScope,DateHelper::dateInPreviousTimeScope($timeScope)))->calculate();
 
         if (is_null($quotaAttainmentLastTimeScope)) {
             return null;
@@ -22,7 +22,7 @@ class CommissionChangeService
 
         $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
 
-        $quotaAttainmentThisTimeScope = (new QuotaAttainmentService(CarbonImmutable::now()))->calculate($agent, $timeScope);
+        $quotaAttainmentThisTimeScope = (new QuotaAttainmentService($agent, $timeScope, CarbonImmutable::now()))->calculate();
         $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisTimeScope);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);

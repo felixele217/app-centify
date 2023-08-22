@@ -15,12 +15,13 @@ it('total commission change is calculated correctly for commission from quota', 
 
     [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentThisMonth = 1.3, TriggerEnum::DEMO_SET_BY);
 
-    Deal::factory()->create([
-        'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-        'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
-        'value' => $plan->target_amount_per_month * $quotaAttainmentMonthInPreviousTimeScope = 0.7,
-        'demo_set_by_agent_id' => $agent->id,
-    ]);
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
+            'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
+            'value' => $plan->target_amount_per_month * $quotaAttainmentMonthInPreviousTimeScope = 0.7,
+        ]);
 
     $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisMonth / $timeScope->monthCount());
     $commissionPreviousTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentMonthInPreviousTimeScope / $timeScope->monthCount());
@@ -41,20 +42,25 @@ it('returns null if there was no active plan last time scope', function (TimeSco
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(1, [
-        'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-        'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
-        'value' => $plan->target_amount_per_month / 2,
-    ])->create([
-        'organization_id' => $admin->organization->id,
+    $plan->agents()->attach($agent = Agent::factory()->create([
+        'organization_id' => $admin->organization_id,
     ]));
 
-    Deal::factory()->create([
-        'add_time' => Carbon::now(),
-        'accepted_at' => Carbon::now(),
-        'demo_set_by_agent_id' => $agent->id,
-        'value' => $plan->target_amount_per_month,
-    ]);
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
+            'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
+            'value' => $plan->target_amount_per_month / 2,
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->create([
+            'add_time' => Carbon::now(),
+            'accepted_at' => Carbon::now(),
+            'value' => $plan->target_amount_per_month,
+        ]);
 
     expect((new CommissionChangeService())->calculate($agent, $timeScope))->toBeNull();
 })->with([
