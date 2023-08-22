@@ -6,6 +6,7 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Repositories\DealRepository;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
 beforeEach(function () {
@@ -16,8 +17,7 @@ beforeEach(function () {
 
 it('retrieves only deals where the add_time is inside of the time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     Deal::factory(2)
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY)
-        ->accepted()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth())
         ->state(['add_time' => $firstDateInScope->subDays(10)])
         ->sequence(
             ['add_time' => $firstDateInScope],
@@ -33,8 +33,7 @@ it('retrieves only deals where the add_time is inside of the time scope', functi
 
 it('does not retrieve deals where add_time is outside of scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     Deal::factory(2)
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY)
-        ->accepted()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth())
         ->sequence(
             ['add_time' => $firstDateInScope->subDays(5)],
             ['add_time' => $lastDateInScope->addDays(5)],

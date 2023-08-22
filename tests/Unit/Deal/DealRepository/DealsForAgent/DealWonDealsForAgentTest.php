@@ -6,6 +6,7 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Repositories\DealRepository;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
 beforeEach(function () {
@@ -16,8 +17,7 @@ beforeEach(function () {
 
 it('retrieves deals where the won_time is inside of the time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     Deal::factory(2)
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
-        ->accepted()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON, $firstDateInScope)
         ->state(['add_time' => $firstDateInScope->subDays(10)])
         ->sequence(
             ['won_time' => $firstDateInScope],
@@ -33,8 +33,7 @@ it('retrieves deals where the won_time is inside of the time scope', function (T
 
 it('does not retrieve deals where won_time is outside of scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     Deal::factory(2)
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
-        ->accepted()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON, $firstDateInScope)
         ->sequence(
             ['won_time' => $firstDateInScope->subDays(5)],
             ['won_time' => $lastDateInScope->addDays(5)],
@@ -49,8 +48,7 @@ it('does not retrieve deals where won_time is outside of scope', function (TimeS
 
 it('does not retrieve deals where won_time is null', function (TimeScopeEnum $timeScope) {
     Deal::factory()
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
-        ->accepted()
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON, Carbon::now()->firstOfMonth())
         ->sequence(
             ['won_time' => null],
         )->create();

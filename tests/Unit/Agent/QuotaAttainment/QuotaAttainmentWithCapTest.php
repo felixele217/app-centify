@@ -15,9 +15,8 @@ it('calculates the quota attainment correctly or deals that exceed the cap', fun
         ])->create(['target_amount_per_month' => 100_000_00]);
 
     Deal::factory($dealCount)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, Carbon::yesterday())
         ->create([
-            'accepted_at' => Carbon::yesterday(),
             'value' => $cap * 2,
         ]);
 

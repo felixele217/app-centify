@@ -33,11 +33,10 @@ function createActivePlanWithAgent(int $organizationId, float $quotaAttainmentPe
     ]));
 
     Deal::factory()
-        ->withAgentDeal($agent->id, $trigger)
+        ->withAgentDeal($agent->id, $trigger, $addTime ?? Carbon::now()->firstOfMonth())
         ->create([
             'add_time' => $addTime ?? Carbon::now()->firstOfMonth(),
             'won_time' => $trigger === TriggerEnum::DEAL_WON ? Carbon::now()->firstOfMonth() : null,
-            'accepted_at' => $addTime ?? Carbon::now()->firstOfMonth(),
             'value' => $targetAmountPerMonth * $quotaAttainmentPerMonth,
         ]);
 

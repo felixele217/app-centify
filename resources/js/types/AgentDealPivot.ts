@@ -6,6 +6,7 @@ type AgentDealPivot = {
     deal_id: number
     deal_percentage: number
     triggered_by: TriggerEnum
+   accepted_at: string
 }
 
 export default AgentDealPivot

@@ -10,6 +10,7 @@ use App\Enum\TriggerEnum;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DealFactory extends Factory
@@ -29,14 +30,7 @@ class DealFactory extends Factory
         ];
     }
 
-    public function accepted(): static
-    {
-        return $this->state(fn () => [
-            'accepted_at' => Carbon::yesterday(),
-        ]);
-    }
-
-    public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon $accepted_at = null): static
+    public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon|CarbonImmutable $accepted_at = null): static
     {
         return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {
             AgentDeal::create([

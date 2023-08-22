@@ -16,10 +16,9 @@ it('total commission change is calculated correctly for commission from quota', 
     [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentThisMonth = 1.3, TriggerEnum::DEMO_SET_BY);
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, DateHelper::dateInPreviousTimeScope($timeScope))
         ->create([
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-            'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
             'value' => $plan->target_amount_per_month * $quotaAttainmentMonthInPreviousTimeScope = 0.7,
         ]);
 
@@ -47,18 +46,16 @@ it('returns null if there was no active plan last time scope', function (TimeSco
     ]));
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, DateHelper::dateInPreviousTimeScope($timeScope))
         ->create([
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-            'accepted_at' => DateHelper::dateInPreviousTimeScope($timeScope),
             'value' => $plan->target_amount_per_month / 2,
         ]);
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
-            'accepted_at' => Carbon::now(),
             'value' => $plan->target_amount_per_month,
         ]);
 

@@ -13,18 +13,19 @@ it('returns the attained quota change in %', function () {
 
     $plan->agents()->attach($agent = Agent::factory()->create());
 
-    Deal::factory(2)
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
-        ->sequence([
-            'accepted_at' => Carbon::now()->firstOfMonth()->subDays(1),
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth()->subDays(1))
+        ->create([
             'add_time' => Carbon::now()->firstOfMonth()->subDays(1),
             'value' => $targetAmountPerMonth / 2,
-        ], [
-            'accepted_at' => Carbon::now(),
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth,
-        ]
-        )->create();
+        ]);
 
     expect($agent->quota_attainment_change)->toBe(0.5);
 });

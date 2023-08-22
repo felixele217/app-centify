@@ -19,12 +19,12 @@ it('calculates the quota attainment correctly for splitted deals', function (int
     AgentDeal::create([
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->firstOfMonth(),
+        'deal_percentage' => 100 - $sharedPercentage1 - $sharedPercentage2,
         'deal_id' => Deal::factory()->state([
-            'accepted_at' => Carbon::now()->firstOfMonth(),
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 1_000_00,
         ])->create()->id,
-        'deal_percentage' => 100 - $sharedPercentage1 - $sharedPercentage2,
     ]);
 
     AgentDeal::create([
@@ -61,12 +61,12 @@ it('split partner also get the quota', function (int $sharedPercentage) {
     $sdrAgentDeal = AgentDeal::create([
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->firstOfMonth(),
+        'deal_percentage' => 100 - $sharedPercentage,
         'deal_id' => Deal::factory()->state([
-            'accepted_at' => Carbon::now()->firstOfMonth(),
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 1_000_00,
         ])->create()->id,
-        'deal_percentage' => 100 - $sharedPercentage,
     ]);
 
     AgentDeal::create([
@@ -99,12 +99,12 @@ it('deal owner gets his capped share', function (int $sharedPercentage) {
     $sdrAgentDeal = AgentDeal::create([
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->firstOfMonth(),
+        'deal_percentage' => 100 - $sharedPercentage,
         'deal_id' => Deal::factory()->state([
-            'accepted_at' => Carbon::now()->firstOfMonth(),
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 10_000_00,
         ])->create()->id,
-        'deal_percentage' => 100 - $sharedPercentage,
     ]);
 
     AgentDeal::create([
@@ -137,12 +137,12 @@ it('split partner gets his capped share', function (int $sharedPercentage) {
     $sdrAgentDeal = AgentDeal::create([
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
+        'accepted_at' => Carbon::now()->firstOfMonth(),
+        'deal_percentage' => 100 - $sharedPercentage,
         'deal_id' => Deal::factory()->state([
-            'accepted_at' => Carbon::now()->firstOfMonth(),
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 10_000_00,
         ])->create()->id,
-        'deal_percentage' => 100 - $sharedPercentage,
     ]);
 
     AgentDeal::create([

@@ -23,10 +23,9 @@ beforeEach(function () {
         ->create();
 
     Deal::factory($this->acceptedDealCount = 3)
-        ->accepted()
         ->withAgentDeal(Agent::factory()->create([
             'organization_id' => $this->admin->organization_id,
-        ])->id, TriggerEnum::DEMO_SET_BY)
+        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth())
         ->create();
 
     Deal::factory($dealsWithImpermanentRejectionThisMonth = 2)

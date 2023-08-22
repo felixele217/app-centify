@@ -27,11 +27,17 @@ class DealRepository
 
         return match ($scope) {
             null => $agentDealsOfOrganization->get(),
-            DealScopeEnum::OPEN => $agentDealsOfOrganization->whereNull('accepted_at')->whereDoesntHave('rejections', function (Builder $query) {
+            DealScopeEnum::OPEN => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+                $query->whereNull('accepted_at');
+            })->whereDoesntHave('rejections', function (Builder $query) {
                 $query->active();
             })->get(),
-            DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereNotNull('accepted_at')->doesntHave('rejections')->get(),
-            DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereNull('accepted_at')->whereHas('rejections', function (Builder $query) {
+            DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+                $query->whereNotNull('accepted_at');
+            })->doesntHave('rejections')->get(),
+            DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+                $query->whereNull('accepted_at');
+            })->whereHas('rejections', function (Builder $query) {
                 $query->active();
             })->get(),
         };
@@ -39,7 +45,9 @@ class DealRepository
 
     public static function dealsForAgent(Agent $agent, TimeScopeEnum $timeScope, CarbonImmutable $dateInScope = null): Collection
     {
-        $baseQuery = $agent->deals()->whereNotNull('accepted_at');
+        $baseQuery = $agent->deals()->whereHas('agents', function (Builder $query) {
+            $query->whereNotNull('agent_deal.accepted_at');
+        });
 
         $deals = collect();
 
@@ -71,7 +79,9 @@ class DealRepository
         }
 
         if (array_key_exists('has_accepted_deal', $request->validated())) {
-            $deal->update(['accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null]);
+            $deal->sdr?->pivot->update([
+                'accepted_at' => $request->validated('has_accepted_deal') === true ? Carbon::now() : null,
+            ]);
         }
     }
 }

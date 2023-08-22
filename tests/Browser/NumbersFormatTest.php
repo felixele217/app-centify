@@ -60,11 +60,8 @@ class NumbersFormatTest extends DuskTestCase
         $plan->agents()->attach($agent);
 
         Deal::factory()
-            ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
-            ->create([
-                'value' => 5_000_00,
-                'accepted_at' => Carbon::yesterday(),
-            ]);
+            ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::yesterday())
+            ->create(['value' => 5_000_00]);
 
         return $admin;
     }

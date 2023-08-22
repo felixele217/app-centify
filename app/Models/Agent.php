@@ -62,6 +62,7 @@ class Agent extends Authenticatable implements Auditable
             'id',
             'deal_percentage',
             'triggered_by',
+           'accepted_at',
         ])->using(AgentDeal::class);
     }
 

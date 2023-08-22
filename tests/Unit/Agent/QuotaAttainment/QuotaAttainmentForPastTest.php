@@ -13,9 +13,8 @@ it('can calculate for past timescopes with the same plan', function (TimeScopeEn
     $plan = Plan::factory()->active()->create(['target_amount_per_month' => 10_000_00]);
 
     Deal::factory(2)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $dateInPastScope)
         ->create([
-            'accepted_at' => $dateInPastScope,
             'add_time' => $dateInPastScope,
             'value' => 5_000_00,
         ]);
@@ -37,9 +36,8 @@ it('can calculate for past timescopes with a different plan', function (TimeScop
     ]);
 
     Deal::factory(2)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $dateInPastScope)
         ->create([
-            'accepted_at' => $dateInPastScope,
             'add_time' => $dateInPastScope,
             'value' => 5_000_00,
         ]);

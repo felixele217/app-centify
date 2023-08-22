@@ -16,13 +16,11 @@ it('retrieves accepted deals', function () {
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory($acceptedWithoutRejectionsDealCount = 2)
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
-        ->accepted()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
         ->create();
 
     Deal::factory($acceptedWithPriorRejectionsDealCount = 1)
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
-        ->accepted()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
         ->hasRejections(1, [
             'is_permanent' => false,
             'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
@@ -42,19 +40,15 @@ it('does not retrieve unaccepted deals', function () {
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
-        ->create([
-            'accepted_at' => null,
-        ]);
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, null)
+        ->create();
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, null)
         ->hasRejections(1, [
             'is_permanent' => false,
         ])
-        ->create([
-            'accepted_at' => null,
-        ]);
+        ->create();
 
     expect(DealRepository::dealsForAgent($agent, TimeScopeEnum::MONTHLY)->count())->toBe(0);
 });
@@ -70,8 +64,7 @@ it('retrieves all deals where demo is set OR deal is won by the agent if he has 
 
     foreach ([TriggerEnum::DEMO_SET_BY, TriggerEnum::DEAL_WON] as $trigger) {
         Deal::factory()
-            ->withAgentDeal($agent->id, $trigger)
-            ->accepted()
+            ->withAgentDeal($agent->id, $trigger, Carbon::yesterday())
             ->sequence(
                 [
                     'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),

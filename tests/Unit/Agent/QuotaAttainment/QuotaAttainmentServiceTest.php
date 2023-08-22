@@ -11,9 +11,8 @@ use Carbon\CarbonImmutable;
 
 it('calculates the quota attainment correctly for the active plan with the most recent start_date', function () {
     Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, Carbon::yesterday())
         ->create([
-            'accepted_at' => Carbon::yesterday(),
             'add_time' => Carbon::yesterday(),
         ]);
     $agent = Agent::find($agentId);
@@ -36,18 +35,20 @@ it('calculates the quota attainment for the current scope', function (TimeScopeE
         'target_amount_per_month' => 1_000_00,
     ]);
 
-    Deal::factory(2)
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
-        ->sequence([
-            'accepted_at' => $lastDateInScope,
-            'add_time' => $lastDateInScope,
-        ], [
-            'accepted_at' => $firstDateInScope,
-            'add_time' => $firstDateInScope,
-        ])
+    Deal::factory()
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $lastDateInScope)
         ->create([
+            'add_time' => $lastDateInScope,
             'value' => 1_000_00,
         ]);
+
+    Deal::factory()
+        ->withAgentDeal($agentId, TriggerEnum::DEMO_SET_BY, $firstDateInScope)
+        ->create([
+            'add_time' => $firstDateInScope,
+            'value' => 1_000_00,
+        ]);
+
     $agent = Agent::find($agentId);
 
     $plan->agents()->attach($agent);
@@ -62,16 +63,17 @@ it('calculates the quota attainment for the current scope', function (TimeScopeE
 it('does not use deals that lie out of the current time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     $plan = Plan::factory()->create();
 
-    Deal::factory(2)
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
-        ->sequence([
-            'accepted_at' => $lastDateInScope->addDays(5),
-            'add_time' => $lastDateInScope->addDays(5),
-        ], [
-            'accepted_at' => $firstDateInScope->subDays(5),
+    Deal::factory()
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $firstDateInScope->subDays(5))
+        ->create([
             'add_time' => $firstDateInScope->subDays(5),
-        ])
-        ->create();
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agentId, TriggerEnum::DEMO_SET_BY, $lastDateInScope->addDays(5))
+        ->create([
+            'add_time' => $lastDateInScope->addDays(5),
+        ]);
     $agent = Agent::find($agentId);
     $plan->agents()->attach($agent);
 
@@ -89,14 +91,16 @@ it('returns null if the agent has no active plan', function () {
 });
 
 it('does not throw any errors when agents have no base_salary or no quota_attainment or no plan', function ($baseSalary, $onTargetEarning) {
-    $agent = Agent::factory()->hasDeals([
-        'accepted_at' => Carbon::now(),
-    ])->create([
-        'on_target_earning' => $onTargetEarning,
-        'base_salary' => $baseSalary,
-    ]);
+    Deal::factory()
+        ->withAgentDeal($agentId = Agent::factory()->create([
+            'on_target_earning' => $onTargetEarning,
+            'base_salary' => $baseSalary,
+        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
+            'add_time' => Carbon::now()->firstOfMonth(),
+        ]);
 
-    expect((new QuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBeNull();
+    expect((new QuotaAttainmentService(Agent::find($agentId), TimeScopeEnum::MONTHLY))->calculate())->toBeNull();
 })->with([
     [10_000_00, 10_000_00],
     [0, 10_000_00],
