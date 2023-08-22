@@ -21,7 +21,7 @@ class DealRepository
 {
     public static function get(DealScopeEnum $scope = null): Collection
     {
-        $agentDealsOfOrganization = Deal::with('agent')->whereHas('agent.organization', function (Builder $query) {
+        $agentDealsOfOrganization = Deal::with('agents')->whereHas('agents.organization', function (Builder $query) {
             $query->where('id', Auth::user()->organization_id);
         });
 
