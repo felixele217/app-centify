@@ -19,8 +19,14 @@ class DealController extends Controller
     {
         return Inertia::render('Deal/Index', [
             'deals' => DealRepository::get(DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
-                ->append('active_rejection')
-                ->load('splits'),
+                ->append([
+                    'active_rejection',
+                    's_d_r',
+                    'a_e',
+                    'demo_scheduled_shareholders',
+                    'deal_won_shareholders',
+                ])
+                ->load('agents'),
             'integrations' => Auth::user()->organization->integrations->load('customFields'),
             'agents' => Auth::user()->organization->agents->pluck('id', 'name'),
         ]);

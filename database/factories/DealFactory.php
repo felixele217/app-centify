@@ -6,8 +6,11 @@ namespace Database\Factories;
 
 use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
-use App\Models\Agent;
+use App\Enum\TriggerEnum;
+use App\Models\AgentDeal;
+use App\Models\Deal;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DealFactory extends Factory
@@ -23,25 +26,20 @@ class DealFactory extends Factory
             'value' => 500000,
             'add_time' => Carbon::yesterday(),
             'won_time' => null,
-            'accepted_at' => null,
-            'demo_set_by_agent_id' => Agent::factory()->create(),
             'note' => null,
         ];
     }
 
-    public function accepted(): static
+    public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon|CarbonImmutable $accepted_at = null): static
     {
-        return $this->state(fn () => [
-            'accepted_at' => Carbon::yesterday(),
-        ]);
-    }
-
-    public function withAgentOfOrganization(int $organizationId): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'demo_set_by_agent_id' => Agent::factory()->create([
-                'organization_id' => $organizationId,
-            ]),
-        ]);
+        return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {
+            AgentDeal::create([
+                'created_at' => Carbon::parse('-1 minute'),
+                'agent_id' => $agentId,
+                'deal_id' => $deal->id,
+                'triggered_by' => $trigger->value,
+                'accepted_at' => $accepted_at,
+            ]);
+        });
     }
 }

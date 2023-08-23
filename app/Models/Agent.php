@@ -55,9 +55,14 @@ class Agent extends Authenticatable implements Auditable
         return $this->belongsTo(Organization::class);
     }
 
-    public function deals(): HasMany
+    public function deals(): BelongsToMany
     {
-        return $this->hasMany(Deal::class, 'demo_set_by_agent_id');
+        return $this->belongsToMany(Deal::class)->withPivot([
+            'id',
+            'deal_percentage',
+            'triggered_by',
+            'accepted_at',
+        ])->using(AgentDeal::class);
     }
 
     public function plans(): BelongsToMany
@@ -68,11 +73,6 @@ class Agent extends Authenticatable implements Auditable
     public function paidLeaves(): HasMany
     {
         return $this->hasMany(PaidLeave::class)->orderBy('start_date');
-    }
-
-    public function splits(): HasMany
-    {
-        return $this->hasMany(Split::class);
     }
 
     public function payouts(): HasMany
@@ -127,7 +127,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return (new QuotaAttainmentService())->calculate($this, queryTimeScope());
+                return (new QuotaAttainmentService($this, queryTimeScope()))->calculate();
             }
         );
     }

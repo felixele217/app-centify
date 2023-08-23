@@ -1,45 +1,56 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
 use App\Enum\DealScopeEnum;
+use App\Enum\TriggerEnum;
+use App\Models\Agent;
+use App\Models\Deal;
 use App\Models\Integration;
 use App\Repositories\DealRepository;
+use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
 
     Integration::factory()->hasCustomFields()->create([
-        'organization_id' => $this->admin->organization->id
+        'organization_id' => $this->admin->organization->id,
     ]);
 
     Deal::factory($this->openDealCount = 2)
-        ->withAgentOfOrganization($this->admin->organization->id)
+        ->withAgentDeal(Agent::factory()->create([
+            'organization_id' => $this->admin->organization_id,
+        ])->id, TriggerEnum::DEMO_SET_BY)
         ->create();
 
     Deal::factory($this->acceptedDealCount = 3)
-        ->accepted()
-        ->withAgentOfOrganization($this->admin->organization->id)
+        ->withAgentDeal(Agent::factory()->create([
+            'organization_id' => $this->admin->organization_id,
+        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth())
         ->create();
 
     Deal::factory($dealsWithImpermanentRejectionThisMonth = 2)
         ->hasRejections(1, [
             'created_at' => Carbon::now()->firstOfMonth(),
             'is_permanent' => false,
-        ])->withAgentOfOrganization($this->admin->organization->id)
+        ])->withAgentDeal(Agent::factory()->create([
+            'organization_id' => $this->admin->organization_id,
+        ])->id, TriggerEnum::DEMO_SET_BY)
         ->create();
 
     Deal::factory($dealsWithPermanentRejectionLastMonth = 2)->hasRejections(1, [
         'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
         'is_permanent' => true,
-    ])->withAgentOfOrganization($this->admin->organization->id)
+    ])->withAgentDeal(Agent::factory()->create([
+        'organization_id' => $this->admin->organization_id,
+    ])->id, TriggerEnum::DEMO_SET_BY)
         ->create();
 
     Deal::factory($this->inactiveRejectedDealCount = 2)->hasRejections(1, [
         'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
         'is_permanent' => false,
-    ])->withAgentOfOrganization($this->admin->organization->id)
+    ])->withAgentDeal(Agent::factory()->create([
+        'organization_id' => $this->admin->organization_id,
+    ])->id, TriggerEnum::DEMO_SET_BY)
         ->create();
 
     $this->activeRejectedDealCount = $dealsWithImpermanentRejectionThisMonth + $dealsWithPermanentRejectionLastMonth;
@@ -53,10 +64,12 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
                 ->has('deals', DealRepository::get()->count())
-                ->has('deals.1.agent')
-                ->has('deals.1.splits')
-                ->has('agents')
-                ->has('deals.1.active_rejection')
+                ->has('deals.0.agents')
+                ->has('deals.0.s_d_r')
+                ->has('deals.0.a_e')
+                ->has('deals.0.demo_scheduled_shareholders')
+                ->has('deals.0.deal_won_shareholders')
+                ->has('deals.0.active_rejection')
                 ->has('integrations.0.custom_fields')
         );
 });
@@ -67,7 +80,7 @@ it('passes the correct props for all deals if no scope is specified', function (
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
                 ->has('deals', DealRepository::get()->count())
-                ->has('deals.1.agent')
+                ->has('deals.1.agents')
         );
 });
 
@@ -76,7 +89,7 @@ it('passes the correct props for scope=open', function () {
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', DealRepository::get(DealScopeEnum::OPEN)->count())
-            ->has('deals.1.agent')
+            ->has('deals.1.agents')
     );
 });
 
@@ -85,7 +98,7 @@ it('passes the correct props for scope=accepted', function () {
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', DealRepository::get(DealScopeEnum::ACCEPTED)->count())
-            ->has('deals.1.agent')
+            ->has('deals.1.agents')
     );
 });
 
@@ -94,6 +107,6 @@ it('passes the correct props for scope=rejected', function () {
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
             ->has('deals', DealRepository::get(DealScopeEnum::REJECTED)->count())
-            ->has('deals.1.agent')
+            ->has('deals.1.agents')
     );
 });

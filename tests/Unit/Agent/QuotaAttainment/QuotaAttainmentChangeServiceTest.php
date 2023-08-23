@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
@@ -15,17 +16,21 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()->count(2)->sequence([
-            'accepted_at' => $dateInPreviousTimeScope,
-            'add_time' => $dateInPreviousTimeScope,
-            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
-        ], [
-            'accepted_at' => Carbon::now(),
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
-        ]
-        ))->create());
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, $dateInPreviousTimeScope)
+        ->create([
+            'add_time' => $dateInPreviousTimeScope,
+            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
+        ]);
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval(1 - $factorForLastScope));
 })->with([
@@ -43,10 +48,13 @@ it('quota attainment change returns null when previous scope had no active plans
         'end_date' => Carbon::now()->lastOfMonth(),
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => Carbon::now(),
-        'add_time' => Carbon::now(),
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
+            'add_time' => Carbon::now(),
+        ]);
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBeNull();
 })->with([
@@ -58,12 +66,15 @@ it('quota attainment change returns null when previous scope had no active plans
 it('quota attainment change is correct when previous scope has quota and current does not', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->active()->create();
 
-    $plan->agents()->attach($agent = Agent::factory()->hasDeals(2, [
-        'accepted_at' => $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope(($timeScope)),
-        'add_time' => $dateInPreviousTimeScope,
-    ])->create());
+    $plan->agents()->attach($agent = Agent::factory()->create());
 
-    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($dateInPreviousTimeScope))->calculate($agent, $timeScope);
+    Deal::factory(2)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope(($timeScope)))
+        ->create([
+            'add_time' => $dateInPreviousTimeScope,
+        ]);
+
+    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
 })->with([
@@ -77,17 +88,21 @@ it('quota attainment change does not return null for very small quotas in the pr
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()->count(2)->sequence([
-            'accepted_at' => $dateInPreviousTimeScope,
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, $dateInPreviousTimeScope)
+        ->create([
             'add_time' => $dateInPreviousTimeScope,
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * 0.001,
-        ], [
-            'accepted_at' => Carbon::now(),
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
-        ]
-        ))->create());
+        ]);
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->not()->toBeNull();
 })->with([

@@ -5,6 +5,7 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import PercentageInput from '@/Components/Form/PercentageInput.vue'
 import Select from '@/Components/Form/Select.vue'
 import SlideOver from '@/Components/SlideOver.vue'
+import Agent from '@/types/Agent'
 import Deal from '@/types/Deal'
 import notify from '@/utils/notify'
 import sum from '@/utils/sum'
@@ -16,7 +17,7 @@ import AgentDealShare from './AgentDealShare.vue'
 type Partner = {
     id: number | null
     name: string
-    shared_percentage: number | null
+    deal_percentage: number | null
 }
 
 const emit = defineEmits<{
@@ -26,32 +27,23 @@ const emit = defineEmits<{
 const props = defineProps<{
     isOpen: boolean
     deal: Deal
+    agentThatTriggeredDeal: Agent
 }>()
 
 const newPartner = () =>
     ({
         name: '',
         id: null,
-        shared_percentage: null,
+        deal_percentage: null,
     } as Partner)
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
-
-const agentIdsToNames = computed(() => {
-    const idsToNames: Record<number, string> = {}
-
-    for (const name in agentNamesToIds.value) {
-        idsToNames[agentNamesToIds.value[name]] = name
-    }
-
-    return idsToNames
-})
 
 const form = useForm({
     partners: existingAgents(),
 })
 
 function existingAgents() {
-    return props.deal.splits!.length ? loadExistingAgentsFromSplits() : [newPartner()]
+    return props.deal.agents!.length > 1 ? loadExistingAgentsFromSplits() : [newPartner()]
 }
 
 watch(
@@ -62,10 +54,13 @@ watch(
 )
 
 function loadExistingAgentsFromSplits() {
-    return props.deal.splits!.map((split) => ({
-        name: agentIdsToNames.value[split.agent_id],
-        id: split.agent_id,
-        shared_percentage: split.shared_percentage * 100,
+    const shareholders =
+        props.deal.status === 'won' ? props.deal.deal_won_shareholders : props.deal.demo_scheduled_shareholders
+
+    return Object.values(shareholders!).map((agent) => ({
+        name: agent.name,
+        id: agent.id,
+        deal_percentage: agent.pivot.deal_percentage * 100,
     }))
 }
 
@@ -102,14 +97,14 @@ function removePartner(index: number) {
 }
 
 function handlePercentageChange(newValue: number, partnerIndex: number): void {
-    form.partners[partnerIndex].shared_percentage = newValue
+    form.partners[partnerIndex].deal_percentage = newValue
     const thisPartnersName = form.partners[partnerIndex].name
 
     const otherPartners = form.partners.filter((partner) => partner.id !== form.partners[partnerIndex].id)
     const equalPercentageForOtherPartners = Math.floor((100 - newValue) / otherPartners.length)
 
-    if (sum(otherPartners.map((partner) => partner.shared_percentage ?? 0)) + newValue > 100) {
-        otherPartners.forEach((partner) => (partner.shared_percentage = equalPercentageForOtherPartners))
+    if (sum(otherPartners.map((partner) => partner.deal_percentage ?? 0)) + newValue > 100) {
+        otherPartners.forEach((partner) => (partner.deal_percentage = equalPercentageForOtherPartners))
         form.partners.forEach((partner) =>
             partner.name === thisPartnersName ? newValue : equalPercentageForOtherPartners
         )
@@ -128,8 +123,8 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
     >
         <div class="text-gray-700">
             <AgentDealShare
-                :agent-name="props.deal.agent!.name"
-                :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.shared_percentage || 0))"
+                :agent-name="props.agentThatTriggeredDeal.name"
+                :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.deal_percentage || 0))"
             />
 
             <div
@@ -139,7 +134,7 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                 <AgentDealShare
                     v-if="partner.name"
                     :agent-name="partner.name"
-                    :agent-share-percentage="partner.shared_percentage || 0"
+                    :agent-share-percentage="partner.deal_percentage || 0"
                 />
             </div>
         </div>
@@ -163,7 +158,13 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                 </div>
 
                 <Select
-                    :options="Object.keys(agentNamesToIds).filter(name => name !== deal.agent!.name && ! form.partners.map(partner => partner.name).includes(name))"
+                    :options="
+                        Object.keys(agentNamesToIds).filter(
+                            (name) =>
+                                name !== props.agentThatTriggeredDeal.name &&
+                                !form.partners.map((partner) => partner.name).includes(name)
+                        )
+                    "
                     v-model="partner.name"
                     @update:model-value="(newName: string) => handlePartnerSelection(newName, index)"
                     no-options-text="All available Agents are already involved..."
@@ -176,20 +177,20 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
             </div>
             <div>
                 <InputLabel
-                    for="shared_percentage"
+                    for="deal_percentage"
                     value="Shared Percentage"
                     required
                 />
 
                 <PercentageInput
-                    v-model="partner.shared_percentage"
+                    v-model="partner.deal_percentage"
                     :maximum="100"
                     @update:model-value="(newValue) => handlePercentageChange(newValue, index)"
                 />
 
                 <InputError
                     class="mt-2"
-                    :message="(form.errors as Record<string, string>)[`partners.${index}.shared_percentage`]"
+                    :message="(form.errors as Record<string, string>)[`partners.${index}.deal_percentage`]"
                 />
             </div>
         </div>

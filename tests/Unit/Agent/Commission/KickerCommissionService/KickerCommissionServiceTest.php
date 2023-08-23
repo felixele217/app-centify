@@ -3,6 +3,7 @@
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
@@ -27,12 +28,12 @@ it('does not incorporate the kicker if its target is not met because deals are o
             'creator_id' => $admin->id,
         ]);
 
-    Deal::factory()->create([
-        'demo_set_by_agent_id' => $plan->agents()->first()->id,
-        'value' => 60_000_000,
-        'accepted_at' => $dealAcceptedDate,
-        'add_time' => $dealAcceptedDate,
-    ]);
+    Deal::factory()
+        ->withAgentDeal($plan->agents()->first()->id, TriggerEnum::DEMO_SET_BY, $dealAcceptedDate)
+        ->create([
+            'value' => 60_000_000,
+            'add_time' => $dealAcceptedDate,
+        ]);
 
     expect((new KickerCommissionService())->calculate($plan->agents()->first(), $timeScope, $plan->agents()->first()->quota_attainment))->toBe(0);
 })->with([

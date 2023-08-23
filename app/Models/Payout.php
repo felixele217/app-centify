@@ -22,7 +22,7 @@ class Payout extends Model implements Auditable
         return $this->belongsTo(Agent::class);
     }
 
-    protected function sharedPercentage(): Attribute
+    protected function dealPercentage(): Attribute
     {
         return Attribute::make(
             get: fn (int $value) => $value / 100,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
@@ -10,17 +11,21 @@ it('returns the attained quota change in %', function () {
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
     ]);
 
-    $plan->agents()->attach($agent = Agent::factory()->has(
-        Deal::factory()->count(2)->sequence([
-            'accepted_at' => Carbon::now()->firstOfMonth()->subDays(1),
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth()->subDays(1))
+        ->create([
             'add_time' => Carbon::now()->firstOfMonth()->subDays(1),
             'value' => $targetAmountPerMonth / 2,
-        ], [
-            'accepted_at' => Carbon::now(),
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth,
-        ]
-        ))->create());
+        ]);
 
     expect($agent->quota_attainment_change)->toBe(0.5);
 });

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enum\ContinuationOfPayTimeScopeEnum;
-use App\Enum\TimeScopeEnum;
 use App\Models\Deal;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -29,10 +27,9 @@ class DashboardController extends Controller
                 'vacation_leaves_days_count',
                 'active_plans',
             ]),
-            'time_scopes' => array_column(TimeScopeEnum::cases(), 'value'),
-            'continuation_of_pay_time_scope_options' => array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'),
-            'open_deal_count' => Deal::whereNull('accepted_at')->whereHas('agent', function (Builder $query) {
-                $query->whereOrganizationId(Auth::user()->organization->id);
+            'open_deal_count' => Deal::whereHas('agents', function (Builder $query) {
+                $query->where('organization_id', Auth::user()->organization->id)
+                    ->whereNull('agent_deal.accepted_at');
             })->count(),
         ]);
     }
