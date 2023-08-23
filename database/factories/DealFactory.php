@@ -30,6 +30,15 @@ class DealFactory extends Factory
         ];
     }
 
+    public function won(Carbon|CarbonImmutable $wonAt = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'add_time' => $wonAt ?? Carbon::yesterday(),
+            'status' => DealStatusEnum::WON->value,
+            'won_time' => $wonAt ?? Carbon::today(),
+        ]);
+    }
+
     public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon|CarbonImmutable $accepted_at = null): static
     {
         return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {

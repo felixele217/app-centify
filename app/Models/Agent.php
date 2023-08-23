@@ -11,7 +11,7 @@ use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\PaidLeaveDaysService;
 use App\Services\QuotaAttainmentChangeService;
-use App\Services\QuotaAttainmentService;
+use App\Services\TotalQuotaAttainmentService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -127,7 +127,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return (new QuotaAttainmentService($this, queryTimeScope()))->calculate();
+                return (new TotalQuotaAttainmentService($this, queryTimeScope()))->calculate();
             }
         );
     }

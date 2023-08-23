@@ -15,13 +15,13 @@ class QuotaAttainmentChangeService
     {
         $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope($timeScope);
 
-        $quotaAttainmentPreviousTimeScope = (new QuotaAttainmentService($agent, $timeScope,$dateInPreviousTimeScope))->calculate();
+        $quotaAttainmentPreviousTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
         if (is_null($quotaAttainmentPreviousTimeScope)) {
             return null;
         }
 
-        $quotaAttainmentThisTimeScope = (new QuotaAttainmentService($agent, $timeScope,CarbonImmutable::now()))->calculate();
+        $quotaAttainmentThisTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, CarbonImmutable::now()))->calculate();
 
         return $quotaAttainmentThisTimeScope - $quotaAttainmentPreviousTimeScope;
     }

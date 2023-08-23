@@ -61,15 +61,15 @@ class DealRepository
                 case TriggerEnum::DEMO_SET_BY:
                     $currentQuery = $currentQuery->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
                     break;
-                case TriggerEnum::DEAL_WON:
-                    $currentQuery = $currentQuery->whereBetween('won_time', [$firstDateInScope, $lastDateInScope]);
-                    break;
-            }
+                    case TriggerEnum::DEAL_WON:
+                        $currentQuery = $currentQuery->whereBetween('won_time', [$firstDateInScope, $lastDateInScope]);
+                        break;
+                    }
 
-            $deals = $deals->concat($currentQuery->get());
-        }
+                    $deals = $deals->concat($currentQuery->get());
+                }
 
-        return $deals->unique();
+        return $deals->unique('id');
     }
 
     public static function update(Deal $deal, UpdateDealRequest $request): void

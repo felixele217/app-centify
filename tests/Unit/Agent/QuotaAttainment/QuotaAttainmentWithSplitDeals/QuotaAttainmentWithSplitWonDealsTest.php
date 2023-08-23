@@ -6,42 +6,46 @@ use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\QuotaAttainmentService;
+use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment correctly for splitted deals', function (int $sharedPercentage1, ?int $sharedPercentage2) {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
+        'trigger' => TriggerEnum::DEAL_WON->value,
     ]);
 
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     AgentDeal::create([
-        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
         'deal_percentage' => 100 - $sharedPercentage1 - $sharedPercentage2,
-        'deal_id' => Deal::factory()->state([
-            'add_time' => Carbon::now()->firstOfMonth(),
-            'value' => 1_000_00,
-        ])->create()->id,
+        'deal_id' => Deal::factory()
+            ->won(Carbon::now()->firstOfMonth())
+            ->state([
+                'value' => 1_000_00,
+            ])->create()->id,
     ]);
 
     AgentDeal::create([
         'agent_id' => Agent::factory()->ofOrganization($agent->organization_id)->create(),
         'deal_percentage' => $sharedPercentage1,
-        'deal_id' => $agent->deals()->first()->SDR->id,
+        'deal_id' => $agent->deals()->first()->AE->id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
     ]);
 
     if ($sharedPercentage2) {
         AgentDeal::create([
             'agent_id' => Agent::factory()->ofOrganization($agent->organization_id)->create(),
             'deal_percentage' => $sharedPercentage2,
-            'deal_id' => $agent->deals()->first()->SDR->id,
+            'deal_id' => $agent->deals()->first()->AE->id,
+            'triggered_by' => TriggerEnum::DEAL_WON->value,
         ]);
     }
 
-    expect((new QuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval((100 - $sharedPercentage1 - $sharedPercentage2) / 100));
+    expect((new TotalQuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval((100 - $sharedPercentage1 - $sharedPercentage2) / 100));
 })->with([
     [20, 30],
     [50, 40],
@@ -53,29 +57,32 @@ it('calculates the quota attainment correctly for splitted deals', function (int
 it('split partner also get the quota', function (int $dealPercentage) {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
+        'trigger' => TriggerEnum::DEAL_WON->value,
     ]);
 
     $plan->agents()->attach($splitPartner = Agent::factory()->create());
     $plan->agents()->attach($agent = Agent::factory()->create());
 
-    $sdrAgentDeal = AgentDeal::create([
-        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
+    $AEAgentDeal = AgentDeal::create([
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
         'deal_percentage' => 100 - $dealPercentage,
-        'deal_id' => Deal::factory()->state([
-            'add_time' => Carbon::now()->firstOfMonth(),
-            'value' => 1_000_00,
-        ])->create()->id,
+        'deal_id' => Deal::factory()
+            ->won(Carbon::now()->firstOfMonth())
+            ->state([
+                'value' => 1_000_00,
+            ])->create()->id,
     ]);
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
         'deal_percentage' => $dealPercentage,
-        'deal_id' => $sdrAgentDeal->deal->id,
+        'deal_id' => $AEAgentDeal->deal->id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
     ]);
 
-    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($dealPercentage / 100));
+    expect((new TotalQuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($dealPercentage / 100));
 })->with([
     20,
     40,
@@ -91,29 +98,32 @@ it('deal owner gets his capped share', function (int $dealPercentage) {
         ])
         ->create([
             'target_amount_per_month' => 10_000_00,
+            'trigger' => TriggerEnum::DEAL_WON->value,
         ]);
 
     $plan->agents()->attach($agent = Agent::factory()->create());
     $plan->agents()->attach($splitPartner = Agent::factory()->create());
 
-    $sdrAgentDeal = AgentDeal::create([
-        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
+    $AEAgentDeal = AgentDeal::create([
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
         'deal_percentage' => 100 - $dealPercentage,
-        'deal_id' => Deal::factory()->state([
-            'add_time' => Carbon::now()->firstOfMonth(),
-            'value' => 10_000_00,
-        ])->create()->id,
+        'deal_id' => Deal::factory()
+            ->won(Carbon::now()->firstOfMonth())
+            ->state([
+                'value' => 10_000_00,
+            ])->create()->id,
     ]);
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
         'deal_percentage' => $dealPercentage,
-        'deal_id' => $sdrAgentDeal->deal->id,
+        'deal_id' => $AEAgentDeal->deal->id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
     ]);
 
-    expect((new QuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $dealPercentage) / 100)));
+    expect((new TotalQuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $dealPercentage) / 100)));
 })->with([
     20,
     40,
@@ -129,29 +139,32 @@ it('split partner gets his capped share', function (int $dealPercentage) {
         ])
         ->create([
             'target_amount_per_month' => 10_000_00,
+            'trigger' => TriggerEnum::DEAL_WON->value,
         ]);
 
     $plan->agents()->attach($agent = Agent::factory()->create());
     $plan->agents()->attach($splitPartner = Agent::factory()->create());
 
-    $sdrAgentDeal = AgentDeal::create([
-        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
+    $AEAgentDeal = AgentDeal::create([
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
         'deal_percentage' => 100 - $dealPercentage,
-        'deal_id' => Deal::factory()->state([
-            'add_time' => Carbon::now()->firstOfMonth(),
-            'value' => 10_000_00,
-        ])->create()->id,
+        'deal_id' => Deal::factory()
+            ->won(Carbon::now()->firstOfMonth())
+            ->state([
+                'value' => 10_000_00,
+            ])->create()->id,
     ]);
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
         'deal_percentage' => $dealPercentage,
-        'deal_id' => $sdrAgentDeal->deal->id,
+        'deal_id' => $AEAgentDeal->deal->id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
     ]);
 
-    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $dealPercentage / 100)));
+    expect((new TotalQuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $dealPercentage / 100)));
 })->with([
     20,
     40,

@@ -1,13 +1,13 @@
 <?php
 
-use App\Enum\TimeScopeEnum;
-use App\Enum\TriggerEnum;
-use App\Models\Agent;
+use Carbon\Carbon;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\QuotaAttainmentService;
-use Carbon\Carbon;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
+use App\Enum\TimeScopeEnum;
 use Carbon\CarbonImmutable;
+use App\Services\TotalQuotaAttainmentService;
 
 it('can calculate for past timescopes with the same plan', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInPastScope) {
     $plan = Plan::factory()->active()->create(['target_amount_per_month' => 10_000_00]);
@@ -21,7 +21,7 @@ it('can calculate for past timescopes with the same plan', function (TimeScopeEn
 
     $plan->agents()->attach(Agent::first());
 
-    expect((new QuotaAttainmentService($plan->agents()->first(), $timeScope, $dateInPastScope))->calculate())->toBe(floatval(1 / $timeScope->monthCount()));
+    expect((new TotalQuotaAttainmentService($plan->agents()->first(), $timeScope, $dateInPastScope))->calculate())->toBe(floatval(1 / $timeScope->monthCount()));
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(10)],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(10)],
@@ -50,7 +50,7 @@ it('can calculate for past timescopes with a different plan', function (TimeScop
         'end_date' => Carbon::now()->lastOfMonth(),
     ]));
 
-    expect((new QuotaAttainmentService($plan->agents()->first(), $timeScope, $dateInPastScope))->calculate())->toBe(floatval(1 / $timeScope->monthCount()));
+    expect((new TotalQuotaAttainmentService($plan->agents()->first(), $timeScope, $dateInPastScope))->calculate())->toBe(floatval(1 / $timeScope->monthCount()));
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(10)],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(10)],

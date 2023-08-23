@@ -7,7 +7,7 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\QuotaAttainmentChangeService;
-use App\Services\QuotaAttainmentService;
+use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -74,7 +74,7 @@ it('quota attainment change is correct when previous scope has quota and current
             'add_time' => $dateInPreviousTimeScope,
         ]);
 
-    $expectedQuotaAttainmentChange = (new QuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
+    $expectedQuotaAttainmentChange = (new TotalQuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
     expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
 })->with([

@@ -5,7 +5,7 @@ use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\QuotaAttainmentService;
+use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment correctly or deals that exceed the cap', function (TimeScopeEnum $timeScope, int $dealCount) {
@@ -22,7 +22,7 @@ it('calculates the quota attainment correctly or deals that exceed the cap', fun
 
     $plan->agents()->attach(Agent::first());
 
-    expect((new QuotaAttainmentService($plan->agents->first(), $timeScope))->calculate())->toBe(floatval(1));
+    expect((new TotalQuotaAttainmentService($plan->agents->first(), $timeScope))->calculate())->toBe(floatval(1));
 })->with([
     [TimeScopeEnum::MONTHLY, 1],
     [TimeScopeEnum::QUARTERLY, 3],

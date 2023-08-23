@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
@@ -12,12 +13,13 @@ use App\Repositories\DealRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
-class QuotaAttainmentService
+class QuotaAttainmentPerTriggerService
 {
     private CarbonImmutable $dateInScope;
 
     public function __construct(
         private Agent $agent,
+        private TriggerEnum $trigger,
         private TimeScopeEnum $timeScope,
         CarbonImmutable $dateInScope = null
     ) {
@@ -33,6 +35,12 @@ class QuotaAttainmentService
         }
 
         $deals = DealRepository::dealsForAgent($this->agent, $this->timeScope, $this->dateInScope);
+        // dd($deals->count());
+
+        $deals = $deals->filter(function (Deal $deal) {
+            // dd($deal->agents()->whereAgentId($this->agent->id)->first());
+            return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->trigger)->exists();
+        });
 
         return $this->cappedSumOfDeals($deals, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $this->timeScope->monthCount());
     }

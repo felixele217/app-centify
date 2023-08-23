@@ -13,7 +13,7 @@ use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\FreezePayoutsService;
 use App\Services\PaidLeaveDaysService;
-use App\Services\QuotaAttainmentService;
+use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('freezes the current agent data in payouts', function (TimeScopeEnum $timeScope) {
@@ -40,7 +40,7 @@ it('freezes the current agent data in payouts', function (TimeScopeEnum $timeSco
     (new FreezePayoutsService($organization, $timeScope))->freeze();
 
     expect(Payout::count())->toBe($agentCount);
-    expect(floatval($agents->first()->payouts->first()->quota_attainment_percentage))->toBe($quotaAttainment = (new QuotaAttainmentService($agents->first(), $timeScope))->calculate());
+    expect(floatval($agents->first()->payouts->first()->quota_attainment_percentage))->toBe($quotaAttainment = (new TotalQuotaAttainmentService($agents->first(), $timeScope))->calculate());
     expect($agents->first()->payouts->first()->commission_from_quota)->toBe((new CommissionFromQuotaService())->calculate($agents->first(), $timeScope, $quotaAttainment));
     expect($agents->first()->payouts->first()->kicker_commission)->toBe((new KickerCommissionService())->calculate($agents->first(), $timeScope, $quotaAttainment) ?? 0);
     expect($agents->first()->payouts->first()->absence_commission)->toBe((new PaidLeaveCommissionService())->calculate($agents->first(), $timeScope));
