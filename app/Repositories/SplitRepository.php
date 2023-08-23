@@ -36,9 +36,9 @@ class SplitRepository
         }
 
         if ($deal->ae) {
-            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
+            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
         } else {
-            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
+            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
         }
     }
 }
