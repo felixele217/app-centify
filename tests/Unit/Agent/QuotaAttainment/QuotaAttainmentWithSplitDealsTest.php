@@ -30,14 +30,14 @@ it('calculates the quota attainment correctly for splitted deals', function (int
     AgentDeal::create([
         'agent_id' => Agent::factory()->ofOrganization($agent->organization_id)->create(),
         'deal_percentage' => $sharedPercentage1,
-        'deal_id' => $agent->deals()->wherePivotNotNull('triggered_by')->first()->id,
+        'deal_id' => $agent->deals()->first()->SDR->id,
     ]);
 
     if ($sharedPercentage2) {
         AgentDeal::create([
             'agent_id' => Agent::factory()->ofOrganization($agent->organization_id)->create(),
             'deal_percentage' => $sharedPercentage2,
-            'deal_id' => $agent->deals()->wherePivotNotNull('triggered_by')->first()->id,
+            'deal_id' => $agent->deals()->first()->SDR->id,
         ]);
     }
 
@@ -50,7 +50,7 @@ it('calculates the quota attainment correctly for splitted deals', function (int
     [50, 50],
 ]);
 
-it('split partner also get the quota', function (int $sharedPercentage) {
+it('split partner also get the quota', function (int $dealPercentage) {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
     ]);
@@ -62,7 +62,7 @@ it('split partner also get the quota', function (int $sharedPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
-        'deal_percentage' => 100 - $sharedPercentage,
+        'deal_percentage' => 100 - $dealPercentage,
         'deal_id' => Deal::factory()->state([
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 1_000_00,
@@ -71,11 +71,11 @@ it('split partner also get the quota', function (int $sharedPercentage) {
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
-        'deal_percentage' => $sharedPercentage,
+        'deal_percentage' => $dealPercentage,
         'deal_id' => $sdrAgentDeal->deal->id,
     ]);
 
-    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($sharedPercentage / 100));
+    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($dealPercentage / 100));
 })->with([
     20,
     40,
@@ -84,7 +84,7 @@ it('split partner also get the quota', function (int $sharedPercentage) {
     100,
 ]);
 
-it('deal owner gets his capped share', function (int $sharedPercentage) {
+it('deal owner gets his capped share', function (int $dealPercentage) {
     $plan = Plan::factory()
         ->hasCap([
             'value' => $cap = 5_000_00,
@@ -100,7 +100,7 @@ it('deal owner gets his capped share', function (int $sharedPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
-        'deal_percentage' => 100 - $sharedPercentage,
+        'deal_percentage' => 100 - $dealPercentage,
         'deal_id' => Deal::factory()->state([
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 10_000_00,
@@ -109,11 +109,11 @@ it('deal owner gets his capped share', function (int $sharedPercentage) {
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
-        'deal_percentage' => $sharedPercentage,
+        'deal_percentage' => $dealPercentage,
         'deal_id' => $sdrAgentDeal->deal->id,
     ]);
 
-    expect((new QuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $sharedPercentage) / 100)));
+    expect((new QuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $dealPercentage) / 100)));
 })->with([
     20,
     40,
@@ -122,7 +122,7 @@ it('deal owner gets his capped share', function (int $sharedPercentage) {
     100,
 ]);
 
-it('split partner gets his capped share', function (int $sharedPercentage) {
+it('split partner gets his capped share', function (int $dealPercentage) {
     $plan = Plan::factory()
         ->hasCap([
             'value' => $cap = 5_000_00,
@@ -138,7 +138,7 @@ it('split partner gets his capped share', function (int $sharedPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'agent_id' => $agent->id,
         'accepted_at' => Carbon::now()->firstOfMonth(),
-        'deal_percentage' => 100 - $sharedPercentage,
+        'deal_percentage' => 100 - $dealPercentage,
         'deal_id' => Deal::factory()->state([
             'add_time' => Carbon::now()->firstOfMonth(),
             'value' => 10_000_00,
@@ -147,11 +147,11 @@ it('split partner gets his capped share', function (int $sharedPercentage) {
 
     AgentDeal::create([
         'agent_id' => $splitPartner->id,
-        'deal_percentage' => $sharedPercentage,
+        'deal_percentage' => $dealPercentage,
         'deal_id' => $sdrAgentDeal->deal->id,
     ]);
 
-    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $sharedPercentage / 100)));
+    expect((new QuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $dealPercentage / 100)));
 })->with([
     20,
     40,

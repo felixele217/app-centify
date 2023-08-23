@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enum\TriggerEnum;
 use App\Http\Requests\UpsertSplitRequest;
 use App\Models\AgentDeal;
 use App\Models\Deal;
@@ -18,7 +19,8 @@ class SplitRepository
             AgentDeal::updateOrCreate([
                 'deal_id' => $deal->id,
                 'agent_id' => $partner['id'],
-            ], ['deal_percentage' => $partner['shared_percentage']]);
+                'triggered_by' => $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SET_BY,
+            ], ['deal_percentage' => $partner['deal_percentage']]);
 
             $requestPartnerIds[] = $partner['id'];
         }
@@ -30,10 +32,9 @@ class SplitRepository
         }
 
         if ($deal->ae) {
-            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))))]);
+            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
         } else {
-            // dd($deal->sdr?->pivot, 100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))));
-            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['shared_percentage'], $request->validated('partners'))))]);
+            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn ($partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
         }
     }
 }

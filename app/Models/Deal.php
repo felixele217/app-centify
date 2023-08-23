@@ -43,14 +43,14 @@ class Deal extends Model implements Auditable
     public function SDR(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY->value)->first(),
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY->value)->orderByPivot('created_at')->first(),
         );
     }
 
     public function AE(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEAL_WON->value)->first(),
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEAL_WON->value)->orderByPivot('created_at')->first(),
         );
     }
 
@@ -63,6 +63,20 @@ class Deal extends Model implements Auditable
     {
         return Attribute::make(
             get: fn () => $this->rejections()->active()->first(),
+        );
+    }
+
+    public function demoScheduledShareholders(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY)->orderByPivot('created_at')->get()->skip(1),
+        );
+    }
+
+    public function dealWonShareholders(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEAL_WON)->orderByPivot('created_at')->get()->skip(1),
         );
     }
 

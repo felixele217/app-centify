@@ -34,6 +34,7 @@ class DealFactory extends Factory
     {
         return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {
             AgentDeal::create([
+                'created_at' => Carbon::parse('-1 minute'),
                 'agent_id' => $agentId,
                 'deal_id' => $deal->id,
                 'triggered_by' => $trigger->value,

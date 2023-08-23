@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\AgentDeal;
 use App\Enum\AgentStatusEnum;
-use Laravel\Sanctum\HasApiTokens;
-use App\Services\PaidLeaveDaysService;
-use App\Services\QuotaAttainmentService;
-use Illuminate\Notifications\Notifiable;
-use OwenIt\Auditing\Contracts\Auditable;
-use App\Services\QuotaAttainmentChangeService;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Services\Commission\CommissionChangeService;
-use App\Services\Commission\KickerCommissionService;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Services\Commission\CommissionFromQuotaService;
+use App\Services\Commission\KickerCommissionService;
 use App\Services\Commission\PaidLeaveCommissionService;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Services\PaidLeaveDaysService;
+use App\Services\QuotaAttainmentChangeService;
+use App\Services\QuotaAttainmentService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class Agent extends Authenticatable implements Auditable
 {
@@ -62,7 +61,7 @@ class Agent extends Authenticatable implements Auditable
             'id',
             'deal_percentage',
             'triggered_by',
-           'accepted_at',
+            'accepted_at',
         ])->using(AgentDeal::class);
     }
 

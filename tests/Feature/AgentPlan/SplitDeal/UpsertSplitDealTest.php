@@ -12,8 +12,6 @@ beforeEach(function () {
     $this->deal = Deal::factory()
         ->withAgentDeal(Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id, TriggerEnum::DEMO_SET_BY)
         ->create();
-
-    $this->sdrAgentDeal = $this->deal->sdr->pivot;
 });
 
 it('can store a split for a deal that is not won yet', function () {
@@ -21,18 +19,24 @@ it('can store a split for a deal that is not won yet', function () {
         'partners' => [
             [
                 'id' => $agentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'shared_percentage' => $sharedPercentage = 50,
+                'deal_percentage' => $dealPercentage = 50,
             ],
             [
                 'id' => $agentId2 = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'shared_percentage' => $sharedPercentage2 = 20,
+                'deal_percentage' => $sharedPercentage2 = 20,
             ],
         ],
     ]);
 
-    expect($this->sdrAgentDeal->fresh()->deal_percentage)->toBe((100 - $sharedPercentage - $sharedPercentage2) / 100);
-    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($sharedPercentage / 100);
+    expect($this->deal->fresh()->sdr->pivot->deal_percentage)->toBe((100 - $dealPercentage - $sharedPercentage2) / 100);
+    expect($this->deal->fresh()->sdr->pivot->id)->not()->toBe($agentId);
+    expect($this->deal->fresh()->sdr->pivot->id)->not()->toBe($agentId2);
+
+    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($dealPercentage / 100);
+    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SET_BY->value);
+
     expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_percentage)->toBe($sharedPercentage2 / 100);
+    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SET_BY->value);
 });
 
 it('can store a split for a deal that is already won', function () {
@@ -46,17 +50,17 @@ it('can store a split for a deal that is already won', function () {
         'partners' => [
             [
                 'id' => $agentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'shared_percentage' => $sharedPercentage = 50,
+                'deal_percentage' => $dealPercentage = 50,
             ],
             [
                 'id' => $agentId2 = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'shared_percentage' => $sharedPercentage2 = 20,
+                'deal_percentage' => $sharedPercentage2 = 20,
             ],
         ],
     ]);
 
-    expect($deal->ae->pivot->fresh()->deal_percentage)->toBe((100 - $sharedPercentage - $sharedPercentage2) / 100);
-    expect($deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($sharedPercentage / 100);
+    expect($deal->ae->pivot->fresh()->deal_percentage)->toBe((100 - $dealPercentage - $sharedPercentage2) / 100);
+    expect($deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($dealPercentage / 100);
     expect($deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_percentage)->toBe($sharedPercentage2 / 100);
 });
 
@@ -64,23 +68,24 @@ it('updates the splits correctly if there already were some', function () {
     $agentDeal = AgentDeal::factory()->create([
         'deal_id' => $this->deal->id,
         'agent_id' => $existingAgentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
+        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
         'deal_percentage' => 10,
     ]);
 
     $this->post(route('deals.splits.store', $this->deal), [
         'partners' => [
             [
-                'shared_percentage' => $newSharedPercentage = 50,
+                'deal_percentage' => $newSharedPercentage = 50,
                 'id' => $existingAgentId,
             ],
             [
-                'shared_percentage' => 20,
+                'deal_percentage' => 20,
                 'id' => Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
             ],
         ],
     ]);
 
-    expect($this->deal->fresh()->agents()->wherePivotNull('triggered_by')->count())->toBe(2);
+    expect($this->deal->demoScheduledShareholders->count())->toBe(2);
     expect($agentDeal->fresh()->deal_percentage)->toBe($newSharedPercentage / 100);
 });
 
@@ -99,11 +104,11 @@ it('cannot store a split with a percentage_share of 0', function () {
         'partners' => [
             [
                 'id' => Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'shared_percentage' => 0,
+                'deal_percentage' => 0,
             ],
         ],
     ])->assertInvalid([
-        'partners.0.shared_percentage' => "The partners' shared percentage must be greater than 0.",
+        'partners.0.deal_percentage' => "The partners' shared percentage must be greater than 0.",
     ]);
 });
 
@@ -112,11 +117,11 @@ it('returns correct validation error messages', function () {
         'partners' => [
             [
                 'id' => null,
-                'shared_percentage' => null,
+                'deal_percentage' => null,
             ],
         ],
     ])->assertInvalid([
         'partners.0.id' => "The partners' identifier field is required.",
-        'partners.0.shared_percentage' => "The partners' shared percentage field is required.",
+        'partners.0.deal_percentage' => "The partners' shared percentage field is required.",
     ]);
 });
