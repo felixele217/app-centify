@@ -34,7 +34,7 @@ beforeEach(function () {
 
     $this->agent = Agent::factory()
         ->ofOrganization($this->admin->organization_id)
-        ->has(Plan::factory()->active()->count(1)->state([
+        ->has($plan = Plan::factory()->active()->count(1)->state([
             'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ]))
         ->create([
@@ -43,9 +43,7 @@ beforeEach(function () {
 
     $this->agent2 = Agent::factory()
         ->ofOrganization($this->admin->organization_id)
-        ->has(Plan::factory()->active()->count(1)->state([
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
-        ]))
+        ->has($plan)
         ->create([
             'email' => PipedriveHelper::demoSetByEmail($this->deals[3], env('PIPEDRIVE_DEMO_SET_BY')),
         ]);

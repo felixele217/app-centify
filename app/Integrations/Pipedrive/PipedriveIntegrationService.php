@@ -10,6 +10,7 @@ use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
 use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
+use App\Helper\DateHelper;
 use App\Integrations\IntegrationServiceContract;
 use App\Models\Agent;
 use App\Models\AgentDeal;
@@ -70,12 +71,12 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         foreach ($agent->plans()->active()->get() as $plan) {
             if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value
             && $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey)) {
-                return true;
+                return DateHelper::parsePipedriveTime($integrationDealArray['add_time'])->gt($plan->start_date);
             }
 
             if ($plan->trigger->value === TriggerEnum::DEAL_WON->value
             && PipedriveHelper::wonDeal($agent->email, $integrationDealArray)) {
-                return true;
+                return DateHelper::parsePipedriveTime($integrationDealArray['add_time'])->gt($plan->start_date);
             }
         }
 

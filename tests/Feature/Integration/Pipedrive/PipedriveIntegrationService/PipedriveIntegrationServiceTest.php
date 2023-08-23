@@ -11,6 +11,7 @@ use App\Models\CustomField;
 use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Plan;
+use Carbon\Carbon;
 use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\AssertionHelper;
 
 beforeEach(function () {
@@ -38,7 +39,7 @@ beforeEach(function () {
         ]);
 });
 
-it('does not create deal if no agent with the pipedrive email exists', function () {
+it('does not create deal if no agent with the corresponding pipedrive email exists', function () {
     $this->agent->delete();
 
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
@@ -50,6 +51,16 @@ it('does not throw an error on deals for agent if the agent has no active plan',
     $pipedriveIntegrationService = new PipedriveIntegrationService($this->admin->organization);
 
     expect(count($pipedriveIntegrationService->agentDeals($this->deals)))->toBe(0);
+});
+
+it('only syncs deals whose add time is after the plan start date', function () {
+    $this->agent->plans()->attach(Plan::factory()->create([
+        'start_date' => Carbon::yesterday(),
+    ]));
+
+    (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
+
+    expect(Deal::count())->toBe(0);
 });
 
 it('maps over all active plans and syncs all deals where one of the triggers is achieved', function () {
