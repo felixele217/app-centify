@@ -67,6 +67,8 @@ it('passes the correct props', function () {
                 ->has('deals.1.agents')
                 ->has('deals.1.s_d_r')
                 ->has('deals.1.a_e')
+                ->has('deals.1.demo_scheduled_shareholders')
+                ->has('deals.1.deal_won_shareholders')
                 ->has('agents')
                 ->has('deals.1.active_rejection')
                 ->has('integrations.0.custom_fields')

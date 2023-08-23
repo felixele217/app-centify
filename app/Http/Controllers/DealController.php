@@ -23,6 +23,8 @@ class DealController extends Controller
                     'active_rejection',
                     's_d_r',
                     'a_e',
+                    'demo_scheduled_shareholders',
+                    'deal_won_shareholders',
                 ])
                 ->load('agents'),
             'integrations' => Auth::user()->organization->integrations->load('customFields'),

@@ -5,6 +5,7 @@ import InputLabel from '@/Components/Form/InputLabel.vue'
 import PercentageInput from '@/Components/Form/PercentageInput.vue'
 import Select from '@/Components/Form/Select.vue'
 import SlideOver from '@/Components/SlideOver.vue'
+import Agent from '@/types/Agent'
 import Deal from '@/types/Deal'
 import notify from '@/utils/notify'
 import sum from '@/utils/sum'
@@ -12,7 +13,6 @@ import { TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, watch } from 'vue'
 import AgentDealShare from './AgentDealShare.vue'
-import Agent from '@/types/Agent'
 
 type Partner = {
     id: number | null
@@ -54,13 +54,14 @@ watch(
 )
 
 function loadExistingAgentsFromSplits() {
-    return props.deal
-        .agents!.filter((agent) => !agent.pivot.triggered_by)
-        .map((agent) => ({
-            name: agent.name,
-            id: agent.id,
-            deal_percentage: agent.pivot.deal_percentage * 100,
-        }))
+    const shareholders =
+        props.deal.status === 'won' ? props.deal.deal_won_shareholders : props.deal.demo_scheduled_shareholders
+
+    return Object.values(shareholders!).map((agent) => ({
+        name: agent.name,
+        id: agent.id,
+        deal_percentage: agent.pivot.deal_percentage * 100,
+    }))
 }
 
 function submit() {

@@ -2,8 +2,8 @@
 import Deal from '@/types/Deal'
 import formatDate from '@/utils/Date/formatDate'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
-import AcceptedOrRejectedBadge from './AcceptedOrRejectedBadge.vue'
 import { computed } from 'vue'
+import AcceptedOrRejectedBadge from './AcceptedOrRejectedBadge.vue'
 
 defineEmits<{
     accepted: [id: number]
@@ -14,15 +14,13 @@ const props = defineProps<{
     deal: Deal
 }>()
 
-const agentThatActedOnTheDeal = computed(() => props.deal.s_d_r ?? props.deal.a_e)
-console.log(props.deal.s_d_r, props.deal.a_e, agentThatActedOnTheDeal);
-
+const agentThatTriggeredDeal = computed(() => props.deal.a_e ?? props.deal.s_d_r)
 </script>
 
 <template>
     <div
         class="flex justify-center gap-2 text-gray-500"
-        v-if="!agentThatActedOnTheDeal!.pivot.accepted_at && !props.deal.active_rejection?.created_at"
+        v-if="!agentThatTriggeredDeal!.pivot.accepted_at && !props.deal.active_rejection?.created_at"
     >
         <div>
             <HandThumbUpIcon
@@ -48,9 +46,9 @@ console.log(props.deal.s_d_r, props.deal.a_e, agentThatActedOnTheDeal);
     />
 
     <AcceptedOrRejectedBadge
-        :text="`This deal was accepted at ${formatDate(agentThatActedOnTheDeal!.pivot.accepted_at)}.`"
-        :acted_at="agentThatActedOnTheDeal!.pivot.accepted_at"
+        :text="`This deal was accepted at ${formatDate(agentThatTriggeredDeal!.pivot.accepted_at)}.`"
+        :acted_at="agentThatTriggeredDeal!.pivot.accepted_at"
         color="green"
-        v-else-if="agentThatActedOnTheDeal!.pivot.accepted_at"
+        v-else-if="agentThatTriggeredDeal!.pivot.accepted_at"
     />
 </template>
