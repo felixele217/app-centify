@@ -17,6 +17,7 @@ use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Organization;
+use App\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -71,12 +72,12 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         foreach ($agent->plans()->active()->get() as $plan) {
             if ($plan->trigger->value === TriggerEnum::DEMO_SET_BY->value
             && $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey)) {
-                return DateHelper::parsePipedriveTime($integrationDealArray['add_time'])->gt($plan->start_date);
+                return $this->addedAfterPlanStartDate($plan, $integrationDealArray);
             }
 
             if ($plan->trigger->value === TriggerEnum::DEAL_WON->value
             && PipedriveHelper::wonDeal($agent->email, $integrationDealArray)) {
-                return DateHelper::parsePipedriveTime($integrationDealArray['add_time'])->gt($plan->start_date);
+                return $this->addedAfterPlanStartDate($plan, $integrationDealArray);
             }
         }
 
@@ -125,5 +126,10 @@ class PipedriveIntegrationService implements IntegrationServiceContract
         }
 
         return $transformedAgentDeals;
+    }
+
+    private function addedAfterPlanStartDate(Plan $plan, array $integrationDealArray): bool
+    {
+        return DateHelper::parsePipedriveTime($integrationDealArray['add_time'])->gt($plan->start_date);
     }
 }
