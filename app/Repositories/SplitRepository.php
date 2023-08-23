@@ -15,17 +15,21 @@ class SplitRepository
     {
         $requestPartnerIds = [];
 
+        $trigger = $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SET_BY;
+
         foreach ($request->validated('partners') as $partner) {
             AgentDeal::updateOrCreate([
                 'deal_id' => $deal->id,
                 'agent_id' => $partner['id'],
-                'triggered_by' => $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SET_BY,
+                'triggered_by' => $trigger,
             ], ['deal_percentage' => $partner['deal_percentage']]);
 
             $requestPartnerIds[] = $partner['id'];
         }
 
-        foreach ($deal->agents()->wherePivotNull('triggered_by')->get() as $agentDeal) {
+        $shareholders = $trigger === TriggerEnum::DEAL_WON ? $deal->dealWonShareholders : $deal->demoScheduledShareholders;
+
+        foreach ($shareholders as $agentDeal) {
             if (! in_array($agentDeal->pivot->agent_id, $requestPartnerIds)) {
                 $agentDeal->pivot->delete();
             }
