@@ -14,7 +14,7 @@ beforeEach(function () {
         ->create();
 });
 
-it('can store a split for a deal that is not won yet', function () {
+it('can store a split for a deal that is only scheduled', function () {
     $this->post(route('deals.splits.store', $this->deal), [
         'partners' => [
             [
@@ -39,7 +39,7 @@ it('can store a split for a deal that is not won yet', function () {
     expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SET_BY->value);
 });
 
-it('can store a split for a deal that is already won', function () {
+it('can store a split for a deal that is won', function () {
     $deal = Deal::factory()
         ->withAgentDeal(Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id, TriggerEnum::DEAL_WON)
         ->create([

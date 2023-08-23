@@ -16,7 +16,6 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
-import Agent from '@/types/Agent'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -26,17 +25,6 @@ const props = defineProps<{
     deal: Deal
     integrations: Array<Integration>
 }>()
-
-const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
-const agentIdsToNames = computed(() => {
-    const idsToNames: Record<number, string> = {}
-
-    for (const name in agentNamesToIds.value) {
-        idsToNames[agentNamesToIds.value[name]] = name
-    }
-
-    return idsToNames
-})
 
 const acceptDeal = () => updateDeal({ has_accepted_deal: true })
 const updateDealNote = () => updateDeal({ note: noteText.value })
@@ -117,19 +105,7 @@ const handleBlur = () =>
     }, 100)
 
 const agentThatTriggeredDeal = computed(() => {
-    let agent: Agent
-
-    props.deal.agents!.forEach((currentAgent) => {
-        if (currentAgent.pivot.triggered_by === 'deal_won') {
-            agent = currentAgent
-        }
-
-        if (currentAgent.pivot.triggered_by === 'demo_set_by') {
-            agent = currentAgent
-        }
-    })
-
-    return agent!
+    return props.deal.status === 'won' ? props.deal.a_e! : props.deal.s_d_r!
 })
 </script>
 
