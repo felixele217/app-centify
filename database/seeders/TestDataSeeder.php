@@ -9,12 +9,10 @@ use App\Enum\TargetVariableEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
-use App\Models\Integration;
 use App\Models\Organization;
 use App\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -77,7 +75,7 @@ class TestDataSeeder extends Seeder
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
             'name' => 'Jr. Account Executive Plan',
-            'start_date' => Carbon::parse('-1 week'),
+            'start_date' => Carbon::parse('2023-05-01'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
@@ -90,7 +88,7 @@ class TestDataSeeder extends Seeder
             'creator_id' => $admin->id,
             'name' => 'Sr. Account Executive Plan',
             'target_amount_per_month' => 50_000_00,
-            'start_date' => Carbon::parse('-1 week'),
+            'start_date' => Carbon::parse('2023-05-01'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
@@ -101,7 +99,7 @@ class TestDataSeeder extends Seeder
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
             'name' => 'SDR Plan',
-            'start_date' => Carbon::parse('-1 week'),
+            'start_date' => Carbon::parse('2023-05-01'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
