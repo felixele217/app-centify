@@ -4,10 +4,9 @@ use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
-use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\KickerCommissionService;
+use App\Services\Commission\PlanKickerCommissionService;
 use Carbon\Carbon;
 
 it('does not incorporate the kicker if its target is not met because deals are outside of the time scope', function (TimeScopeEnum $timeScope, Carbon $dealAcceptedDate) {
@@ -35,7 +34,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
             'add_time' => $dealAcceptedDate,
         ]);
 
-    expect((new KickerCommissionService())->calculate($plan->agents()->first(), $timeScope, $plan->agents()->first()->quota_attainment))->toBe(0);
+    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, $timeScope, $plan->agents()->first()->quota_attainment))->toBe(0);
 })->with([
     [TimeScopeEnum::MONTHLY, Carbon::now()->firstOfMonth()->subDays(1)],
     [TimeScopeEnum::QUARTERLY, Carbon::now()->firstOfQuarter()->subDays(1)],
@@ -45,16 +44,6 @@ it('does not incorporate the kicker if its target is not met because deals are o
     [TimeScopeEnum::QUARTERLY, Carbon::now()->lastOfQuarter()->addDays(1)],
     [TimeScopeEnum::ANNUALY, Carbon::now()->lastOfYear()->addDays(1)],
 ]);
-
-it('returns null for the kicker commission if user has no plan', function () {
-    $admin = signInAdmin();
-
-    $agent = Agent::factory()->create([
-        'organization_id' => $admin->id,
-    ]);
-
-    expect((new KickerCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY, null))->toBeNull();
-});
 
 it('returns null for the kicker commission if the plan has no kicker', function () {
     $admin = signInAdmin();
@@ -69,5 +58,5 @@ it('returns null for the kicker commission if the plan has no kicker', function 
             'creator_id' => $admin->id,
         ]);
 
-    expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::QUARTERLY, 10))->toBeNull();
+    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, 10))->toBeNull();
 });

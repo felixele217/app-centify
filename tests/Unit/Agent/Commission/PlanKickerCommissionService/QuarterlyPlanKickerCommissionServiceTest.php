@@ -4,7 +4,7 @@ use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
 use App\Enum\TimeScopeEnum;
 use App\Models\Plan;
-use App\Services\Commission\KickerCommissionService;
+use App\Services\Commission\PlanKickerCommissionService;
 
 it('incorporates the kicker if its target is met within the current quarter', function (float $quotaAttainment) {
     $admin = signInAdmin();
@@ -27,7 +27,7 @@ it('incorporates the kicker if its target is met within the current quarter', fu
 
     $expectedKickerCommission = ($baseSalary / 4) * ($payoutInPercent / 100);
 
-    expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::QUARTERLY, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
+    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
 })->with([
     2, 3,
 ]);
@@ -51,5 +51,5 @@ it('does not grant the kicker if the target is not reached within the current qu
             'creator_id' => $admin->id,
         ]);
 
-    expect((new KickerCommissionService())->calculate($plan->agents()->first(), TimeScopeEnum::QUARTERLY, 1))->toBe(0);
+    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, 1))->toBe(0);
 });

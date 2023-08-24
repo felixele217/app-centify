@@ -6,12 +6,13 @@ namespace App\Services\Commission;
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
+use App\Models\Plan;
 
-class KickerCommissionService
+class PlanKickerCommissionService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
+    public function calculate(Agent $agent, Plan $activePlan, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
     {
-        $kicker = $agent->plans()->active()->first()?->kicker;
+        $kicker = $activePlan?->load('kicker')->kicker;
 
         if (is_null($quotaAttainmentThisTimeScope) || ! $kicker) {
             return null;
