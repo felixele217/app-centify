@@ -24,3 +24,17 @@ it('passes the correct props', function () {
             ->where('salary_type_options', array_column(SalaryTypeEnum::cases(), 'value'))
     );
 });
+
+it('redirects to old form correctly in production', function () {
+    $admin = signInAdmin();
+
+    Agent::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    expect(route('plans.create'))->toRedirectToComponent('Plan/OldCreate', 'production');
+
+    foreach (['local', 'staging', 'testing'] as $env) {
+        expect(route('plans.create'))->toRedirectToComponent('Plan/Create', $env);
+    }
+});

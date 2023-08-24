@@ -30,7 +30,9 @@ class PlanController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Plan/Create', [
+        $page = config('app.env') === 'production' ? 'Plan/OldCreate' : 'Plan/Create';
+
+        return Inertia::render($page, [
             'agents' => Auth::user()->organization->agents,
             'payout_frequency_options' => array_column(PlanCycleEnum::cases(), 'value'),
             'target_variable_options' => array_column(TargetVariableEnum::cases(), 'value'),

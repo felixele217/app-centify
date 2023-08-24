@@ -16,7 +16,7 @@ import { PlanCycleEnum } from '@/types/Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import { AssignedAgent, UpsertPlanForm } from '@/types/Form/UpsertPlanForm'
+import { UpsertPlanForm } from '@/types/Form/UpsertPlanForm'
 import Plan from '@/types/Plan/Plan'
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import { planCycleToDescription } from '@/utils/Descriptions/planCycleToDescription'
@@ -32,9 +32,6 @@ import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
 import { TriggerEnumCases } from '@/EnumCases/TriggerEnum'
-import PrimaryButton from '../Buttons/PrimaryButton.vue'
-import SecondaryButton from '../Buttons/SecondaryButton.vue'
-import { computed } from 'vue'
 
 export interface AdditionalField {
     id: number
@@ -78,9 +75,7 @@ const form = useForm<UpsertPlanForm>({
     target_amount_per_month: props.plan?.target_amount_per_month || null,
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
     plan_cycle: props.plan?.plan_cycle || ('' as PlanCycleEnum),
-    assignedAgents:
-        props.plan?.agents!.map((agent) => ({ id: agent.id, share_of_variable_pay: 100 })) ||
-        ([] as Array<AssignedAgent>),
+    assigned_agent_ids: props.plan?.agents!.map((agent) => agent.id) || ([] as Array<number>),
 
     cliff: {
         threshold_in_percent: props.plan?.cliff?.threshold_in_percent
@@ -103,16 +98,11 @@ const form = useForm<UpsertPlanForm>({
     trigger: 'Demo scheduled',
 })
 
-const assignedAgentIds = computed(() => form.assignedAgents.map((assignedAgent) => assignedAgent.id))
-
 function handleAgentSelect(id: number) {
-    if (assignedAgentIds.value.includes(id)) {
-        form.assignedAgents = form.assignedAgents.filter((assignedAgent) => assignedAgent.id !== id)
+    if (form.assigned_agent_ids.includes(id)) {
+        form.assigned_agent_ids = form.assigned_agent_ids.filter((agentId) => agentId !== id)
     } else {
-        form.assignedAgents.push({
-            id: id,
-            share_of_variable_pay: 100,
-        })
+        form.assigned_agent_ids.push(id)
     }
 }
 
@@ -143,14 +133,6 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
         activeAdditionalFields.value = [...activeAdditionalFields.value, option.title]
     }
 }
-
-const startShareOfVariablePay = ref<number>(100)
-function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
-    form.assignedAgents = form.assignedAgents.map((assignedAgent) => ({
-        id: assignedAgent.id,
-        share_of_variable_pay: newShareOfVariablePay,
-    }))
-}
 </script>
 
 <template>
@@ -167,45 +149,22 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                 class="divide-y divide-gray-200"
             >
                 <div class="my-6 space-y-6">
-                    <div>
-                        <InputLabel
-                            for="name"
-                            value="Name"
-                            required
-                        />
-                        <TextInput
-                            type="text"
-                            v-model="form.name"
-                            name="name"
-                            placeholder="SDR Commission Plan"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.name"
-                        />
-                    </div>
-
                     <div class="flex gap-5">
                         <div class="w-1/2">
                             <InputLabel
-                                for="plan_cycle"
-                                value="Plan Cycle"
+                                for="name"
+                                value="Name"
                                 required
                             />
-
-                            <SelectWithDescription
-                                :options="
-                                    enumOptionsToSelectOptionWithDescription(
-                                        props.payout_frequency_options,
-                                        planCycleToDescription
-                                    )
-                                "
-                                v-model="form.plan_cycle"
+                            <TextInput
+                                type="text"
+                                v-model="form.name"
+                                name="name"
+                                placeholder="SDR Commission Plan"
                             />
-
                             <InputError
                                 class="mt-2"
-                                :message="form.errors.plan_cycle"
+                                :message="form.errors.name"
                             />
                         </div>
 
@@ -225,23 +184,6 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                             />
                         </div>
                     </div>
-
-                    <div>
-                        <InputLabel
-                            for="assigned_agent_ids"
-                            value="Assigned Agents"
-                        />
-                        <MultiSelect
-                            @option-clicked="handleAgentSelect"
-                            :options="props.agents"
-                            :selected-ids="assignedAgentIds"
-                        />
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.assignedAgents"
-                        />
-                    </div>
-
                     <div class="flex gap-5">
                         <div class="w-1/2">
                             <div class="flex gap-1">
@@ -272,92 +214,94 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                             />
                         </div>
                         <div class="w-1/2">
-                            <div class="flex items-center gap-1">
-                                <InputLabel
-                                    value="Target Trigger"
-                                    required
-                                />
-
-                                <InfoIcon
-                                    hover-text="Set a condition for your target variable."
-                                    class="max-w-5 whitespace-pre-line text-gray-700"
-                                />
-                            </div>
-
-                            <SelectWithDescription
-                                :options="
-                                    enumOptionsToSelectOptionWithDescription(
-                                        usePage().props.environment === 'production'
-                                            ? ['Demo scheduled']
-                                            : TriggerEnumCases,
-                                        triggerToDescription
-                                    )
-                                "
-                                v-model="form.trigger"
-                            />
-
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.trigger"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="flex gap-5">
-                        <div class="w-1/2">
                             <div class="flex gap-1">
                                 <InputLabel
                                     for="target_amount_per_month"
                                     value="Target Amount (per month)"
                                     required
                                 />
+
                                 <InfoIcon
                                     hover-text="Set a monthly goal for your agent."
                                     class="max-w-5 whitespace-pre-line text-gray-700"
                                 />
                             </div>
-
                             <CurrencyInput v-model="form.target_amount_per_month" />
-
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.target_amount_per_month"
                             />
                         </div>
+                    </div>
 
-                        <div class="w-1/2">
-                            <div class="flex gap-1">
-                                <InputLabel
-                                    for="share_of_variable_pay"
-                                    value="Share of Variable Pay"
-                                    required
-                                />
+                    <div>
+                        <InputLabel
+                            for="plan_cycle"
+                            value="Plan Cycle"
+                            required
+                        />
 
-                                <InfoIcon
-                                    hover-text="The percentage of the assigned agents' variable pay that is commissioned by this plan."
-                                    class="max-w-5 whitespace-pre-line text-gray-700"
-                                />
-                            </div>
-                            <div>
-                                <PercentageInput
-                                    v-model="startShareOfVariablePay"
-                                    :maximum="100"
-                                    @update:model-value="handleUpdateShareOfVariablePay"
-                                />
+                        <SelectWithDescription
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    props.payout_frequency_options,
+                                    planCycleToDescription
+                                )
+                            "
+                            v-model="form.plan_cycle"
+                        />
 
-                                <!-- <PrimaryButton
-                                    type="button"
-                                    class="mt-2 h-auto text-xs"
-                                    padding="px-2 py-0 h-4"
-                                    text="Customize"
-                                /> -->
-                            </div>
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.plan_cycle"
+                        />
+                    </div>
 
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.assignedAgents"
+                    <div>
+                        <InputLabel
+                            for="assigned_agent_ids"
+                            value="Assigned Agents"
+                        />
+
+                        <MultiSelect
+                            @option-clicked="handleAgentSelect"
+                            :options="props.agents"
+                            :selected-ids="form.assigned_agent_ids"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.assigned_agent_ids"
+                        />
+                    </div>
+
+                    <div>
+                        <div class="flex items-center gap-1">
+                            <InputLabel
+                                value="Trigger"
+                                required
+                            />
+
+                            <InfoIcon
+                                hover-text="Set a condition for your target variable."
+                                class="max-w-5 whitespace-pre-line text-gray-700"
                             />
                         </div>
+
+                        <SelectWithDescription
+                            :options="
+                                enumOptionsToSelectOptionWithDescription(
+                                    usePage().props.environment === 'production' ? ['Demo scheduled'] : TriggerEnumCases,
+                                    triggerToDescription
+                                )
+                            "
+                            v-model="form.trigger"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.trigger"
+                        />
                     </div>
 
                     <div>
@@ -395,7 +339,7 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                     <div v-if="activeAdditionalFields.includes('Cliff')">
                         <SectionWithDescription
                             heading="Cliff"
-                            description="Set a minimum threshold to qualify for a commission."
+                            description="Set a minimum  threshold to qualify for a commission."
                         >
                             <div>
                                 <InputLabel

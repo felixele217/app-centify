@@ -37,7 +37,7 @@ class Plan extends Model implements Auditable
 
     public function agents(): BelongsToMany
     {
-        return $this->belongsToMany(Agent::class);
+        return $this->belongsToMany(Agent::class)->using(AgentPlan::class);
     }
 
     public function organization(): BelongsTo

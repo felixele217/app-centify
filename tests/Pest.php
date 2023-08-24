@@ -1,13 +1,14 @@
 <?php
 
-use App\Enum\TriggerEnum;
-use App\Models\Admin;
-use App\Models\Agent;
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Models\Deal;
 use App\Models\Plan;
-use Carbon\Carbon;
+use App\Models\Admin;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
+use Inertia\Testing\AssertableInertia;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 uses(TestCase::class)->group('architecture')->in('Architecture');
 uses(TestCase::class)->group('integration')->in('Integration');
@@ -60,3 +61,12 @@ function signInAgent($agent = null): Agent
 
     return $agent;
 }
+
+expect()->extend('toRedirectToComponent', function (string $componentName, string $env) {
+    config(['app.env' => $env]);
+
+    return test()->get($this->value)->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component($componentName)
+    );
+});

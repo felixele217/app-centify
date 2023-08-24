@@ -5,13 +5,18 @@ import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '../Enum/TimeScopeEnum'
 import { TriggerEnum } from '../Enum/TriggerEnum'
 
+export type AssignedAgent = {
+    id: number
+    share_of_variable_pay: number | null
+}
+
 export type UpsertPlanForm = {
     name: string
     start_date: Date | null
     target_amount_per_month: number | null
     target_variable: TargetVariableEnum
     plan_cycle: PlanCycleEnum
-    assigned_agent_ids: Array<number>
+    assignedAgents: Array<AssignedAgent>
     cliff: {
         threshold_in_percent: number | null
         time_scope: TimeScopeEnum

@@ -6,7 +6,6 @@ import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PlanCycleEnum } from '@/types/Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '@/types/Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '@/types/Enum/TargetVariableEnum'
-import Plan from '@/types/Plan/Plan'
 
 const props = defineProps<{
     agents: Array<Pick<Agent, 'id' | 'name'>>
@@ -14,13 +13,11 @@ const props = defineProps<{
     payout_frequency_options: Array<PlanCycleEnum>
     kicker_type_options: Array<KickerTypeEnum>
     salary_type_options: Array<SalaryTypeEnum>
-    plan: Plan
 }>()
 </script>
 
 <template>
     <OldUpsertPlanCard
-        :plan="props.plan"
         :agents="props.agents"
         :target_variable_options="props.target_variable_options"
         :payout_frequency_options="props.payout_frequency_options"

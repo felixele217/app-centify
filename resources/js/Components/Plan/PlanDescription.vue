@@ -19,7 +19,7 @@ const props = defineProps<{
             plan
             <span class="font-semibold">{{ props.form.name || '{plan_name}' }}</span>
             is assigned to
-            <span class="font-semibold">{{ props.form.assigned_agent_ids.length }}</span>
+            <span class="font-semibold">{{ props.form.assignedAgents.length }}</span>
             agent(s) and starts on
             <span class="font-semibold">{{
                 formatDate(form.start_date) !== '-' ? formatDate(props.form.start_date) : '' || '{start_date}'

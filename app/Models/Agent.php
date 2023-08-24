@@ -67,7 +67,7 @@ class Agent extends Authenticatable implements Auditable
 
     public function plans(): BelongsToMany
     {
-        return $this->belongsToMany(Plan::class);
+        return $this->belongsToMany(Plan::class)->using(AgentPlan::class);
     }
 
     public function paidLeaves(): HasMany
