@@ -9,16 +9,16 @@ use App\Models\Plan;
 use App\Repositories\PlanRepository;
 use Illuminate\Http\RedirectResponse;
 
-class PlanAgentController extends Controller
+class AgentPlanController extends Controller
 {
-    public function store(Plan $plan, Agent $agent): RedirectResponse
+    public function store(Agent $agent, Plan $plan): RedirectResponse
     {
         PlanRepository::storeAgent($plan, $agent->id);
 
         return back();
     }
 
-    public function destroy(Plan $plan, Agent $agent): RedirectResponse
+    public function destroy(Agent $agent, Plan $plan): RedirectResponse
     {
         PlanRepository::destroyAgent($plan, $agent->id);
 

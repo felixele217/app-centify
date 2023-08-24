@@ -50,12 +50,17 @@ class StorePlanRequest extends FormRequest
                 new Enum(PlanCycleEnum::class),
             ],
 
-            'assigned_agent_ids' => [
+            'assigned_agents' => [
                 'array',
             ],
 
-            'assigned_agent_ids.*' => [
+            'assigned_agents.*.id' => [
                 'exists:agents,id',
+            ],
+
+            'assigned_agents.*.share_of_variable_pay' => [
+                'integer',
+                'gt:0',
             ],
 
             'cliff' => [
@@ -141,6 +146,7 @@ class StorePlanRequest extends FormRequest
             'kicker.time_scope' => 'Please specify all fields for the Kicker if you want to have one in your plan.',
             'cliff.time_scope' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
             'cliff.threshold_in_percent' => 'Please specify all fields for the Cliff if you want to have one in your plan.',
+            "assigned_agents.0.share_of_variable_pay" => 'The share of variable pay of all assigned agents must be greater than 0.'
         ];
     }
 }

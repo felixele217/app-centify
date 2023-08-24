@@ -16,7 +16,7 @@ export type UpsertPlanForm = {
     target_amount_per_month: number | null
     target_variable: TargetVariableEnum
     plan_cycle: PlanCycleEnum
-    assignedAgents: Array<AssignedAgent>
+    assigned_agents: Array<AssignedAgent>
     cliff: {
         threshold_in_percent: number | null
         time_scope: TimeScopeEnum

@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\StorePlanRequest;
 use App\Http\Requests\UpdatePlanRequest;
+use App\Models\AgentPlan;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,7 +43,15 @@ class PlanRepository
             ]);
         }
 
-        $plan->agents()->attach($request->validated('assigned_agent_ids'));
+        if ($request->validated('assigned_agents')) {
+            foreach ($request->validated('assigned_agents') as $assignedAgent) {
+                AgentPlan::create([
+                    'plan_id' => $plan->id,
+                    'agent_id' => $assignedAgent['id'],
+                    'share_of_variable_pay' => $assignedAgent['share_of_variable_pay'],
+                ]);
+            }
+        }
 
         return $plan;
     }
@@ -52,14 +61,18 @@ class PlanRepository
         $plan->update($request->safe()->only(self::PLAN_FIELDS));
 
         foreach ($plan->agents as $agent) {
-            if (! in_array($agent->id, $request->validated('assigned_agent_ids'))) {
-                $plan->agents()->detach($agent->id);
+            if (! in_array($agent->id, array_column($request->validated('assigned_agents'), 'id'))) {
+                $plan->agents()->whereAgentId($agent->id)->delete();
             }
         }
 
-        foreach ($request->validated('assigned_agent_ids') as $agentId) {
-            if (! $plan->agents->contains($agentId)) {
-                $plan->agents()->attach($agentId);
+        foreach ($request->validated('assigned_agents') as $assignedAgent) {
+            if (! AgentPlan::whereAgentId($assignedAgent['id'])->wherePlanId($plan->id)->exists()) {
+                AgentPlan::create([
+                    'plan_id' => $plan->id,
+                    'agent_id' => $assignedAgent['id'],
+                    'share_of_variable_pay' => $assignedAgent['share_of_variable_pay'],
+                ]);
             }
         }
 
@@ -94,6 +107,6 @@ class PlanRepository
 
     public static function destroyAgent(Plan $plan, int $agentId): void
     {
-        $plan->agents()->detach($agentId);
+        $plan->agents()->whereAgentId($agentId)->delete();
     }
 }

@@ -19,7 +19,7 @@ class UpdatePlanRequestFactory extends RequestFactory
             'target_amount_per_month' => fake()->randomElement([200000, 400000]),
             'target_variable' => fake()->randomElement(TargetVariableEnum::cases())->value,
             'plan_cycle' => fake()->randomElement(PlanCycleEnum::cases())->value,
-            'assigned_agent_ids' => [],
+            'assigned_agents' => [],
             'trigger' => fake()->randomElement(TriggerEnum::cases())->value,
         ];
     }

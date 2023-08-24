@@ -78,7 +78,7 @@ const form = useForm<UpsertPlanForm>({
     target_amount_per_month: props.plan?.target_amount_per_month || null,
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
     plan_cycle: props.plan?.plan_cycle || ('' as PlanCycleEnum),
-    assignedAgents:
+    assigned_agents:
         props.plan?.agents!.map((agent) => ({ id: agent.id, share_of_variable_pay: 100 })) ||
         ([] as Array<AssignedAgent>),
 
@@ -103,13 +103,13 @@ const form = useForm<UpsertPlanForm>({
     trigger: 'Demo scheduled',
 })
 
-const assignedAgentIds = computed(() => form.assignedAgents.map((assignedAgent) => assignedAgent.id))
+const assignedAgentIds = computed(() => form.assigned_agents.map((assignedAgent) => assignedAgent.id))
 
 function handleAgentSelect(id: number) {
     if (assignedAgentIds.value.includes(id)) {
-        form.assignedAgents = form.assignedAgents.filter((assignedAgent) => assignedAgent.id !== id)
+        form.assigned_agents = form.assigned_agents.filter((assignedAgent) => assignedAgent.id !== id)
     } else {
-        form.assignedAgents.push({
+        form.assigned_agents.push({
             id: id,
             share_of_variable_pay: 100,
         })
@@ -146,7 +146,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
 
 const startShareOfVariablePay = ref<number>(100)
 function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
-    form.assignedAgents = form.assignedAgents.map((assignedAgent) => ({
+    form.assigned_agents = form.assigned_agents.map((assignedAgent) => ({
         id: assignedAgent.id,
         share_of_variable_pay: newShareOfVariablePay,
     }))
@@ -238,7 +238,7 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                         />
                         <InputError
                             class="mt-2"
-                            :message="form.errors.assignedAgents"
+                            :message="form.errors.assigned_agents"
                         />
                     </div>
 
@@ -355,7 +355,7 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
 
                             <InputError
                                 class="mt-2"
-                                :message="form.errors.assignedAgents"
+                                :message="form.errors.assigned_agents"
                             />
                         </div>
                     </div>

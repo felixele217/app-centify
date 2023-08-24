@@ -3,7 +3,7 @@
 use App\Models\Agent;
 use App\Models\Plan;
 
-it('detach an agent from a plan', function () {
+it('detach a plan from an agent', function () {
     $admin = signInAdmin();
 
     $plan = Plan::factory()->create([
@@ -12,7 +12,7 @@ it('detach an agent from a plan', function () {
 
     $plan->agents()->attach($agentId = Agent::factory()->ofOrganization($admin->organization->id)->create()->id);
 
-    $this->delete(route('plans.agents.destroy', [$plan, $agentId]))
+    $this->delete(route('agents.plans.destroy', [$agentId, $plan->id]))
         ->assertRedirect();
 
     expect($plan->refresh()->agents->count())->toBe(0);

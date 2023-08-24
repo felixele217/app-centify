@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AgentPlanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealRejectionController;
@@ -35,10 +36,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{plan}', 'destroy')->name('destroy');
     });
 
-    Route::prefix('plans')->name('plans.agents.')->controller(PlanAgentController::class)->group(function () {
-        Route::post('/{plan}/agents/{agent}', 'store')->name('store');
-        Route::delete('/{plan}/agents/{agent}', 'destroy')->name('destroy');
-    });
 
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -63,6 +60,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/', 'store')->name('store');
             Route::delete('/{paidLeave}', 'destroy')->name('destroy');
         });
+
+    Route::prefix('{agent}/plans')->name('plans.')->controller(AgentPlanController::class)->group(function () {
+        Route::post('{plan}', 'store')->name('store');
+        Route::delete('{plan}', 'destroy')->name('destroy');
+    });
     });
 
 });

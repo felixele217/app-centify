@@ -23,9 +23,9 @@ class AgentPlan extends Pivot implements Auditable
         'updated_at' => 'datetime:Y-m-d',
     ];
 
-    public function deal(): BelongsTo
+    public function agent(): BelongsTo
     {
-        return $this->belongsTo(Deal::class);
+        return $this->belongsTo(Agent::class);
     }
 
     public function plan(): BelongsTo

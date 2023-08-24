@@ -5,6 +5,7 @@ use App\Enum\TargetVariableEnum;
 use App\Enum\TriggerEnum;
 use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Agent;
+use App\Models\AgentPlan;
 use App\Models\Plan;
 use Carbon\Carbon;
 
@@ -21,7 +22,7 @@ it('can update a plan as an admin', function () {
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'plan_cycle' => $planCycle = fake()->randomElement(PlanCycleEnum::cases())->value,
-        'assigned_agent_ids' => [],
+        'assigned_agents' => [],
         'trigger' => fake()->randomElement(TriggerEnum::cases())->value,
     ])->assertRedirect(route('plans.index'));
 
@@ -41,12 +42,20 @@ it('can assign more agents to the plan', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plan->agents()->attach($agents = Agent::factory(2)->create());
+    $agentPlans = AgentPlan::factory(2)->create([
+        'plan_id' => $plan->id,
+    ]);
 
     UpdatePlanRequest::factory()->state([
-        'assigned_agent_ids' => $newAgents = [
-            ...Agent::factory(3)->create()->pluck('id')->toArray(),
-            ...$agents->pluck('id')->toArray(),
+        'assigned_agents' => $newAgents = [
+            ...Agent::factory(3)->create()->map(fn (Agent $agent) => [
+                'id' => $agent->id,
+                'share_of_variable_pay' => 100,
+            ])->toArray(),
+            ...$agentPlans->map(fn (AgentPlan $agentPlan) => [
+                'id' => $agentPlan->agent->id,
+                'share_of_variable_pay' => 100,
+            ])->toArray(),
         ],
     ])->fake();
 
@@ -65,7 +74,10 @@ it('can remove agents from the plan', function () {
     $plan->agents()->attach($agents = Agent::factory(4)->create());
 
     UpdatePlanRequest::factory()->state([
-        'assigned_agent_ids' => $agents->take($expectedAgentCount = 1)->pluck('id')->toArray(),
+        'assigned_agents' => $agents->take($expectedAgentCount = 1)->map(fn (Agent $agent) => [
+            'id' => $agent->id,
+            'share_of_variable_pay' => 100,
+        ])->toArray(),
     ])->fake();
 
     $this->put(route('plans.update', $plan))->assertRedirect();
@@ -86,7 +98,7 @@ it('has required fields', function () {
         'target_amount_per_month' => 'The target amount per month field is required.',
         'target_variable' => 'The target variable field is required.',
         'plan_cycle' => 'The plan cycle field is required.',
-        'assigned_agent_ids' => 'The assigned agent ids field must be present',
+        'assigned_agents' => 'The assigned agents field must be present',
     ]);
 });
 
@@ -99,3 +111,20 @@ it('cannot update a foreign plan as an admin', function () {
 
     $this->put(route('plans.update', $plan))->assertForbidden();
 });
+
+it('cannot update a plan with assigned agents with a share of variable smaller than 1', function (int $shareOfVariablePay) {
+    signInAdmin();
+
+    $plan = Plan::factory()->create();
+
+    UpdatePlanRequest::factory()->state([
+        'assigned_agents' => [[
+            'id' => Agent::factory()->create()->id,
+            'share_of_variable_pay' => $shareOfVariablePay,
+        ]],
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertInvalid([
+        'assigned_agents.0.share_of_variable_pay' => 'The share of variable pay of all assigned agents must be greater than 0.',
+    ]);
+})->with([0, -1]);

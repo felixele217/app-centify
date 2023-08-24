@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import OldUpsertPlanCard from '@/Components/Plan/OldUpsertPlanCard.vue'
-import UpsertPlanCard from '@/Components/Plan/OldUpsertPlanCard.vue'
+import UpsertPlanCard from '@/Components/Plan/UpsertPlanCard.vue'
 import Agent from '@/types/Agent'
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
 import { PlanCycleEnum } from '@/types/Enum/PlanCycleEnum'
@@ -17,7 +16,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <OldUpsertPlanCard
+    <UpsertPlanCard
         :agents="props.agents"
         :target_variable_options="props.target_variable_options"
         :payout_frequency_options="props.payout_frequency_options"
