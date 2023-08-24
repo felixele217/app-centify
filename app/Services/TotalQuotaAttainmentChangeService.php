@@ -9,7 +9,7 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use Carbon\CarbonImmutable;
 
-class QuotaAttainmentChangeService
+class TotalQuotaAttainmentChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?float
     {

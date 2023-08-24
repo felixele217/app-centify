@@ -6,7 +6,7 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\QuotaAttainmentChangeService;
+use App\Services\TotalQuotaAttainmentChangeService;
 use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -32,7 +32,7 @@ it('quota attainment change is calculated correctly', function (TimeScopeEnum $t
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
         ]);
 
-    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval(1 - $factorForLastScope));
+    expect((new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(floatval(1 - $factorForLastScope));
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 0.3],
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5), 1],
@@ -56,7 +56,7 @@ it('quota attainment change returns null when previous scope had no active plans
             'add_time' => Carbon::now(),
         ]);
 
-    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBeNull();
+    expect((new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBeNull();
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,
@@ -76,7 +76,7 @@ it('quota attainment change is correct when previous scope has quota and current
 
     $expectedQuotaAttainmentChange = (new TotalQuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
-    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
+    expect((new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope))->toBe(-$expectedQuotaAttainmentChange);
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5)],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5)],
@@ -104,7 +104,7 @@ it('quota attainment change does not return null for very small quotas in the pr
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
         ]);
 
-    expect((new QuotaAttainmentChangeService())->calculate($agent, $timeScope))->not()->toBeNull();
+    expect((new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope))->not()->toBeNull();
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth()->subDays(5)],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter()->subDays(5)],

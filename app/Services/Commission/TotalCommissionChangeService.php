@@ -10,7 +10,7 @@ use App\Models\Agent;
 use App\Services\TotalQuotaAttainmentService;
 use Carbon\CarbonImmutable;
 
-class CommissionChangeService
+class TotalCommissionChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
     {

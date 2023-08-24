@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
-use App\Services\Commission\CommissionChangeService;
 use App\Services\Commission\PaidLeaveCommissionService;
+use App\Services\Commission\TotalCommissionChangeService;
 use App\Services\Commission\TotalKickerCommissionService;
 use App\Services\Commission\TotalQuotaCommissionService;
 use App\Services\PaidLeaveDaysService;
-use App\Services\QuotaAttainmentChangeService;
+use App\Services\TotalQuotaAttainmentChangeService;
 use App\Services\TotalQuotaAttainmentService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -136,7 +136,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return (new QuotaAttainmentChangeService())->calculate($this, queryTimeScope());
+                return (new TotalQuotaAttainmentChangeService())->calculate($this, queryTimeScope());
             }
         );
     }
@@ -162,7 +162,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return (new CommissionChangeService())->calculate($this, queryTimeScope());
+                return (new TotalCommissionChangeService())->calculate($this, queryTimeScope());
             }
         );
     }
