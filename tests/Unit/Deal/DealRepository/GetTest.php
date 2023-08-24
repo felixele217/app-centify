@@ -13,13 +13,13 @@ beforeEach(function () {
     Deal::factory($this->openDealCount = 2)
         ->withAgentDeal(Agent::factory()->create([
             'organization_id' => $this->admin->organization_id,
-        ])->id, TriggerEnum::DEMO_SET_BY)
+        ])->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     Deal::factory($this->acceptedDealCount = 3)
         ->withAgentDeal(Agent::factory()->create([
             'organization_id' => $this->admin->organization_id,
-        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ])->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create();
 
     Deal::factory($dealsWithImpermanentRejectionThisMonth = 2)
@@ -28,7 +28,7 @@ beforeEach(function () {
             'is_permanent' => false,
         ])->withAgentDeal(Agent::factory()->create([
             'organization_id' => $this->admin->organization_id,
-        ])->id, TriggerEnum::DEMO_SET_BY)
+        ])->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     Deal::factory($dealsWithPermanentRejectionLastMonth = 2)->hasRejections(1, [
@@ -36,7 +36,7 @@ beforeEach(function () {
         'is_permanent' => true,
     ])->withAgentDeal(Agent::factory()->create([
         'organization_id' => $this->admin->organization_id,
-    ])->id, TriggerEnum::DEMO_SET_BY)
+    ])->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     Deal::factory($this->inactiveRejectedDealCount = 2)->hasRejections(1, [
@@ -44,7 +44,7 @@ beforeEach(function () {
         'is_permanent' => false,
     ])->withAgentDeal(Agent::factory()->create([
         'organization_id' => $this->admin->organization_id,
-    ])->id, TriggerEnum::DEMO_SET_BY)
+    ])->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     $this->activeRejectedDealCount = $dealsWithImpermanentRejectionThisMonth + $dealsWithPermanentRejectionLastMonth;

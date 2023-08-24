@@ -15,13 +15,13 @@ it('returns the correct commission for a plan', function (TimeScopeEnum $timeSco
         ])
         ->create([
             'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
     $agent = $plan->agents->first();
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $quotaAttainmentFactor * $timeScope->monthCount(),
@@ -53,7 +53,7 @@ it('returns normal quota commission even if there is a cliff that was not met', 
         ])
         ->create([
             'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
     $cliffPercentage = (($cliffValue - 1) / 100);
@@ -61,7 +61,7 @@ it('returns normal quota commission even if there is a cliff that was not met', 
     $agent = $plan->agents->first();
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * $cliffPercentage,

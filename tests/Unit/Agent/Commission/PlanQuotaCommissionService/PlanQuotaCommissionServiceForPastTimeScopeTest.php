@@ -15,13 +15,13 @@ it('returns the correct commission for a plan for a past time scope', function (
         ])
         ->create([
             'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
     $agent = $plan->agents->first();
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, DateHelper::dateInPreviousTimeScope($timeScope))
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, DateHelper::dateInPreviousTimeScope($timeScope))
         ->create([
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),

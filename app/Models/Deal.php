@@ -43,7 +43,7 @@ class Deal extends Model implements Auditable
     public function SDR(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY->value)->orderByPivot('created_at')->first(),
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SCHEDULED->value)->orderByPivot('created_at')->first(),
         );
     }
 
@@ -69,7 +69,7 @@ class Deal extends Model implements Auditable
     public function demoScheduledShareholders(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SET_BY)->orderByPivot('created_at')->get()->skip(1),
+            get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEMO_SCHEDULED)->orderByPivot('created_at')->get()->skip(1),
         );
     }
 

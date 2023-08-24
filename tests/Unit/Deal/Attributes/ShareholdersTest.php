@@ -6,7 +6,7 @@ use App\Models\AgentDeal;
 use App\Models\Deal;
 
 it('returns all demo scheduled shareholders except the owner', function () {
-    $trigger = TriggerEnum::DEMO_SET_BY;
+    $trigger = TriggerEnum::DEMO_SCHEDULED;
 
     $deal = Deal::factory()
         ->withAgentDeal($agentId = Agent::factory()->create()->id, $trigger)

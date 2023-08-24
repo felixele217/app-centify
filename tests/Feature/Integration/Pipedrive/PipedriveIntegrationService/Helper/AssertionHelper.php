@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper;
 
-use App\Enum\DealStatusEnum;
 use App\Enum\TriggerEnum;
 use App\Integrations\Pipedrive\PipedriveHelper;
 
@@ -31,7 +30,7 @@ class AssertionHelper
                 $dealsCount++;
             }
 
-            if ($trigger === TriggerEnum::DEMO_SET_BY && self::setDemoForDeal($email, $deal)) {
+            if ($trigger === TriggerEnum::DEMO_SCHEDULED && self::setDemoForDeal($email, $deal)) {
                 $dealsCount++;
             }
         }

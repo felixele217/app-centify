@@ -14,18 +14,18 @@ use Carbon\CarbonImmutable;
 it('calculates the quota attainment for the current scope for all deals where demo was set by the agent', function (TimeScopeEnum $timeScope, Carbon $firstDateInScope, Carbon $lastDateInScope) {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
 
     Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $lastDateInScope)
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, $lastDateInScope)
         ->create([
             'add_time' => $lastDateInScope,
             'value' => 1_000_00,
         ]);
 
     Deal::factory()
-        ->withAgentDeal($agentId, TriggerEnum::DEMO_SET_BY, $firstDateInScope)
+        ->withAgentDeal($agentId, TriggerEnum::DEMO_SCHEDULED, $firstDateInScope)
         ->create([
             'add_time' => $firstDateInScope,
             'value' => 1_000_00,
@@ -44,11 +44,11 @@ it('calculates the quota attainment for the current scope for all deals where de
 
 it('does not use deals that were not scheduled by this agent', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->create([
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
 
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'won_time' => Carbon::now(),
@@ -68,17 +68,17 @@ it('does not use deals that were not scheduled by this agent', function (TimeSco
 
 it('does not use deals that lie out of the current time scope', function (TimeScopeEnum $timeScope, CarbonImmutable $firstDateInScope, CarbonImmutable $lastDateInScope) {
     $plan = Plan::factory()->create([
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
 
     Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, $firstDateInScope->subDays(5))
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, $firstDateInScope->subDays(5))
         ->create([
             'add_time' => $firstDateInScope->subDays(5),
         ]);
 
     Deal::factory()
-        ->withAgentDeal($agentId, TriggerEnum::DEMO_SET_BY, $lastDateInScope->addDays(5))
+        ->withAgentDeal($agentId, TriggerEnum::DEMO_SCHEDULED, $lastDateInScope->addDays(5))
         ->create([
             'add_time' => $lastDateInScope->addDays(5),
         ]);

@@ -22,7 +22,7 @@ it('AE is computed correctly', function () {
 
 it('AE does not return SDR', function () {
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     expect($deal->AE)->toBeNull();

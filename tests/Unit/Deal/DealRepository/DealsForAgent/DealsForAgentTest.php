@@ -2,7 +2,6 @@
 
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
-use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
@@ -16,11 +15,11 @@ it('retrieves accepted deals', function () {
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory($acceptedWithoutRejectionsDealCount = 2)
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create();
 
     Deal::factory($acceptedWithPriorRejectionsDealCount = 1)
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->hasRejections(1, [
             'is_permanent' => false,
             'created_at' => Carbon::now()->firstOfMonth()->subDays(5),
@@ -40,11 +39,11 @@ it('does not retrieve unaccepted deals', function () {
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->create();
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->hasRejections(1, [
             'is_permanent' => false,
         ])
@@ -53,28 +52,19 @@ it('does not retrieve unaccepted deals', function () {
     expect(DealRepository::dealsForAgent($agent, TimeScopeEnum::MONTHLY)->count())->toBe(0);
 });
 
-//TODO handle the second accepted_at timestamp here properly
 it('retrieves all deals where demo is set OR deal is won by the agent if he has plans with both triggers', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInScope) {
     $aePlan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEAL_WON->value]);
-    $sdrPlan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEMO_SET_BY->value]);
+    $sdrPlan = Plan::factory()->active()->create(['trigger' => TriggerEnum::DEMO_SCHEDULED->value]);
 
     $agent = Agent::factory()->create();
 
     $agent->plans()->attach([$aePlan->id, $sdrPlan->id]);
 
-    foreach ([TriggerEnum::DEMO_SET_BY, TriggerEnum::DEAL_WON] as $trigger) {
+    foreach ([TriggerEnum::DEMO_SCHEDULED, TriggerEnum::DEAL_WON] as $trigger) {
         Deal::factory()
             ->withAgentDeal($agent->id, $trigger, Carbon::yesterday())
-            ->sequence(
-                [
-                    'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-                    'won_time' => $dateInScope,
-                ],
-                [
-                    'add_time' => $dateInScope,
-                    'won_time' => null,
-                ],
-            )->create();
+            ->won(Carbon::yesterday())
+            ->create();
     }
 
     expect(DealRepository::dealsForAgent($agent, $timeScope))->toHaveCount(2);

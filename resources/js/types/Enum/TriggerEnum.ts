@@ -1,1 +1,1 @@
-export type TriggerEnum = 'demo_set_by' | 'deal_won'
+export type TriggerEnum = 'Demo scheduled' | 'Deal won'

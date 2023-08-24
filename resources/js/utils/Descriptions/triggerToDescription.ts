@@ -1,6 +1,7 @@
+import { TriggerEnum } from '@/types/Enum/TriggerEnum'
 import { Trigger } from '@/types/Trigger'
 
-export const triggerToDescription: Record<Trigger, string> = {
-    demo_set_by: "The deal's demo_set_by field has a user assigned to it.",
-    deal_won: 'The deal has been closed.',
+export const triggerToDescription: Record<TriggerEnum, string> = {
+    'Demo scheduled': "'Demo scheduled' is triggered when the demo_set_by field is set.",
+    'Deal won': 'The deal has been closed.',
 }

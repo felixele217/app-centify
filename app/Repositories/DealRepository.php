@@ -58,9 +58,9 @@ class DealRepository
             $currentQuery = clone $baseQuery;
 
             switch ($plan->trigger) {
-                case TriggerEnum::DEMO_SET_BY:
+                case TriggerEnum::DEMO_SCHEDULED:
                     $currentQuery = $currentQuery->whereBetween('add_time', [$firstDateInScope, $lastDateInScope])->whereHas('agents', function (Builder $query) use ($agent) {
-                        $query->where('agent_deal.agent_id', $agent->id)->where('agent_deal.triggered_by', TriggerEnum::DEMO_SET_BY->value);
+                        $query->where('agent_deal.agent_id', $agent->id)->where('agent_deal.triggered_by', TriggerEnum::DEMO_SCHEDULED->value);
                     });
                     break;
                 case TriggerEnum::DEAL_WON:

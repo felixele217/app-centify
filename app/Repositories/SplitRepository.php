@@ -15,7 +15,7 @@ class SplitRepository
     {
         $requestPartnerIds = [];
 
-        $trigger = $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SET_BY;
+        $trigger = $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SCHEDULED;
 
         foreach ($request->validated('partners') as $partner) {
             AgentDeal::updateOrCreate([

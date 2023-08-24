@@ -50,7 +50,7 @@ it('does not retrieve deals where won_time is outside of scope', function (TimeS
 it('does not retrieve deals where the agent scheduled the demo but did not win the deal', function () {
     $deal = Deal::factory()
         ->won(Carbon::now())
-        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create();
 
     AgentDeal::factory()->create([
@@ -64,13 +64,18 @@ it('does not retrieve deals where the agent scheduled the demo but did not win t
 it('does not retrieve deals where won_time is null', function (TimeScopeEnum $timeScope) {
     Deal::factory()
         ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON, Carbon::now()->firstOfMonth())
-        ->sequence(
-            ['won_time' => null],
-        )->create();
+        ->create([
+            'won_time' => null,
+        ]);
 
     expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);
-})->with([
-    TimeScopeEnum::MONTHLY,
-    TimeScopeEnum::QUARTERLY,
-    TimeScopeEnum::ANNUALY,
-]);
+})->with(TimeScopeEnum::cases());
+
+it('does not retrieve deals where the agent_deal is not yet accepted', function (TimeScopeEnum $timeScope) {
+    Deal::factory()
+        ->won(Carbon::yesterday())
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEAL_WON)
+        ->create();
+
+    expect(DealRepository::dealsForAgent($this->agent, $timeScope))->toHaveCount(0);
+})->with(TimeScopeEnum::cases());

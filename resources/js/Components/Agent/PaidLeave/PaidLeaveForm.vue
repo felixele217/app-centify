@@ -130,9 +130,7 @@ function agentPaidLeaveRanges() {
                     required
                 />
 
-                <InfoIcon
-                    hover-text="This will be used to calculate an average commission."
-                />
+                <InfoIcon hover-text="This will be used to calculate an average commission." />
             </div>
 
             <SelectWithDescription

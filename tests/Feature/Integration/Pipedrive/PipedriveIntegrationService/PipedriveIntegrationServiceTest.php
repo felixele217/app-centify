@@ -66,7 +66,7 @@ it('only syncs deals whose add time is after the plan start date', function () {
 it('maps over all active plans and syncs all deals where one of the triggers is achieved', function () {
     $this->agent->plans()->attach([
         Plan::factory()->active()->create([
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ])->id,
         Plan::factory()->active()->create([
             'trigger' => TriggerEnum::DEAL_WON->value,

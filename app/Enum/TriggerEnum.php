@@ -6,6 +6,6 @@ namespace App\Enum;
 
 enum TriggerEnum: string
 {
-    case DEMO_SET_BY = 'demo_set_by';
-    case DEAL_WON = 'deal_won';
+    case DEMO_SCHEDULED = 'Demo scheduled';
+    case DEAL_WON = 'Deal won';
 }

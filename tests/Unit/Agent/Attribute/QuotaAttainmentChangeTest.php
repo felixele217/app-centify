@@ -14,14 +14,14 @@ it('returns the attained quota change in %', function () {
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now()->firstOfMonth()->subDays(1))
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now()->firstOfMonth()->subDays(1))
         ->create([
             'add_time' => Carbon::now()->firstOfMonth()->subDays(1),
             'value' => $targetAmountPerMonth / 2,
         ]);
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'value' => $targetAmountPerMonth,

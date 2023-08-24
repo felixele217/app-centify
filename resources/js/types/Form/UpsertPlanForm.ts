@@ -3,6 +3,7 @@ import { PlanCycleEnum } from '../Enum/PlanCycleEnum'
 import { SalaryTypeEnum } from '../Enum/SalaryTypeEnum'
 import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
 import { TimeScopeEnum } from '../Enum/TimeScopeEnum'
+import { TriggerEnum } from '../Enum/TriggerEnum'
 
 export type UpsertPlanForm = {
     name: string
@@ -24,5 +25,5 @@ export type UpsertPlanForm = {
     }
 
     cap: number | null
-    trigger: 'demo_set_by'
+    trigger: TriggerEnum
 }

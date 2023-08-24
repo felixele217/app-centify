@@ -32,7 +32,7 @@ it('freezes the current agent data in payouts', function (TimeScopeEnum $timeSco
     $plan->agents()->attach($agents);
 
     Deal::factory()
-        ->withAgentDeal(fake()->randomElement($agents->pluck('id')), TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal(fake()->randomElement($agents->pluck('id')), TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now()->firstOfMonth(),
         ]);

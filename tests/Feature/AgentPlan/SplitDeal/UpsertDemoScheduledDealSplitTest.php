@@ -4,13 +4,12 @@ use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
-use Carbon\Carbon;
 
 beforeEach(function () {
     $this->admin = signInAdmin();
 
     $this->deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal(Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 });
 
@@ -33,18 +32,17 @@ it('can store a split for a deal that has a scheduled demo', function () {
     expect($this->deal->fresh()->sdr->pivot->id)->not()->toBe($agentId2);
 
     expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($dealPercentage / 100);
-    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SET_BY->value);
+    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SCHEDULED->value);
 
     expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_percentage)->toBe($dealPercentage2 / 100);
-    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SET_BY->value);
+    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SCHEDULED->value);
 });
-
 
 it('updates the splits correctly if there already were some', function () {
     $agentDeal = AgentDeal::factory()->create([
         'deal_id' => $this->deal->id,
         'agent_id' => $existingAgentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-        'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
+        'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value,
         'deal_percentage' => 10,
     ]);
 
@@ -66,7 +64,7 @@ it('updates the splits correctly if there already were some', function () {
 });
 
 it('removes the split if it is not present in the request', function () {
-    AgentDeal::factory()->create(['deal_id' => $this->deal->id, 'triggered_by' => TriggerEnum::DEMO_SET_BY->value]);
+    AgentDeal::factory()->create(['deal_id' => $this->deal->id, 'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value]);
 
     $this->post(route('deals.splits.store', $this->deal), [
         'partners' => [],

@@ -15,7 +15,7 @@ it('returns the combined quota commissions of all plans of the user', function (
 
     $sdrPlan = Plan::factory()->active()
         ->create([
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
     $aePlan = Plan::factory()->active()
         ->create([
@@ -23,7 +23,7 @@ it('returns the combined quota commissions of all plans of the user', function (
         ]);
 
     $demoScheduledDealToAchieveKickerCommission = Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
         ]);
@@ -48,7 +48,7 @@ it('returns the combined quota commissions of all plans of the user for a past t
 
     $sdrPlan = Plan::factory()->active()
         ->create([
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
     $aePlan = Plan::factory()->active()
         ->create([
@@ -56,7 +56,7 @@ it('returns the combined quota commissions of all plans of the user for a past t
         ]);
 
     $demoScheduledDealToAchieveKickerCommission = Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, $dateInPreviousTimeScope)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, $dateInPreviousTimeScope)
         ->create([
             'add_time' => $dateInPreviousTimeScope,
         ]);

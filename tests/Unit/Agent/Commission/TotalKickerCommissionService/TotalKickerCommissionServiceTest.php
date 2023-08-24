@@ -26,11 +26,11 @@ it('returns the combined kicker commissions of all plans of the user', function 
         ])
         ->create([
             'target_amount_per_month' => $planTarget = 10_000_00,
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
     $demoScheduledDealToAchieveKickerCommission = Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'value' => $planTarget * 2 * $timeScope->monthCount(),

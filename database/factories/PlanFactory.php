@@ -25,7 +25,7 @@ class PlanFactory extends Factory
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'organization_id' => Organization::factory()->create(),
             'creator_id' => Admin::factory()->create(),
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ];
     }
 

@@ -9,7 +9,7 @@ it('can accept a deal that has a demo_scheduled trigger', function () {
     signInAdmin();
 
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->create();
 
     $this->put(route('deals.update', $deal), [
@@ -41,7 +41,7 @@ it('can update the note of a deal', function () {
     signInAdmin();
 
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->create([
             'note' => null,
         ]);
@@ -57,7 +57,7 @@ it('can update the note of a deal setting it to null', function () {
     signInAdmin();
 
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->create([
             'note' => 'some existing note',
         ]);
@@ -73,7 +73,7 @@ it('does not remove the note upon accepting a deal', function () {
     signInAdmin();
 
     $deal = Deal::factory()
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, null)
+        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, null)
         ->create([
             'note' => $note = 'some note',
         ]);

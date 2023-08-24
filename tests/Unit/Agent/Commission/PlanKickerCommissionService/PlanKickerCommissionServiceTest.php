@@ -28,7 +28,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
         ]);
 
     Deal::factory()
-        ->withAgentDeal($plan->agents()->first()->id, TriggerEnum::DEMO_SET_BY, $dealAcceptedDate)
+        ->withAgentDeal($plan->agents()->first()->id, TriggerEnum::DEMO_SCHEDULED, $dealAcceptedDate)
         ->create([
             'value' => 60_000_000,
             'add_time' => $dealAcceptedDate,

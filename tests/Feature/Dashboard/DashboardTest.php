@@ -53,11 +53,11 @@ it('sends correct todo count for this organization', function () {
     $plan->agents()->attach($secondAgent = Agent::factory()->create());
 
     Deal::factory($openDealCount = 3)
-        ->withAgentDeal($firstAgent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($firstAgent->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     Deal::factory(3)
-        ->withAgentDeal($secondAgent->id, TriggerEnum::DEMO_SET_BY)
+        ->withAgentDeal($secondAgent->id, TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     $this->get(route('dashboard'))

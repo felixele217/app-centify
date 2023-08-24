@@ -24,9 +24,11 @@ export default interface Agent {
     organization: Organization
     organization_id: number
     paid_leaves: Array<PaidLeave>
-    deals?: Array<Deal & {
-        pivot: AgentDealPivot
-    }>
+    deals?: Array<
+        Deal & {
+            pivot: AgentDealPivot
+        }
+    >
     active_plans?: Array<{
         id: number
         name: string

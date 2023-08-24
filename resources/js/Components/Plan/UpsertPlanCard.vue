@@ -95,7 +95,7 @@ const form = useForm<UpsertPlanForm>({
     },
 
     cap: props.plan?.cap?.value || null,
-    trigger: 'demo_set_by',
+    trigger: 'Demo scheduled',
 })
 
 function handleAgentSelect(id: number) {
@@ -291,7 +291,7 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
                         <SelectWithDescription
                             :options="
                                 enumOptionsToSelectOptionWithDescription(
-                                    usePage().props.environment === 'production' ? ['demo_set_by'] : TriggerEnumCases,
+                                    usePage().props.environment === 'production' ? ['Demo scheduled'] : TriggerEnumCases,
                                     triggerToDescription
                                 )
                             "

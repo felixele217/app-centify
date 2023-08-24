@@ -35,7 +35,7 @@ beforeEach(function () {
     $this->agent = Agent::factory()
         ->ofOrganization($this->admin->organization_id)
         ->has($plan = Plan::factory()->active()->count(1)->state([
-            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]))
         ->create([
             'email' => PipedriveHelper::demoSetByEmail($this->deals[0], env('PIPEDRIVE_DEMO_SET_BY')),
@@ -64,7 +64,7 @@ it('stores the data properly', function () {
         expect($deal->SDR->id)->toBe($this->agent->id);
     }
 
-    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SET_BY));
+    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SCHEDULED));
     expect($this->agent->deals->first()->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
     expect($this->agent->deals->first()->title)->toBe($expectedDealDTO->title);
     expect(floatval($this->agent->deals->first()->value))->toBe($expectedDealDTO->value);
@@ -97,7 +97,7 @@ it('does not create the same entry twice', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SET_BY));
+    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEMO_SCHEDULED));
 });
 
 it('does not create deal if demo_set_by has no value assigned to it', function () {

@@ -14,7 +14,7 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 
     $this->get(route('dashboard').'?time_scope='.$timeScope->value);
 
-    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6, TriggerEnum::DEMO_SET_BY);
+    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentPerMonth = 6, TriggerEnum::DEMO_SCHEDULED);
 
     $plan->kicker()->create([
         'type' => KickerTypeEnum::SALARY_BASED_ONE_TIME->value,

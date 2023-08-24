@@ -13,7 +13,7 @@ use Carbon\Carbon;
 it('calculates the quota attainment for the current scope for all deal participations of the agent', function (TimeScopeEnum $timeScope) {
     $sdrPlan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
     $aePlan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
@@ -21,7 +21,7 @@ it('calculates the quota attainment for the current scope for all deal participa
     ]);
 
     $deals = Deal::factory(2)
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->won(Carbon::now())
         ->create([
             'value' => 1_000_00,
@@ -49,7 +49,7 @@ it('returns 0 if the agent has no active plans in the scope', function (TimeScop
     ]);
 
     Deal::factory(2)
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
             'value' => 1_000_00,
@@ -67,7 +67,7 @@ it('returns 0 if the agent does not have a base_salary or on_target_earning', fu
         ->withAgentDeal($agentId = Agent::factory()->create([
             'on_target_earning' => $onTargetEarning,
             'base_salary' => $baseSalary,
-        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ])->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now()->firstOfMonth(),
         ]);
