@@ -37,7 +37,10 @@ class Plan extends Model implements Auditable
 
     public function agents(): BelongsToMany
     {
-        return $this->belongsToMany(Agent::class)->using(AgentPlan::class);
+        return $this->belongsToMany(Agent::class)->withPivot([
+            'id',
+            'share_of_variable_pay',
+        ])->using(AgentPlan::class);
     }
 
     public function organization(): BelongsTo

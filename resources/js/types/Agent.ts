@@ -1,8 +1,10 @@
 import AgentDealPivot from './AgentDealPivot'
+import AgentPlanPivot from './AgentPlanPivot'
 import Deal from './Deal'
 import { AgentStatusEnum } from './Enum/AgentStatusEnum'
 import Organization from './Organization'
 import PaidLeave from './PaidLeave'
+import Plan from './Plan/Plan'
 
 export default interface Agent {
     id: number
@@ -27,6 +29,11 @@ export default interface Agent {
     deals?: Array<
         Deal & {
             pivot: AgentDealPivot
+        }
+    >
+    plans?: Array<
+        Plan & {
+            pivot: AgentPlanPivot
         }
     >
     active_plans?: Array<{

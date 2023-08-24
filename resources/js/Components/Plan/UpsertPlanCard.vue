@@ -144,7 +144,9 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
     }
 }
 
-const startShareOfVariablePay = ref<number>(100)
+const startShareOfVariablePay = ref<number>(
+    props.plan?.agents!.length ? props.plan.agents[0].pivot.share_of_variable_pay * 100 : 100
+)
 function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
     form.assigned_agents = form.assigned_agents.map((assignedAgent) => ({
         id: assignedAgent.id,

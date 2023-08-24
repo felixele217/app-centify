@@ -1,5 +1,6 @@
 import Admin from '../Admin'
 import Agent from '../Agent'
+import AgentPlanPivot from '../AgentPlanPivot'
 import { PlanCycleEnum } from '../Enum/PlanCycleEnum'
 import { TargetVariableEnum } from '../Enum/TargetVariableEnum'
 import Cap from './Cap'
@@ -15,7 +16,11 @@ export default interface Plan {
     target_variable: TargetVariableEnum
     plan_cycle: PlanCycleEnum
     agents_count?: number
-    agents?: Array<Agent>
+    agents?: Array<
+        Agent & {
+            pivot: AgentPlanPivot
+        }
+    >
     creator: Admin
     cliff?: Cliff
     kicker?: Kicker
