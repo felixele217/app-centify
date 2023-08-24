@@ -79,8 +79,10 @@ const form = useForm<UpsertPlanForm>({
     target_variable: props.plan?.target_variable || ('' as TargetVariableEnum),
     plan_cycle: props.plan?.plan_cycle || ('' as PlanCycleEnum),
     assigned_agents:
-        props.plan?.agents!.map((agent) => ({ id: agent.id, share_of_variable_pay: 100 })) ||
-        ([] as Array<AssignedAgent>),
+        props.plan?.agents!.map((agent) => ({
+            id: agent.id,
+            share_of_variable_pay: agent.pivot.share_of_variable_pay * 100,
+        })) || ([] as Array<AssignedAgent>),
 
     cliff: {
         threshold_in_percent: props.plan?.cliff?.threshold_in_percent
@@ -100,7 +102,7 @@ const form = useForm<UpsertPlanForm>({
     },
 
     cap: props.plan?.cap?.value || null,
-    trigger: 'Demo scheduled',
+    trigger: props.plan?.trigger || 'Demo scheduled',
 })
 
 const assignedAgentIds = computed(() => form.assigned_agents.map((assignedAgent) => assignedAgent.id))

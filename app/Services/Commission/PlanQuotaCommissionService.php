@@ -6,7 +6,6 @@ namespace App\Services\Commission;
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
-use App\Models\AgentPlan;
 use App\Models\Plan;
 use App\Services\PlanQuotaAttainmentService;
 use Carbon\CarbonImmutable;
@@ -26,17 +25,16 @@ class PlanQuotaCommissionService
     {
         $planQuotaAttainment = (new PlanQuotaAttainmentService($agent, $plan, $this->timeScope, $this->dateInScope))->calculate();
 
-        return $this->calculateCommissionFromQuota($agent, $plan, $planQuotaAttainment);
+        return $this->calculateCommissionFromQuota($agent, $planQuotaAttainment);
     }
 
-    private function calculateCommissionFromQuota(Agent $agent, Plan $plan, ?float $quotaAttainmentForTimeScope): ?int
+    private function calculateCommissionFromQuota(Agent $agent, ?float $quotaAttainmentForTimeScope): ?int
     {
         if (is_null($quotaAttainmentForTimeScope)) {
             return null;
         }
 
-        $shareOfVariablePay = AgentPlan::whereAgentId($agent->id)->wherePlanId($plan->id)->first()->share_of_variable_pay;
-        $annualShareOfVariablePay = ($quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary)) * $shareOfVariablePay;
+        $annualShareOfVariablePay = $quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary);
 
         $commissionFromQuota = match ($this->timeScope) {
             TimeScopeEnum::MONTHLY => $annualShareOfVariablePay / 12,

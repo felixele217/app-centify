@@ -61,16 +61,17 @@ class PlanRepository
         $plan->update($request->safe()->only(self::PLAN_FIELDS));
 
         foreach ($plan->agents as $agent) {
-            if (! in_array($agent->id, array_column($request->validated('assigned_agents'), 'id'))) {
+            if (! $request->validated('assigned_agents') || ! in_array($agent->id, array_column($request->validated('assigned_agents'), 'id'))) {
                 $plan->agents()->whereAgentId($agent->id)->delete();
             }
         }
 
-        foreach ($request->validated('assigned_agents') as $assignedAgent) {
-            if (! AgentPlan::whereAgentId($assignedAgent['id'])->wherePlanId($plan->id)->exists()) {
-                AgentPlan::create([
+        if ($request->validated('assigned_agents')) {
+            foreach ($request->validated('assigned_agents') as $assignedAgent) {
+                AgentPlan::updateOrCreate([
                     'plan_id' => $plan->id,
                     'agent_id' => $assignedAgent['id'],
+                ], [
                     'share_of_variable_pay' => $assignedAgent['share_of_variable_pay'],
                 ]);
             }

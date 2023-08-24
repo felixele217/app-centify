@@ -85,6 +85,27 @@ it('can remove agents from the plan', function () {
     expect($plan->refresh()->agents->count())->toBe($expectedAgentCount);
 });
 
+it('can update the share_of_variable_pay of agents already in the plan', function (int $newShareOfVariablePay) {
+    $admin = signInAdmin();
+
+    $plan = Plan::factory()->create([
+        'organization_id' => $admin->organization->id,
+    ]);
+
+    $plan->agents()->attach($agent = Agent::factory()->create());
+
+    UpdatePlanRequest::factory()->state([
+        'assigned_agents' => [[
+            'id' => $agent->id,
+            'share_of_variable_pay' => $newShareOfVariablePay,
+        ]],
+    ])->fake();
+
+    $this->put(route('plans.update', $plan))->assertRedirect();
+
+    expect($plan->refresh()->agents->first()->pivot->share_of_variable_pay)->toBe($newShareOfVariablePay / 100);
+})->with([20, 75]);
+
 it('has required fields', function () {
     $admin = signInAdmin();
 
