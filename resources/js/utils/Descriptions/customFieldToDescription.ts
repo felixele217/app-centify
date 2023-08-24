@@ -1,6 +1,5 @@
-import { TriggerEnum } from '@/types/Enum/TriggerEnum'
+import { CustomFieldEnum } from '@/types/Enum/CustomFieldEnum'
 
-export const customFieldToDescription: Record<TriggerEnum, string> = {
+export const customFieldToDescription: Record<CustomFieldEnum, string> = {
     demo_set_by: '(Person field)',
-    deal_won: '',
 }
