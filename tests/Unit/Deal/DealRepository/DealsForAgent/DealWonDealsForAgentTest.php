@@ -3,6 +3,7 @@
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Agent;
+use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Repositories\DealRepository;
@@ -45,6 +46,20 @@ it('does not retrieve deals where won_time is outside of scope', function (TimeS
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter(), CarbonImmutable::now()->lastOfQuarter()],
     [TimeScopeEnum::ANNUALY, CarbonImmutable::now()->firstOfYear(), CarbonImmutable::now()->lastOfYear()],
 ]);
+
+it('does not retrieve deals where the agent scheduled the demo but did not win the deal', function () {
+    $deal = Deal::factory()
+        ->won(Carbon::now())
+        ->withAgentDeal($this->agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create();
+
+    AgentDeal::factory()->create([
+        'deal_id' => $deal->id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
+    ]);
+
+    expect(DealRepository::dealsForAgent($this->agent, TimeScopeEnum::MONTHLY))->toHaveCount(0);
+});
 
 it('does not retrieve deals where won_time is null', function (TimeScopeEnum $timeScope) {
     Deal::factory()

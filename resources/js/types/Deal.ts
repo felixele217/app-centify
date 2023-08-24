@@ -16,6 +16,7 @@ export default interface Deal {
     status: DealStatusEnum
     value: number
     add_time: string
+    won_time: string
     agent_id: number
     s_d_r?: AgentWithDealPivot
     a_e?: AgentWithDealPivot

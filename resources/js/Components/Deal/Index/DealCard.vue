@@ -148,7 +148,7 @@ const agentThatTriggeredDeal = computed(() => {
     </td>
 
     <td class="col-span-2 px-3 py-4 text-gray-500">
-        {{ attributionPeriod(props.deal.add_time) }}
+        {{ attributionPeriod(props.deal.won_time ?? props.deal.add_time) }}
     </td>
 
     <td class="col-span-4 px-3 py-4 text-gray-500">

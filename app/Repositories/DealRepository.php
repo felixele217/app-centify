@@ -59,15 +59,19 @@ class DealRepository
 
             switch ($plan->trigger) {
                 case TriggerEnum::DEMO_SET_BY:
-                    $currentQuery = $currentQuery->whereBetween('add_time', [$firstDateInScope, $lastDateInScope]);
+                    $currentQuery = $currentQuery->whereBetween('add_time', [$firstDateInScope, $lastDateInScope])->whereHas('agents', function (Builder $query) use ($agent) {
+                        $query->where('agent_deal.agent_id', $agent->id)->where('agent_deal.triggered_by', TriggerEnum::DEMO_SET_BY->value);
+                    });
                     break;
-                    case TriggerEnum::DEAL_WON:
-                        $currentQuery = $currentQuery->whereBetween('won_time', [$firstDateInScope, $lastDateInScope]);
-                        break;
-                    }
+                case TriggerEnum::DEAL_WON:
+                    $currentQuery = $currentQuery->whereBetween('won_time', [$firstDateInScope, $lastDateInScope])->whereHas('agents', function (Builder $query) use ($agent) {
+                        $query->where('agent_deal.agent_id', $agent->id)->where('agent_deal.triggered_by', TriggerEnum::DEAL_WON->value);
+                    });
+                    break;
+            }
 
-                    $deals = $deals->concat($currentQuery->get());
-                }
+            $deals = $deals->concat($currentQuery->get());
+        }
 
         return $deals->unique('id');
     }
