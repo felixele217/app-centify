@@ -61,3 +61,26 @@ it('returns null if the agent has no active plans in the scope', function (TimeS
 
     expect((new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate())->toBeNull();
 })->with(TimeScopeEnum::cases());
+
+it('returns null if the agent does not have a base_salary or on_target_earning', function (TimeScopeEnum $timeScope, int $baseSalary, int $onTargetEarning) {
+    Deal::factory()
+        ->withAgentDeal($agentId = Agent::factory()->create([
+            'on_target_earning' => $onTargetEarning,
+            'base_salary' => $baseSalary,
+        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
+            'add_time' => Carbon::now()->firstOfMonth(),
+        ]);
+
+    expect((new TotalQuotaAttainmentService(Agent::find($agentId), $timeScope, DateHelper::dateInPreviousTimeScope(TimeScopeEnum::MONTHLY)))->calculate())->toBeNull();
+})->with([
+    [TimeScopeEnum::MONTHLY, 10_000_00, 10_000_00],
+    [TimeScopeEnum::QUARTERLY, 10_000_00, 10_000_00],
+    [TimeScopeEnum::ANNUALY, 10_000_00, 10_000_00],
+    [TimeScopeEnum::MONTHLY, 0, 10_000_00],
+    [TimeScopeEnum::QUARTERLY, 0, 10_000_00],
+    [TimeScopeEnum::ANNUALY, 0, 10_000_00],
+    [TimescopeEnum::MONTHLY, 10_000_00, 0],
+    [TimescopeEnum::QUARTERLY, 10_000_00, 0],
+    [TimescopeEnum::ANNUALY, 10_000_00, 0],
+]);

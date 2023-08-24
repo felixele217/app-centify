@@ -31,7 +31,7 @@ class TotalQuotaAttainmentService
         $totalQuotaAttainment = 0;
 
         foreach ($activePlans as $activePlan) {
-            $totalQuotaAttainment += (new QuotaAttainmentPerTriggerService($this->agent, $activePlan->trigger, $this->timeScope, $this->dateInScope))->calculate();
+            $totalQuotaAttainment += (new PlanQuotaAttainmentService($this->agent, $activePlan, $this->timeScope, $this->dateInScope))->calculate();
         }
 
         return $totalQuotaAttainment;

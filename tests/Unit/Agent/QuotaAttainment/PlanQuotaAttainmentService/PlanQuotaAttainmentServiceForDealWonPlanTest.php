@@ -7,7 +7,7 @@ use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\QuotaAttainmentPerTriggerService;
+use App\Services\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -35,7 +35,7 @@ it('calculates the quota attainment for the current scope for all deals where de
 
     $plan->agents()->attach($agent);
 
-    expect((new QuotaAttainmentPerTriggerService($agent, TriggerEnum::DEAL_WON, $timeScope))->calculate())->toBe(floatval(2 / $timeScope->monthCount()));
+    expect((new PlanQuotaAttainmentService($agent, $plan, $timeScope))->calculate())->toBe(floatval(2 / $timeScope->monthCount()));
 })->with([
     [TimeScopeEnum::MONTHLY, Carbon::now()->firstOfMonth(), Carbon::now()->lastOfMonth()],
     [TimeScopeEnum::QUARTERLY, Carbon::now()->firstOfQuarter(), Carbon::now()->lastOfQuarter()],
@@ -60,7 +60,7 @@ it('does not use deals that lie out of the current time scope', function (TimeSc
     $agent = Agent::find($agentId);
     $plan->agents()->attach($agent);
 
-    expect((new QuotaAttainmentPerTriggerService($agent, TriggerEnum::DEAL_WON, $timeScope))->calculate())->toBe(floatval(0));
+    expect((new PlanQuotaAttainmentService($agent, $plan, $timeScope))->calculate())->toBe(floatval(0));
 })->with([
     [TimeScopeEnum::MONTHLY, CarbonImmutable::now()->firstOfMonth(), CarbonImmutable::now()->lastOfMonth()],
     [TimeScopeEnum::QUARTERLY, CarbonImmutable::now()->firstOfQuarter(), CarbonImmutable::now()->lastOfQuarter()],
@@ -88,22 +88,5 @@ it('does not use deals that were not won by this agent', function (TimeScopeEnum
     $agent = Agent::find($agentId);
     $plan->agents()->attach($agent);
 
-    expect((new QuotaAttainmentPerTriggerService($agent, TriggerEnum::DEAL_WON, $timeScope))->calculate())->toBe(floatval(0));
+    expect((new PlanQuotaAttainmentService($agent, $plan, $timeScope))->calculate())->toBe(floatval(0));
 })->with(TimeScopeEnum::cases());
-
-it('does not throw any errors when the agent does not have a base_salary, quota_attainment or plan', function ($baseSalary, $onTargetEarning) {
-    Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create([
-            'on_target_earning' => $onTargetEarning,
-            'base_salary' => $baseSalary,
-        ])->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
-        ->create([
-            'add_time' => Carbon::now()->firstOfMonth(),
-        ]);
-
-    expect((new QuotaAttainmentPerTriggerService(Agent::find($agentId), TriggerEnum::DEAL_WON, TimeScopeEnum::MONTHLY))->calculate())->toBeNull();
-})->with([
-    [10_000_00, 10_000_00],
-    [0, 10_000_00],
-    [10_000_00, 0],
-]);

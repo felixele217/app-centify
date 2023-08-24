@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enum\TimeScopeEnum;
-use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
@@ -13,13 +12,13 @@ use App\Repositories\DealRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
-class QuotaAttainmentPerTriggerService
+class PlanQuotaAttainmentService
 {
     private CarbonImmutable $dateInScope;
 
     public function __construct(
         private Agent $agent,
-        private TriggerEnum $trigger,
+        private Plan $activePlan,
         private TimeScopeEnum $timeScope,
         CarbonImmutable $dateInScope = null
     ) {
@@ -28,26 +27,18 @@ class QuotaAttainmentPerTriggerService
 
     public function calculate(): ?float
     {
-        $latestActivePlan = $this->agent->load('plans')->plans()->active($this->dateInScope)->first();
-
-        if (! $latestActivePlan) {
-            return null;
-        }
-
         $deals = DealRepository::dealsForAgent($this->agent, $this->timeScope, $this->dateInScope);
-        // dd($deals->count());
 
         $deals = $deals->filter(function (Deal $deal) {
-            // dd($deal->agents()->whereAgentId($this->agent->id)->first());
-            return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->trigger)->exists();
+            return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->activePlan->trigger)->exists();
         });
 
-        return $this->cappedSumOfDeals($deals, $latestActivePlan) / ($latestActivePlan->target_amount_per_month * $this->timeScope->monthCount());
+        return $this->cappedSumOfDeals($deals) / ($this->activePlan->target_amount_per_month * $this->timeScope->monthCount());
     }
 
-    private function cappedSumOfDeals(Collection $deals, ?Plan $latestActivePlan): float
+    private function cappedSumOfDeals(Collection $deals): float
     {
-        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $latestActivePlan->cap?->value))->toArray());
+        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $this->activePlan->load('cap')->cap?->value))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): float
