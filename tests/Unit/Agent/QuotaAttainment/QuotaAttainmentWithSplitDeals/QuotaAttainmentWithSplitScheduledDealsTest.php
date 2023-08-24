@@ -6,7 +6,7 @@ use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\TotalQuotaAttainmentService;
+use App\Services\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment correctly for splitted deals', function (int $sharedPercentage1, ?int $sharedPercentage2) {
@@ -44,7 +44,7 @@ it('calculates the quota attainment correctly for splitted deals', function (int
         ]);
     }
 
-    expect((new TotalQuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval((100 - $sharedPercentage1 - $sharedPercentage2) / 100));
+    expect((new PlanQuotaAttainmentService($agent, $plan, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval((100 - $sharedPercentage1 - $sharedPercentage2) / 100));
 })->with([
     [20, 30],
     [50, 40],
@@ -80,7 +80,7 @@ it('split partner also get the quota', function (int $dealPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
     ]);
 
-    expect((new TotalQuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($dealPercentage / 100));
+    expect((new PlanQuotaAttainmentService($splitPartner, $plan, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval($dealPercentage / 100));
 })->with([
     20,
     40,
@@ -96,7 +96,7 @@ it('deal owner gets his capped share', function (int $dealPercentage) {
         ])
         ->create([
             'target_amount_per_month' => 10_000_00,
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ]);
 
     $plan->agents()->attach($agent = Agent::factory()->create());
@@ -120,7 +120,7 @@ it('deal owner gets his capped share', function (int $dealPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
     ]);
 
-    expect((new TotalQuotaAttainmentService($agent, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $dealPercentage) / 100)));
+    expect((new PlanQuotaAttainmentService($agent, $plan, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, (100 - $dealPercentage) / 100)));
 })->with([
     20,
     40,
@@ -136,7 +136,7 @@ it('split partner gets his capped share', function (int $dealPercentage) {
         ])
         ->create([
             'target_amount_per_month' => 10_000_00,
-        'trigger' => TriggerEnum::DEMO_SET_BY->value,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ]);
 
     $plan->agents()->attach($agent = Agent::factory()->create());
@@ -160,7 +160,7 @@ it('split partner gets his capped share', function (int $dealPercentage) {
         'triggered_by' => TriggerEnum::DEMO_SET_BY->value,
     ]);
 
-    expect((new TotalQuotaAttainmentService($splitPartner, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $dealPercentage / 100)));
+    expect((new PlanQuotaAttainmentService($splitPartner, $plan, TimeScopeEnum::MONTHLY))->calculate())->toBe(floatval(min(0.5, $dealPercentage / 100)));
 })->with([
     20,
     40,
