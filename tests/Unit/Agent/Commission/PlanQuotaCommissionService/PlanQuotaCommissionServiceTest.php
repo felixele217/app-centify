@@ -2,6 +2,8 @@
 
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
+use App\Models\Agent;
+use App\Models\AgentPlan;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\PlanQuotaCommissionService;
@@ -42,32 +44,42 @@ it('returns the correct commission for a plan', function (TimeScopeEnum $timeSco
     [TimeScopeEnum::ANNUALY, 0.7],
 ]);
 
-it('returns normal quota commission even if there is a cliff that was not met', function (TimeScopeEnum $timeScope) {
+it('returns the correct commission for a plan where the AgentPlan has a share of variable pay', function (TimeScopeEnum $timeScope, int $shareOfVariablePay) {
     $plan = Plan::factory()->active()
-        ->hasCliff([
-            'threshold_in_percent' => $cliffValue = 20,
-        ])
-        ->hasAgents(1, [
-            'base_salary' => 50_000_00,
-            'on_target_earning' => 170_000_00,
-        ])
         ->create([
             'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
-    $cliffPercentage = (($cliffValue - 1) / 100);
+    $agent = Agent::factory()->create([
+        'base_salary' => 50_000_00,
+        'on_target_earning' => 170_000_00,
+    ]);
 
-    $agent = $plan->agents->first();
+    AgentPlan::create([
+        'agent_id' => $agent->id,
+        'plan_id' => $plan->id,
+        'share_of_variable_pay' => $shareOfVariablePay,
+    ]);
 
     Deal::factory()
         ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
-            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $cliffPercentage,
+            'value' => $targetAmountPerMonth * $timeScope->monthCount(),
         ]);
 
-    $expectedCommission = (($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount())) * $cliffPercentage;
+    $expectedCommission = (($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount())) * ($shareOfVariablePay / 100);
 
     expect((new PlanQuotaCommissionService($timeScope))->calculate($agent, $plan, $timeScope))->toBe(intval($expectedCommission));
-})->with(TimeScopeEnum::cases());
+})->with([
+    [TimeScopeEnum::MONTHLY, 50],
+    [TimeScopeEnum::QUARTERLY, 50],
+    [TimeScopeEnum::ANNUALY, 50],
+
+    [TimeScopeEnum::MONTHLY, 20],
+    [TimeScopeEnum::QUARTERLY, 40],
+    [TimeScopeEnum::ANNUALY, 60],
+    [TimeScopeEnum::ANNUALY, 80],
+    [TimeScopeEnum::ANNUALY, 100],
+]);
