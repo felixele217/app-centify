@@ -12,21 +12,8 @@ use App\Services\Commission\TotalKickerCommissionService;
 use App\Services\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
-it('returns null for the kicker commission if user has no plan', function (TimeScopeEnum $timeScope) {
-    $admin = signInAdmin();
-
-    $agent = Agent::factory()->create([
-        'organization_id' => $admin->id,
-    ]);
-
-    expect((new TotalKickerCommissionService())->calculate($agent, $timeScope, 0))->toBe(0);
-})->with(TimeScopeEnum::cases());
-
 it('returns the combined kicker commissions of all plans of the user', function (TimeScopeEnum $timeScope) {
-    $admin = signInAdmin();
-
     $agent = Agent::factory()->create([
-        'organization_id' => $admin->organization_id,
         'base_salary' => 50_000_00,
         'on_target_earning' => 170_000_00,
     ]);
@@ -39,8 +26,6 @@ it('returns the combined kicker commissions of all plans of the user', function 
         ])
         ->create([
             'target_amount_per_month' => $planTarget = 10_000_00,
-            'organization_id' => $admin->organization->id,
-            'creator_id' => $admin->id,
             'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ]);
 
@@ -58,8 +43,6 @@ it('returns the combined kicker commissions of all plans of the user', function 
             'threshold_in_percent' => 200,
         ])
         ->create([
-            'organization_id' => $admin->organization->id,
-            'creator_id' => $admin->id,
             'trigger' => TriggerEnum::DEAL_WON->value,
         ]);
 
@@ -77,4 +60,14 @@ it('returns the combined kicker commissions of all plans of the user', function 
         (new PlanKickerCommissionService())->calculate($agent, $sdrPlan, $timeScope, (new PlanQuotaAttainmentService($agent, $sdrPlan, $timeScope))->calculate())
         + (new PlanKickerCommissionService())->calculate($agent, $aePlan, $timeScope, (new PlanQuotaAttainmentService($agent, $aePlan, $timeScope))->calculate())
     );
+})->with(TimeScopeEnum::cases());
+
+it('returns null for the kicker commission if user has no plans', function (TimeScopeEnum $timeScope) {
+    $admin = signInAdmin();
+
+    $agent = Agent::factory()->create([
+        'organization_id' => $admin->id,
+    ]);
+
+    expect((new TotalKickerCommissionService())->calculate($agent, $timeScope, 0))->toBe(0);
 })->with(TimeScopeEnum::cases());

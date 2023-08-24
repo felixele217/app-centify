@@ -43,7 +43,7 @@ it('calculates the quota attainment for the current scope for all deal participa
     expect((new TotalQuotaAttainmentService($agent, $timeScope))->calculate())->toBe(floatval(2 * (2 / $timeScope->monthCount())));
 })->with([TimeScopeEnum::MONTHLY]);
 
-it('returns null if the agent has no active plans in the scope', function (TimeScopeEnum $timeScope) {
+it('returns 0 if the agent has no active plans in the scope', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->create([
         'start_date' => Carbon::now(),
     ]);
@@ -59,10 +59,10 @@ it('returns null if the agent has no active plans in the scope', function (TimeS
 
     $plan->agents()->attach($agent);
 
-    expect((new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate())->toBeNull();
+    expect((new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate())->toBe(floatval(0));
 })->with(TimeScopeEnum::cases());
 
-it('returns null if the agent does not have a base_salary or on_target_earning', function (TimeScopeEnum $timeScope, int $baseSalary, int $onTargetEarning) {
+it('returns 0 if the agent does not have a base_salary or on_target_earning', function (TimeScopeEnum $timeScope, int $baseSalary, int $onTargetEarning) {
     Deal::factory()
         ->withAgentDeal($agentId = Agent::factory()->create([
             'on_target_earning' => $onTargetEarning,
@@ -72,7 +72,7 @@ it('returns null if the agent does not have a base_salary or on_target_earning',
             'add_time' => Carbon::now()->firstOfMonth(),
         ]);
 
-    expect((new TotalQuotaAttainmentService(Agent::find($agentId), $timeScope, DateHelper::dateInPreviousTimeScope(TimeScopeEnum::MONTHLY)))->calculate())->toBeNull();
+    expect((new TotalQuotaAttainmentService(Agent::find($agentId), $timeScope, DateHelper::dateInPreviousTimeScope(TimeScopeEnum::MONTHLY)))->calculate())->toBe(floatval(0));
 })->with([
     [TimeScopeEnum::MONTHLY, 10_000_00, 10_000_00],
     [TimeScopeEnum::QUARTERLY, 10_000_00, 10_000_00],

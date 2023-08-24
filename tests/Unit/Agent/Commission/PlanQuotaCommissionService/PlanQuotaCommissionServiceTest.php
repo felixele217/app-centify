@@ -8,23 +8,23 @@ use App\Services\Commission\PlanQuotaCommissionService;
 use Carbon\Carbon;
 
 it('returns the correct commission for a plan', function (TimeScopeEnum $timeScope, float $quotaAttainmentFactor) {
-    $plan = Plan::factory()
+    $plan = Plan::factory()->active()
         ->hasAgents(1, [
             'base_salary' => 50_000_00,
             'on_target_earning' => 170_000_00,
         ])
         ->create([
-            'target_amount_per_month' => 10_000_00,
+            'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
             'trigger' => TriggerEnum::DEMO_SET_BY->value,
         ]);
 
     $agent = $plan->agents->first();
-    
+
     Deal::factory()
         ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
-            'value' => 10_000_00 * $quotaAttainmentFactor * $timeScope->monthCount(),
+            'value' => $targetAmountPerMonth * $quotaAttainmentFactor * $timeScope->monthCount(),
         ]);
 
     $expectedCommission = (($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount())) * $quotaAttainmentFactor;
@@ -41,3 +41,33 @@ it('returns the correct commission for a plan', function (TimeScopeEnum $timeSco
     [TimeScopeEnum::ANNUALY, 2.5],
     [TimeScopeEnum::ANNUALY, 0.7],
 ]);
+
+it('returns normal quota commission even if there is a cliff that was not met', function (TimeScopeEnum $timeScope) {
+    $plan = Plan::factory()->active()
+        ->hasCliff([
+            'threshold_in_percent' => $cliffValue = 20,
+        ])
+        ->hasAgents(1, [
+            'base_salary' => 50_000_00,
+            'on_target_earning' => 170_000_00,
+        ])
+        ->create([
+            'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
+            'trigger' => TriggerEnum::DEMO_SET_BY->value,
+        ]);
+
+    $cliffPercentage = (($cliffValue - 1) / 100);
+
+    $agent = $plan->agents->first();
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, Carbon::now())
+        ->create([
+            'add_time' => Carbon::now(),
+            'value' => $targetAmountPerMonth * $timeScope->monthCount() * $cliffPercentage,
+        ]);
+
+    $expectedCommission = (($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount())) * $cliffPercentage;
+
+    expect((new PlanQuotaCommissionService())->calculate($agent, $plan, $timeScope))->toBe(intval($expectedCommission));
+})->with(TimeScopeEnum::cases());

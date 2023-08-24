@@ -7,23 +7,22 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\CommissionChangeService;
-use App\Services\Commission\CommissionFromQuotaService;
+use App\Services\Commission\TotalQuotaCommissionService;
 use Carbon\Carbon;
 
 it('total commission change is calculated correctly for commission from quota', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
 
-    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, $quotaAttainmentThisMonth = 1.3, TriggerEnum::DEMO_SET_BY);
+    [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, 1.3, TriggerEnum::DEMO_SET_BY);
 
     Deal::factory()
         ->withAgentDeal($agent->id, TriggerEnum::DEMO_SET_BY, DateHelper::dateInPreviousTimeScope($timeScope))
         ->create([
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
-            'value' => $plan->target_amount_per_month * $quotaAttainmentMonthInPreviousTimeScope = 0.7,
         ]);
 
-    $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisMonth / $timeScope->monthCount());
-    $commissionPreviousTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentMonthInPreviousTimeScope / $timeScope->monthCount());
+    $commissionThisTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
+    $commissionPreviousTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
 
     expect((new CommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
 })->with([

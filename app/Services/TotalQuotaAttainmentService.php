@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
+use App\Models\Plan;
 use Carbon\CarbonImmutable;
 
 class TotalQuotaAttainmentService
@@ -20,20 +21,10 @@ class TotalQuotaAttainmentService
         $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
     }
 
-    public function calculate(): ?float
+    public function calculate(): float
     {
-        $activePlans = $this->agent->load('plans')->plans()->active($this->dateInScope)->get();
-
-        if (! $activePlans->count()) {
-            return null;
-        }
-
-        $totalQuotaAttainment = 0;
-
-        foreach ($activePlans as $activePlan) {
-            $totalQuotaAttainment += (new PlanQuotaAttainmentService($this->agent, $activePlan, $this->timeScope, $this->dateInScope))->calculate();
-        }
-
-        return $totalQuotaAttainment;
+        return $this->agent->load('plans')->plans()->active($this->dateInScope)->get()
+            ->map(fn (Plan $activePlan) => (new PlanQuotaAttainmentService($this->agent, $activePlan, $this->timeScope, $this->dateInScope))->calculate())
+            ->sum();
     }
 }

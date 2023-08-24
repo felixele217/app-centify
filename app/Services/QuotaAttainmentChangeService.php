@@ -17,7 +17,7 @@ class QuotaAttainmentChangeService
 
         $quotaAttainmentPreviousTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope))->calculate();
 
-        if (is_null($quotaAttainmentPreviousTimeScope)) {
+        if ($quotaAttainmentPreviousTimeScope === floatval(0)) {
             return null;
         }
 

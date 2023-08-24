@@ -16,14 +16,14 @@ class CommissionChangeService
     {
         $quotaAttainmentLastTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate();
 
-        if (is_null($quotaAttainmentLastTimeScope)) {
+        if ($quotaAttainmentLastTimeScope === floatval(0)) {
             return null;
         }
 
-        $commissionLastTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentLastTimeScope);
+        $commissionLastTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
 
         $quotaAttainmentThisTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, CarbonImmutable::now()))->calculate();
-        $commissionThisTimeScope = (new CommissionFromQuotaService())->calculate($agent, $timeScope, $quotaAttainmentThisTimeScope);
+        $commissionThisTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }
