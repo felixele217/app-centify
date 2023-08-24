@@ -7,13 +7,23 @@ namespace App\Services\Commission;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Plan;
+use Carbon\CarbonImmutable;
 
 class TotalQuotaCommissionService
 {
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
+    private CarbonImmutable $dateInScope;
+
+    public function __construct(
+        private TimeScopeEnum $timeScope,
+        CarbonImmutable $dateInScope = null,
+    ) {
+        $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
+    }
+
+    public function calculate(Agent $agent): ?int
     {
         return $agent->plans()->active()->get()
-            ->map(fn (Plan $plan) => (new PlanQuotaCommissionService())->calculate($agent, $plan, $timeScope))
+            ->map(fn (Plan $plan) => (new PlanQuotaCommissionService($this->timeScope, $this->dateInScope))->calculate($agent, $plan))
             ->sum();
     }
 }

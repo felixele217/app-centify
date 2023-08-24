@@ -8,7 +8,6 @@ use App\Enum\TimeScopeEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Services\TotalQuotaAttainmentService;
-use Carbon\CarbonImmutable;
 
 class TotalCommissionChangeService
 {
@@ -20,10 +19,8 @@ class TotalCommissionChangeService
             return null;
         }
 
-        $commissionLastTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
-
-        $quotaAttainmentThisTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, CarbonImmutable::now()))->calculate();
-        $commissionThisTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
+        $commissionLastTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
+        $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }

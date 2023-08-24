@@ -34,10 +34,10 @@ class FreezePayoutsService
                 'agent_id' => $agent->id,
                 'sick_days' => count((new PaidLeaveDaysService())->paidLeaveDays($agent, $this->timeScope, AgentStatusEnum::SICK)),
                 'vacation_days' => count((new PaidLeaveDaysService())->paidLeaveDays($agent, $this->timeScope, AgentStatusEnum::VACATION)),
-                'quota_attainment_percentage' => $quotaAttainment = (new TotalQuotaAttainmentService($agent, $this->timeScope, $this->dateInScope))->calculate(),
+                'quota_attainment_percentage' => (new TotalQuotaAttainmentService($agent, $this->timeScope, $this->dateInScope))->calculate(),
                 'kicker_commission' => (new TotalKickerCommissionService())->calculate($agent, $this->timeScope) ?? 0,
                 'absence_commission' => (new PaidLeaveCommissionService())->calculate($agent, $this->timeScope),
-                'commission_from_quota' => (new TotalQuotaCommissionService())->calculate($agent, $this->timeScope),
+                'commission_from_quota' => (new TotalQuotaCommissionService($this->timeScope))->calculate($agent),
             ]);
         }
     }

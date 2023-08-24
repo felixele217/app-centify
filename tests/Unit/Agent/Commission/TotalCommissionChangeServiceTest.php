@@ -21,8 +21,8 @@ it('total commission change is calculated correctly for commission from quota', 
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
         ]);
 
-    $commissionThisTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
-    $commissionPreviousTimeScope = (new TotalQuotaCommissionService())->calculate($agent, $timeScope);
+    $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
+    $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
     expect((new TotalCommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
 })->with([

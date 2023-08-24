@@ -147,7 +147,7 @@ class Agent extends Authenticatable implements Auditable
 
         return Attribute::make(
             get: function () use ($timeScope) {
-                $quotaCommission = (new TotalQuotaCommissionService())->calculate($this, $timeScope);
+                $quotaCommission = (new TotalQuotaCommissionService($timeScope))->calculate($this);
 
                 $totalKickerCommission = (new TotalKickerCommissionService())->calculate($this, $timeScope);
 
