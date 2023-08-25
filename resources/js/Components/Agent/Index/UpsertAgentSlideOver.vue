@@ -7,6 +7,7 @@ import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
@@ -163,5 +164,13 @@ function submit() {
                 :message="form.errors.on_target_earning"
             />
         </div>
+
+        <p
+            class="text-sm text-gray-600"
+            v-if="form.on_target_earning && form.base_salary && form.on_target_earning > form.base_salary"
+        >
+            Hence, {{ form.name }} has a total variable pay of
+            {{ euroDisplay(form.on_target_earning - form.base_salary) }}
+        </p>
     </SlideOver>
 </template>
