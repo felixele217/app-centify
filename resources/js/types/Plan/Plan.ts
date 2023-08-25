@@ -24,7 +24,7 @@ export default interface Plan {
         }
     >
     creator: Admin
-    cliff?: Cliff
-    kicker?: Kicker
-    cap?: Cap
+    kicker?: Kicker | null
+    cliff?: Cliff | null
+    cap?: Cap | null
 }

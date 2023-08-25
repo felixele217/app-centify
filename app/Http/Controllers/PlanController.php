@@ -23,7 +23,12 @@ class PlanController extends Controller
     {
         return Inertia::render('Plan/Index', [
             'plans' => Plan::withCount('agents')
-                ->with('creator')
+                ->with([
+                    'creator',
+                    'kicker',
+                    'cliff',
+                    'cap',
+                ])
                 ->whereOrganizationId(Auth::user()->organization->id)->get(),
         ]);
     }
