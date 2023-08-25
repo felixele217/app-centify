@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\CustomFieldEnum;
 use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
@@ -8,6 +9,7 @@ use App\Integrations\Pipedrive\PipedriveDealDTO;
 use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Integrations\Pipedrive\PipedriveIntegrationService;
 use App\Models\Agent;
+use App\Models\CustomField;
 use App\Models\Deal;
 use App\Models\Integration;
 use App\Models\Plan;
@@ -16,10 +18,17 @@ use Tests\Feature\Integration\Pipedrive\PipedriveIntegrationService\Helper\Asser
 beforeEach(function () {
     $this->admin = signInAdmin();
 
-    Integration::factory()->create([
+    $integration = Integration::factory()->create([
         'organization_id' => $this->admin->organization->id,
         'name' => IntegrationTypeEnum::PIPEDRIVE->value,
     ]);
+
+    CustomField::create([
+        'name' => CustomFieldEnum::DEMO_SET_BY->value,
+        'integration_id' => $integration->id,
+        'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
+    ]);
+
 
     $this->pipedriveFacade = new PipedriveFacade($this->admin->organization);
 
@@ -51,7 +60,7 @@ it('stores the data properly', function () {
     }
 
     $agentDeal = $this->agent->deals()->whereIntegrationDealId($expectedDealDTO->integration_deal_id)->first();
-    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
+    expect($this->agent->deals->unique())->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
     expect($agentDeal->integration_deal_id)->toBe($expectedDealDTO->integration_deal_id);
     expect($agentDeal->title)->toBe($expectedDealDTO->title);
     expect(floatval($agentDeal->value))->toBe($expectedDealDTO->value);
@@ -84,7 +93,7 @@ it('does not create the same entry twice', function () {
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
     (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
 
-    expect($this->agent->deals)->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
+    expect($this->agent->deals->unique())->toHaveCount(AssertionHelper::dealsCountForTrigger($this->agent->email, $this->deals, TriggerEnum::DEAL_WON));
 });
 
 it('does not create deal if status is not won', function () {
@@ -99,4 +108,31 @@ it('does not create deal if status is not won', function () {
     }
 
     expect(Deal::count())->toBe($allDealsWhereStatusIsWonCount);
+});
+
+it('creates both AgentDeals if deal was not in our DB before if the sdr and ae is the same agent', function () {
+    (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
+
+    $agentDeal = $this->agent->fresh()->deals()->whereIntegrationDealId($this->deals[3]['id'])->first();
+
+    expect($agentDeal->SDR->id)->toBe($this->agent->id);
+    expect($agentDeal->AE->id)->toBe($this->agent->id);
+});
+
+it('creates both AgentDeals if deal was not in our DB before if the sdr and ae are different agents', function () {
+    $sdrAgent = Agent::factory()
+        ->ofOrganization($this->admin->organization_id)
+        ->has(Plan::factory()->active()->count(1)->state([
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
+        ]))
+        ->create([
+            'email' => PipedriveHelper::demoSetByEmail($this->deals[6], env('PIPEDRIVE_DEMO_SET_BY')),
+        ]);
+
+    (new PipedriveIntegrationService($this->admin->organization))->syncAgentDeals();
+
+    $agentDeal = $this->agent->fresh()->deals()->whereIntegrationDealId($this->deals[6]['id'])->first();
+
+    expect($agentDeal->SDR->id)->toBe($sdrAgent->id);
+    expect($agentDeal->AE->id)->toBe($this->agent->id);
 });

@@ -41,4 +41,9 @@ class PipedriveHelper
     {
         return PipedriveHelper::ownerEmail($integrationDealArray) === $email && $integrationDealArray['status'] === DealStatusEnum::WON->value;
     }
+
+    public static function scheduledDemoForDeal(string $email, array $integrationDealArray, ?string $demoSetByApiKey): bool
+    {
+        return $email === PipedriveHelper::demoSetByEmail($integrationDealArray, $demoSetByApiKey);
+    }
 }

@@ -23,7 +23,11 @@ class PipedriveDealDTO
 
     public DealStatusEnum $status;
 
-    public function __construct(array $integrationDealArray)
+    public bool $scheduledDemo;
+
+    public bool $wonDeal;
+
+    public function __construct(array $integrationDealArray, bool $scheduledDemo, bool $wonDeal)
     {
         $this->integration_deal_id = $integrationDealArray['id'];
         $this->title = $integrationDealArray['title'];
@@ -31,6 +35,9 @@ class PipedriveDealDTO
         $this->add_time = DateHelper::parsePipedriveTime($integrationDealArray['add_time']);
         $this->won_time = $integrationDealArray['won_time'] ? DateHelper::parsePipedriveTime($integrationDealArray['won_time']) : null;
         $this->status = DealStatusEnum::tryFrom($integrationDealArray['status']);
+
+        $this->scheduledDemo = $scheduledDemo;
+        $this->wonDeal = $wonDeal;
     }
 
     public function integrationIdentifiers(): array

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Integrations\Pipedrive;
 
 use App\Enum\CustomFieldEnum;
-use App\Enum\DealStatusEnum;
 use App\Enum\IntegrationTypeEnum;
 use App\Enum\TriggerEnum;
+use App\Exceptions\InvalidApiKeyException;
 use App\Exceptions\SyncWithoutConnectionException;
 use App\Facades\PipedriveFacade;
 use App\Helper\DateHelper;
@@ -46,6 +46,10 @@ class PipedriveIntegrationService implements IntegrationServiceContract
             ->customFields()
             ->whereName(CustomFieldEnum::DEMO_SET_BY->value)
             ->first()?->api_key;
+
+        if (! $this->demoSetByApiKey) {
+            throw new InvalidApiKeyException();
+        }
     }
 
     public function agentDeals(array $deals = null): array
@@ -64,14 +68,18 @@ class PipedriveIntegrationService implements IntegrationServiceContract
     {
         return collect($integrationDeals)
             ->filter(fn (array $integrationDealArray) => $this->shouldBeSyncedForThisAgent($agent, $integrationDealArray))
-            ->map(fn (array $integrationDealArray) => new PipedriveDealDTO($integrationDealArray));
+            ->map(fn (array $integrationDealArray) => new PipedriveDealDTO(
+                $integrationDealArray,
+                PipedriveHelper::scheduledDemoForDeal($agent->email, $integrationDealArray, $this->demoSetByApiKey),
+                PipedriveHelper::wonDeal($agent->email, $integrationDealArray)
+            ));
     }
 
     private function shouldBeSyncedForThisAgent(Agent $agent, array $integrationDealArray): bool
     {
         foreach ($agent->plans()->active()->get() as $plan) {
             if ($plan->trigger->value === TriggerEnum::DEMO_SCHEDULED->value
-            && $agent->email === PipedriveHelper::demoSetByEmail($integrationDealArray, $this->demoSetByApiKey)) {
+            && PipedriveHelper::scheduledDemoForDeal($agent->email, $integrationDealArray, $this->demoSetByApiKey)) {
                 return $this->addedAfterPlanStartDate($plan, $integrationDealArray);
             }
 
@@ -95,16 +103,21 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                     $dealDTO->toArray(),
                 );
 
-                AgentDeal::firstOrCreate(
-                    [
+                if ($dealDTO->scheduledDemo) {
+                    AgentDeal::firstOrCreate([
                         'agent_id' => Agent::whereEmail($email)->first()?->id,
                         'deal_id' => $deal->id,
-                    ], [
-                        'triggered_by' => $dealDTO->status === DealStatusEnum::WON
-                        ? TriggerEnum::DEAL_WON->value
-                        : TriggerEnum::DEMO_SCHEDULED->value,
-                    ]
-                );
+                        'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value,
+                    ]);
+                }
+
+                if ($dealDTO->wonDeal) {
+                    AgentDeal::firstOrCreate([
+                        'agent_id' => Agent::whereEmail($email)->first()?->id,
+                        'deal_id' => $deal->id,
+                        'triggered_by' => TriggerEnum::DEAL_WON->value,
+                    ]);
+                }
             }
         }
 
