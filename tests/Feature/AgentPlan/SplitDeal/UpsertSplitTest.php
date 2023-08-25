@@ -13,7 +13,7 @@ beforeEach(function () {
 });
 
 it('cannot store a split with a percentage_share of 0', function () {
-    $this->post(route('deals.splits.store', $this->deal), [
+    $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [
             [
                 'id' => Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
@@ -26,7 +26,7 @@ it('cannot store a split with a percentage_share of 0', function () {
 });
 
 it('returns correct validation error messages', function () {
-    $this->post(route('deals.splits.store', $this->deal), [
+    $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [
             [
                 'id' => null,

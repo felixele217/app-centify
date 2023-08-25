@@ -65,7 +65,7 @@ function loadExistingAgentsFromSplits() {
 }
 
 function submit() {
-    form.post(route('deals.splits.store', props.deal.id), {
+    form.put(route('deals.splits.upsert', props.deal.id), {
         onSuccess: () => {
             closeSlideOver()
 

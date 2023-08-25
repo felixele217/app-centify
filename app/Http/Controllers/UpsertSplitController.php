@@ -9,9 +9,9 @@ use App\Models\Deal;
 use App\Repositories\SplitRepository;
 use Illuminate\Http\RedirectResponse;
 
-class SplitController extends Controller
+class UpsertSplitController extends Controller
 {
-    public function store(UpsertSplitRequest $request, Deal $deal): RedirectResponse
+    public function __invoke(UpsertSplitRequest $request, Deal $deal): RedirectResponse
     {
         SplitRepository::upsert($deal, $request);
 

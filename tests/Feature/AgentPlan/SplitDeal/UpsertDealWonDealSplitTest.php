@@ -17,7 +17,7 @@ beforeEach(function () {
 });
 
 it('can store a split for a deal that is won', function () {
-    $this->post(route('deals.splits.store', $this->deal), [
+    $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [
             [
                 'id' => $agentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
@@ -43,7 +43,7 @@ it('updates the splits correctly if there already were some', function () {
         'deal_percentage' => 10,
     ]);
 
-    $this->post(route('deals.splits.store', $this->deal), [
+    $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [
             [
                 'deal_percentage' => $newSharedPercentage = 50,
@@ -63,7 +63,7 @@ it('updates the splits correctly if there already were some', function () {
 it('removes the split if it is not present in the request', function () {
     AgentDeal::factory()->create(['deal_id' => $this->deal->id, 'triggered_by' => TriggerEnum::DEAL_WON->value]);
 
-    $this->post(route('deals.splits.store', $this->deal), [
+    $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [],
     ]);
 
