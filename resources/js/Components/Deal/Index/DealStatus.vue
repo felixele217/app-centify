@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Deal from '@/types/Deal'
 import formatDate from '@/utils/Date/formatDate'
-import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, HandThumbDownIcon, HandThumbUpIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import AcceptedOrRejectedBadge from './AcceptedOrRejectedBadge.vue'
 
@@ -19,20 +19,20 @@ const agentThatTriggeredDeal = computed(() => props.deal.a_e ?? props.deal.s_d_r
 
 <template>
     <div
-        class="flex justify-center gap-2 text-gray-500"
+        class="flex justify-center text-gray-500"
         v-if="!agentThatTriggeredDeal!.pivot.accepted_at && !props.deal.active_rejection?.created_at"
     >
         <div>
-            <HandThumbUpIcon
+            <CheckIcon
                 @click="$emit('accepted', deal.id)"
-                class="h-6 w-6 cursor-pointer hover:text-green-500"
+                class="h-8 w-8 cursor-pointer rounded-full p-1 hover:bg-green-100 hover:text-green-700"
             />
         </div>
 
         <div>
-            <HandThumbDownIcon
+            <XMarkIcon
                 @click="$emit('rejected', deal.id)"
-                class="h-6 w-6 cursor-pointer hover:text-red-600"
+                class="h-8 w-8 cursor-pointer rounded-full p-1 hover:bg-red-100 hover:text-red-800"
             />
         </div>
     </div>
