@@ -1,14 +1,13 @@
 <?php
 
+use App\Enum\CustomFieldEnum;
+use App\Enum\IntegrationTypeEnum;
+use App\Integrations\Pipedrive\Mocking\PipedriveClientDummy;
+use App\Integrations\Pipedrive\PipedriveHelper;
 use App\Models\Agent;
 use App\Models\CustomField;
 use App\Models\Integration;
-use App\Models\Organization;
-use App\Enum\CustomFieldEnum;
-use App\Enum\IntegrationTypeEnum;
 use Illuminate\Support\Facades\Artisan;
-use App\Integrations\Pipedrive\PipedriveHelper;
-use App\Integrations\Pipedrive\Mocking\PipedriveClientDummy;
 
 it('sync correctly using the command', function () {
 

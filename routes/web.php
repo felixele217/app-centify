@@ -8,7 +8,6 @@ use App\Http\Controllers\DealRejectionController;
 use App\Http\Controllers\DeployedVersionController;
 use App\Http\Controllers\PaidLeaveController;
 use App\Http\Controllers\PayoutsExportController;
-use App\Http\Controllers\PlanAgentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SplitController;
@@ -36,7 +35,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{plan}', 'destroy')->name('destroy');
     });
 
-
     Route::prefix('deals')->name('deals.')->controller(DealController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::put('/{deal}', 'update')->name('update');
@@ -61,10 +59,10 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{paidLeave}', 'destroy')->name('destroy');
         });
 
-    Route::prefix('{agent}/plans')->name('plans.')->controller(AgentPlanController::class)->group(function () {
-        Route::post('{plan}', 'store')->name('store');
-        Route::delete('{plan}', 'destroy')->name('destroy');
-    });
+        Route::prefix('{agent}/plans')->name('plans.')->controller(AgentPlanController::class)->group(function () {
+            Route::post('{plan}', 'store')->name('store');
+            Route::delete('{plan}', 'destroy')->name('destroy');
+        });
     });
 
 });

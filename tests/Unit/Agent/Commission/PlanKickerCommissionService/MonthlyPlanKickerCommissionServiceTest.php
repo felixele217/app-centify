@@ -51,5 +51,5 @@ it('does not grant the kicker if the target is not reached within the current mo
             'creator_id' => $admin->id,
         ]);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(),$plan, TimeScopeEnum::MONTHLY, 5))->toBe(0);
+    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::MONTHLY, 5))->toBe(0);
 });

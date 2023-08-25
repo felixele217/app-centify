@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Tests\Browser\PagesTestCases;
 use Database\Seeders\TestDataSeeder;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class RenderStagingPagesTest extends DuskTestCase
 {

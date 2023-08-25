@@ -1,14 +1,14 @@
 <?php
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Deal;
-use App\Models\Plan;
+use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
-use App\Enum\TriggerEnum;
-use Inertia\Testing\AssertableInertia;
+use App\Models\Deal;
+use App\Models\Plan;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
+use Tests\TestCase;
 
 uses(TestCase::class)->group('architecture')->in('Architecture');
 uses(TestCase::class)->group('integration')->in('Integration');

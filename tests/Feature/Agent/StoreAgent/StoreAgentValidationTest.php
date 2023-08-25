@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Requests\StoreAgentRequest;
-use App\Models\Agent;
 
 it('has required fields', function () {
     signInAdmin();
@@ -55,7 +54,7 @@ it('cannot store an agent with a larger on_target_earning than base_salary', fun
 ]);
 
 it('does not fail when using null values in the paid leave object', function () {
-   signInAgent();
+    signInAgent();
 
     StoreAgentRequest::factory()->fake();
 

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Integrations\Pipedrive;
 
-use App\Models\Agent;
 use App\Enum\DealStatusEnum;
-use Illuminate\Http\RedirectResponse;
 use App\Exceptions\InvalidApiKeyException;
+use Illuminate\Http\RedirectResponse;
 
 class PipedriveHelper
 {
@@ -38,7 +37,7 @@ class PipedriveHelper
         return strtok($deal['org_id']['cc_email'], '@');
     }
 
-    public static function wonDeal(string $email, array $integrationDealArray ): bool
+    public static function wonDeal(string $email, array $integrationDealArray): bool
     {
         return PipedriveHelper::ownerEmail($integrationDealArray) === $email && $integrationDealArray['status'] === DealStatusEnum::WON->value;
     }

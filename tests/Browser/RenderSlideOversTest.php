@@ -47,7 +47,7 @@ class RenderSlideOversTest extends DuskTestCase
 
     private function setupDatabase(): Admin
     {
-        $admin =  Admin::factory()->create();
+        $admin = Admin::factory()->create();
 
         Agent::factory()->ofOrganization($admin->organization_id)->create();
 

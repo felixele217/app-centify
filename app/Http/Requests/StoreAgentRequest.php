@@ -31,7 +31,7 @@ class StoreAgentRequest extends FormRequest
             'on_target_earning' => [
                 'required',
                 'integer',
-                "gt:base_salary"
+                'gt:base_salary',
             ],
         ];
     }
@@ -39,7 +39,7 @@ class StoreAgentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'on_target_earning.gt' => 'The :attribute must be greater than the base salary.'
+            'on_target_earning.gt' => 'The :attribute must be greater than the base salary.',
         ];
     }
 }

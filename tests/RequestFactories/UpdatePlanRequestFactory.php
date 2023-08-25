@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\RequestFactories;
 
-use App\Enum\TriggerEnum;
 use App\Enum\PlanCycleEnum;
 use App\Enum\TargetVariableEnum;
+use App\Enum\TriggerEnum;
 use Worksome\RequestFactories\RequestFactory;
 
 class UpdatePlanRequestFactory extends RequestFactory

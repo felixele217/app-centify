@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Agent;
 
 class AgentFactory extends Factory
 {

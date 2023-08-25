@@ -13,7 +13,7 @@ return new class extends Migration
             if (DB::connection()->getDriverName() !== 'sqlite') {
                 $table->dropForeign('deals_deal_won_by_agent_id_foreign');
             }
-            
+
             $table->dropColumn('deal_won_by_agent_id');
         });
     }
