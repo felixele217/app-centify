@@ -32,7 +32,15 @@ class UpdateAgentRequest extends FormRequest
             'on_target_earning' => [
                 'required',
                 'integer',
+                'gt:base_salary',
             ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'on_target_earning.gt' => 'The :attribute must be greater than the base salary.',
         ];
     }
 }

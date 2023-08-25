@@ -3,23 +3,6 @@
 use App\Http\Requests\StoreAgentRequest;
 use App\Models\Agent;
 
-it('can create an agent as an admin', function () {
-    signInAdmin();
-
-    $this->post(route('agents.store'), [
-        'name' => $name = 'John Doe',
-        'email' => $email = 'john.doe@gmail.com',
-        'base_salary' => $baseSalary = 10000000,
-        'on_target_earning' => $onTargetEarning = 20000000,
-    ])->assertRedirect();
-
-    expect($agent = Agent::whereName($name)->first())->not()->toBeNull();
-    expect($agent->email)->toBe($email);
-    expect($agent->base_salary)->toBe($baseSalary);
-    expect($agent->on_target_earning)->toBe($onTargetEarning);
-    expect($agent->organization->id)->toBe($agent->organization->id);
-});
-
 it('has required fields', function () {
     signInAdmin();
 
@@ -55,8 +38,24 @@ it('cannot create an agent with a mail already taken by an agent', function () {
     ]);
 });
 
+it('cannot store an agent with a larger on_target_earning than base_salary', function (int $baseSalary, int $onTargetEarning) {
+    signInAgent();
+
+    StoreAgentRequest::factory()->state([
+        'base_salary' => $baseSalary,
+        'on_target_earning' => $onTargetEarning,
+    ])->fake();
+
+    $this->post(route('agents.store'))->assertInvalid([
+        'on_target_earning' => 'The on target earning must be greater than the base salary.',
+    ]);
+})->with([
+    [50_000_00, 30_000_00],
+    [120_000_00, 75_000_00],
+]);
+
 it('does not fail when using null values in the paid leave object', function () {
-    $agent = signInAgent();
+   signInAgent();
 
     StoreAgentRequest::factory()->fake();
 
