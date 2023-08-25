@@ -1,4 +1,4 @@
-import initials from '@/utils/initials'
+import initials from '@/utils/StringManipulation/initials'
 import { expect, test } from 'vitest'
 
 test('gets initials correctly', () => {

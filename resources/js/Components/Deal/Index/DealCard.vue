@@ -16,6 +16,7 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
+import insertNewLines from '@/utils/StringManipulation/insertNewLines'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -157,7 +158,13 @@ const agentThatTriggeredDeal = computed(() => {
             class="flex cursor-pointer items-center gap-1.5 break-words hover:text-black"
             @click="dealIdOfNoteBeingEdited = props.deal.id"
         >
-            <p class="line-clamp-2">{{ props.deal.note ?? 'Add Note' }}</p>
+            <Tooltip
+                :text="props.deal.note ? insertNewLines(props.deal.note) : ''"
+                placement="top"
+                class="max-w-lg whitespace-pre-wrap"
+            >
+                <p class="line-clamp-2">{{ props.deal.note ?? 'Add Note' }}</p>
+            </Tooltip>
 
             <div>
                 <PencilSquareIcon class="h-4 w-4" />

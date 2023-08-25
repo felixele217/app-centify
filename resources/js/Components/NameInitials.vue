@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import initials from '@/utils/initials'
+import initials from '@/utils/StringManipulation/initials'
 
 const props = defineProps<{
     name: string
