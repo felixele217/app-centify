@@ -14,8 +14,8 @@ class UpdateAgentRequestFactory extends RequestFactory
         return [
             'name' => fake()->name(),
             'email' => fake()->email(),
-            'base_salary' => fake()->randomElement([5000000, 10000000]),
-            'on_target_earning' => fake()->randomElement([10000000, 20000000]),
+            'base_salary' => fake()->randomElement([50_000_00, 100_000_00]),
+            'on_target_earning' => fake()->randomElement([120_000_00, 200_000_00]),
             'organization_id' => Auth::user()->organization->id,
         ];
     }
