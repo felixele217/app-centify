@@ -74,11 +74,8 @@ it('does not use deals that were not won by this agent', function (TimeScopeEnum
 
     $deal = Deal::factory()
         ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
-        ->create([
-            'add_time' => Carbon::now(),
-            'won_time' => Carbon::now(),
-            'status' => DealStatusEnum::WON->value,
-        ]);
+       ->won(Carbon::now())
+        ->create();
 
     AgentDeal::factory()->create([
         'deal_id' => $deal->id,
