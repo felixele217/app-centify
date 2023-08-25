@@ -17,6 +17,7 @@ import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
 import insertNewLines from '@/utils/StringManipulation/insertNewLines'
+import { TriggerEnum } from '@/types/Enum/TriggerEnum'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -108,6 +109,26 @@ const handleBlur = () =>
 const agentThatTriggeredDeal = computed(() => {
     return props.deal.status === 'won' ? props.deal.a_e! : props.deal.s_d_r!
 })
+
+const shareholdersCount = computed(
+    () =>
+        Object.keys(props.deal.demo_scheduled_shareholders!).length +
+        Object.keys(props.deal.deal_won_shareholders!).length
+)
+
+function dealPercentages(trigger: TriggerEnum) {
+    const agentsWithTrigger = props.deal.agents!.filter((agent) => agent.pivot.triggered_by === trigger)
+
+    if (agentsWithTrigger.length < 2) {
+        return ''
+    }
+
+    return (
+        (trigger === 'Demo scheduled' ? 'Splits for Demo scheduled\n' : 'Splits for Deal won\n') +
+        agentsWithTrigger.map((agent) => agent.name + ':' + agent.pivot.deal_percentage * 100 + '%').join('\n') +
+        '\n'
+    )
+}
 </script>
 
 <template>
@@ -116,12 +137,12 @@ const agentThatTriggeredDeal = computed(() => {
             <p class="text-gray-900">{{ agentThatTriggeredDeal.name }}</p>
 
             <Tooltip
-                v-if="props.deal.agents!.length > 1"
-                :text="props.deal.agents!.map(agent => agent.name + ': ' + agent.pivot.deal_percentage * 100 + '%').join('\n')"
+                v-if="shareholdersCount"
+                :text="`${dealPercentages('Demo scheduled')}${dealPercentages('Deal won')}`"
                 placement="bottom"
                 class="whitespace-pre-wrap"
             >
-                <p class="mt-1 text-gray-500">+{{ props.deal.agents!.length - 1 }} more due to split</p>
+                <p class="mt-1 text-gray-500">+{{ shareholdersCount }} more due to split</p>
             </Tooltip>
             <p
                 v-else
