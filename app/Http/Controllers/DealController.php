@@ -18,7 +18,7 @@ class DealController extends Controller
     public function index(): Response
     {
         return Inertia::render('Deal/Index', [
-            'deals' => DealRepository::get(DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
+            'deals' => DealRepository::dealsForOrganization(Auth::user()->organization, DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
                 ->append([
                     'active_rejection',
                     's_d_r',

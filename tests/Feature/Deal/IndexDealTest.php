@@ -63,7 +63,7 @@ it('passes the correct props', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
-                ->has('deals', DealRepository::get()->count())
+                ->has('deals', DealRepository::dealsForOrganization($this->admin->organization)->count())
                 ->has('deals.0.agents')
                 ->has('deals.0.s_d_r')
                 ->has('deals.0.a_e')
@@ -74,39 +74,35 @@ it('passes the correct props', function () {
         );
 });
 
-it('passes the correct props for all deals if no scope is specified', function () {
+it('passes the correct deals if no scope is specified', function () {
     $this->get(route('deals.index'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
-                ->has('deals', DealRepository::get()->count())
-                ->has('deals.1.agents')
+                ->has('deals', DealRepository::dealsForOrganization($this->admin->organization)->count())
         );
 });
 
-it('passes the correct props for scope=open', function () {
+it('passes the correct deals for scope=open', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::OPEN->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::get(DealScopeEnum::OPEN)->count())
-            ->has('deals.1.agents')
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::OPEN)->count())
     );
 });
 
-it('passes the correct props for scope=accepted', function () {
+it('passes the correct deals for scope=accepted', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::ACCEPTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::get(DealScopeEnum::ACCEPTED)->count())
-            ->has('deals.1.agents')
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::ACCEPTED)->count())
     );
 });
 
-it('passes the correct props for scope=rejected', function () {
+it('passes the correct deals for scope=rejected', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::REJECTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::get(DealScopeEnum::REJECTED)->count())
-            ->has('deals.1.agents')
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::REJECTED)->count())
     );
 });

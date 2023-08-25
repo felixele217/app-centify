@@ -11,32 +11,31 @@ use App\Helper\DateHelper;
 use App\Http\Requests\UpdateDealRequest;
 use App\Models\Agent;
 use App\Models\Deal;
+use App\Models\Organization;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 
 class DealRepository
 {
-    public static function get(DealScopeEnum $scope = null): Collection
+    public static function dealsForOrganization(Organization $organization, DealScopeEnum $scope = null): Collection
     {
-        $agentDealsOfOrganization = Deal::with('agents')->whereHas('agents.organization', function (Builder $query) {
-            $query->where('id', Auth::user()->organization_id);
-        });
+        $agentDealsOfOrganization = Deal::with('agents')->whereHas('agents.organization',
+            fn (Builder $query) => $query->where('id', $organization->id));
 
         return match ($scope) {
             null => $agentDealsOfOrganization->get(),
             DealScopeEnum::OPEN => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
-                $query->whereNull('accepted_at');
+                $query->whereNull('agent_deal.accepted_at');
             })->whereDoesntHave('rejections', function (Builder $query) {
                 $query->active();
             })->get(),
             DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
-                $query->whereNotNull('accepted_at');
+                $query->whereNotNull('agent_deal.accepted_at');
             })->doesntHave('rejections')->get(),
             DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
-                $query->whereNull('accepted_at');
+                $query->whereNull('agent_deal.accepted_at');
             })->whereHas('rejections', function (Builder $query) {
                 $query->active();
             })->get(),

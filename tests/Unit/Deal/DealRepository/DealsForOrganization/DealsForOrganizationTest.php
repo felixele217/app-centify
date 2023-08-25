@@ -53,17 +53,17 @@ beforeEach(function () {
 });
 
 it('no scope returns all deals', function () {
-    expect(DealRepository::get())->toHaveCount($this->openDealCount + $this->acceptedDealCount + $this->activeRejectedDealCount + $this->inactiveRejectedDealCount);
+    expect(DealRepository::dealsForOrganization($this->admin->organization))->toHaveCount($this->openDealCount + $this->acceptedDealCount + $this->activeRejectedDealCount + $this->inactiveRejectedDealCount);
 });
 
 it('open scope returns non-accepted deals and deals whose rejection is not active', function () {
-    expect(DealRepository::get(DealScopeEnum::OPEN))->toHaveCount($this->openDealCount + $this->inactiveRejectedDealCount);
+    expect(DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::OPEN))->toHaveCount($this->openDealCount + $this->inactiveRejectedDealCount);
 });
 
 it('accepted scope returns accepted deals', function () {
-    expect(DealRepository::get(DealScopeEnum::ACCEPTED))->toHaveCount($this->acceptedDealCount);
+    expect(DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::ACCEPTED))->toHaveCount($this->acceptedDealCount);
 });
 
 it('rejected scope returns deals with an active rejection', function () {
-    expect(DealRepository::get(DealScopeEnum::REJECTED))->toHaveCount($this->activeRejectedDealCount);
+    expect(DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::REJECTED))->toHaveCount($this->activeRejectedDealCount);
 });
