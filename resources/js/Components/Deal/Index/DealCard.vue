@@ -148,8 +148,22 @@ const agentThatTriggeredDeal = computed(() => {
         <p>{{ euroDisplay(props.deal.value) }}</p>
     </td>
 
-    <td class="col-span-2 px-3 py-4 text-gray-500">
-        {{ attributionPeriod(props.deal.won_time ?? props.deal.add_time) }}
+    <td class="col-span-2 mr-10 px-3 py-4 text-gray-500">
+        <div class="flex justify-between">
+            <p>SAO:</p>
+            <p>
+                {{ attributionPeriod(props.deal.add_time) }}
+            </p>
+        </div>
+        <div
+            class="flex justify-between"
+            v-if="props.deal.won_time"
+        >
+            <p>won:</p>
+            <p>
+                {{ attributionPeriod(props.deal.won_time) }}
+            </p>
+        </div>
     </td>
 
     <td class="col-span-4 px-3 py-4 text-gray-500">
