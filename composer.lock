@@ -7717,16 +7717,16 @@
         },
         {
             "name": "mudandstars/sync-enum-types",
-            "version": "v1.1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mudandstars/sync-enum-types.git",
-                "reference": "41f01a1680ca26b5675378d3490f9c8ecf27a75e"
+                "reference": "9c0f12841ffe6095b9c40ea48db81696ead939f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mudandstars/sync-enum-types/zipball/41f01a1680ca26b5675378d3490f9c8ecf27a75e",
-                "reference": "41f01a1680ca26b5675378d3490f9c8ecf27a75e",
+                "url": "https://api.github.com/repos/mudandstars/sync-enum-types/zipball/9c0f12841ffe6095b9c40ea48db81696ead939f7",
+                "reference": "9c0f12841ffe6095b9c40ea48db81696ead939f7",
                 "shasum": ""
             },
             "require": {
@@ -7777,9 +7777,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mudandstars/sync-enum-types/issues",
-                "source": "https://github.com/mudandstars/sync-enum-types/tree/v1.1.1"
+                "source": "https://github.com/mudandstars/sync-enum-types/tree/v1.2"
             },
-            "time": "2023-08-07T08:47:35+00:00"
+            "time": "2023-08-27T09:48:52+00:00"
         },
         {
             "name": "myclabs/deep-copy",
