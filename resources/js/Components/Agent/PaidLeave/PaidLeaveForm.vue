@@ -17,6 +17,8 @@ import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import PaidLeaveCard from './PaidLeaveCard.vue'
+import { computed } from 'vue'
+import { ContinuationOfPayTimeScopeEnumCases } from '@/EnumCases/ContinuationOfPayTimeScopeEnum'
 
 const props = defineProps<{
     form: InertiaForm<{
@@ -34,23 +36,20 @@ defineEmits<{
     'deleted-paid-leave': []
 }>()
 
-const continuationOfPayTimeScopeOptions = usePage().props
-    .continuation_of_pay_time_scope_options as Array<ContinuationOfPayTimeScopeEnum>
-
-const agent = (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0]
+const agent = computed(() => (usePage().props.agents as Array<Agent>).filter((agent) => agent.id === props.agentId)[0])
 
 function agentPaidLeaveRanges() {
-    if (!agent) {
+    if (!agent.value) {
         return undefined
     }
 
     return [
         ...markedRangesFromRangeObjects(
-            agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'sick'),
+            agent.value.paid_leaves.filter((paid_leave) => paid_leave.reason === 'sick'),
             'purple'
         ),
         ...markedRangesFromRangeObjects(
-            agent!.paid_leaves.filter((paid_leave) => paid_leave.reason === 'on vacation'),
+            agent.value.paid_leaves.filter((paid_leave) => paid_leave.reason === 'on vacation'),
             'yellow'
         ),
     ]
@@ -136,7 +135,7 @@ function agentPaidLeaveRanges() {
             <SelectWithDescription
                 :options="
                     enumOptionsToSelectOptionWithDescription(
-                        continuationOfPayTimeScopeOptions,
+                        ContinuationOfPayTimeScopeEnumCases,
                         continuationOfPayTimeScopeToDescription
                     )
                 "

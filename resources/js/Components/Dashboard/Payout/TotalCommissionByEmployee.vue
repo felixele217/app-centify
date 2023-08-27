@@ -135,10 +135,13 @@ function quotaDisplay(quotaAttainment: number) {
                                         }}</span>
                                         days sick
 
-                                        <PencilSquareIcon
+                                        <div
                                             class="ml-1 h-3 w-3 cursor-pointer hover:text-black"
                                             @click="$emit('open-paid-leave-slide-over', agent.id, 'sick')"
-                                        />
+                                            dusk="manage-paid-leaves-slide-over-button"
+                                        >
+                                            <PencilSquareIcon />
+                                        </div>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <span class="font-semibold text-gray-600">{{
@@ -146,10 +149,12 @@ function quotaDisplay(quotaAttainment: number) {
                                         }}</span>
                                         days on vacation
 
-                                        <PencilSquareIcon
+                                        <div
                                             class="ml-1 h-3 w-3 cursor-pointer hover:text-black"
                                             @click="$emit('open-paid-leave-slide-over', agent.id, 'on vacation')"
-                                        />
+                                        >
+                                            <PencilSquareIcon />
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

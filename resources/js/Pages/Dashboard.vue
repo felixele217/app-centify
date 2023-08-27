@@ -44,6 +44,7 @@ function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) 
         />
 
         <PaidLeaveSlideOver
+            dusk="manage-paid-leaves-slide-over"
             :is-open="!!agentIdBeingManaged"
             :agentId="agentIdBeingManaged"
             :reason="paidLeaveReason"
