@@ -5,14 +5,14 @@ import Integration from '@/types/Integration'
 import PaginatedObject from '@/types/PaginatedObject'
 
 const props = defineProps<{
-    deals: PaginatedObject<Deal>
+    paginatedDealsObject: PaginatedObject<Deal>
     integrations: Array<Integration>
 }>()
 </script>
 
 <template>
     <Table
-        :deals="props.deals"
+        :deals="props.paginatedDealsObject"
         :integrations="props.integrations"
     />
 </template>

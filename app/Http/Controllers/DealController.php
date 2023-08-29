@@ -17,11 +17,11 @@ class DealController extends Controller
 {
     public function index(): Response
     {
-        $deals = DealRepository::dealsForOrganization(Auth::user()->organization, DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
+        $paginatedDealsObject = DealRepository::dealsForOrganization(Auth::user()->organization, DealScopeEnum::tryFrom(request()->query('scope') ?? ''))
             ->with('agents')
             ->paginate(20);
 
-        $deals->getCollection()->each->append([
+        $paginatedDealsObject->getCollection()->each->append([
             'active_rejection',
             's_d_r',
             'a_e',
@@ -30,7 +30,7 @@ class DealController extends Controller
         ]);
 
         return Inertia::render('Deal/Index', [
-            'deals' => $deals,
+            'paginatedDealsObject' => $paginatedDealsObject,
             'integrations' => Auth::user()->organization->integrations->load('customFields'),
             'agents' => Auth::user()->organization->agents->pluck('id', 'name'),
         ]);

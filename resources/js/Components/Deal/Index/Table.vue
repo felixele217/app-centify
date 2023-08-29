@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Navigation from '@/Components/Deal/Index/Navigation.vue'
 import SyncOrConnectIntegration from '@/Components/Integrations/SyncOrConnectIntegration.vue'
+import Pagination from '@/Components/Navigation/Pagination.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
@@ -10,15 +11,14 @@ import PaginatedObject from '@/types/PaginatedObject'
 import queryParamValue from '@/utils/queryParamValue'
 import { computed } from 'vue'
 import DealCard from './DealCard.vue'
-import Pagination from '@/Components/Navigation/Pagination.vue'
 
 const props = defineProps<{
-    deals: PaginatedObject<Deal>
+    paginatedDealsObject: PaginatedObject<Deal>
     integrations: Array<Integration>
 }>()
 
 const noDealsText = computed(() => {
-    if (props.deals.data.length > 0) {
+    if (props.paginatedDealsObject.data.length > 0) {
         return ''
     }
 
@@ -111,7 +111,7 @@ const pipedriveIntegration = computed(() => {
             </template>
             <template #body>
                 <tr
-                    v-for="deal in props.deals.data"
+                    v-for="deal in props.paginatedDealsObject.data"
                     class="grid grid-cols-12 items-center text-sm"
                 >
                     <DealCard
@@ -120,7 +120,7 @@ const pipedriveIntegration = computed(() => {
                     />
                 </tr>
 
-                <Pagination :paginated-object="props.deals" />
+                <Pagination :paginated-object="props.paginatedDealsObject" />
             </template>
         </TableWrapper>
     </div>

@@ -67,13 +67,13 @@ it('passes the correct props', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
-                ->has('deals', 20)
-                ->has('deals.0.agents')
-                ->has('deals.0.s_d_r')
-                ->has('deals.0.a_e')
-                ->has('deals.0.demo_scheduled_shareholders')
-                ->has('deals.0.deal_won_shareholders')
-                ->has('deals.0.active_rejection')
+                ->has('paginatedDealsObject.data', 20)
+                ->has('paginatedDealsObject.data.0.agents')
+                ->has('paginatedDealsObject.data.0.s_d_r')
+                ->has('paginatedDealsObject.data.0.a_e')
+                ->has('paginatedDealsObject.data.0.demo_scheduled_shareholders')
+                ->has('paginatedDealsObject.data.0.deal_won_shareholders')
+                ->has('paginatedDealsObject.data.0.active_rejection')
                 ->has('integrations.0.custom_fields')
         );
 });
@@ -83,7 +83,7 @@ it('passes the correct deals if no scope is specified', function () {
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
-                ->has('deals', DealRepository::dealsForOrganization($this->admin->organization)->count())
+                ->has('paginatedDealsObject.data', DealRepository::dealsForOrganization($this->admin->organization)->count())
         );
 });
 
@@ -91,7 +91,7 @@ it('passes the correct deals for scope=open', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::OPEN->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::OPEN)->count())
+            ->has('paginatedDealsObject.data', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::OPEN)->count())
     );
 });
 
@@ -99,7 +99,7 @@ it('passes the correct deals for scope=accepted', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::ACCEPTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::ACCEPTED)->count())
+            ->has('paginatedDealsObject.data', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::ACCEPTED)->count())
     );
 });
 
@@ -107,6 +107,6 @@ it('passes the correct deals for scope=rejected', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::REJECTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::REJECTED)->count())
+            ->has('paginatedDealsObject.data', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::REJECTED)->count())
     );
 });
