@@ -172,17 +172,17 @@ function dealPercentages(trigger: TriggerEnum) {
     </td>
 
     <td class="col-span-2 mr-10 px-3 py-4 text-gray-500">
-        <div class="flex justify-between">
-            <p>SAO in </p>
+        <div class="flex gap-1">
+            <p>SAO in</p>
             <span class="font-semibold">
                 {{ attributionPeriod(props.deal.add_time) }}
             </span>
         </div>
         <div
-            class="flex justify-between"
+            class="flex gap-1"
             v-if="props.deal.won_time"
         >
-            <p>won in </p>
+            <p>won in</p>
             <span class="font-semibold">
                 {{ attributionPeriod(props.deal.won_time) }}
             </span>
