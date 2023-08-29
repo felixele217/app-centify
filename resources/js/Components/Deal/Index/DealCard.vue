@@ -171,7 +171,7 @@ function dealPercentages(trigger: TriggerEnum) {
         <p>{{ euroDisplay(props.deal.value) }}</p>
     </td>
 
-    <td class="col-span-2 mr-10 px-3 py-4 text-gray-500">
+    <td class="col-span-2 mr-5 px-3 py-4 text-sm text-gray-500">
         <div class="flex gap-1">
             <p>SAO in</p>
             <span class="font-semibold">
