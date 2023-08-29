@@ -13,13 +13,13 @@ import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 
 const emit = defineEmits<{
-    'close-slide-over': []
+    'close-upsert-agent-slide-over': []
 }>()
 
 function closeSlideOver() {
     form.reset()
 
-    emit('close-slide-over')
+    emit('close-upsert-agent-slide-over')
 }
 
 const props = defineProps<{

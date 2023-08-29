@@ -14,7 +14,7 @@ type PlanWithAssignmentState = {
 }
 
 const emit = defineEmits<{
-    'close-slide-over': []
+    'close-manage-plan-slide-over': []
 }>()
 
 const props = defineProps<{
@@ -80,16 +80,19 @@ const plansWithAssignmentStates = ref<Array<PlanWithAssignmentState>>(
 <template>
     <SlideOver
         :is-open="props.isOpen"
-        @close-slide-over="emit('close-slide-over')"
+        @close-slide-over="emit('close-manage-plan-slide-over')"
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <p v-for="plan in plansWithAssignmentStates">
+        <p class="text-sm">{{ props.agent!.name }} is currently assigned to the following plans:</p>
+
+        <div class="space-y-2">
             <Checkbox
+                v-for="plan in plansWithAssignmentStates"
                 :label="plan.name"
                 :checked="agentIsAssignedToPlan(plan.name)"
                 @update:checked="handleUpdate(plan)"
             />
-        </p>
+        </div>
     </SlideOver>
 </template>

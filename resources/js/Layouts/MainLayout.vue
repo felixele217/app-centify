@@ -32,7 +32,7 @@ const navigation = [
     <div>
         <Sidebar :navigation="navigation" />
 
-        <div class="flex h-screen flex-col lg:pl-72">
+        <div class="flex flex-col lg:pl-72">
             <main class="grow p-5 sm:px-10 lg:p-10">
                 <slot />
             </main>

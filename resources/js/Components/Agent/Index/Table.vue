@@ -32,10 +32,13 @@ function deleteAgent(agentId: number): void {
     })
 }
 
-function closeSlideOver() {
+function closeUpsertAgentSlideOver() {
     isUpsertingAgent.value = false
-    isManagingAgentPlans.value = false
     agentBeingEdited.value = undefined
+}
+
+function closeManagePlanSlideOver() {
+    isManagingAgentPlans.value = false
 }
 
 function openSlideOver(agentBeingEditedParam: Agent, modal: 'upsert-agent' | 'manage-agent-plans') {
@@ -57,7 +60,7 @@ const agentBeingEdited = ref<Agent>()
 
 <template>
     <upsert-agent-slide-over
-        @close-slide-over="closeSlideOver"
+        @close-upsert-agent-slide-over="closeUpsertAgentSlideOver"
         :is-open="!!isUpsertingAgent"
         dusk="upsert-agent-slide-over-modal"
         :agent="agentBeingEdited"
@@ -65,7 +68,7 @@ const agentBeingEdited = ref<Agent>()
     />
 
     <ManageAgentPlansSlideOver
-        @close-slide-over="closeSlideOver"
+        @close-manage-plan-slide-over="closeManagePlanSlideOver"
         :is-open="!!isManagingAgentPlans"
         dusk="manage-agent-plans-slide-over"
         :agent="agentBeingEdited"
