@@ -4,7 +4,6 @@ import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
-import HideInProduction from '@/Components/System/HideInProduction.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
@@ -136,24 +135,21 @@ const agentBeingEdited = ref<Agent>()
                     >
                         <p>{{ agent.active_plans!.map((activePlan) => activePlan.name).join('\n') }}</p>
 
-                        <HideInProduction>
-                            <div>
-                                <PencilSquareIcon
-                                    class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black"
-                                    @click="openSlideOver(agent, 'manage-agent-plans')"
-                                />
-                            </div>
-                        </HideInProduction>
+                        <div>
+                            <PencilSquareIcon
+                                class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black"
+                                @click="openSlideOver(agent, 'manage-agent-plans')"
+                            />
+                        </div>
                     </div>
 
-                    <HideInProduction v-else>
-                        <SecondaryButton
-                            class="h-7 text-xs"
-                            @click="openSlideOver(agent, 'manage-agent-plans')"
-                            text="+ Add Plan"
-                            dusk="manage-agent-plans-slide-over-button"
-                        />
-                    </HideInProduction>
+                    <SecondaryButton
+                        v-else
+                        class="h-7 text-xs"
+                        @click="openSlideOver(agent, 'manage-agent-plans')"
+                        text="+ Add Plan"
+                        dusk="manage-agent-plans-slide-over-button"
+                    />
                 </td>
 
                 <td
