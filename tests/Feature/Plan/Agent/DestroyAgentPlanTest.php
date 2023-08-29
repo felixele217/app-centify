@@ -16,4 +16,5 @@ it('detach a plan from an agent', function () {
         ->assertRedirect();
 
     expect($plan->refresh()->agents->count())->toBe(0);
+    expect(Agent::find($agentId))->not()->toBeNull();
 });

@@ -108,6 +108,6 @@ class PlanRepository
 
     public static function destroyAgent(Plan $plan, int $agentId): void
     {
-        $plan->agents()->whereAgentId($agentId)->delete();
+        $plan->agents()->whereAgentId($agentId)->detach();
     }
 }

@@ -50,7 +50,7 @@ function handleUpdate(plan: PlanWithAssignmentState) {
 
 function handleStore(planId: number) {
     router.post(
-        route('plans.agents.store', [planId, props.agent!.id]),
+        route('agents.plans.store', [props.agent!.id, planId]),
         {},
         {
             onSuccess: () => {
@@ -61,7 +61,7 @@ function handleStore(planId: number) {
 }
 
 function handleDelete(planId: number) {
-    router.delete(route('plans.agents.destroy', [planId, props.agent!.id]), {
+    router.delete(route('agents.plans.destroy', [props.agent!.id, planId]), {
         onSuccess: () => {
             notify('Agent removed from Plan!', "The plan no longer affects the agent's' commission calculation.")
         },
