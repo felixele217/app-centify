@@ -22,6 +22,7 @@
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.9",
         "doctrine/dbal": "^3.6",
         "laravel/breeze": "^1.21",
         "laravel/dusk": "^7.9",

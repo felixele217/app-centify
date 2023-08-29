@@ -59,11 +59,15 @@ beforeEach(function () {
 });
 
 it('passes the correct props', function () {
+    Deal::factory(21)->withAgentDeal(Agent::factory()->create([
+        'organization_id' => $this->admin->organization_id,
+    ])->id, TriggerEnum::DEMO_SCHEDULED)->create();
+
     $this->get(route('deals.index'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Deal/Index')
-                ->has('deals', DealRepository::dealsForOrganization($this->admin->organization)->count())
+                ->has('deals', 20)
                 ->has('deals.0.agents')
                 ->has('deals.0.s_d_r')
                 ->has('deals.0.a_e')
@@ -87,7 +91,7 @@ it('passes the correct deals for scope=open', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::OPEN->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::OPEN)->count())
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::OPEN)->count())
     );
 });
 
@@ -95,7 +99,7 @@ it('passes the correct deals for scope=accepted', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::ACCEPTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::ACCEPTED)->count())
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::ACCEPTED)->count())
     );
 });
 
@@ -103,6 +107,6 @@ it('passes the correct deals for scope=rejected', function () {
     $this->get(route('deals.index').'?scope='.DealScopeEnum::REJECTED->value)->assertInertia(
         fn (AssertableInertia $page) => $page
             ->component('Deal/Index')
-            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization,DealScopeEnum::REJECTED)->count())
+            ->has('deals', DealRepository::dealsForOrganization($this->admin->organization, DealScopeEnum::REJECTED)->count())
     );
 });

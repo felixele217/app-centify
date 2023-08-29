@@ -19,26 +19,26 @@ use Illuminate\Support\Collection;
 
 class DealRepository
 {
-    public static function dealsForOrganization(Organization $organization, DealScopeEnum $scope = null): Collection
+    public static function dealsForOrganization(Organization $organization, DealScopeEnum $scope = null): Builder
     {
         $agentDealsOfOrganization = Deal::with('agents')->whereHas('agents.organization',
             fn (Builder $query) => $query->where('id', $organization->id));
 
         return match ($scope) {
-            null => $agentDealsOfOrganization->get(),
+            null => $agentDealsOfOrganization,
             DealScopeEnum::OPEN => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNull('agent_deal.accepted_at');
             })->whereDoesntHave('rejections', function (Builder $query) {
                 $query->active();
-            })->get(),
+            }),
             DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNotNull('agent_deal.accepted_at');
-            })->doesntHave('rejections')->get(),
+            })->doesntHave('rejections'),
             DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNull('agent_deal.accepted_at');
             })->whereHas('rejections', function (Builder $query) {
                 $query->active();
-            })->get(),
+            }),
         };
     }
 

@@ -2,9 +2,10 @@
 import Table from '@/Components/Deal/Index/Table.vue'
 import Deal from '@/types/Deal'
 import Integration from '@/types/Integration'
+import PaginatedObject from '@/types/PaginatedObject'
 
 const props = defineProps<{
-    deals: Array<Deal>
+    deals: PaginatedObject<Deal>
     integrations: Array<Integration>
 }>()
 </script>

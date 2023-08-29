@@ -6,17 +6,19 @@ import TableWrapper from '@/Components/TableWrapper.vue'
 import Deal from '@/types/Deal'
 import { DealScopeEnum } from '@/types/Enum/DealScopeEnum'
 import Integration from '@/types/Integration'
+import PaginatedObject from '@/types/PaginatedObject'
 import queryParamValue from '@/utils/queryParamValue'
 import { computed } from 'vue'
 import DealCard from './DealCard.vue'
+import Pagination from '@/Components/Navigation/Pagination.vue'
 
 const props = defineProps<{
-    deals: Array<Deal>
+    deals: PaginatedObject<Deal>
     integrations: Array<Integration>
 }>()
 
 const noDealsText = computed(() => {
-    if (props.deals.length > 0) {
+    if (props.deals.data.length > 0) {
         return ''
     }
 
@@ -109,7 +111,7 @@ const pipedriveIntegration = computed(() => {
             </template>
             <template #body>
                 <tr
-                    v-for="deal in props.deals"
+                    v-for="deal in props.deals.data"
                     class="grid grid-cols-12 items-center text-sm"
                 >
                     <DealCard
@@ -117,6 +119,8 @@ const pipedriveIntegration = computed(() => {
                         :integrations="props.integrations"
                     />
                 </tr>
+
+                <Pagination :paginated-object="props.deals" />
             </template>
         </TableWrapper>
     </div>

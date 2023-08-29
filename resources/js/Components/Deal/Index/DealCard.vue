@@ -7,8 +7,10 @@ import SplitArrowsIcon from '@/Components/Icon/SplitArrowsIcon.vue'
 import Modal from '@/Components/Modal.vue'
 import Tooltip from '@/Components/Tooltip.vue'
 import Deal from '@/types/Deal'
+import { TriggerEnum } from '@/types/Enum/TriggerEnum'
 import Integration from '@/types/Integration'
 import attributionPeriod from '@/utils/Date/attributionPeriod'
+import insertNewLines from '@/utils/StringManipulation/insertNewLines'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { CheckIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
@@ -16,8 +18,6 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import DealStatus from './DealStatus.vue'
 import SplitDealSlideOver from './SplitDealSlideOver.vue'
-import insertNewLines from '@/utils/StringManipulation/insertNewLines'
-import { TriggerEnum } from '@/types/Enum/TriggerEnum'
 
 const vFocus = {
     mounted: (el: HTMLInputElement) => el.focus(),
@@ -107,7 +107,7 @@ const handleBlur = () =>
     }, 100)
 
 const agentThatTriggeredDeal = computed(() => {
-    return props.deal.status === 'won' ? props.deal.a_e! : props.deal.s_d_r!
+    return props.deal.a_e ?? props.deal.s_d_r!
 })
 
 const shareholdersCount = computed(
