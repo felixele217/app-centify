@@ -25,7 +25,6 @@ function closeSlideOver() {
 const props = defineProps<{
     isOpen: boolean
     agent?: Agent
-    possibleStatuses: Array<AgentStatusEnum>
 }>()
 
 const form = useForm({

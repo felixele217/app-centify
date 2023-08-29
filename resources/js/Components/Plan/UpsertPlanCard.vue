@@ -9,6 +9,7 @@ import MultiSelect from '@/Components/Form/MultiSelect.vue'
 import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import TextInput from '@/Components/Form/TextInput.vue'
 import { AdditionalPlanFieldEnumCases } from '@/EnumCases/AdditionalPlanFieldEnum'
+import { TriggerEnumCases } from '@/EnumCases/TriggerEnum'
 import Agent from '@/types/Agent'
 import { AdditionalPlanFieldEnum } from '@/types/Enum/AdditionalPlanFieldEnum'
 import { KickerTypeEnum } from '@/types/Enum/KickerTypeEnum'
@@ -24,17 +25,14 @@ import { targetVariableToDescription } from '@/utils/Descriptions/targetVariable
 import { triggerToDescription } from '@/utils/Descriptions/triggerToDescription'
 import notify from '@/utils/notify'
 import { router, useForm, usePage } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import UpsertAgentSlideOver from '../Agent/Index/UpsertAgentSlideOver.vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
 import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
-import { TriggerEnumCases } from '@/EnumCases/TriggerEnum'
-import PrimaryButton from '../Buttons/PrimaryButton.vue'
-import SecondaryButton from '../Buttons/SecondaryButton.vue'
-import { computed } from 'vue'
 
 export interface AdditionalField {
     id: number
@@ -149,15 +147,24 @@ function toggleAdditionalField(option: CardOptionsOption<AdditionalPlanFieldEnum
 const startShareOfVariablePay = ref<number>(
     props.plan?.agents!.length ? props.plan.agents[0].pivot.share_of_variable_pay * 100 : 100
 )
+
 function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
     form.assigned_agents = form.assigned_agents.map((assignedAgent) => ({
         id: assignedAgent.id,
         share_of_variable_pay: newShareOfVariablePay,
     }))
 }
+
+const isUpsertingAgent = ref(false)
 </script>
 
 <template>
+    <UpsertAgentSlideOver
+        @close-upsert-agent-slide-over="isUpsertingAgent = false"
+        :is-open="!!isUpsertingAgent"
+        dusk="upsert-agent-slide-over-modal"
+    />
+
     <div class="flex justify-center gap-20">
         <Card class="w-144">
             <h2 class="text-base font-semibold leading-7 text-gray-900">
@@ -231,10 +238,22 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
                     </div>
 
                     <div>
-                        <InputLabel
-                            for="assigned_agent_ids"
-                            value="Assigned Agents"
-                        />
+                        <div class="flex items-center gap-1">
+                            <InputLabel
+                                for="assigned_agent_ids"
+                                value="Assigned Agents"
+                            />
+
+                            <p class="text-xs font-medium text-gray-700">
+                                (...missing an agent?
+                                <span
+                                    class="link"
+                                    @click="isUpsertingAgent = true"
+                                    >Create</span
+                                >)
+                            </p>
+                        </div>
+
                         <MultiSelect
                             @option-clicked="handleAgentSelect"
                             :options="props.agents"

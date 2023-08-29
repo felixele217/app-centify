@@ -63,7 +63,6 @@ const agentBeingEdited = ref<Agent>()
         :is-open="!!isUpsertingAgent"
         dusk="upsert-agent-slide-over-modal"
         :agent="agentBeingEdited"
-        :possible-statuses="props.possibleStatuses"
     />
 
     <ManageAgentPlansSlideOver
