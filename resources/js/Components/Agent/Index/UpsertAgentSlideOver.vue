@@ -170,7 +170,7 @@ function submit() {
             v-if="form.on_target_earning && form.base_salary && form.on_target_earning > form.base_salary"
         >
             Hence, {{ form.name }} has a total variable pay of
-            {{ euroDisplay(form.on_target_earning - form.base_salary) }}
+            <span class="font-semibold">{{ euroDisplay(form.on_target_earning - form.base_salary) }}.</span>
         </p>
     </SlideOver>
 </template>

@@ -6,10 +6,8 @@ use App\Models\AgentDeal;
 use App\Models\Deal;
 
 it('returns all demo scheduled shareholders except the owner', function () {
-    $trigger = TriggerEnum::DEMO_SCHEDULED;
-
     $deal = Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, $trigger)
+        ->withAgentDeal(Agent::factory()->create()->id, $trigger = TriggerEnum::DEMO_SCHEDULED)
         ->create();
 
     foreach ($shareholders = Agent::factory($shareholdersCount = 2)->create() as $agent) {
@@ -26,10 +24,8 @@ it('returns all demo scheduled shareholders except the owner', function () {
 });
 
 it('returns all deal won shareholders except the owner', function () {
-    $trigger = TriggerEnum::DEAL_WON;
-
     $deal = Deal::factory()
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, $trigger)
+        ->withAgentDeal(Agent::factory()->create()->id, $trigger = TriggerEnum::DEAL_WON)
         ->create();
 
     foreach ($shareholders = Agent::factory($shareholdersCount = 2)->create() as $agent) {
