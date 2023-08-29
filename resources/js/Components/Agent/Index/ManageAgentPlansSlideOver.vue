@@ -84,7 +84,7 @@ const plansWithAssignmentStates = ref<Array<PlanWithAssignmentState>>(
         title="Manage Plans"
         description="You can manage which plans will affect this agent's commission."
     >
-        <p class="text-sm">{{ props.agent!.name }} is currently assigned to the following plans:</p>
+        <p class="text-sm text-gray-700">{{ props.agent!.name }} is currently assigned to the following plans:</p>
 
         <div class="space-y-2">
             <Checkbox
