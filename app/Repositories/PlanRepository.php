@@ -62,7 +62,7 @@ class PlanRepository
 
         foreach ($plan->agents as $agent) {
             if (! $request->validated('assigned_agents') || ! in_array($agent->id, array_column($request->validated('assigned_agents'), 'id'))) {
-                $plan->agents()->whereAgentId($agent->id)->delete();
+                $plan->agents()->whereAgentId($agent->id)->detach();
             }
         }
 

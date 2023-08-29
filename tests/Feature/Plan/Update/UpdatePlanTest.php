@@ -71,7 +71,7 @@ it('can remove agents from the plan', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plan->agents()->attach($agents = Agent::factory(4)->create());
+    $plan->agents()->attach($agents = Agent::factory($agentCount = 4)->create());
 
     UpdatePlanRequest::factory()->state([
         'assigned_agents' => $agents->take($expectedAgentCount = 1)->map(fn (Agent $agent) => [
@@ -83,6 +83,7 @@ it('can remove agents from the plan', function () {
     $this->put(route('plans.update', $plan))->assertRedirect();
 
     expect($plan->refresh()->agents->count())->toBe($expectedAgentCount);
+    expect(Agent::count())->toBe($agentCount);
 });
 
 it('can update the share_of_variable_pay of agents already in the plan', function (int $newShareOfVariablePay) {
