@@ -12,7 +12,7 @@ const props = defineProps<{
 
 <template>
     <Table
-        :deals="props.paginatedDealsObject"
+        :paginated-deals-object="props.paginatedDealsObject"
         :integrations="props.integrations"
     />
 </template>
