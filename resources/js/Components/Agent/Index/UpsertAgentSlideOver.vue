@@ -6,7 +6,6 @@ import TextInput from '@/Components/Form/TextInput.vue'
 import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import SlideOver from '@/Components/SlideOver.vue'
 import Agent from '@/types/Agent'
-import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
 import { useForm } from '@inertiajs/vue3'
@@ -170,6 +169,14 @@ function submit() {
         >
             Hence, {{ form.name }} has a total variable pay of
             <span class="font-semibold">{{ euroDisplay(form.on_target_earning - form.base_salary) }}.</span>
+        </p>
+
+        <p
+            class="text-sm text-gray-600"
+            v-else-if="form.on_target_earning && form.base_salary && form.on_target_earning < form.base_salary"
+        >
+            The Annual On Target Earning has to be <span class="font-semibold">greater</span> than the Annual Base
+            Salary.
         </p>
     </SlideOver>
 </template>
