@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Deal;
+use App\Models\Plan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -31,6 +32,7 @@ class DashboardController extends Controller
                 $query->where('organization_id', Auth::user()->organization->id)
                     ->whereNull('agent_deal.accepted_at');
             })->count(),
+            'plans' => Plan::whereOrganizationId(Auth::user()->organization->id)->select('id', 'name')->get(),
         ]);
     }
 }

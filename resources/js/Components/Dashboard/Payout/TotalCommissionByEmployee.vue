@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ActivePlans from '@/Components/Agent/ActivePlans.vue'
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
 import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
@@ -6,6 +7,7 @@ import PageHeader from '@/Components/PageHeader.vue'
 import HideInProduction from '@/Components/System/HideInProduction.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import Plan from '@/types/Plan/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
@@ -13,6 +15,7 @@ import ValueChange from './ValueChange.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
+    plans: Array<Pick<Plan, 'id' | 'name'>>
 }>()
 
 defineEmits<{
@@ -101,11 +104,10 @@ function quotaDisplay(quotaAttainment: number) {
                                 </td>
 
                                 <td class="whitespace-pre-wrap py-5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                                    {{
-                                        agent.active_plans!.length
-                                            ? agent.active_plans!.map((activePlan) => activePlan.name).join('\n')
-                                            : 'no active plans'
-                                    }}
+                                    <ActivePlans
+                                        :plans="props.plans"
+                                        :agent="agent"
+                                    />
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">

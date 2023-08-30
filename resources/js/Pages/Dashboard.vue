@@ -6,18 +6,18 @@ import TotalCommission from '@/Components/Dashboard/Payout/TotalCommission.vue'
 import TotalCommissionByEmployee from '@/Components/Dashboard/Payout/TotalCommissionByEmployee.vue'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
+import Plan from '@/types/Plan/Plan'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const props = defineProps<{
     agents: Array<Agent>
+    plans: Array<Pick<Plan, 'id' | 'name'>>
     open_deal_count: number
 }>()
 
 const agentIdBeingManaged = ref<number>()
 const paidLeaveReason = ref<AgentStatusEnum>()
-
-console.log(agentIdBeingManaged.value)
 
 function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) {
     agentIdBeingManaged.value = agentId
@@ -41,6 +41,7 @@ function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) 
         </div>
 
         <TotalCommissionByEmployee
+            :plans="props.plans"
             :agents="props.agents"
             @open-paid-leave-slide-over="handleOpenPaidLeaveSlideOver"
         />

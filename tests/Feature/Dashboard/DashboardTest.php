@@ -10,12 +10,12 @@ use Inertia\Testing\AssertableInertia;
 it('passes the correct props', function () {
     $admin = signInAdmin();
 
-    $plan = Plan::factory()->create([
+    $plans = Plan::factory($planCount = 3)->create([
         'creator_id' => $admin,
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plan->agents()->attach(Agent::factory($agentCount = 3)
+    $plans->first()->agents()->attach(Agent::factory($agentCount = 3)
         ->hasDeals(3)
         ->hasPaidLeaves(1, [
             'start_date' => Carbon::yesterday(),
@@ -38,6 +38,10 @@ it('passes the correct props', function () {
                 ->has('agents.1.vacation_leaves_days_count')
                 ->has('agents.1.paid_leaves.0.start_date')
                 ->has('agents.1.paid_leaves.0.end_date')
+                ->has('plans', $planCount, fn (AssertableInertia $page) => $page
+                    ->has('id')
+                    ->has('name')
+                )
         );
 });
 
