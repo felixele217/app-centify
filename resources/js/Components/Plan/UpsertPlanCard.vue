@@ -418,7 +418,7 @@ const isUpsertingAgent = ref(false)
                     <div v-if="activeAdditionalFields.includes('Cliff')">
                         <SectionWithDescription
                             heading="Cliff"
-                            description="Set a minimum threshold to qualify for a commission."
+                            description="Set a minimum threshold of quota attainment the agent has to reach to qualify for a commission."
                         >
                             <div>
                                 <InputLabel
