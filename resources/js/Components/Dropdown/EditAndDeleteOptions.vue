@@ -22,7 +22,7 @@ defineEmits(['edit-action', 'delete-action'])
             />
 
             <EllipsisVerticalIcon
-                class="h-5 w-5 cursor-pointer text-gray-700 hover:text-black"
+                class="h-7 w-7 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-slate-50 hover:text-black"
                 v-else
             />
         </template>

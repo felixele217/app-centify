@@ -130,15 +130,13 @@ const agentBeingEdited = ref<Agent>()
                 <td class="whitespace-pre-wrap px-3 py-5 text-sm text-gray-500">
                     <div
                         v-if="agent.active_plans?.length"
-                        class="flex items-center gap-2"
+                        class="flex cursor-pointer items-center gap-2 hover:text-black"
+                        @click="openSlideOver(agent, 'manage-agent-plans')"
                     >
                         <p>{{ agent.active_plans!.map((activePlan) => activePlan.name).join('\n') }}</p>
 
                         <div>
-                            <PencilSquareIcon
-                                class="-mt-0.25 h-4 w-4 cursor-pointer hover:text-black"
-                                @click="openSlideOver(agent, 'manage-agent-plans')"
-                            />
+                            <PencilSquareIcon class="-mt-0.25 h-4 w-4" />
                         </div>
                     </div>
 
