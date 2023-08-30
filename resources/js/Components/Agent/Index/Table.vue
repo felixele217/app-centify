@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
-import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import EditAndDeleteOptions from '@/Components/Dropdown/EditAndDeleteOptions.vue'
 import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -10,10 +9,9 @@ import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import Plan from '@/types/Plan/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
-import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import ManageAgentPlansSlideOver from './ManageAgentPlansSlideOver.vue'
+import ActivePlans from '../ActivePlans.vue'
 import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 
 const props = defineProps<{
@@ -36,25 +34,16 @@ function closeUpsertAgentSlideOver() {
     agentBeingEdited.value = undefined
 }
 
-function closeManagePlanSlideOver() {
-    isManagingAgentPlans.value = false
-}
-
-function openSlideOver(agentBeingEditedParam: Agent, modal: 'upsert-agent' | 'manage-agent-plans') {
+function openSlideOver(agentBeingEditedParam: Agent) {
     agentBeingEdited.value = agentBeingEditedParam
 
-    if (modal === 'upsert-agent') {
-        isUpsertingAgent.value = true
-    } else {
-        isManagingAgentPlans.value = true
-    }
+    isUpsertingAgent.value = true
 }
 
 const isUpsertingAgent = ref(false)
-const isManagingAgentPlans = ref(false)
 
-const agentIdBeingDeleted = ref<number | null>()
 const agentBeingEdited = ref<Agent>()
+const agentIdBeingDeleted = ref<number | null>()
 </script>
 
 <template>
@@ -63,14 +52,6 @@ const agentBeingEdited = ref<Agent>()
         :is-open="!!isUpsertingAgent"
         dusk="upsert-agent-slide-over-modal"
         :agent="agentBeingEdited"
-    />
-
-    <ManageAgentPlansSlideOver
-        @close-manage-plan-slide-over="closeManagePlanSlideOver"
-        :is-open="!!isManagingAgentPlans"
-        dusk="manage-agent-plans-slide-over"
-        :agent="agentBeingEdited"
-        :plans="props.plans"
     />
 
     <page-header
@@ -128,24 +109,9 @@ const agentBeingEdited = ref<Agent>()
                 </td>
 
                 <td class="whitespace-pre-wrap px-3 py-5 text-sm text-gray-500">
-                    <div
-                        v-if="agent.active_plans?.length"
-                        class="flex cursor-pointer items-center gap-2 hover:text-black"
-                        @click="openSlideOver(agent, 'manage-agent-plans')"
-                    >
-                        <p>{{ agent.active_plans!.map((activePlan) => activePlan.name).join('\n') }}</p>
-
-                        <div>
-                            <PencilSquareIcon class="-mt-0.25 h-4 w-4" />
-                        </div>
-                    </div>
-
-                    <SecondaryButton
-                        v-else
-                        class="h-7 text-xs"
-                        @click="openSlideOver(agent, 'manage-agent-plans')"
-                        text="+ Add Plan"
-                        dusk="manage-agent-plans-slide-over-button"
+                    <ActivePlans
+                        :plans="props.plans"
+                        :agent="agent"
                     />
                 </td>
 
@@ -167,7 +133,7 @@ const agentBeingEdited = ref<Agent>()
                 </td>
                 <td class="absolute lg:table-cell">
                     <EditAndDeleteOptions
-                        @edit-action="openSlideOver(agent, 'upsert-agent')"
+                        @edit-action="openSlideOver(agent)"
                         @delete-action="agentIdBeingDeleted = agent.id"
                         relative-table-style="relative -mt-1.5 top-8 right-8"
                     />
