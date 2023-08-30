@@ -8,6 +8,7 @@ import SelectWithDescription from '@/Components/Form/SelectWithDescription.vue'
 import InfoIcon from '@/Components/Icon/InfoIcon.vue'
 import RadioCards from '@/Components/RadioCards.vue'
 import Tooltip from '@/Components/Tooltip.vue'
+import { ContinuationOfPayTimeScopeEnumCases } from '@/EnumCases/ContinuationOfPayTimeScopeEnum'
 import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import { ContinuationOfPayTimeScopeEnum } from '@/types/Enum/ContinuationOfPayTimeScopeEnum'
@@ -15,10 +16,8 @@ import { continuationOfPayTimeScopeToDescription } from '@/utils/Descriptions/co
 import enumOptionsToSelectOptionWithDescription from '@/utils/Descriptions/enumOptionsToSelectOptionWithDescription'
 import markedRangesFromRangeObjects from '@/utils/markedRangesFromRangeObjects'
 import { InertiaForm, usePage } from '@inertiajs/vue3'
-import { watch } from 'vue'
-import PaidLeaveCard from './PaidLeaveCard.vue'
 import { computed } from 'vue'
-import { ContinuationOfPayTimeScopeEnumCases } from '@/EnumCases/ContinuationOfPayTimeScopeEnum'
+import PaidLeaveCard from './PaidLeaveCard.vue'
 
 const props = defineProps<{
     form: InertiaForm<{
@@ -194,13 +193,13 @@ function agentPaidLeaveRanges() {
         <div>
             <div
                 class="mb-1 mt-7 flex items-center gap-2"
-                v-if="agent.paid_leaves.length"
+                v-if="agent?.paid_leaves.length"
             >
                 <h4>Recent Paid Leaves</h4>
             </div>
 
             <PaidLeaveCard
-                v-for="paidLeave of agent.paid_leaves"
+                v-for="paidLeave of agent?.paid_leaves"
                 :paid-leave="paidLeave"
                 :key="paidLeave.id"
                 @deleted-paid-leave="$emit('deleted-paid-leave')"

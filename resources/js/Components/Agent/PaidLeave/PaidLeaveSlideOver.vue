@@ -8,13 +8,13 @@ import { watch } from 'vue'
 import PaidLeaveForm from './PaidLeaveForm.vue'
 
 const emit = defineEmits<{
-    'close-slide-over': []
+    'close-paid-leave-slide-over': []
 }>()
 
 function closeSlideOver() {
     form.reset()
 
-    emit('close-slide-over')
+    emit('close-paid-leave-slide-over')
 }
 
 const props = defineProps<{

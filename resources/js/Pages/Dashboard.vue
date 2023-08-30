@@ -17,6 +17,8 @@ const props = defineProps<{
 const agentIdBeingManaged = ref<number>()
 const paidLeaveReason = ref<AgentStatusEnum>()
 
+console.log(agentIdBeingManaged.value)
+
 function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) {
     agentIdBeingManaged.value = agentId
     paidLeaveReason.value = reason
@@ -48,7 +50,7 @@ function handleOpenPaidLeaveSlideOver(agentId: number, reason: AgentStatusEnum) 
             :is-open="!!agentIdBeingManaged"
             :agentId="agentIdBeingManaged"
             :reason="paidLeaveReason"
-            @close-slide-over="agentIdBeingManaged = undefined"
+            @close-paid-leave-slide-over="agentIdBeingManaged = undefined"
         />
     </div>
 </template>
