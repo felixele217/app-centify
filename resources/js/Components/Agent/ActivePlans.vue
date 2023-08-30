@@ -12,11 +12,9 @@ const props = defineProps<{
 }>()
 
 const isManagingAgentPlans = ref(false)
-const agentBeingEdited = ref<Agent>()
 
 function openSlideOver() {
     isManagingAgentPlans.value = true
-    agentBeingEdited.value = props.agent
 }
 
 function closeManagePlanSlideOver() {
@@ -29,7 +27,7 @@ function closeManagePlanSlideOver() {
         @close-manage-plan-slide-over="closeManagePlanSlideOver"
         :is-open="!!isManagingAgentPlans"
         dusk="manage-agent-plans-slide-over"
-        :agent="agentBeingEdited"
+        :agent="props.agent"
         :plans="props.plans"
     />
 

@@ -72,15 +72,17 @@ it('sends correct todo count for this organization', function () {
         );
 });
 
-it('does not send foreign agents', function () {
+it('does not send foreign props', function () {
     signInAdmin();
 
     Agent::factory(5)->create();
+    Plan::factory(5)->create();
 
     $this->get(route('dashboard'))
         ->assertInertia(
             fn (AssertableInertia $page) => $page
                 ->component('Dashboard')
                 ->has('agents', 0)
+                ->has('plans', 0)
         );
 });
