@@ -3,7 +3,7 @@ import type Plan from '@/types/Plan/Plan'
 import formatDate from '@/utils/Date/formatDate'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
-import { BoltIcon, CheckIcon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { BoltIcon } from '@heroicons/vue/24/outline'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import Card from '../Card.vue'
@@ -13,8 +13,8 @@ import CalendarIcon from '../Icon/CalendarIcon.vue'
 import RecurIcon from '../Icon/RecurIcon.vue'
 import TeamIcon from '../Icon/TeamIcon.vue'
 import Modal from '../Modal.vue'
-import PlanCardAdditionalFieldIcon from './PlanCardAdditionalFieldIcon.vue'
 import Tooltip from '../Tooltip.vue'
+import PlanCardAdditionalFieldIcon from './PlanCardAdditionalFieldIcon.vue'
 
 const props = defineProps<{
     plan: Plan
@@ -35,18 +35,15 @@ const planIdBeingDeleted = ref<number | null>()
 <template>
     <Card>
         <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <h2 class="whitespace-nowrap">{{ props.plan.name }}</h2>
+            <h2 class="whitespace-nowrap">{{ props.plan.name }}</h2>
 
-                <EditAndDeleteOptions
-                    @edit-action="() => router.get(route('plans.update', props.plan.id))"
-                    @delete-action="() => (planIdBeingDeleted = props.plan.id)"
-                    :icon="PencilSquareIcon"
-                />
-            </div>
             <div class="flex items-center gap-1 text-gray-600">
                 <p>{{ props.plan.agents_count }}</p>
                 <TeamIcon class="text-gray-600" />
+                <EditAndDeleteOptions
+                    @edit-action="() => router.get(route('plans.update', props.plan.id))"
+                    @delete-action="() => (planIdBeingDeleted = props.plan.id)"
+                />
             </div>
         </div>
 
