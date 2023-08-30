@@ -169,7 +169,7 @@ const agentBeingEdited = ref<Agent>()
                     <EditAndDeleteOptions
                         @edit-action="openSlideOver(agent, 'upsert-agent')"
                         @delete-action="agentIdBeingDeleted = agent.id"
-                        relative-table-style="relative -mt-0.75 top-8 right-8"
+                        relative-table-style="relative -mt-1.5 top-8 right-8"
                     />
 
                     <div
