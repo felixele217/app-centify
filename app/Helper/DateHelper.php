@@ -38,9 +38,9 @@ class DateHelper
     public static function firstAndLastDateInScope(CarbonImmutable $dateInScope, TimeScopeEnum $timeScope): array
     {
         return match ($timeScope) {
-            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth(), $dateInScope->lastOfMonth()],
-            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter(), $dateInScope->lastOfQuarter()],
-            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear(), $dateInScope->lastOfYear()],
+            TimeScopeEnum::MONTHLY => [$dateInScope->firstOfMonth()->startOfDay(), $dateInScope->lastOfMonth()->endOfDay()],
+            TimeScopeEnum::QUARTERLY => [$dateInScope->firstOfQuarter()->startOfDay(), $dateInScope->lastOfQuarter()->endOfDay()],
+            TimeScopeEnum::ANNUALY => [$dateInScope->firstOfYear()->startOfDay(), $dateInScope->lastOfYear()->endOfDay()],
         };
     }
 }

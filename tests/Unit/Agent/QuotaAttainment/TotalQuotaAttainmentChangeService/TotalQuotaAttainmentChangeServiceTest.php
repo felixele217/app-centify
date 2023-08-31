@@ -11,7 +11,7 @@ use App\Services\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
-it('quota attainment change is calculated correctly for scheduled deals', function (TriggerEnum $trigger, TimeScopeEnum $timeScope, CarbonImmutable $dateInPreviousTimeScope, float $factorForLastScope) {
+it('quota attainment change is calculated correctly for all kinds of deals with triggers', function (TriggerEnum $trigger, TimeScopeEnum $timeScope, CarbonImmutable $dateInPreviousTimeScope, float $factorForLastScope) {
     $plan = Plan::factory()->active()->create([
         'target_amount_per_month' => $targetAmountPerMonth = 10_000_00,
         'trigger' => $trigger->value,
@@ -20,7 +20,7 @@ it('quota attainment change is calculated correctly for scheduled deals', functi
     $plan->agents()->attach($agent = Agent::factory()->create());
 
     Deal::factory()
-        ->withAgentDeal($agent->id, $trigger, Carbon::now())
+        ->withAgentDeal($agent->id, $trigger, Carbon::yesterday())
         ->won(Carbon::now())
         ->create([
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
@@ -30,6 +30,7 @@ it('quota attainment change is calculated correctly for scheduled deals', functi
         ->withAgentDeal($agent->id, $trigger, $dateInPreviousTimeScope)
         ->won($dateInPreviousTimeScope)
         ->create([
+            'add_time' => $dateInPreviousTimeScope,
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * $factorForLastScope,
         ]);
 
