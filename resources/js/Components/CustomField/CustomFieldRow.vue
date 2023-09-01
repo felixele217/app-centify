@@ -16,7 +16,24 @@ const props = defineProps<{
     integration: Integration
 }>()
 
+const vFocus = {
+    mounted: (el: HTMLInputElement) => el.focus(),
+}
+
+const handleBlur = () =>
+    setTimeout(() => {
+        if (!isUpdatingApiKey.value) {
+            if (apiKey.value !== customField(props.integration.custom_fields!, props.customFieldName)?.api_key) {
+                apiKey.value = customField(props.integration.custom_fields!, props.customFieldName)?.api_key
+            }
+
+            isEditing.value = false
+        }
+    }, 100)
+
 function upsertCustomField(customFieldName: CustomFieldEnum) {
+    isUpdatingApiKey.value = true
+
     const currentCustomField = customField(props.integration.custom_fields!, customFieldName)
 
     if (currentCustomField) {
@@ -46,6 +63,7 @@ function storeCustomField(customFieldName: CustomFieldEnum) {
                     false
                 )
             },
+            onFinish: () => (isUpdatingApiKey.value = false),
         }
     )
 }
@@ -68,10 +86,12 @@ function updateCustomField(customField: CustomField) {
                     false
                 )
             },
+            onFinish: () => (isUpdatingApiKey.value = false),
         }
     )
 }
 
+const isUpdatingApiKey = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const apiKey = ref<string>(customField(props.integration.custom_fields!, props.customFieldName)?.api_key)
 </script>
@@ -110,6 +130,8 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
             <TextInput
                 type="text"
                 v-model="apiKey"
+                v-focus
+                @blur="handleBlur"
                 @keyup.enter="upsertCustomField(customFieldName)"
                 no-top-margin
             />
