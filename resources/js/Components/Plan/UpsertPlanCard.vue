@@ -155,12 +155,20 @@ function handleUpdateShareOfVariablePay(newShareOfVariablePay: number): void {
     }))
 }
 
+function closeSlideOver(createdAgent: boolean) {
+    if (createdAgent) {
+        handleAgentSelect(props.agents[props.agents.length - 1].id)
+    }
+
+    isUpsertingAgent.value = false
+}
+
 const isUpsertingAgent = ref(false)
 </script>
 
 <template>
     <UpsertAgentSlideOver
-        @close-upsert-agent-slide-over="isUpsertingAgent = false"
+        @close-upsert-agent-slide-over="closeSlideOver"
         :is-open="!!isUpsertingAgent"
         dusk="upsert-agent-slide-over-modal"
     />

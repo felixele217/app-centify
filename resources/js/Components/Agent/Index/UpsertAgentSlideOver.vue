@@ -12,13 +12,13 @@ import { useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 
 const emit = defineEmits<{
-    'close-upsert-agent-slide-over': []
+    'close-upsert-agent-slide-over': [createdAgent: boolean]
 }>()
 
-function closeSlideOver() {
+function closeSlideOver(createdAgent: boolean = false) {
     form.reset()
 
-    emit('close-upsert-agent-slide-over')
+    emit('close-upsert-agent-slide-over', createdAgent)
 }
 
 const props = defineProps<{
@@ -60,7 +60,7 @@ function submit() {
     } else {
         form.post(route('agents.store'), {
             onSuccess: () => {
-                closeSlideOver()
+                closeSlideOver(true)
 
                 notify(
                     'Agent created',
