@@ -110,6 +110,7 @@ const apiKey = ref<string>(customField(props.integration.custom_fields!, props.c
             <TextInput
                 type="text"
                 v-model="apiKey"
+                @keyup.enter="upsertCustomField(customFieldName)"
                 no-top-margin
             />
 
