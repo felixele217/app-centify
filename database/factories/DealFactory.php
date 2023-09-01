@@ -42,7 +42,7 @@ class DealFactory extends Factory
     public function withAgentDeal(int $agentId, TriggerEnum $trigger = null, Carbon|CarbonImmutable $accepted_at = null): static
     {
         return $this->afterCreating(function (Deal $deal) use ($agentId, $trigger, $accepted_at) {
-            AgentDeal::create([
+            AgentDeal::factory()->create([
                 'created_at' => Carbon::parse('-1 minute'),
                 'agent_id' => $agentId,
                 'deal_id' => $deal->id,
