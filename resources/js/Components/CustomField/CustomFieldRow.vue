@@ -22,7 +22,7 @@ const vFocus = {
 
 const handleBlur = () =>
     setTimeout(() => {
-        if (!isUpdatingApiKey.value) {
+        if (!isUpsertingApiKey.value) {
             if (apiKey.value !== customField(props.integration.custom_fields!, props.customFieldName)?.api_key) {
                 apiKey.value = customField(props.integration.custom_fields!, props.customFieldName)?.api_key
             }
@@ -32,7 +32,7 @@ const handleBlur = () =>
     }, 100)
 
 function upsertCustomField(customFieldName: CustomFieldEnum) {
-    isUpdatingApiKey.value = true
+    isUpsertingApiKey.value = true
 
     const currentCustomField = customField(props.integration.custom_fields!, customFieldName)
 
@@ -63,7 +63,7 @@ function storeCustomField(customFieldName: CustomFieldEnum) {
                     false
                 )
             },
-            onFinish: () => (isUpdatingApiKey.value = false),
+            onFinish: () => (isUpsertingApiKey.value = false),
         }
     )
 }
@@ -86,12 +86,12 @@ function updateCustomField(customField: CustomField) {
                     false
                 )
             },
-            onFinish: () => (isUpdatingApiKey.value = false),
+            onFinish: () => (isUpsertingApiKey.value = false),
         }
     )
 }
 
-const isUpdatingApiKey = ref<boolean>(false)
+const isUpsertingApiKey = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const apiKey = ref<string>(customField(props.integration.custom_fields!, props.customFieldName)?.api_key)
 </script>
