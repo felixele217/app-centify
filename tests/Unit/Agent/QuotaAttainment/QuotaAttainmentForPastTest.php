@@ -12,14 +12,16 @@ use Carbon\CarbonImmutable;
 it('can calculate for past timescopes with the same plan', function (TimeScopeEnum $timeScope, CarbonImmutable $dateInPastScope) {
     $plan = Plan::factory()->active()->create(['target_amount_per_month' => 10_000_00]);
 
+    $agent = Agent::factory()->create();
+
     Deal::factory(2)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, $dateInPastScope)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, $dateInPastScope)
         ->create([
             'add_time' => $dateInPastScope,
             'value' => 5_000_00,
         ]);
 
-    $plan->agents()->attach(Agent::first());
+    $plan->agents()->attach($agent->id);
 
     expect((new TotalQuotaAttainmentService($plan->agents()->first(), $timeScope, $dateInPastScope))->calculate())->toBe(floatval(1 / $timeScope->monthCount()));
 })->with([
