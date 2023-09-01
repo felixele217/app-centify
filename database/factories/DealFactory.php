@@ -24,7 +24,7 @@ class DealFactory extends Factory
             'title' => fake()->word(),
             'status' => DealStatusEnum::OPEN->value,
             'value' => 500000,
-            'add_time' => Carbon::yesterday(),
+            'add_time' => Carbon::now(),
             'won_time' => null,
             'note' => null,
         ];
@@ -33,9 +33,9 @@ class DealFactory extends Factory
     public function won(Carbon|CarbonImmutable $wonAt = null): static
     {
         return $this->state(fn (array $attributes) => [
-            'add_time' => $wonAt ?? Carbon::yesterday(),
+            'add_time' => $wonAt ?? Carbon::now(),
             'status' => DealStatusEnum::WON->value,
-            'won_time' => $wonAt ?? Carbon::today(),
+            'won_time' => $wonAt ?? Carbon::now(),
         ]);
     }
 
@@ -48,6 +48,7 @@ class DealFactory extends Factory
                 'deal_id' => $deal->id,
                 'triggered_by' => $trigger->value,
                 'accepted_at' => $accepted_at,
+                'deal_percentage' => 100,
             ]);
         });
     }

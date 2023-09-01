@@ -21,20 +21,20 @@ class DealRepository
 {
     public static function dealsForOrganization(Organization $organization, DealScopeEnum $scope = null): Builder
     {
-        $agentDealsOfOrganization = Deal::with('agents')->whereHas('agents.organization',
+        $dealsForOrganization = Deal::with('agents')->whereHas('agents.organization',
             fn (Builder $query) => $query->where('id', $organization->id));
 
         return match ($scope) {
-            null => $agentDealsOfOrganization,
-            DealScopeEnum::OPEN => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+            null => $dealsForOrganization,
+            DealScopeEnum::OPEN => $dealsForOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNull('agent_deal.accepted_at');
             })->whereDoesntHave('rejections', function (Builder $query) {
                 $query->active();
             }),
-            DealScopeEnum::ACCEPTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+            DealScopeEnum::ACCEPTED => $dealsForOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNotNull('agent_deal.accepted_at');
             })->doesntHave('rejections'),
-            DealScopeEnum::REJECTED => $agentDealsOfOrganization->whereHas('agents', function (Builder $query) {
+            DealScopeEnum::REJECTED => $dealsForOrganization->whereHas('agents', function (Builder $query) {
                 $query->whereNull('agent_deal.accepted_at');
             })->whereHas('rejections', function (Builder $query) {
                 $query->active();
@@ -53,6 +53,8 @@ class DealRepository
         $activePlans = $agent->plans()->active($dateInScope)->get();
 
         [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
+        //    dd($firstDateInScope, $lastDateInScope, $dateInScope);
+
         foreach ($activePlans as $plan) {
             $currentQuery = clone $baseQuery;
 
@@ -70,6 +72,12 @@ class DealRepository
             }
 
             $deals = $deals->concat($currentQuery->get());
+        }
+
+        if (count($deals) === 0) {
+            echo 'deal: '.Deal::first();
+        } else {
+            echo $deals;
         }
 
         return $deals->unique('id');

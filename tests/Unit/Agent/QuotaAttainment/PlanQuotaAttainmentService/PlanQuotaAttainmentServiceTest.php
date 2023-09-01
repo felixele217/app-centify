@@ -11,14 +11,14 @@ use Carbon\Carbon;
 
 it('calculates the quota attainment with the share_of_variable_pay of the AgentPlan', function (TimeScopeEnum $timeScope, $shareOfVariablePay) {
     $plan = Plan::factory()->create([
-        'target_amount_per_month' => 1_000_00,
+        'target_amount_per_month' => $targetAmountPerMonth = 1_000_00,
         'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
 
     Deal::factory()
         ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
-            'value' => 1_000_00,
+            'value' => $targetAmountPerMonth,
         ]);
 
     $agent = Agent::find($agentId);

@@ -62,8 +62,8 @@ it('retrieves all deals where demo is set OR deal is won by the agent if he has 
 
     foreach ([TriggerEnum::DEMO_SCHEDULED, TriggerEnum::DEAL_WON] as $trigger) {
         Deal::factory()
-            ->withAgentDeal($agent->id, $trigger, Carbon::yesterday())
-            ->won(Carbon::yesterday())
+            ->withAgentDeal($agent->id, $trigger, Carbon::now())
+            ->won()
             ->create();
     }
 
