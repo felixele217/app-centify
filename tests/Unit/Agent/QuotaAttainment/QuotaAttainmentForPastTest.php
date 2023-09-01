@@ -37,14 +37,16 @@ it('can calculate for past timescopes with a different plan', function (TimeScop
         'end_date' => $dateInPastScope->lastOfMonth(),
     ]);
 
+    $agent = Agent::factory()->create();
+
     Deal::factory(2)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, $dateInPastScope)
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, $dateInPastScope)
         ->create([
             'add_time' => $dateInPastScope,
             'value' => 5_000_00,
         ]);
 
-    $plan->agents()->attach(Agent::first());
+    $plan->agents()->attach($agent->id);
 
     $plan->agents()->first()->plans()->attach(Plan::factory()->create([
         'target_amount_per_month' => $targetAmountPerMonth * 5,
