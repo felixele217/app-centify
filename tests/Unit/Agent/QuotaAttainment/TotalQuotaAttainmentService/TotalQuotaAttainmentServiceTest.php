@@ -15,13 +15,16 @@ it('calculates the quota attainment for the current scope for all deal participa
         'target_amount_per_month' => 1_000_00,
         'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
     ]);
+
     $aePlan = Plan::factory()->create([
         'target_amount_per_month' => 1_000_00,
         'trigger' => TriggerEnum::DEAL_WON->value,
     ]);
 
+    $agent = Agent::factory()->create();
+
     $deals = Deal::factory(2)
-        ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->won(Carbon::now())
         ->create([
             'value' => 1_000_00,
@@ -30,12 +33,10 @@ it('calculates the quota attainment for the current scope for all deal participa
     foreach ($deals as $deal) {
         AgentDeal::factory()->create([
             'deal_id' => $deal->id,
-            'agent_id' => $agentId,
+            'agent_id' => $agent->id,
             'triggered_by' => TriggerEnum::DEAL_WON->value,
         ]);
     }
-
-    $agent = Agent::find($agentId);
 
     $sdrPlan->agents()->attach($agent);
     $aePlan->agents()->attach($agent);

@@ -16,7 +16,7 @@ class AgentDealFactory extends Factory
             'id' => fake()->unique()->randomNumber() + 1,
             'agent_id' => Agent::factory()->create(),
             'deal_id' => Deal::factory()->create(),
-            'deal_percentage' => fake()->numberBetween(0, 100),
+            'deal_percentage' => 100,
             'triggered_by' => null,
         ];
     }
