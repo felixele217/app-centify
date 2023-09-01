@@ -189,7 +189,7 @@ function dealPercentages(trigger: TriggerEnum) {
         </div>
     </td>
 
-    <td class="col-span-4 px-3 py-4 text-gray-500">
+    <td class="col-span-4 mr-5 px-3 py-4 text-gray-500">
         <div
             v-if="!dealIdOfNoteBeingEdited"
             class="flex cursor-pointer items-center gap-1.5 break-words hover:text-black"
