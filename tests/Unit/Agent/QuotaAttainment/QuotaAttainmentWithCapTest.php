@@ -14,13 +14,16 @@ it('calculates the quota attainment correctly or deals that exceed the cap', fun
             'value' => $cap = 100_000_00,
         ])->create(['target_amount_per_month' => 100_000_00]);
 
+    $agent = Agent::factory()->create();
+
     Deal::factory($dealCount)
-        ->withAgentDeal(Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::yesterday())
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
+        ->won()
         ->create([
             'value' => $cap * 2,
         ]);
 
-    $plan->agents()->attach(Agent::first());
+    $plan->agents()->attach($agent);
 
     expect((new TotalQuotaAttainmentService($plan->agents->first(), $timeScope))->calculate())->toBe(floatval(1));
 })->with([

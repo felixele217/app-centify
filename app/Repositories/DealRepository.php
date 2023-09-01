@@ -53,7 +53,6 @@ class DealRepository
         $activePlans = $agent->plans()->active($dateInScope)->get();
 
         [$firstDateInScope, $lastDateInScope] = DateHelper::firstAndLastDateInScope($dateInScope ?? CarbonImmutable::now(), $timeScope);
-        //    dd($firstDateInScope, $lastDateInScope, $dateInScope);
 
         foreach ($activePlans as $plan) {
             $currentQuery = clone $baseQuery;
@@ -72,12 +71,6 @@ class DealRepository
             }
 
             $deals = $deals->concat($currentQuery->get());
-        }
-
-        if (count($deals) === 0) {
-            echo 'deal: '.Deal::first();
-        } else {
-            echo $deals;
         }
 
         return $deals->unique('id');
