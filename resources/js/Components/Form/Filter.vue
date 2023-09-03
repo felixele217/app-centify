@@ -6,10 +6,14 @@ import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
+const props = defineProps<{
+    reloadUrl: string
+}>()
+
 const sortOptions = TimeScopeEnumCases!.map((timeScope) => {
     return {
         name: timeScope,
-        href: route('dashboard') + '?time_scope=' + timeScope,
+        href: props.reloadUrl + '?time_scope=' + timeScope,
     }
 })
 

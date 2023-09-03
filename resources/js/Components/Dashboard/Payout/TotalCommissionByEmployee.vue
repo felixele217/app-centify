@@ -43,7 +43,7 @@ function quotaDisplay(quotaAttainment: number) {
                         <FolderArrowDownIcon class="h-5 w-5" />
                     </a>
                 </HideInProduction>
-                <Filter />
+                <Filter :reload-url="route('dashboard')" />
             </template>
         </PageHeader>
 
