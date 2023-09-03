@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('agents')->name('agents.')->controller(AgentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
+        Route::get('/{agent}', 'show')->name('show');
         Route::put('/{agent}', 'update')->name('update');
         Route::delete('/{agent}', 'destroy')->name('destroy');
 

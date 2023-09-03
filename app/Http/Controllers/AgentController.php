@@ -35,6 +35,13 @@ class AgentController extends Controller
         return back();
     }
 
+    public function show(Agent $agent): Response
+    {
+        return Inertia::render('Agent/Show', [
+            'agent' => $agent->load('activePaidLeave')->append('active_plans'),
+        ]);
+    }
+
     public function update(UpdateAgentRequest $request, Agent $agent): RedirectResponse
     {
         $this->authorize('any', $agent);

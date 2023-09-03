@@ -1,7 +1,5 @@
 <?php
 
-use App\Enum\AgentStatusEnum;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Plan;
 use Inertia\Testing\AssertableInertia;

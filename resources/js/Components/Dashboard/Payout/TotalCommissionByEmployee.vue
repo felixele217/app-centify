@@ -12,6 +12,7 @@ import euroDisplay from '@/utils/euroDisplay'
 import roundFloat from '@/utils/roundFloat'
 import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import ValueChange from './ValueChange.vue'
+import { router, usePage } from '@inertiajs/vue3'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -100,7 +101,18 @@ function quotaDisplay(quotaAttainment: number) {
                                 :key="agent.email"
                             >
                                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <AgentNameColumn :agent="agent" />
+                                    <AgentNameColumn
+                                        :agent="agent"
+                                        v-if="usePage().props.environment === 'production'"
+                                    />
+
+                                    <HideInProduction>
+                                        <AgentNameColumn
+                                            :agent="agent"
+                                            class="cursor-pointer"
+                                            @click="router.get(route('agents.show', agent.id))"
+                                        />
+                                    </HideInProduction>
                                 </td>
 
                                 <td class="whitespace-pre-wrap py-5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
