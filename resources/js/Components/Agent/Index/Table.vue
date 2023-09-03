@@ -16,7 +16,6 @@ import UpsertAgentSlideOver from './UpsertAgentSlideOver.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
-    possibleStatuses: Array<AgentStatusEnum>
     plans: Array<Pick<Plan, 'id' | 'name'>>
 }>()
 

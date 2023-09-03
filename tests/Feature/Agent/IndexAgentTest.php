@@ -28,8 +28,6 @@ it('passes the correct props', function () {
                     ->has('id')
                     ->has('name')
                 )
-                ->where('possible_statuses', array_column(AgentStatusEnum::cases(), 'value'))
-                ->where('continuation_of_pay_time_scope_options', array_column(ContinuationOfPayTimeScopeEnum::cases(), 'value'))
         );
 });
 
