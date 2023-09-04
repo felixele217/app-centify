@@ -66,14 +66,14 @@ function handleMonthChange(monthNumber: number) {
                 <div class="flex items-center justify-between">
                     <ChevronLeftIcon
                         @click="selectedYear--"
-                        class="h-7 w-7 rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
+                        class="h-7 w-7 cursor-pointer rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
                     />
 
                     <p class="text-lg font-medium">{{ selectedYear }}</p>
 
                     <ChevronRightIcon
                         @click="selectedYear++"
-                        class="h-7 w-7 rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
+                        class="h-7 w-7 cursor-pointer rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
                     />
                 </div>
 
