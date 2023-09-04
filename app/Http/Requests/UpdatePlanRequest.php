@@ -130,7 +130,7 @@ class UpdatePlanRequest extends FormRequest
         $data = $this->all();
 
         if (isset($data['start_date'])) {
-            $data['start_date'] = Carbon::createFromDate($data['start_date']);
+            $data['start_date'] = Carbon::createFromDate($data['start_date'])->startOfDay();
         }
 
         $this->replace($data);

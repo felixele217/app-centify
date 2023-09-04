@@ -15,7 +15,7 @@ it('can store a plan as an admin', function () {
 
     $this->post(route('plans.store'), [
         'name' => $name = 'first commission plan',
-        'start_date' => $startDate = Carbon::tomorrow(),
+        'start_date' => $startDate = Carbon::tomorrow()->endOfDay(),
         'target_amount_per_month' => $targetAmountPerMonth = 500000,
         'target_variable' => $targetVariable = TargetVariableEnum::DEAL_VALUE->value,
         'plan_cycle' => $planCycle = PlanCycleEnum::MONTHLY->value,
@@ -28,7 +28,10 @@ it('can store a plan as an admin', function () {
 
     expect(Plan::count())->toBe(1);
     expect($plan = Plan::whereName($name)->first())->not()->toBeNull();
-    expect($plan->start_date)->toEqual($startDate);
+    expect($plan->start_date->toDateString())->toEqual($startDate->toDateString());
+    expect($plan->start_date->format('H'))->toEqual('00');
+    expect($plan->start_date->format('i'))->toEqual('00');
+    expect($plan->start_date->format('s'))->toEqual('00');
     expect($plan->target_amount_per_month)->toEqual($targetAmountPerMonth);
     expect($plan->target_variable->value)->toEqual($targetVariable);
     expect($plan->plan_cycle->value)->toEqual($planCycle);

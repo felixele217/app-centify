@@ -18,7 +18,7 @@ it('can update a plan as an admin', function () {
 
     $this->put(route('plans.update', $plan), [
         'name' => $name = 'John Doe',
-        'start_date' => $startDate = Carbon::tomorrow(),
+        'start_date' => $startDate = Carbon::tomorrow()->endOfDay(),
         'target_amount_per_month' => $targetAmountPerMonth = fake()->randomElement([200000, 400000]),
         'target_variable' => $targetVariable = fake()->randomElement(TargetVariableEnum::cases())->value,
         'plan_cycle' => $planCycle = fake()->randomElement(PlanCycleEnum::cases())->value,
@@ -29,7 +29,10 @@ it('can update a plan as an admin', function () {
     $plan->refresh();
 
     expect($plan->name)->toBe($name);
-    expect($plan->start_date->toDateString())->toBe($startDate->toDateString());
+    expect($plan->start_date->toDateString())->toEqual($startDate->toDateString());
+    expect($plan->start_date->format('H'))->toEqual('00');
+    expect($plan->start_date->format('i'))->toEqual('00');
+    expect($plan->start_date->format('s'))->toEqual('00');
     expect($plan->target_amount_per_month)->toBe($targetAmountPerMonth);
     expect($plan->target_variable->value)->toBe($targetVariable);
     expect($plan->plan_cycle->value)->toBe($planCycle);
