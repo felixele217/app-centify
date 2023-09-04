@@ -28,8 +28,8 @@ it('can update a plan with a kicker as an admin', function (Plan $plan) {
 
     expect(Kicker::wherePlanId($plan->id)->count())->toBe(1);
     expect($plan->kicker->type->value)->toBe($type);
-    expect($plan->kicker->threshold_in_percent)->toBe($thresholdInPercent / 100);
-    expect($plan->kicker->payout_in_percent)->toBe($payoutInPercent / 100);
+    expect($plan->kicker->threshold_factor)->toBe($thresholdInPercent / 100);
+    expect($plan->kicker->payout_factor)->toBe($payoutInPercent / 100);
     expect($plan->kicker->salary_type->value)->toBe($salaryType);
     expect($plan->kicker->time_scope->value)->toBe($timeScope);
 })->with([
@@ -112,6 +112,6 @@ it('does not update a kicker when an array with empty values is sent', function 
 
     expect($plan->kicker->type)->not()->toBeNull();
     expect($plan->kicker->salary_type)->not()->toBeNull();
-    expect($plan->kicker->threshold_in_percent)->not()->toBeNull();
-    expect($plan->kicker->payout_in_percent)->not()->toBeNull();
+    expect($plan->kicker->threshold_factor)->not()->toBeNull();
+    expect($plan->kicker->payout_factor)->not()->toBeNull();
 });

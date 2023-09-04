@@ -15,8 +15,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Kicker extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 
@@ -31,17 +31,17 @@ class Kicker extends Model implements Auditable
         return $this->belongsTo(Plan::class);
     }
 
-    protected function thresholdInPercent(): Attribute
+    protected function thresholdFactor(): Attribute
     {
         return Attribute::make(
-            get: fn (int $value) => $value / 100,
+            get: fn () => $this->threshold_in_percent / 100,
         );
     }
 
-    protected function payoutInPercent(): Attribute
+    protected function payoutFactor(): Attribute
     {
         return Attribute::make(
-            get: fn (int $value) => $value / 100,
+            get: fn () => $this->payout_in_percent / 100,
         );
     }
 }

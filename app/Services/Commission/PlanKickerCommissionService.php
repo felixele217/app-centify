@@ -20,10 +20,10 @@ class PlanKickerCommissionService
 
         $factor = $timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
 
-        $kickerIsMet = $kicker->threshold_in_percent * $factor <= $quotaAttainmentThisTimeScope;
+        $kickerIsMet = $kicker->threshold_factor * $factor <= $quotaAttainmentThisTimeScope;
 
         return $kickerIsMet
-            ? intval(round($kicker->payout_in_percent * ($agent->base_salary / 4)))
+            ? intval(round($kicker->payout_factor * ($agent->base_salary / 4)))
             : 0;
     }
 }

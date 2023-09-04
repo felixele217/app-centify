@@ -91,7 +91,7 @@ const planIdBeingDeleted = ref<number | null>()
             <div class="flex flex-col justify-evenly">
                 <Tooltip
                     placement="top"
-                    :text="props.plan.kicker ? `As soon as participating agents achieve ${roundFloat(props.plan.kicker!.threshold_in_percent * 100, 0)}% of their quota target, they earn ${roundFloat(props.plan.kicker!.payout_in_percent * 100, 0)}% of their ${props.plan.kicker!.salary_type} as one-time payment.` : ''"
+                    :text="props.plan.kicker ? `As soon as participating agents achieve ${props.plan.kicker!.threshold_in_percent}% of their quota target, they earn ${props.plan.kicker!.payout_in_percent}% of their ${props.plan.kicker!.salary_type} as one-time payment.` : ''"
                 >
                     <div class="flex items-center justify-end gap-1">
                         <p class="-mb-0.5 text-sm text-gray-600">Kicker</p>

@@ -23,8 +23,8 @@ it('can store a plan with a kicker as an admin', function (TimeScopeEnum $timeSc
     $this->post(route('plans.store'))->assertRedirect(route('plans.index'));
 
     expect(Plan::first()->kicker->type->value)->toBe($type);
-    expect(Plan::first()->kicker->threshold_in_percent)->toBe($thresholdInPercent / 100);
-    expect(Plan::first()->kicker->payout_in_percent)->toBe($payoutInPercent / 100);
+    expect(Plan::first()->kicker->threshold_factor)->toBe($thresholdInPercent / 100);
+    expect(Plan::first()->kicker->payout_factor)->toBe($payoutInPercent / 100);
     expect(Plan::first()->kicker->salary_type->value)->toBe($salaryType);
     expect(Plan::first()->kicker->time_scope->value)->toBe($timeScope->value);
 })->with(TimeScopeEnum::cases());
