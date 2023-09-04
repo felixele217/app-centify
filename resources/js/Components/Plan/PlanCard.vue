@@ -15,6 +15,7 @@ import TeamIcon from '../Icon/TeamIcon.vue'
 import Modal from '../Modal.vue'
 import Tooltip from '../Tooltip.vue'
 import PlanCardAdditionalFieldIcon from './PlanCardAdditionalFieldIcon.vue'
+import roundFloat from '@/utils/roundFloat'
 
 const props = defineProps<{
     plan: Plan
@@ -99,7 +100,7 @@ const planIdBeingDeleted = ref<number | null>()
                 </Tooltip>
                 <Tooltip
                     placement="top"
-                    :text="props.plan.cliff ? `If participating agents don't achieve ${props.plan.cliff!.threshold_in_percent * 100}% of their quota target, they earn no commission.` : ''"
+                    :text="props.plan.cliff ? `If participating agents don't achieve ${roundFloat(props.plan.cliff!.threshold_in_percent * 100, 0)}% of their quota target, they earn no commission.` : ''"
                 >
                     <div class="flex items-center justify-end gap-1">
                         <p class="-mb-0.5 text-sm text-gray-600">Cliff</p>

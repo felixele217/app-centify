@@ -33,6 +33,7 @@ import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
+import roundFloat from '@/utils/roundFloat'
 
 export interface AdditionalField {
     id: number
@@ -84,7 +85,7 @@ const form = useForm<UpsertPlanForm>({
 
     cliff: {
         threshold_in_percent: props.plan?.cliff?.threshold_in_percent
-            ? props.plan?.cliff.threshold_in_percent * 100
+            ? roundFloat(props.plan?.cliff.threshold_in_percent * 100, 0)
             : null,
         time_scope: 'monthly' as TimeScopeEnum,
     },
