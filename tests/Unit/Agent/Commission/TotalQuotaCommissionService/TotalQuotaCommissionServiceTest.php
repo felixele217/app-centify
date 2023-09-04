@@ -6,7 +6,7 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\PlanQuotaCommissionService;
+use App\Services\Commission\PlanCommissionService;
 use App\Services\Commission\TotalCommissionService;
 use Carbon\Carbon;
 
@@ -36,8 +36,8 @@ it('returns the combined quota commissions of all plans of the user', function (
     $aePlan->agents()->attach($agent);
 
     expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(
-        (new PlanQuotaCommissionService($timeScope))->calculate($agent, $sdrPlan)
-        + (new PlanQuotaCommissionService($timeScope))->calculate($agent, $aePlan)
+        (new PlanCommissionService($timeScope))->calculate($agent, $sdrPlan)
+        + (new PlanCommissionService($timeScope))->calculate($agent, $aePlan)
     );
 })->with(TimeScopeEnum::cases());
 
@@ -69,8 +69,8 @@ it('returns the combined quota commissions of all plans of the user for a past t
     $aePlan->agents()->attach($agent);
 
     expect((new TotalCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent))->toBe(
-        (new PlanQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $sdrPlan)
-        + (new PlanQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $aePlan)
+        (new PlanCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $sdrPlan)
+        + (new PlanCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $aePlan)
     );
 })->with(TimeScopeEnum::cases());
 

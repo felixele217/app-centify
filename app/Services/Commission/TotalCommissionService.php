@@ -23,7 +23,7 @@ class TotalCommissionService
     public function calculate(Agent $agent): ?int
     {
         return $agent->plans()->active()->get()
-            ->map(fn (Plan $plan) => (new PlanQuotaCommissionService($this->timeScope, $this->dateInScope))->calculate($agent, $plan))
+            ->map(fn (Plan $plan) => (new PlanCommissionService($this->timeScope, $this->dateInScope))->calculate($agent, $plan))
             ->sum();
     }
 }

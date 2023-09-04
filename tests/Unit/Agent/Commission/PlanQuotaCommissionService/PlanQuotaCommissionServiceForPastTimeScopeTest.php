@@ -5,7 +5,7 @@ use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\PlanQuotaCommissionService;
+use App\Services\Commission\PlanCommissionService;
 
 it('returns the correct commission for a plan for a past time scope', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->active()
@@ -29,5 +29,5 @@ it('returns the correct commission for a plan for a past time scope', function (
 
     $expectedCommission = ($agent->variable_pay) / (12 / $timeScope->monthCount());
 
-    expect((new PlanQuotaCommissionService($timeScope, DateHelper::dateInPreviousTimeScope($timeScope)->firstOfMonth()))->calculate($agent, $plan))->toBe(intval($expectedCommission));
+    expect((new PlanCommissionService($timeScope, DateHelper::dateInPreviousTimeScope($timeScope)->firstOfMonth()))->calculate($agent, $plan))->toBe(intval($expectedCommission));
 })->with(TimeScopeEnum::cases());

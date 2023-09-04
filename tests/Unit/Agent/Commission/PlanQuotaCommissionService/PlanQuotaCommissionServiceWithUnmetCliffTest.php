@@ -4,7 +4,7 @@ use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\PlanQuotaCommissionService;
+use App\Services\Commission\PlanCommissionService;
 use Carbon\Carbon;
 
 it('returns normal quota commission even if there is a cliff that was not met', function (TimeScopeEnum $timeScope) {
@@ -34,5 +34,5 @@ it('returns normal quota commission even if there is a cliff that was not met', 
 
     $expectedCommission = (($agent->variable_pay) / (12 / $timeScope->monthCount())) * $cliffPercentage;
 
-    expect((new PlanQuotaCommissionService($timeScope))->calculate($agent, $plan, $timeScope))->toBe(intval($expectedCommission));
+    expect((new PlanCommissionService($timeScope))->calculate($agent, $plan, $timeScope))->toBe(intval($expectedCommission));
 })->with(TimeScopeEnum::cases());
