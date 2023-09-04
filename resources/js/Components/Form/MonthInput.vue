@@ -37,6 +37,8 @@ const months = [
 ]
 
 function handleMonthChange(monthNumber: number) {
+    dropdownIsOpen.value = false
+
     emit('date-changed', new Date(selectedYear.value, monthNumber - 1, 1))
 }
 </script>
@@ -60,21 +62,23 @@ function handleMonthChange(monthNumber: number) {
         </template>
 
         <template #content>
-            <div class="px-4 py-4">
+            <div class="rounded-lg px-4 py-4 shadow-md ring-1 ring-gray-900/5">
                 <div class="flex items-center justify-between">
                     <ChevronLeftIcon
                         @click="selectedYear--"
                         class="h-7 w-7 rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
                     />
+
                     <p class="text-lg font-medium">{{ selectedYear }}</p>
+
                     <ChevronRightIcon
                         @click="selectedYear++"
                         class="h-7 w-7 rounded-md stroke-2 p-1 text-slate-500 hover:bg-slate-200"
                     />
                 </div>
 
-                <div class="mt-2 space-y-2">
-                    <div class="grid grid-cols-3 items-center justify-between gap-2">
+                <div class="mt-2 space-y-3">
+                    <div class="grid grid-cols-3 items-center justify-between gap-3">
                         <p
                             v-for="month in months"
                             @click="handleMonthChange(month.monthNumber)"

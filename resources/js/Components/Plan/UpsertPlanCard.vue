@@ -239,18 +239,12 @@ const isUpsertingAgent = ref(false)
                                 value="Start Date"
                                 required
                             />
-                            <DateInput
+
+                            <MonthInput
                                 :current-date="form.start_date"
                                 @date-changed="(newDate: Date) => (form.start_date = newDate)"
                             />
 
-                            <HideInProduction>
-                                <MonthInput
-                                    :current-date="form.start_date"
-                                    @date-changed="(newDate: Date) => (form.start_date = newDate)"
-                                />
-                            </HideInProduction>
-                           
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.start_date"
