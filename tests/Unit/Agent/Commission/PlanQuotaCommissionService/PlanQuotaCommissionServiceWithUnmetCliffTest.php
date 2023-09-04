@@ -32,7 +32,7 @@ it('returns normal quota commission even if there is a cliff that was not met', 
             'value' => $targetAmountPerMonth * $timeScope->monthCount() * $cliffPercentage,
         ]);
 
-    $expectedCommission = (($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount())) * $cliffPercentage;
+    $expectedCommission = (($agent->variable_pay) / (12 / $timeScope->monthCount())) * $cliffPercentage;
 
     expect((new PlanQuotaCommissionService($timeScope))->calculate($agent, $plan, $timeScope))->toBe(intval($expectedCommission));
 })->with(TimeScopeEnum::cases());

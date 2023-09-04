@@ -32,7 +32,7 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
         'continuation_of_pay_time_scope' => ContinuationOfPayTimeScopeEnum::QUARTER->value,
     ]);
 
-    $variableSalaryPerMonth = ($agent->on_target_earning - $agent->base_salary) / 12;
+    $variableSalaryPerMonth = ($agent->variable_pay) / 12;
 
     $expectedCommissionFromQuota = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
     $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;

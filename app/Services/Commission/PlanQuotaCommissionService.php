@@ -34,7 +34,7 @@ class PlanQuotaCommissionService
             return null;
         }
 
-        $annualShareOfVariablePay = $quotaAttainmentForTimeScope * ($agent->on_target_earning - $agent->base_salary);
+        $annualShareOfVariablePay = $quotaAttainmentForTimeScope * ($agent->variable_pay);
 
         $commissionFromQuota = match ($this->timeScope) {
             TimeScopeEnum::MONTHLY => $annualShareOfVariablePay / 12,

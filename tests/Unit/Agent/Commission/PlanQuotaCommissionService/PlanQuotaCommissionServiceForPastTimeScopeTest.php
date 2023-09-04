@@ -27,7 +27,7 @@ it('returns the correct commission for a plan for a past time scope', function (
             'value' => $targetAmountPerMonth * $timeScope->monthCount(),
         ]);
 
-    $expectedCommission = ($agent->on_target_earning - $agent->base_salary) / (12 / $timeScope->monthCount());
+    $expectedCommission = ($agent->variable_pay) / (12 / $timeScope->monthCount());
 
     expect((new PlanQuotaCommissionService($timeScope, DateHelper::dateInPreviousTimeScope($timeScope)->firstOfMonth()))->calculate($agent, $plan))->toBe(intval($expectedCommission));
 })->with(TimeScopeEnum::cases());

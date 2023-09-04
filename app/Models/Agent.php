@@ -25,8 +25,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Agent extends Authenticatable implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasApiTokens, HasFactory, Notifiable;
+    use \OwenIt\Auditing\Auditable;
 
     protected string $guard = 'agent';
 
@@ -99,6 +99,13 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: fn () => count((new PaidLeaveDaysService())->paidLeaveDays($this, queryTimeScope(), AgentStatusEnum::VACATION)),
+        );
+    }
+
+    protected function variablePay(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->on_target_earning - $this->base_salary
         );
     }
 
