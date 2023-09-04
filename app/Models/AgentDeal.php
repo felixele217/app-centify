@@ -27,10 +27,10 @@ class AgentDeal extends Pivot implements Auditable
         'triggered_by' => TriggerEnum::class,
     ];
 
-    protected function dealPercentage(): Attribute
+    protected function dealFactor(): Attribute
     {
         return Attribute::make(
-            get: fn (int $value) => $value / 100,
+            get: fn () => $this->deal_percentage / 100,
         );
     }
 

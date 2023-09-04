@@ -27,14 +27,14 @@ it('can store a split for a deal that has a scheduled demo', function () {
         ],
     ]);
 
-    expect($this->deal->fresh()->sdr->pivot->deal_percentage)->toBe((100 - $dealPercentage - $dealPercentage2) / 100);
+    expect($this->deal->fresh()->sdr->pivot->deal_factor)->toBe((100 - $dealPercentage - $dealPercentage2) / 100);
     expect($this->deal->fresh()->sdr->pivot->id)->not()->toBe($agentId);
     expect($this->deal->fresh()->sdr->pivot->id)->not()->toBe($agentId2);
 
-    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($dealPercentage / 100);
+    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_factor)->toBe($dealPercentage / 100);
     expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SCHEDULED->value);
 
-    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_percentage)->toBe($dealPercentage2 / 100);
+    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_factor)->toBe($dealPercentage2 / 100);
     expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->triggered_by->value)->toBe(TriggerEnum::DEMO_SCHEDULED->value);
 });
 
@@ -60,7 +60,7 @@ it('updates the splits correctly if there already were some', function () {
     ]);
 
     expect($this->deal->demoScheduledShareholders->count())->toBe(2);
-    expect($agentDeal->fresh()->deal_percentage)->toBe($newSharedPercentage / 100);
+    expect($agentDeal->fresh()->deal_factor)->toBe($newSharedPercentage / 100);
 });
 
 it('removes the split if it is not present in the request', function () {

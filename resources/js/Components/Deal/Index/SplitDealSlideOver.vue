@@ -60,7 +60,7 @@ function loadExistingAgentsFromSplits() {
     return Object.values(shareholders!).map((agent) => ({
         name: agent.name,
         id: agent.id,
-        deal_percentage: agent.pivot.deal_percentage * 100,
+        deal_percentage: agent.pivot.deal_percentage,
     }))
 }
 

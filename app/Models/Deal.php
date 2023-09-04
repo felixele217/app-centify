@@ -89,6 +89,6 @@ class Deal extends Model implements Auditable
 
     public function percentageFactorForAgent(Agent $agent): float
     {
-        return $this->agents()->whereAgentId($agent->id)->first()->pivot->deal_percentage;
+        return $this->agents()->whereAgentId($agent->id)->first()->pivot->deal_factor;
     }
 }

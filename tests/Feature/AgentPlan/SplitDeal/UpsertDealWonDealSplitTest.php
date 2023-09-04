@@ -30,9 +30,9 @@ it('can store a split for a deal that is won', function () {
         ],
     ]);
 
-    expect($this->deal->ae->pivot->fresh()->deal_percentage)->toBe((100 - $dealPercentage - $dealPercentage2) / 100);
-    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_percentage)->toBe($dealPercentage / 100);
-    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_percentage)->toBe($dealPercentage2 / 100);
+    expect($this->deal->ae->pivot->fresh()->deal_factor)->toBe((100 - $dealPercentage - $dealPercentage2) / 100);
+    expect($this->deal->agents()->whereAgentId($agentId)->first()->pivot->deal_factor)->toBe($dealPercentage / 100);
+    expect($this->deal->agents()->whereAgentId($agentId2)->first()->pivot->deal_factor)->toBe($dealPercentage2 / 100);
 });
 
 it('updates the splits correctly if there already were some', function () {
@@ -57,7 +57,7 @@ it('updates the splits correctly if there already were some', function () {
     ]);
 
     expect($this->deal->dealWonShareholders->count())->toBe(2);
-    expect($agentDeal->fresh()->deal_percentage)->toBe($newSharedPercentage / 100);
+    expect($agentDeal->fresh()->deal_factor)->toBe($newSharedPercentage / 100);
 });
 
 it('removes the split if it is not present in the request', function () {
