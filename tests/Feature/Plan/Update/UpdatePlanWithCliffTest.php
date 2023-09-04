@@ -22,7 +22,7 @@ it('can update a plan with a cliff as an admin', function (Plan $plan) {
     $this->put(route('plans.update', $plan))->assertRedirect(route('plans.index'));
 
     expect(Cliff::wherePlanId($plan->id)->count())->toBe(1);
-    expect($plan->fresh()->cliff->threshold_in_percent)->toBe($cliffPercentage / 100);
+    expect($plan->fresh()->cliff->threshold_factor)->toBe($cliffPercentage / 100);
     expect($plan->cliff->time_scope->value)->toBe($timeScope);
 })->with([
     fn () => Plan::factory()->create([

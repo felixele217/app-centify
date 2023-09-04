@@ -86,20 +86,14 @@ const form = useForm<UpsertPlanForm>({
         })) || ([] as Array<AssignedAgent>),
 
     cliff: {
-        threshold_in_percent: props.plan?.cliff?.threshold_in_percent
-            ? roundFloat(props.plan?.cliff.threshold_in_percent * 100, 0)
-            : null,
+        threshold_in_percent: props.plan?.cliff?.threshold_in_percent ? props.plan?.cliff.threshold_in_percent : null,
         time_scope: 'monthly' as TimeScopeEnum,
     },
 
     kicker: {
         type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
-        threshold_in_percent: props.plan?.kicker?.threshold_in_percent
-            ? roundFloat(props.plan.kicker.threshold_in_percent * 100, 0)
-            : null,
-        payout_in_percent: props.plan?.kicker?.payout_in_percent
-            ? roundFloat(props.plan.kicker.payout_in_percent * 100, 0)
-            : null,
+        threshold_in_percent: props.plan?.kicker?.threshold_in_percent ? props.plan.kicker.threshold_in_percent : null,
+        payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent : null,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
         time_scope: 'quarterly' as TimeScopeEnum,
     },

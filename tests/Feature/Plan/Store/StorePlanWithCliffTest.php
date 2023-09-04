@@ -17,7 +17,7 @@ it('can store a plan with a cliff as an admin', function (TimeScopeEnum $timeSco
 
     $this->post(route('plans.store'))->assertRedirect(route('plans.index'));
 
-    expect(Plan::first()->cliff->threshold_in_percent)->toBe($cliffPercentage / 100);
+    expect(Plan::first()->cliff->threshold_factor)->toBe($cliffPercentage / 100);
     expect(Plan::first()->cliff->time_scope->value)->toBe($timeScope->value);
 })->with(TimeScopeEnum::cases());
 
