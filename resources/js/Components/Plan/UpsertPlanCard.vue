@@ -34,6 +34,8 @@ import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
 import roundFloat from '@/utils/roundFloat'
+import MonthInput from '../Form/MonthInput.vue'
+import HideInProduction from '../System/HideInProduction.vue'
 
 export interface AdditionalField {
     id: number
@@ -241,6 +243,14 @@ const isUpsertingAgent = ref(false)
                                 :current-date="form.start_date"
                                 @date-changed="(newDate: Date) => (form.start_date = newDate)"
                             />
+
+                            <HideInProduction>
+                                <MonthInput
+                                    :current-date="form.start_date"
+                                    @date-changed="(newDate: Date) => (form.start_date = newDate)"
+                                />
+                            </HideInProduction>
+                           
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.start_date"

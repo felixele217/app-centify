@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CurrencyInputVue } from 'vue-simple-currency'
+
 const props = defineProps<{
     modelValue: number | null
 }>()

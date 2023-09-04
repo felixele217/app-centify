@@ -4,7 +4,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 const props = withDefaults(
     defineProps<{
         align?: 'left' | 'right' | 'top'
-        width?: '48'
+        width?: '48' | '64'
         contentClasses?: string
         closeOnContentClick?: boolean
         isOpen?: boolean | null
@@ -30,6 +30,7 @@ onUnmounted(() => document.removeEventListener('keydown', closeOnEscape))
 const widthClass = computed(() => {
     return {
         48: 'w-48',
+        64: 'w-64',
     }[props.width.toString()]
 })
 
