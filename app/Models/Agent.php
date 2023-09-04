@@ -113,7 +113,7 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: function () {
-                return match ($this->activePaidLeave?->reason->value) {
+                return match ($this->load('activePaidLeave')->activePaidLeave?->reason->value) {
                     AgentStatusEnum::SICK->value => AgentStatusEnum::SICK,
                     AgentStatusEnum::VACATION->value => AgentStatusEnum::VACATION,
                     default => AgentStatusEnum::ACTIVE
