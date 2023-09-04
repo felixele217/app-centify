@@ -18,8 +18,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Deal extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 
@@ -40,6 +40,11 @@ class Deal extends Model implements Auditable
         ])->using(AgentDeal::class);
     }
 
+    public function rejections(): HasMany
+    {
+        return $this->hasMany(Rejection::class);
+    }
+
     public function SDR(): Attribute
     {
         return Attribute::make(
@@ -52,11 +57,6 @@ class Deal extends Model implements Auditable
         return Attribute::make(
             get: fn () => $this->agents()->wherePivot('triggered_by', TriggerEnum::DEAL_WON->value)->orderByPivot('created_at')->first(),
         );
-    }
-
-    public function rejections(): HasMany
-    {
-        return $this->hasMany(Rejection::class);
     }
 
     public function activeRejection(): Attribute
@@ -85,5 +85,10 @@ class Deal extends Model implements Auditable
         $acceptedBefore = $acceptedBefore ?? CarbonImmutable::now();
 
         $query->where('accepted_at', '<', $acceptedBefore);
+    }
+
+    public function percentageFactorForAgent(Agent $agent): float
+    {
+        return $this->agents()->whereAgentId($agent->id)->first()->pivot->deal_percentage;
     }
 }

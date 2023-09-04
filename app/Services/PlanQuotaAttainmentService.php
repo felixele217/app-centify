@@ -42,12 +42,14 @@ class PlanQuotaAttainmentService
 
     private function cappedSumOfDeals(Collection $deals): float
     {
-        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $this->plan->load('cap')->cap?->value))->toArray());
+        $cap = $this->plan->load('cap')->cap?->value;
+
+        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $cap))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): float
     {
-        $dealValue = $deal->value * $deal->agents()->whereAgentId($this->agent->id)->first()->pivot->deal_percentage;
+        $dealValue = $deal->value * $deal->percentageFactorForAgent($this->agent);
 
         if ((bool) $cap) {
             return min($dealValue, $cap);
