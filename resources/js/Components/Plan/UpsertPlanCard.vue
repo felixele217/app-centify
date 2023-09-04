@@ -93,9 +93,11 @@ const form = useForm<UpsertPlanForm>({
     kicker: {
         type: props.plan?.kicker?.type || ('' as KickerTypeEnum),
         threshold_in_percent: props.plan?.kicker?.threshold_in_percent
-            ? props.plan.kicker.threshold_in_percent * 100
+            ? roundFloat(props.plan.kicker.threshold_in_percent * 100, 0)
             : null,
-        payout_in_percent: props.plan?.kicker?.payout_in_percent ? props.plan.kicker.payout_in_percent * 100 : null,
+        payout_in_percent: props.plan?.kicker?.payout_in_percent
+            ? roundFloat(props.plan.kicker.payout_in_percent * 100, 0)
+            : null,
         salary_type: props.plan?.kicker?.salary_type || ('' as SalaryTypeEnum),
         time_scope: 'quarterly' as TimeScopeEnum,
     },
