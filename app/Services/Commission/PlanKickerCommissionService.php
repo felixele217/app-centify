@@ -10,9 +10,9 @@ use App\Models\Plan;
 
 class PlanKickerCommissionService
 {
-    public function calculate(Agent $agent, Plan $activePlan, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
+    public function calculate(Agent $agent, Plan $plan, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
     {
-        $kicker = $activePlan?->load('kicker')->kicker;
+        $kicker = $plan?->load('kicker')->kicker;
 
         if (is_null($quotaAttainmentThisTimeScope) || ! $kicker) {
             return null;

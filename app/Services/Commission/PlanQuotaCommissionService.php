@@ -10,7 +10,7 @@ use App\Models\Plan;
 use App\Services\PlanQuotaAttainmentService;
 use Carbon\CarbonImmutable;
 
-class PlanCommissionService
+class PlanQuotaCommissionService
 {
     private CarbonImmutable $dateInScope;
 

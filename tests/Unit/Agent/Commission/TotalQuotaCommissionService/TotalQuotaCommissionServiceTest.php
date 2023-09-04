@@ -6,8 +6,8 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\PlanCommissionService;
-use App\Services\Commission\TotalCommissionService;
+use App\Services\Commission\PlanQuotaCommissionService;
+use App\Services\Commission\TotalQuotaCommissionService;
 use Carbon\Carbon;
 
 it('returns the combined quota commissions of all plans of the user', function (TimeScopeEnum $timeScope) {
@@ -35,9 +35,9 @@ it('returns the combined quota commissions of all plans of the user', function (
     $sdrPlan->agents()->attach($agent);
     $aePlan->agents()->attach($agent);
 
-    expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(
-        (new PlanCommissionService($timeScope))->calculate($agent, $sdrPlan)
-        + (new PlanCommissionService($timeScope))->calculate($agent, $aePlan)
+    expect((new TotalQuotaCommissionService($timeScope))->calculate($agent))->toBe(
+        (new PlanQuotaCommissionService($timeScope))->calculate($agent, $sdrPlan)
+        + (new PlanQuotaCommissionService($timeScope))->calculate($agent, $aePlan)
     );
 })->with(TimeScopeEnum::cases());
 
@@ -68,9 +68,9 @@ it('returns the combined quota commissions of all plans of the user for a past t
     $sdrPlan->agents()->attach($agent);
     $aePlan->agents()->attach($agent);
 
-    expect((new TotalCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent))->toBe(
-        (new PlanCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $sdrPlan)
-        + (new PlanCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $aePlan)
+    expect((new TotalQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent))->toBe(
+        (new PlanQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $sdrPlan)
+        + (new PlanQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $aePlan)
     );
 })->with(TimeScopeEnum::cases());
 
@@ -81,5 +81,5 @@ it('returns 0 for the quota commission if the user has no plans', function (Time
         'organization_id' => $admin->id,
     ]);
 
-    expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(0);
+    expect((new TotalQuotaCommissionService($timeScope))->calculate($agent))->toBe(0);
 })->with(TimeScopeEnum::cases());

@@ -9,8 +9,8 @@ use App\Enum\TimeScopeEnum;
 use App\Models\Organization;
 use App\Models\Payout;
 use App\Services\Commission\PaidLeaveCommissionService;
-use App\Services\Commission\TotalCommissionService;
 use App\Services\Commission\TotalKickerCommissionService;
+use App\Services\Commission\TotalQuotaCommissionService;
 use Carbon\CarbonImmutable;
 
 class FreezePayoutsService
@@ -37,7 +37,7 @@ class FreezePayoutsService
                 'quota_attainment_percentage' => (new TotalQuotaAttainmentService($agent, $this->timeScope, $this->dateInScope))->calculate(),
                 'kicker_commission' => (new TotalKickerCommissionService())->calculate($agent, $this->timeScope) ?? 0,
                 'absence_commission' => (new PaidLeaveCommissionService())->calculate($agent, $this->timeScope),
-                'commission_from_quota' => (new TotalCommissionService($this->timeScope))->calculate($agent),
+                'commission_from_quota' => (new TotalQuotaCommissionService($this->timeScope))->calculate($agent),
             ]);
         }
     }

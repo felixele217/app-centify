@@ -7,7 +7,7 @@ use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\TotalCommissionChangeService;
-use App\Services\Commission\TotalCommissionService;
+use App\Services\Commission\TotalQuotaCommissionService;
 use Carbon\Carbon;
 
 it('total commission change is calculated correctly for commission from quota', function (TimeScopeEnum $timeScope) {
@@ -21,8 +21,8 @@ it('total commission change is calculated correctly for commission from quota', 
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
         ]);
 
-    $commissionThisTimeScope = (new TotalCommissionService($timeScope))->calculate($agent);
-    $commissionPreviousTimeScope = (new TotalCommissionService($timeScope))->calculate($agent);
+    $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
+    $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
     expect((new TotalCommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
 })->with([
