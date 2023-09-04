@@ -19,8 +19,8 @@ class TotalCommissionChangeService
             return null;
         }
 
-        $commissionLastTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
-        $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
+        $commissionLastTimeScope = (new TotalCommissionService($timeScope))->calculate($agent);
+        $commissionThisTimeScope = (new TotalCommissionService($timeScope))->calculate($agent);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
     }

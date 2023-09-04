@@ -34,12 +34,12 @@ class PlanQuotaCommissionService
             return null;
         }
 
-        $annualShareOfVariablePay = $quotaAttainmentForTimeScope * ($agent->variable_pay);
+        $annualCommissionFromQuota = $quotaAttainmentForTimeScope * ($agent->variable_pay);
 
         $commissionFromQuota = match ($this->timeScope) {
-            TimeScopeEnum::MONTHLY => $annualShareOfVariablePay / 12,
-            TimeScopeEnum::QUARTERLY => $annualShareOfVariablePay / 4,
-            TimeScopeEnum::ANNUALY => $annualShareOfVariablePay,
+            TimeScopeEnum::MONTHLY => $annualCommissionFromQuota / 12,
+            TimeScopeEnum::QUARTERLY => $annualCommissionFromQuota / 4,
+            TimeScopeEnum::ANNUALY => $annualCommissionFromQuota,
         };
 
         return intval(round($commissionFromQuota));

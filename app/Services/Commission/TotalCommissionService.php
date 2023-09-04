@@ -9,7 +9,7 @@ use App\Models\Agent;
 use App\Models\Plan;
 use Carbon\CarbonImmutable;
 
-class TotalQuotaCommissionService
+class TotalCommissionService
 {
     private CarbonImmutable $dateInScope;
 
