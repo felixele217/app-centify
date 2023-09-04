@@ -39,7 +39,7 @@ const months = [
 function handleMonthChange(monthNumber: number) {
     dropdownIsOpen.value = false
 
-    emit('date-changed', new Date(selectedYear.value, monthNumber - 1, 1))
+    emit('date-changed', new Date(selectedYear.value, monthNumber - 1, 1, 0, 0, 0, 0))
 }
 </script>
 
