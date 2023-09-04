@@ -13,9 +13,32 @@ const props = defineProps<{
     currentDate: Date | null
 }>()
 
+const emit = defineEmits<{
+    'date-changed': [date: Date]
+}>()
+
 const dropdownIsOpen = ref(false)
 
 const selectedYear = ref(new Date().getFullYear())
+
+const months = [
+    { label: 'Jan', monthNumber: 1 },
+    { label: 'Feb', monthNumber: 2 },
+    { label: 'Mar', monthNumber: 3 },
+    { label: 'Apr', monthNumber: 4 },
+    { label: 'May', monthNumber: 5 },
+    { label: 'Jun', monthNumber: 6 },
+    { label: 'Jul', monthNumber: 7 },
+    { label: 'Aug', monthNumber: 8 },
+    { label: 'Sep', monthNumber: 9 },
+    { label: 'Oct', monthNumber: 10 },
+    { label: 'Nov', monthNumber: 11 },
+    { label: 'Dec', monthNumber: 12 },
+]
+
+function handleMonthChange(monthNumber: number) {
+    emit('date-changed', new Date(selectedYear.value, monthNumber - 1, 1))
+}
 </script>
 
 <template>
@@ -51,72 +74,13 @@ const selectedYear = ref(new Date().getFullYear())
                 </div>
 
                 <div class="mt-2 space-y-2">
-                    <div class="flex items-center justify-between gap-2">
+                    <div class="grid grid-cols-3 items-center justify-between gap-2">
                         <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
+                            v-for="month in months"
+                            @click="handleMonthChange(month.monthNumber)"
+                            class="flex cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
                         >
-                            Jan
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Feb
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Mar
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between gap-2">
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Apr
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            May
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Jun
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between gap-2">
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Jul
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Aug
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Sep
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between gap-2">
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Oct
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Nov
-                        </p>
-                        <p
-                            class="flex w-1/3 cursor-pointer items-center justify-center rounded-md px-4 py-1 ring-2 ring-slate-200 hover:bg-slate-100"
-                        >
-                            Dec
+                            {{ month.label }}
                         </p>
                     </div>
                 </div>
