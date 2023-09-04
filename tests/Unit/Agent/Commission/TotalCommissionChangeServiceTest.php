@@ -6,7 +6,7 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\TotalCommissionChangeService;
+use App\Services\Commission\TotalQuotaCommissionChangeService;
 use App\Services\Commission\TotalQuotaCommissionService;
 use Carbon\Carbon;
 
@@ -24,7 +24,7 @@ it('total commission change is calculated correctly for commission from quota', 
     $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
     $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
-    expect((new TotalCommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
+    expect((new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,
@@ -58,7 +58,7 @@ it('returns null if there was no active plan last time scope', function (TimeSco
             'value' => $plan->target_amount_per_month,
         ]);
 
-    expect((new TotalCommissionChangeService())->calculate($agent, $timeScope))->toBeNull();
+    expect((new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))->toBeNull();
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,

@@ -9,7 +9,7 @@ use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 
-class TotalCommissionChangeService
+class TotalQuotaCommissionChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
     {
