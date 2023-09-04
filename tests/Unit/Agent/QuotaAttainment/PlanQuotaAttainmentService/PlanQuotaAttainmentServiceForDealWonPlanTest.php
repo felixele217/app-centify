@@ -1,13 +1,12 @@
 <?php
 
-use App\Enum\DealStatusEnum;
 use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\PlanQuotaAttainmentService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -74,7 +73,7 @@ it('does not use deals that were not won by this agent', function (TimeScopeEnum
 
     $deal = Deal::factory()
         ->withAgentDeal($agentId = Agent::factory()->create()->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
-       ->won(Carbon::now())
+        ->won(Carbon::now())
         ->create();
 
     AgentDeal::factory()->create([

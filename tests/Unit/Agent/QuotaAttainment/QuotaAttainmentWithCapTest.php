@@ -5,7 +5,7 @@ use App\Enum\TriggerEnum;
 use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\TotalQuotaAttainmentService;
+use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment correctly or deals that exceed the cap', function (TimeScopeEnum $timeScope, int $dealCount) {

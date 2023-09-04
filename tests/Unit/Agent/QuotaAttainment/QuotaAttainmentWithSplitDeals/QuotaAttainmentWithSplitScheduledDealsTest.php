@@ -6,7 +6,7 @@ use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\PlanQuotaAttainmentService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment correctly for splitted deals', function (int $sharedPercentage1, ?int $sharedPercentage2) {

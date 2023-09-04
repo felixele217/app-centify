@@ -7,7 +7,7 @@ namespace App\Services\Commission;
 use App\Enum\TimeScopeEnum;
 use App\Models\Agent;
 use App\Models\Plan;
-use App\Services\PlanQuotaAttainmentService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 
 class TotalKickerCommissionService
 {

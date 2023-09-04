@@ -9,7 +9,7 @@ use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\PlanKickerCommissionService;
 use App\Services\Commission\TotalKickerCommissionService;
-use App\Services\PlanQuotaAttainmentService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('returns the combined kicker commissions of all plans of the user', function (TimeScopeEnum $timeScope) {

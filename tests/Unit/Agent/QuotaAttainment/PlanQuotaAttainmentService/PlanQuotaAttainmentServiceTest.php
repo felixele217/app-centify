@@ -6,7 +6,7 @@ use App\Models\Agent;
 use App\Models\AgentPlan;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\PlanQuotaAttainmentService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment with the share_of_variable_pay of the AgentPlan', function (TimeScopeEnum $timeScope, $shareOfVariablePay) {

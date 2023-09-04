@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enum\AgentStatusEnum;
-use App\Enum\TimeScopeEnum;
-use App\Models\Organization;
 use App\Models\Payout;
-use App\Services\Commission\PaidLeaveCommissionService;
-use App\Services\Commission\TotalKickerCommissionService;
-use App\Services\Commission\TotalQuotaCommissionService;
+use App\Enum\TimeScopeEnum;
 use Carbon\CarbonImmutable;
+use App\Models\Organization;
+use App\Enum\AgentStatusEnum;
+use App\Services\Commission\PaidLeaveCommissionService;
+use App\Services\Commission\TotalQuotaCommissionService;
+use App\Services\Commission\TotalKickerCommissionService;
+use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 
 class FreezePayoutsService
 {

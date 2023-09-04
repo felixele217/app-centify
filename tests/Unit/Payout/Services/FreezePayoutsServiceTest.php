@@ -13,7 +13,7 @@ use App\Services\Commission\TotalKickerCommissionService;
 use App\Services\Commission\TotalQuotaCommissionService;
 use App\Services\FreezePayoutsService;
 use App\Services\PaidLeaveDaysService;
-use App\Services\TotalQuotaAttainmentService;
+use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('freezes the current agent data in payouts', function (TimeScopeEnum $timeScope) {

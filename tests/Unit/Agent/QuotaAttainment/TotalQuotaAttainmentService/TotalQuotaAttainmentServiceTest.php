@@ -7,7 +7,7 @@ use App\Models\Agent;
 use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\TotalQuotaAttainmentService;
+use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 use Carbon\Carbon;
 
 it('calculates the quota attainment for the current scope for all deal participations of the agent', function (TimeScopeEnum $timeScope) {

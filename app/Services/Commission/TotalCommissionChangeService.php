@@ -7,7 +7,7 @@ namespace App\Services\Commission;
 use App\Enum\TimeScopeEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
-use App\Services\TotalQuotaAttainmentService;
+use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 
 class TotalCommissionChangeService
 {
