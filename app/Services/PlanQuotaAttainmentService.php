@@ -18,7 +18,7 @@ class PlanQuotaAttainmentService
 
     public function __construct(
         private Agent $agent,
-        private Plan $activePlan,
+        private Plan $plan,
         private TimeScopeEnum $timeScope,
         CarbonImmutable $dateInScope = null
     ) {
@@ -30,19 +30,19 @@ class PlanQuotaAttainmentService
         $deals = DealRepository::dealsForAgent($this->agent, $this->timeScope, $this->dateInScope);
 
         $deals = $deals->filter(function (Deal $deal) {
-            return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->activePlan->trigger)->exists();
+            return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->plan->trigger)->exists();
         });
 
-        $shareOfVariablePay = $this->activePlan->agents()->whereAgentId($this->agent->id)->first()->pivot->share_of_variable_pay;
+        $shareOfVariablePay = $this->plan->agents()->whereAgentId($this->agent->id)->first()->pivot->share_of_variable_pay;
 
         return $shareOfVariablePay * (
-            $this->cappedSumOfDeals($deals) / ($this->activePlan->target_amount_per_month * $this->timeScope->monthCount())
+            $this->cappedSumOfDeals($deals) / ($this->plan->target_amount_per_month * $this->timeScope->monthCount())
         );
     }
 
     private function cappedSumOfDeals(Collection $deals): float
     {
-        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $this->activePlan->load('cap')->cap?->value))->toArray());
+        return array_sum($deals->map(fn (Deal $deal) => $this->cappedValue($deal, $this->plan->load('cap')->cap?->value))->toArray());
     }
 
     private function cappedValue(Deal $deal, ?int $cap): float
