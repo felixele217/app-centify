@@ -17,7 +17,7 @@ class PaidLeaveFactory extends Factory
         return [
             'id' => fake()->unique()->randomNumber() + 1,
             'reason' => $reason = fake()->randomElement([AgentStatusEnum::SICK, AgentStatusEnum::VACATION])->value,
-            'start_date' => Carbon::yesterday(),
+            'start_date' => Carbon::yesterday()->addWeekdays(1),
             'end_date' => $reason === AgentStatusEnum::SICK->value ? null : Carbon::parse('+1 week'),
             'continuation_of_pay_time_scope' => fake()->randomElement(ContinuationOfPayTimeScopeEnum::cases())->value,
             'sum_of_commissions' => 10_000_00,

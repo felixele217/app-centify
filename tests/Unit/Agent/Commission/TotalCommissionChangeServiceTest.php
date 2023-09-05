@@ -1,14 +1,15 @@
 <?php
 
-use App\Enum\TimeScopeEnum;
-use App\Enum\TriggerEnum;
-use App\Helper\DateHelper;
-use App\Models\Agent;
+use Carbon\Carbon;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Services\Commission\TotalQuotaCommissionChangeService;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
+use App\Helper\DateHelper;
+use App\Enum\TimeScopeEnum;
+use Inertia\Testing\AssertableInertia;
 use App\Services\Commission\TotalQuotaCommissionService;
-use Carbon\Carbon;
+use App\Services\Commission\TotalQuotaCommissionChangeService;
 
 it('total commission change is calculated correctly for commission from quota', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
@@ -24,7 +25,9 @@ it('total commission change is calculated correctly for commission from quota', 
     $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
     $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
-    expect((new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))->toBe(intval($commissionThisTimeScope - $commissionPreviousTimeScope));
+    expect((new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))->toBe(
+        intval($commissionThisTimeScope - $commissionPreviousTimeScope)
+    );
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,

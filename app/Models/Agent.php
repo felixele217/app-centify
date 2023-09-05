@@ -139,9 +139,7 @@ class Agent extends Authenticatable implements Auditable
     protected function quotaAttainmentChange(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                return (new TotalQuotaAttainmentChangeService())->calculate($this, queryTimeScope());
-            }
+            get: fn () => (new TotalQuotaAttainmentChangeService())->calculate($this, queryTimeScope())
         );
     }
 
@@ -155,9 +153,7 @@ class Agent extends Authenticatable implements Auditable
     protected function commissionChange(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                return (new TotalQuotaCommissionChangeService())->calculate($this, queryTimeScope());
-            }
+            get: fn () => (new TotalQuotaCommissionChangeService())->calculate($this, queryTimeScope())
         );
     }
 }
