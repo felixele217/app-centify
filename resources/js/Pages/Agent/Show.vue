@@ -6,6 +6,9 @@ import currentScope from '@/utils/Date/currentScope'
 import euroDisplay from '@/utils/euroDisplay'
 import queryParamValue from '@/utils/queryParamValue'
 import DoughnutChart from '@/Components/Dashboard/Payout/DoughnutChart/Content.vue'
+import { CurrencyEuroIcon } from '@heroicons/vue/24/outline'
+import Card from '@/Components/Card.vue'
+import roundFloat from '@/utils/roundFloat'
 
 const props = defineProps<{
     agent: Agent
@@ -16,7 +19,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 
 <template>
     <div class="w-216">
-        <div class="flex justify-between">
+        <Card class="flex justify-between">
             <div>
                 <h1>{{ agent.name }}</h1>
 
@@ -31,18 +34,26 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                 <Filter :reload-url="route('agents.show', props.agent.id)" />
                 <p class="font-semibold text-gray-400">{{ currentScope(timeScopeFromQuery) }}</p>
             </div>
-        </div>
+        </Card>
 
-        <div class="mt-10 flex justify-between gap-10">
+        <Card class="mt-5 flex justify-between gap-10">
             <div>
-                <h3>Commission</h3>
+                <h2 class="mb-4">Commission</h2>
 
-                <div v-for="plan in props.agent.active_plans">
-                    <p class="mt-2 text-lg font-semibold">{{ plan.name }}</p>
+                <div
+                    class="mt-6"
+                    v-for="plan in props.agent.active_plans"
+                >
+                    <p class="text-lg font-semibold">{{ plan.name }}</p>
 
-                    <p>Quota Attainment: {{ plan.quota_attainment }}</p>
-                    <p>Quota Commission: {{ plan.quota_commission ?? 0 }}</p>
-                    <p>Kicker Commission: {{ plan.kicker_commission ?? 0 }}</p>
+                    <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
+                        <p class>Quota Attainment:</p>
+                        <p class="text-right">{{ roundFloat(plan.quota_attainment * 100) }}%</p>
+                        <p>Quota Commission</p>
+                        <p class="text-right">{{ plan.quota_commission ?? 0 }}€</p>
+                        <p>Kicker Commission:</p>
+                        <p class="text-right">{{ plan.kicker_commission ?? 0 }}€</p>
+                    </div>
                 </div>
             </div>
 
@@ -53,6 +64,6 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     :quotaAttainment="agent.quota_attainment! * 100 ?? 0"
                 />
             </div>
-        </div>
+        </Card>
     </div>
 </template>
