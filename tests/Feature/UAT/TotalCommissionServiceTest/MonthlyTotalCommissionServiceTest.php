@@ -1,25 +1,28 @@
 <?php
 
-use App\Enum\AgentStatusEnum;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
-use App\Enum\KickerTypeEnum;
-use App\Enum\SalaryTypeEnum;
-use App\Enum\TimeScopeEnum;
-use App\Enum\TriggerEnum;
-use App\Helper\DateHelper;
-use App\Models\Agent;
-use App\Models\AgentPlan;
+use Carbon\Carbon;
 use App\Models\Deal;
 use App\Models\Plan;
+use App\Models\Agent;
+use App\Enum\TriggerEnum;
+use App\Models\AgentPlan;
+use App\Helper\DateHelper;
+use App\Enum\TimeScopeEnum;
+use App\Enum\KickerTypeEnum;
+use App\Enum\SalaryTypeEnum;
+use App\Enum\AgentStatusEnum;
+use Inertia\Testing\AssertableInertia;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Services\Commission\TotalCommissionService;
-use Carbon\Carbon;
 
 it('returns the correct commission for an agent with multiple differently weighted plans with kicker and cap and paid leaves', function () {
+    $admin = signInAdmin();
     $timeScope = TimeScopeEnum::MONTHLY;
 
     $agent = Agent::factory()->create([
         'base_salary' => 50_000_00,
         'on_target_earning' => 170_000_00,
+        'organization_id' => $admin->organization_id,
     ]);
 
     $sdrPlan = Plan::factory()->active()
@@ -91,11 +94,17 @@ it('returns the correct commission for an agent with multiple differently weight
     $paidLeaveCommissionPerDay = 10_000_00 / ContinuationOfPayTimeScopeEnum::QUARTER->amountOfDays();
 
     expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(
-        intval(round(
+       $expectedCommission = intval(round(
             10_000_00 + 7_000_00 // SDR Plan Commission (5 Capped Deals) + AE Plan Commission weighted with share of variable pay
             + (50_000_00 / 4) * 0.2 // KickerCommission (quarterly)
             + 8 * $paidLeaveCommissionPerDay // Paid Leave Commission (8 days sick/vacation)
         ))
+    );
+
+    $this->get(route('dashboard').'?time_scope='.$timeScope->value)->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Dashboard')
+            ->where('agents.0.commission', $expectedCommission)
     );
 });
 

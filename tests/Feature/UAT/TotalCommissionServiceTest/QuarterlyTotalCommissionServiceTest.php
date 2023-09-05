@@ -13,13 +13,16 @@ use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\TotalCommissionService;
 use Carbon\Carbon;
+use Inertia\Testing\AssertableInertia;
 
 it('returns the correct commission for an agent with multiple differently weighted plans with kicker and cap and paid leaves', function () {
+    $admin = signInAdmin();
     $timeScope = TimeScopeEnum::QUARTERLY;
 
     $agent = Agent::factory()->create([
         'base_salary' => 50_000_00,
         'on_target_earning' => 170_000_00,
+        'organization_id' => $admin->organization_id,
     ]);
 
     $sdrPlan = Plan::factory()->active()
@@ -91,11 +94,17 @@ it('returns the correct commission for an agent with multiple differently weight
     $paidLeaveCommissionPerDay = 10_000_00 / ContinuationOfPayTimeScopeEnum::QUARTER->amountOfDays();
 
     expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(
-        intval(round(
+        $expectedCommission = intval(round(
             30_000_00 // SDR Plan Commission (5 Capped Deals) + AE Plan Commission weighted with share of variable pay
             + (50_000_00 / 4) * 0.2 // KickerCommission (quarterly)
             + 8 * $paidLeaveCommissionPerDay // Paid Leave Commission (8 days sick/vacation)
         ))
+    );
+
+    $this->get(route('dashboard').'?time_scope='.$timeScope->value)->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Dashboard')
+            ->where('agents.0.commission', $expectedCommission)
     );
 });
 
