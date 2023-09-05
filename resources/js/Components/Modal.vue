@@ -50,7 +50,7 @@ const props = defineProps<{
                         <DialogPanel
                             class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
                         >
-                            <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                            <div class="absolute right-0 top-0 pr-4 pt-4">
                                 <button
                                     type="button"
                                     class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
@@ -66,7 +66,7 @@ const props = defineProps<{
                             <div class="sm:flex sm:items-start">
                                 <div
                                     v-if="props.isNegativeAction"
-                                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100"
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100"
                                 >
                                     <ExclamationTriangleIcon
                                         class="h-6 w-6 text-red-600"
@@ -75,11 +75,11 @@ const props = defineProps<{
                                 </div>
 
                                 <div
-                                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100"
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-100"
                                     v-else
                                 >
                                     <CheckIcon
-                                        class="h-6 w-6 text-green-600"
+                                        class="h-6 w-6 rounded-full bg-green-100 text-green-600"
                                         aria-hidden="true"
                                     />
                                 </div>
