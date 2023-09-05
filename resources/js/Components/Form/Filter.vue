@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { TimeScopeEnumCases } from '@/EnumCases/TimeScopeEnum'
+import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
+import currentScope from '@/utils/Date/currentScope'
 import queryParamValue from '@/utils/queryParamValue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
@@ -18,6 +20,7 @@ const sortOptions = TimeScopeEnumCases!.map((timeScope) => {
 })
 
 const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthly')
+const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 </script>
 
 <template>
@@ -26,12 +29,16 @@ const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthl
         class="relative inline-block text-left"
     >
         <div>
-            <MenuButton class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                {{ currentTimeScope }}
-                <ChevronDownIcon
-                    class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    aria-hidden="true"
-                />
+            <MenuButton>
+                <div class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                    {{ currentTimeScope }}
+                    <ChevronDownIcon
+                        class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                        aria-hidden="true"
+                    />
+                </div>
+
+                <p class="mt-0.5 text-left font-semibold text-gray-400">{{ currentScope(timeScopeFromQuery) }}</p>
             </MenuButton>
         </div>
 
