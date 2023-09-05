@@ -73,7 +73,7 @@ function agentPaidLeaveRanges() {
         :default="props.form.reason"
     />
 
-    <div class="space-y-4">
+    <div class="space-y-6">
         <div>
             <InputLabel
                 for="start_date"
@@ -167,27 +167,24 @@ function agentPaidLeaveRanges() {
                 class="mt-2"
                 :message="(props.form.errors as Record<string, string>)['sum_of_commissions']"
             />
-        </div>
 
-        <div
-            class="flex pt-1"
-            v-if="props.form.reason === 'sick'"
-        >
-            <Tooltip
-                text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
+            <div class="mt-2" v-if="props.form.reason === 'sick'">
+                <Tooltip
+                    text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
                 payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"
-            >
-                <Checkbox
-                    label="Employee has been employed for more than 28 calendar days"
-                    name="employed_long_enough"
-                    v-model:checked="props.form.employed_28_or_more_days"
-                />
+                >
+                    <Checkbox
+                        label="Employee has been employed for more than 28 calendar days"
+                        name="employed_long_enough"
+                        v-model:checked="props.form.employed_28_or_more_days"
+                    />
 
-                <InputError
-                    class="mt-2"
-                    :message="props.form.errors.employed_28_or_more_days"
-                />
-            </Tooltip>
+                    <InputError
+                        class="mt-2"
+                        :message="props.form.errors.employed_28_or_more_days"
+                    />
+                </Tooltip>
+            </div>
         </div>
 
         <div>
