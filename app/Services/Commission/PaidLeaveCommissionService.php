@@ -11,17 +11,8 @@ use App\Models\PaidLeave;
 use App\Repositories\PaidLeaveRepository;
 use Carbon\CarbonImmutable;
 
-class PaidLeaveCommissionService
+class PaidLeaveCommissionService extends TimeScopedCommissionService
 {
-    private CarbonImmutable $dateInScope;
-
-    public function __construct(
-        private TimeScopeEnum $timeScope,
-        CarbonImmutable $dateInScope = null
-    ) {
-        $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
-    }
-
     public function calculate(Agent $agent): int
     {
         $paidLeaves = PaidLeaveRepository::get($agent, $this->timeScope, $this->dateInScope);

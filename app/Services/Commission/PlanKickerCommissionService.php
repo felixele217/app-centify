@@ -12,7 +12,8 @@ class PlanKickerCommissionService
 {
     public function __construct(
         private TimeScopeEnum $timeScope
-    ) {}
+    ) {
+    }
 
     public function calculate(Agent $agent, Plan $plan, ?float $quotaAttainmentThisTimeScope): ?int
     {
