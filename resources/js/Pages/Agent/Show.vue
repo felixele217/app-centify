@@ -23,16 +23,18 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             <div>
                 <h1>{{ agent.name }}</h1>
 
-                <div class="mt-5 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
-                    <p class="font-semibold text-gray-900">Base Salary:</p>
-                    <p class="text-right tabular-nums">{{ euroDisplay(agent.base_salary) }}</p>
-                    <p class="font-semibold text-gray-900">On Target Earning:</p>
-                    <p class="text-right tabular-nums">{{ euroDisplay(agent.on_target_earning) }}</p>
+                <div class="mt-5">
+                    <p class="mb-0.5 text-gray-500">Base Salary</p>
+                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(agent.base_salary) }}</p>
+                </div>
+
+                <div class="mt-4">
+                    <p class="mb-0.5 text-gray-500">On Target Earning</p>
+                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(agent.on_target_earning) }}</p>
                 </div>
             </div>
             <div>
                 <Filter :reload-url="route('agents.show', props.agent.id)" />
-                <p class="font-semibold text-gray-400">{{ currentScope(timeScopeFromQuery) }}</p>
             </div>
         </Card>
 
@@ -49,7 +51,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
                         <p class>Quota Attainment:</p>
                         <p class="text-right">{{ roundFloat(plan.quota_attainment * 100) }}%</p>
-                        <p>Quota Commission</p>
+                        <p>Quota Commission:</p>
                         <p class="text-right">{{ plan.quota_commission ?? 0 }}€</p>
                         <p>Kicker Commission:</p>
                         <p class="text-right">{{ plan.kicker_commission ?? 0 }}€</p>
@@ -58,7 +60,10 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             </div>
 
             <div class="flex flex-col items-end">
-                <h3>Quota Attainment for {{ currentScope(timeScopeFromQuery) }}</h3>
+                <h2>
+                    Quota Attainment for
+                    {{ currentScope(timeScopeFromQuery) }}
+                </h2>
                 <DoughnutChart
                     class="mt-5"
                     :quotaAttainment="agent.quota_attainment! * 100 ?? 0"

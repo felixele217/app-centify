@@ -35,9 +35,9 @@ function quotaDisplay(quotaAttainment: number) {
             description="Overview of your agents' performances."
         >
             <template #custom-button>
-                <HideInProduction>
+                <HideInProduction class="mr-10">
                     <a
-                        class="mr-5 rounded-full bg-primary-50 p-2 hover:bg-primary-100"
+                        class="rounded-full bg-primary-50 p-2 hover:bg-primary-100"
                         :href="route('payouts-export')"
                     >
                         <FolderArrowDownIcon class="h-5 w-5" />

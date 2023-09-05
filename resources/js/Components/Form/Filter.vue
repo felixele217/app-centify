@@ -29,16 +29,18 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
         class="relative inline-block text-left"
     >
         <div>
-            <MenuButton>
-                <div class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+            <MenuButton class="group">
+                <div class="inline-flex justify-center text-sm font-medium text-gray-500 group-hover:text-gray-900">
                     {{ currentTimeScope }}
                     <ChevronDownIcon
-                        class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                        class="-mr-1 ml-1 h-5 w-5 flex-shrink-0"
                         aria-hidden="true"
                     />
                 </div>
 
-                <p class="mt-0.5 text-left font-semibold text-gray-400">{{ currentScope(timeScopeFromQuery) }}</p>
+                <p class="mt-0.5 text-left font-semibold text-gray-700 group-hover:text-gray-900">
+                    {{ currentScope(timeScopeFromQuery) }}
+                </p>
             </MenuButton>
         </div>
 
