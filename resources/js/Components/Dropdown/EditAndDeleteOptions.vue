@@ -28,16 +28,18 @@ defineEmits(['edit-action', 'delete-action'])
         </template>
 
         <template #content>
-            <DropdownBox
-                class="rounded-t-md"
-                text="Edit"
-                @click="$emit('edit-action')"
-            />
-            <DropdownBox
-                class="rounded-b-md"
-                text="Delete"
-                @click="$emit('delete-action')"
-            />
+            <div class="rounded-md shadow-lg ring-1 ring-gray-900/5">
+                <DropdownBox
+                    class="rounded-t-md"
+                    text="Edit"
+                    @click="$emit('edit-action')"
+                />
+                <DropdownBox
+                    class="rounded-b-md"
+                    text="Delete"
+                    @click="$emit('delete-action')"
+                />
+            </div>
         </template>
     </Dropdown>
 </template>
