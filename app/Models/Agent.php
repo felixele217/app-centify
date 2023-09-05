@@ -8,6 +8,7 @@ use App\Enum\AgentStatusEnum;
 use App\Services\Commission\TotalCommissionService;
 use App\Services\Commission\TotalQuotaCommissionChangeService;
 use App\Services\PaidLeaveDaysService;
+use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentChangeService;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -123,7 +124,13 @@ class Agent extends Authenticatable implements Auditable
     public function activePlans(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->plans()->active()->select('plans.id', 'plans.name')->get(),
+            get: fn () => $this->plans()->active()->get()->map(function (Plan $plan) {
+                return [
+                    'id' => $plan->id,
+                    'name' => $plan->name,
+                    'quota_attainment' => (new PlanQuotaAttainmentService($this, $plan, queryTimeScope()))->calculate(),
+                ];
+            }),
         );
     }
 
