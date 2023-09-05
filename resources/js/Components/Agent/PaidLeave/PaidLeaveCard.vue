@@ -46,7 +46,7 @@ const isDeletingPaidLeave = ref<boolean>(false)
 <template>
     <div>
         <Badge
-            class="mt-2"
+            class="mt-2 py-2"
             :text="paidLeaveRange"
             :color="props.paidLeave.reason === 'sick' ? 'purple' : 'yellow'"
             with-delete

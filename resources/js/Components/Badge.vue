@@ -14,34 +14,42 @@ defineEmits<{
 function color() {
     switch (props.color) {
         case 'red':
-            return 'text-red-700 bg-red-100'
+            return 'text-red-700 bg-red-100 ring-red-600/20'
         case 'green':
-            return 'text-green-700 bg-green-100'
+            return 'text-green-700 bg-green-100 ring-green-600/20'
         case 'indigo':
-            return 'text-indigo-700 bg-indigo-100'
+            return 'text-indigo-700 bg-indigo-100 ring-indigo-600/20'
         case 'yellow':
-            return 'text-yellow-700 bg-yellow-100'
+            return 'text-yellow-700 bg-yellow-100 ring-yellow-600/20'
         case 'purple':
-            return 'text-purple-700 bg-purple-100'
+            return 'text-purple-700 bg-purple-100 ring-purple-600/20'
     }
 }
 </script>
 
 <template>
-    <div
-        class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium"
+    <span
+        class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
         :class="color()"
     >
         <p>
             {{ props.text }}
         </p>
 
-        <XMarkIcon
+        <button
+            type="button"
+            class="group relative -mr-1 ml-1 h-5 w-5 rounded-sm hover:bg-purple-600/20"
             v-if="props.withDelete"
-            :class="color()"
-            class="h-6 w-6 cursor-pointer rounded-full p-1 text-gray-400 hover:bg-red-100 hover:text-red-500"
-            aria-hidden="true"
             @click="$emit('delete')"
-        />
-    </div>
+            aria-hidden="true"
+        >
+            <svg
+                viewBox="0 0 14 14"
+                class="h-5 w-5 stroke-purple-700/50 group-hover:stroke-purple-700/75"
+            >
+                <path d="M4 4l6 6m0-6l-6 6" />
+                <span class="absolute -inset-1" />
+            </svg>
+        </button>
+    </span>
 </template>
