@@ -13,7 +13,7 @@ trait HasActiveScope
     {
         $dateInScope = $dateInScope ?? CarbonImmutable::now();
 
-        $query->where('start_date', '<', $dateInScope)
+        $query->where('start_date', '<=', $dateInScope)
             ->where(function ($query) use ($dateInScope) {
                 $query->where('end_date', '>', $dateInScope)
                     ->orWhereNull('end_date');
