@@ -9,6 +9,8 @@ use App\Enum\TargetVariableEnum;
 use App\Enum\TriggerEnum;
 use App\Models\Admin;
 use App\Models\Agent;
+use App\Models\AgentPlan;
+use App\Models\Deal;
 use App\Models\Organization;
 use App\Models\Plan;
 use Carbon\Carbon;
@@ -70,7 +72,7 @@ class TestDataSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        Plan::create([
+        $demoScheduledPlan = Plan::create([
             'id' => 1,
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
@@ -83,7 +85,7 @@ class TestDataSeeder extends Seeder
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ])->first();
 
-        Plan::create([
+        $dealWonPlan = Plan::create([
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
             'name' => 'Sr. Account Executive Plan',
@@ -92,23 +94,38 @@ class TestDataSeeder extends Seeder
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
-            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
+            'trigger' => TriggerEnum::DEAL_WON->value,
         ])->first();
 
-        Plan::create([
-            'organization_id' => $admin->organization_id,
-            'creator_id' => $admin->id,
-            'name' => 'SDR Plan',
-            'start_date' => Carbon::parse('2023-05-01'),
-            'target_amount_per_month' => 5_000_00,
-            'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
-            'plan_cycle' => PlanCycleEnum::MONTHLY->value,
-            'target_amount_per_month' => 15_000_00,
-            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
-        ])->first();
+        AgentPlan::factory()->create([
+            'plan_id' => $demoScheduledPlan->id,
+            'agent_id' => $centifyAgent->id,
+            'share_of_variable_pay' => 30,
+        ]);
 
-        Plan::first()->agents()->attach([
-            ...$admin->organization->agents->pluck('id'),
+        AgentPlan::factory()->create([
+            'plan_id' => $dealWonPlan->id,
+            'agent_id' => $centifyAgent->id,
+            'share_of_variable_pay' => 70,
+        ]);
+
+        Deal::factory(3)
+            ->withAgentDeal($centifyAgent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
+            ->create();
+
+        Deal::factory(3)
+            ->withAgentDeal($centifyAgent->id, TriggerEnum::DEAL_WON, Carbon::now())
+            ->won(Carbon::now())
+            ->create();
+
+        AgentPlan::factory()->create([
+            'plan_id' => $demoScheduledPlan->id,
+            'agent_id' => $pipedriveAgent1->id,
+        ]);
+
+        AgentPlan::factory()->create([
+            'plan_id' => $demoScheduledPlan->id,
+            'agent_id' => $pipedriveAgent2->id,
         ]);
     }
 }

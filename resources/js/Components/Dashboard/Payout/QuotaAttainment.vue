@@ -38,6 +38,6 @@ const averageAchievedQuotaAttainment = props.agents.length
             </div>
         </div>
 
-        <DoughnutChart :averageAchievedQuotaAttainment="averageAchievedQuotaAttainment * 100" />
+        <DoughnutChart :quotaAttainment="averageAchievedQuotaAttainment * 100" />
     </Card>
 </template>

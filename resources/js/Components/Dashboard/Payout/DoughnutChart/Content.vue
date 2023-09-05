@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip)
 export default {
     name: 'App',
     props: {
-        averageAchievedQuotaAttainment: Number,
+        quotaAttainment: Number,
     },
     components: {
         Doughnut,
@@ -19,12 +19,7 @@ export default {
                 datasets: [
                     {
                         backgroundColor: [tailwindToHex['primary'], tailwindToHex['bg-gray-300']],
-                        data: [
-                            this.averageAchievedQuotaAttainment!,
-                            this.averageAchievedQuotaAttainment! >= 100
-                                ? 0
-                                : 100 - this.averageAchievedQuotaAttainment!,
-                        ],
+                        data: [this.quotaAttainment!, this.quotaAttainment! >= 100 ? 0 : 100 - this.quotaAttainment!],
                     },
                 ],
             },
@@ -49,6 +44,6 @@ export default {
             :options="chartOptions"
         />
 
-        <h2 class="absolute -mb-1">{{ averageAchievedQuotaAttainment!.toFixed(0) }}%</h2>
+        <h2 class="absolute -mb-1">{{ quotaAttainment!.toFixed(0) }}%</h2>
     </div>
 </template>

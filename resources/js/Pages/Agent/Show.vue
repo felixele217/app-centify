@@ -42,7 +42,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                 <h3>Quota Attainment for {{ currentScope(timeScopeFromQuery) }}</h3>
                 <DoughnutChart
                     class="mt-5"
-                    :averageAchievedQuotaAttainment="agent.quota_attainment! * 100 ?? 0"
+                    :quotaAttainment="agent.quota_attainment! * 100 ?? 0"
                 />
             </div>
         </div>
