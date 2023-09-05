@@ -13,6 +13,7 @@ class TotalCommissionService extends TimeScopedCommissionService
         $quotaCommission = (new TotalQuotaCommissionService($this->timeScope, $this->dateInScope))->calculate($agent);
 
         $kickerCommission = (new TotalKickerCommissionService($this->timeScope, $this->dateInScope))->calculate($agent);
+        // dd($kickerCommission);
 
         $paidLeaveCommission = (new PaidLeaveCommissionService($this->timeScope, $this->dateInScope))->calculate($agent);
 
