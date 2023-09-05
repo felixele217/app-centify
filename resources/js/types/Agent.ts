@@ -39,5 +39,8 @@ export default interface Agent {
     active_plans?: Array<{
         id: number
         name: string
+        quota_attainment: number
+        quota_commission: number
+        kicker_commission: number
     }>
 }

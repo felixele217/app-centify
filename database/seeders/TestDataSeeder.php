@@ -76,26 +76,26 @@ class TestDataSeeder extends Seeder
             'id' => 1,
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
-            'name' => 'Jr. Account Executive Plan',
+            'name' => 'Demo Scheduled Plan',
             'start_date' => Carbon::parse('2023-05-01'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'target_amount_per_month' => 35_000_00,
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
-        ])->first();
+        ]);
 
         $dealWonPlan = Plan::create([
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
-            'name' => 'Sr. Account Executive Plan',
+            'name' => 'Deal Won Plan',
             'target_amount_per_month' => 50_000_00,
             'start_date' => Carbon::parse('2023-05-01'),
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
             'trigger' => TriggerEnum::DEAL_WON->value,
-        ])->first();
+        ]);
 
         AgentPlan::factory()->create([
             'plan_id' => $demoScheduledPlan->id,

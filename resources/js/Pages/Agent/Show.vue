@@ -36,6 +36,14 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
         <div class="mt-10 flex justify-between gap-10">
             <div>
                 <h3>Commission</h3>
+
+                <div v-for="plan in props.agent.active_plans">
+                    <p class="mt-2 text-lg font-semibold">{{ plan.name }}</p>
+
+                    <p>Quota Attainment: {{ plan.quota_attainment }}</p>
+                    <p>Quota Commission: {{ plan.quota_commission ?? 0 }}</p>
+                    <p>Kicker Commission: {{ plan.kicker_commission ?? 0 }}</p>
+                </div>
             </div>
 
             <div class="flex flex-col items-end">

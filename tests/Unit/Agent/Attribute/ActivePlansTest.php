@@ -14,5 +14,9 @@ it('computes the active plans correctly', function () {
     ]))->create();
 
     expect($agent->active_plans)->toHaveCount(2);
-    expect($agent->active_plans->first())->toHaveKey('quota_attainment');
+    expect($agent->active_plans->first())->toHaveKeys([
+        'quota_attainment',
+        'quota_commission',
+        'kicker_commission',
+    ]);
 });

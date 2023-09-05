@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
+use App\Services\Commission\PlanKickerCommissionService;
+use App\Services\Commission\PlanQuotaCommissionService;
 use App\Services\Commission\TotalCommissionService;
 use App\Services\Commission\TotalQuotaCommissionChangeService;
 use App\Services\PaidLeaveDaysService;
@@ -128,7 +130,9 @@ class Agent extends Authenticatable implements Auditable
                 return [
                     'id' => $plan->id,
                     'name' => $plan->name,
-                    'quota_attainment' => (new PlanQuotaAttainmentService($this, $plan, queryTimeScope()))->calculate(),
+                    'quota_attainment' => $quotaAttainment = (new PlanQuotaAttainmentService($this, $plan, queryTimeScope()))->calculate(),
+                    'quota_commission' => (new PlanQuotaCommissionService(queryTimeScope()))->calculate($this, $plan),
+                    'kicker_commission' => (new PlanKickerCommissionService(queryTimeScope()))->calculate($this, $plan, $quotaAttainment),
                 ];
             }),
         );
