@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
-use App\Services\Commission\PaidLeaveCommissionService;
-use App\Services\Commission\TotalKickerCommissionService;
+use App\Services\Commission\TotalCommissionService;
 use App\Services\Commission\TotalQuotaCommissionChangeService;
-use App\Services\Commission\TotalQuotaCommissionService;
 use App\Services\PaidLeaveDaysService;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentChangeService;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
@@ -149,18 +147,8 @@ class Agent extends Authenticatable implements Auditable
 
     protected function commission(): Attribute
     {
-        $timeScope = queryTimeScope();
-
         return Attribute::make(
-            get: function () use ($timeScope) {
-                $quotaCommission = (new TotalQuotaCommissionService($timeScope))->calculate($this);
-
-                $totalKickerCommission = (new TotalKickerCommissionService($timeScope))->calculate($this);
-
-                $paidLeaveCommission = (new PaidLeaveCommissionService($timeScope))->calculate($this);
-
-                return $quotaCommission + $totalKickerCommission + $paidLeaveCommission;
-            }
+            get: fn () => (new TotalCommissionService(queryTimeScope()))->calculate($this)
         );
     }
 

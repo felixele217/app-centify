@@ -1,7 +1,5 @@
 <?php
 
-use App\Enum\AgentStatusEnum;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Models\Agent;
 use App\Models\AgentPlan;
 use App\Models\Plan;
@@ -14,7 +12,7 @@ it('passes the correct props', function () {
         'organization_id' => $admin->organization->id,
     ]);
 
-    $plans =Plan::factory($planCount = 2)->create([
+    $plans = Plan::factory($planCount = 2)->create([
         'organization_id' => $admin->organization->id,
     ]);
 

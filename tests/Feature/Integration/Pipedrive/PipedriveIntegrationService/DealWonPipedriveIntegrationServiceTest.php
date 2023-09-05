@@ -29,7 +29,6 @@ beforeEach(function () {
         'api_key' => env('PIPEDRIVE_DEMO_SET_BY', 'invalid key'),
     ]);
 
-
     $this->pipedriveFacade = new PipedriveFacade($this->admin->organization);
 
     $this->deals = $this->pipedriveFacade->deals();

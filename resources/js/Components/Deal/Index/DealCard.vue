@@ -125,9 +125,7 @@ function dealPercentages(trigger: TriggerEnum) {
 
     return (
         (trigger === 'Demo scheduled' ? 'Splits for Demo scheduled:\n' : 'Splits for Deal won:\n') +
-        agentsWithTrigger
-            .map((agent) => '\t' + agent.name + ': ' + agent.pivot.deal_percentage + '%')
-            .join('\n') +
+        agentsWithTrigger.map((agent) => '\t' + agent.name + ': ' + agent.pivot.deal_percentage + '%').join('\n') +
         '\n'
     )
 }

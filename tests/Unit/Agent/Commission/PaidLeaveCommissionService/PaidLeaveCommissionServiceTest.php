@@ -48,7 +48,7 @@ it('calculates the paid leave commission for a previous timescope', function (Ti
     foreach ($iterations = [0, 1] as $_) {
         $agent->paidLeaves()->create([
             'reason' => AgentStatusEnum::VACATION->value,
-            'start_date' => $paidLeaveStartDate =  $dateInPreviousTimeScope->firstOfMonth()->addWeekdays(1),
+            'start_date' => $paidLeaveStartDate = $dateInPreviousTimeScope->firstOfMonth()->addWeekdays(1),
             'end_date' => $paidLeaveEndDate = $dateInPreviousTimeScope->firstOfMonth()->addWeekdays(5),
             'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
             'sum_of_commissions' => $sumOfCommissions = 10_000_00,

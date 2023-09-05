@@ -1,19 +1,19 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
-use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TriggerEnum;
-use App\Models\AgentPlan;
-use App\Helper\DateHelper;
-use App\Enum\TimeScopeEnum;
+use App\Enum\AgentStatusEnum;
+use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
-use App\Enum\AgentStatusEnum;
-use Inertia\Testing\AssertableInertia;
-use App\Enum\ContinuationOfPayTimeScopeEnum;
+use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
+use App\Helper\DateHelper;
+use App\Models\Agent;
+use App\Models\AgentPlan;
+use App\Models\Deal;
+use App\Models\Plan;
 use App\Services\Commission\TotalCommissionService;
+use Carbon\Carbon;
+use Inertia\Testing\AssertableInertia;
 
 it('returns the correct commission for an agent with multiple differently weighted plans with kicker and cap and paid leaves', function () {
     $admin = signInAdmin();
@@ -94,7 +94,7 @@ it('returns the correct commission for an agent with multiple differently weight
     $paidLeaveCommissionPerDay = 10_000_00 / ContinuationOfPayTimeScopeEnum::QUARTER->amountOfDays();
 
     expect((new TotalCommissionService($timeScope))->calculate($agent))->toBe(
-       $expectedCommission = intval(round(
+        $expectedCommission = intval(round(
             10_000_00 + 7_000_00 // SDR Plan Commission (5 Capped Deals) + AE Plan Commission weighted with share of variable pay
             + (50_000_00 / 4) * 0.2 // KickerCommission (quarterly)
             + 8 * $paidLeaveCommissionPerDay // Paid Leave Commission (8 days sick/vacation)

@@ -1,17 +1,17 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
-use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TriggerEnum;
-use App\Helper\DateHelper;
-use App\Enum\TimeScopeEnum;
 use App\Enum\KickerTypeEnum;
 use App\Enum\SalaryTypeEnum;
+use App\Enum\TimeScopeEnum;
+use App\Enum\TriggerEnum;
+use App\Helper\DateHelper;
+use App\Models\Agent;
+use App\Models\Deal;
+use App\Models\Plan;
 use App\Services\Commission\PlanKickerCommissionService;
 use App\Services\Commission\TotalKickerCommissionService;
 use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
+use Carbon\Carbon;
 
 it('returns the combined kicker commissions of all plans of the user', function (TimeScopeEnum $timeScope, int $factor) {
     $agent = Agent::factory()->create([
