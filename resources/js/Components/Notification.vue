@@ -46,11 +46,8 @@ import { Notification, NotificationGroup } from 'notiwind'
                                             {{ notification.text }}
                                         </p>
                                     </div>
-                                    <div class="ml-4 flex flex-shrink-0">
-                                        <button
-                                            type="button"
-                                            class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500"
-                                        >
+                                    <div class="ml-4">
+                                        <button class="rounded-md bg-white text-gray-400 hover:text-gray-500">
                                             <span class="sr-only">Close</span>
                                             <XMarkIcon
                                                 @click="close(notification.id)"
