@@ -26,7 +26,7 @@ it('calculates the commission with the additional paid leave value for the curre
 
     $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::MONTHLY))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
 
 it('calculates the commission with the additional paid leave value for the current month for the paid leave overlapping with last month', function () {
@@ -47,7 +47,7 @@ it('calculates the commission with the additional paid leave value for the curre
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::MONTHLY))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
 
 it('calculates the commission with the additional paid leave value for the current month for the paid leave overlapping with next month', function () {
@@ -68,5 +68,5 @@ it('calculates the commission with the additional paid leave value for the curre
 
     $paidLeaveCommission = $paidLeaveDaysThisMonth * $expectedCommissionsPerDay;
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::MONTHLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::MONTHLY))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });

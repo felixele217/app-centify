@@ -25,10 +25,12 @@ class PlanQuotaCommissionService
     {
         $planQuotaAttainment = (new PlanQuotaAttainmentService($agent, $plan, $this->timeScope, $this->dateInScope))->calculate();
 
-        return $this->calculateCommissionFromQuota($agent, $planQuotaAttainment);
+        $shareOfVariablePay = $plan->agents()->whereAgentId($agent->id)->first()->pivot->share_of_variable_pay;
+
+        return intval(round($shareOfVariablePay * $this->calculateCommissionFromQuota($agent, $planQuotaAttainment)));
     }
 
-    private function calculateCommissionFromQuota(Agent $agent, ?float $quotaAttainmentForTimeScope): ?int
+    private function calculateCommissionFromQuota(Agent $agent, ?float $quotaAttainmentForTimeScope): ?float
     {
         if (is_null($quotaAttainmentForTimeScope)) {
             return null;
@@ -42,6 +44,6 @@ class PlanQuotaCommissionService
             TimeScopeEnum::ANNUALY => $annualCommissionFromQuota,
         };
 
-        return intval(round($commissionFromQuota));
+        return $commissionFromQuota;
     }
 }

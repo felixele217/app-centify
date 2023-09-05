@@ -5,6 +5,7 @@ use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Models\AgentDeal;
+use App\Models\AgentPlan;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\QuotaAttainment\TotalQuotaAttainmentService;
@@ -41,7 +42,7 @@ it('calculates the quota attainment for the current scope for all deal participa
     $sdrPlan->agents()->attach($agent);
     $aePlan->agents()->attach($agent);
 
-    expect((new TotalQuotaAttainmentService($agent, $timeScope))->calculate())->toBe(floatval(2 * (2 / $timeScope->monthCount())));
+    expect((new TotalQuotaAttainmentService($agent, $timeScope))->calculate())->toBe(floatval((2 / $timeScope->monthCount())));
 })->with([TimeScopeEnum::MONTHLY]);
 
 it('returns 0 if the agent has no active plans in the scope', function (TimeScopeEnum $timeScope) {
@@ -62,6 +63,60 @@ it('returns 0 if the agent has no active plans in the scope', function (TimeScop
 
     expect((new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate())->toBe(floatval(0));
 })->with(TimeScopeEnum::cases());
+
+it('averages the quota attainments of multiple plans', function (TimeScopeEnum $timeScope, float $quotaAttainment) {
+    $agent = Agent::factory()->create([
+        'base_salary' => 50_000_00,
+        'on_target_earning' => 170_000_00,
+    ]);
+
+    $sdrPlan = Plan::factory()->active()
+        ->create([
+            'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
+        ]);
+
+    $aePlan = Plan::factory()->active()
+        ->create([
+            'trigger' => TriggerEnum::DEAL_WON->value,
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
+        ->create([
+            'value' => $sdrPlan->target_amount_per_month * $timeScope->monthCount(),
+            'add_time' => Carbon::now(),
+        ]);
+
+    Deal::factory()
+        ->withAgentDeal($agent->id, TriggerEnum::DEAL_WON, Carbon::now())
+        ->won(Carbon::now())
+        ->create([
+            'value' => $quotaAttainment * $aePlan->target_amount_per_month * $timeScope->monthCount(),
+        ]);
+
+    AgentPlan::factory()->create([
+        'plan_id' => $aePlan->id,
+        'agent_id' => $agent->id,
+        'share_of_variable_pay' => 70,
+    ]);
+
+    AgentPlan::factory()->create([
+        'plan_id' => $sdrPlan->id,
+        'agent_id' => $agent->id,
+        'share_of_variable_pay' => 30,
+    ]);
+
+    expect((new TotalQuotaAttainmentService($agent, $timeScope))->calculate())->toBe((1 + $quotaAttainment) / 2);
+})->with([
+    [TimeScopeEnum::MONTHLY, 0.5],
+    [TimeScopeEnum::QUARTERLY, 0.5],
+    [TimeScopeEnum::ANNUALY, 0.5],
+    [TimeScopeEnum::MONTHLY, 0.2],
+    [TimeScopeEnum::MONTHLY, 0.4],
+    [TimeScopeEnum::MONTHLY, 0.6],
+    [TimeScopeEnum::MONTHLY, 0.8],
+    [TimeScopeEnum::MONTHLY, 1],
+]);
 
 it('returns 0 if the agent does not have a base_salary or on_target_earning', function (TimeScopeEnum $timeScope, int $baseSalary, int $onTargetEarning) {
     Deal::factory()

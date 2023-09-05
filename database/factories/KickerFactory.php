@@ -20,7 +20,7 @@ class KickerFactory extends Factory
             'threshold_in_percent' => 200,
             'payout_in_percent' => 25,
             'salary_type' => fake()->randomElement(SalaryTypeEnum::cases())->value,
-            'time_scope' => fake()->randomElement(TimeScopeEnum::cases())->value,
+            'time_scope' => TimeScopeEnum::QUARTERLY->value,
             'plan_id' => Plan::factory()->create(),
         ];
     }

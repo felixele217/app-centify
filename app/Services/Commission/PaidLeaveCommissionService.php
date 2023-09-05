@@ -15,30 +15,32 @@ class PaidLeaveCommissionService
 {
     private CarbonImmutable $dateInScope;
 
-    public function __construct()
-    {
-        $this->dateInScope = CarbonImmutable::now();
+    public function __construct(
+        private TimeScopeEnum $timeScope,
+        CarbonImmutable $dateInScope = null
+    ) {
+        $this->dateInScope = $dateInScope ?? CarbonImmutable::now();
     }
 
-    public function calculate(Agent $agent, TimeScopeEnum $timeScope): int
+    public function calculate(Agent $agent): int
     {
-        $paidLeaves = PaidLeaveRepository::get($agent, $timeScope);
+        $paidLeaves = PaidLeaveRepository::get($agent, $this->timeScope, $this->dateInScope);
 
         return intval(round($paidLeaves
-            ->map(fn (PaidLeave $paidLeave) => $this->paidLeaveCommission($paidLeave, $timeScope))
+            ->map(fn (PaidLeave $paidLeave) => $this->paidLeaveCommission($paidLeave))
             ->sum()));
     }
 
-    private function paidLeaveCommission(PaidLeave $paidLeave, TimeScopeEnum $timeScope): float
+    private function paidLeaveCommission(PaidLeave $paidLeave): float
     {
         $commissionPerDay = $paidLeave->sum_of_commissions / $paidLeave->continuation_of_pay_time_scope->amountOfDays();
 
-        return $commissionPerDay * $this->paidLeaveWeekdaysForTimeScope($paidLeave, $timeScope);
+        return $commissionPerDay * $this->paidLeaveWeekdaysForTimeScope($paidLeave, $this->timeScope);
     }
 
-    private function paidLeaveWeekdaysForTimeScope(PaidLeave $paidLeave, TimeScopeEnum $timeScope): int
+    private function paidLeaveWeekdaysForTimeScope(PaidLeave $paidLeave): int
     {
-        return match ($timeScope) {
+        return match ($this->timeScope) {
             TimeScopeEnum::MONTHLY => $this->paidLeaveWeekdays($paidLeave, 'month', $this->dateInScope->firstOfMonth(), $this->dateInScope->lastOfMonth()),
             TimeScopeEnum::QUARTERLY => $this->paidLeaveWeekdays($paidLeave, 'quarter', $this->dateInScope->firstOfQuarter(), $this->dateInScope->lastOfQuarter()),
             TimeScopeEnum::ANNUALY => $this->paidLeaveWeekdays($paidLeave, 'year', $this->dateInScope->firstOfYear(), $this->dateInScope->lastOfYear()),

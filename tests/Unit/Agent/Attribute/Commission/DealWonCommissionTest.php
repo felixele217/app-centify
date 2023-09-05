@@ -36,7 +36,7 @@ it('sums the commissions of deals and paid leaves and kicker correctly for the c
 
     $expectedCommissionFromQuota = $quotaAttainmentPerMonth * $variableSalaryPerMonth;
     $expectedKickerCommission = ($agent->base_salary / 4) * 0.25;
-    $expectedPaidLeaveCommission = (new PaidLeaveCommissionService())->calculate($agent, $timeScope);
+    $expectedPaidLeaveCommission = (new PaidLeaveCommissionService($timeScope))->calculate($agent);
 
     $expectedTotalCommission = $expectedCommissionFromQuota + $expectedKickerCommission + $expectedPaidLeaveCommission;
 

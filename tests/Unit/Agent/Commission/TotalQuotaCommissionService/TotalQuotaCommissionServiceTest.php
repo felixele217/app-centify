@@ -4,6 +4,7 @@ use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
 use App\Models\Agent;
+use App\Models\AgentPlan;
 use App\Models\Deal;
 use App\Models\Plan;
 use App\Services\Commission\PlanQuotaCommissionService;
@@ -22,12 +23,12 @@ it('returns the combined quota commissions of all plans of the user', function (
             'trigger' => TriggerEnum::DEAL_WON->value,
         ]);
 
-    $demoScheduledDealToAchieveKickerCommission = Deal::factory()
+    Deal::factory()
         ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, Carbon::now())
         ->create([
             'add_time' => Carbon::now(),
         ]);
-    $dealWonDealToAchieveKickerCommission = Deal::factory()
+    Deal::factory()
         ->withAgentDeal($agent->id, TriggerEnum::DEAL_WON, Carbon::now())
         ->won(Carbon::now())
         ->create();
@@ -40,6 +41,7 @@ it('returns the combined quota commissions of all plans of the user', function (
         + (new PlanQuotaCommissionService($timeScope))->calculate($agent, $aePlan)
     );
 })->with(TimeScopeEnum::cases());
+
 
 it('returns the combined quota commissions of all plans of the user for a past time scope', function (TimeScopeEnum $timeScope) {
     $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope($timeScope);

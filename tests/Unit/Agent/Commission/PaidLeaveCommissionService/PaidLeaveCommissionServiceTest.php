@@ -3,6 +3,7 @@
 use App\Enum\AgentStatusEnum;
 use App\Enum\ContinuationOfPayTimeScopeEnum;
 use App\Enum\TimeScopeEnum;
+use App\Helper\DateHelper;
 use App\Models\Agent;
 use App\Services\Commission\PaidLeaveCommissionService;
 use Carbon\Carbon;
@@ -21,7 +22,7 @@ it('calculates the paid leave commission just for the employee with the paid lea
         ]);
     }
 
-    expect((new PaidLeaveCommissionService())->calculate($agentWithoutPaidLeaves, $timeScope))->toBe(0);
+    expect((new PaidLeaveCommissionService($timeScope))->calculate($agentWithoutPaidLeaves))->toBe(0);
 })->with([
     [
         TimeScopeEnum::MONTHLY,
@@ -40,6 +41,28 @@ it('calculates the paid leave commission just for the employee with the paid lea
     ],
 ]);
 
+it('calculates the paid leave commission for a previous timescope', function (TimeScopeEnum $timeScope) {
+    $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope($timeScope);
+    $agent = Agent::factory()->create();
+
+    foreach ($iterations = [0, 1] as $_) {
+        $agent->paidLeaves()->create([
+            'reason' => AgentStatusEnum::VACATION->value,
+            'start_date' => $paidLeaveStartDate =  $dateInPreviousTimeScope->firstOfMonth()->addWeekdays(1),
+            'end_date' => $paidLeaveEndDate = $dateInPreviousTimeScope->firstOfMonth()->addWeekdays(5),
+            'continuation_of_pay_time_scope' => $continuationOfPayTimeScope = ContinuationOfPayTimeScopeEnum::QUARTER,
+            'sum_of_commissions' => $sumOfCommissions = 10_000_00,
+        ]);
+    }
+
+    $paidLeaveDays = DateHelper::weekdayCount($paidLeaveStartDate, $paidLeaveEndDate);
+    $expectedCommissionsPerDay = $sumOfCommissions / $continuationOfPayTimeScope->amountOfDays();
+
+    $paidLeaveCommission = $paidLeaveDays * $expectedCommissionsPerDay;
+
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::MONTHLY, $dateInPreviousTimeScope))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+})->with(TimeScopeEnum::cases());
+
 it('returns 0 if the paid leave has no end date - for sickness', function (TimeScopeEnum $timeScope) {
     $agent = Agent::factory()->create();
 
@@ -53,7 +76,7 @@ it('returns 0 if the paid leave has no end date - for sickness', function (TimeS
         ]);
     }
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, $timeScope))->toBe(0);
+    expect((new PaidLeaveCommissionService($timeScope))->calculate($agent))->toBe(0);
 })->with([
     TimeScopeEnum::MONTHLY,
     TimeScopeEnum::QUARTERLY,

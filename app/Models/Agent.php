@@ -157,7 +157,7 @@ class Agent extends Authenticatable implements Auditable
 
                 $totalKickerCommission = (new TotalKickerCommissionService($timeScope))->calculate($this);
 
-                $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, $timeScope);
+                $paidLeaveCommission = (new PaidLeaveCommissionService($timeScope))->calculate($this);
 
                 return $quotaCommission + $totalKickerCommission + $paidLeaveCommission;
             }

@@ -9,7 +9,7 @@ use App\Models\Plan;
 use App\Services\QuotaAttainment\PlanQuotaAttainmentService;
 use Carbon\Carbon;
 
-it('calculates the quota attainment with the share_of_variable_pay of the AgentPlan', function (TimeScopeEnum $timeScope, $shareOfVariablePay) {
+it('calculates the quota attainment without incoorporating share of variable pay of the AgentPlan', function (TimeScopeEnum $timeScope) {
     $plan = Plan::factory()->create([
         'target_amount_per_month' => $targetAmountPerMonth = 1_000_00,
         'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
@@ -26,18 +26,8 @@ it('calculates the quota attainment with the share_of_variable_pay of the AgentP
     AgentPlan::create([
         'agent_id' => $agent->id,
         'plan_id' => $plan->id,
-        'share_of_variable_pay' => $shareOfVariablePay,
+        'share_of_variable_pay' => 30,
     ]);
 
-    expect((new PlanQuotaAttainmentService($agent, $plan, $timeScope))->calculate())->toBe(floatval((1 / $timeScope->monthCount()) * ($shareOfVariablePay / 100)));
-})->with([
-    [TimeScopeEnum::MONTHLY, 50],
-    [TimeScopeEnum::QUARTERLY, 50],
-    [TimeScopeEnum::ANNUALY, 50],
-
-    [TimeScopeEnum::MONTHLY, 20],
-    [TimeScopeEnum::MONTHLY, 40],
-    [TimeScopeEnum::MONTHLY, 60],
-    [TimeScopeEnum::MONTHLY, 80],
-    [TimeScopeEnum::MONTHLY, 100],
-]);
+    expect((new PlanQuotaAttainmentService($agent, $plan, $timeScope))->calculate())->toBe(floatval((1 / $timeScope->monthCount())));
+})->with(TimeScopeEnum::cases());

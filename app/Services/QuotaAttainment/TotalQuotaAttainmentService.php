@@ -23,8 +23,10 @@ class TotalQuotaAttainmentService
 
     public function calculate(): float
     {
-        return $this->agent->load('plans')->plans()->active($this->dateInScope)->get()
+        $totalQuotaAttainment = $this->agent->load('plans')->plans()->active($this->dateInScope)->get()
             ->map(fn (Plan $activePlan) => (new PlanQuotaAttainmentService($this->agent, $activePlan, $this->timeScope, $this->dateInScope))->calculate())
-            ->sum();
+            ->average();
+
+        return $totalQuotaAttainment ?? 0;
     }
 }

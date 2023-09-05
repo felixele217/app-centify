@@ -33,11 +33,7 @@ class PlanQuotaAttainmentService
             return $deal->agents()->whereAgentId($this->agent->id)->wherePivot('triggered_by', $this->plan->trigger)->exists();
         });
 
-        $shareOfVariablePay = $this->plan->agents()->whereAgentId($this->agent->id)->first()->pivot->share_of_variable_pay;
-
-        return $shareOfVariablePay * (
-            $this->cappedSumOfDeals($deals) / ($this->plan->target_amount_per_month * $this->timeScope->monthCount())
-        );
+        return $this->cappedSumOfDeals($deals) / ($this->plan->target_amount_per_month * $this->timeScope->monthCount());
     }
 
     private function cappedSumOfDeals(Collection $deals): float

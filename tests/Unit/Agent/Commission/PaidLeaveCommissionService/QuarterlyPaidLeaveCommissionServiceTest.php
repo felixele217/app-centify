@@ -26,7 +26,7 @@ it('calculates the commission with the additional paid leave value for the curre
 
     $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::QUARTERLY))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });
 
 it('calculates the commission with the additional paid leave value for the current quarter for the paid leave overlapping with last quarter', function () {
@@ -47,5 +47,5 @@ it('calculates the commission with the additional paid leave value for the curre
 
     $paidLeaveCommission = $daysForAPaidLeaveThisQuarter * $expectedCommissionsPerDay;
 
-    expect((new PaidLeaveCommissionService())->calculate($agent, TimeScopeEnum::QUARTERLY))->toBe(intval(round($paidLeaveCommission * count($iterations))));
+    expect((new PaidLeaveCommissionService(TimeScopeEnum::QUARTERLY))->calculate($agent))->toBe(intval(round($paidLeaveCommission * count($iterations))));
 });

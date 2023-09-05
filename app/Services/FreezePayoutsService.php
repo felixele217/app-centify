@@ -37,7 +37,7 @@ class FreezePayoutsService
                 'vacation_days' => count((new PaidLeaveDaysService())->paidLeaveDays($agent, $this->timeScope, AgentStatusEnum::VACATION)),
                 'quota_attainment_percentage' => (new TotalQuotaAttainmentService($agent, $this->timeScope, $this->dateInScope))->calculate(),
                 'kicker_commission' => (new TotalKickerCommissionService($this->timeScope))->calculate($agent) ?? 0,
-                'absence_commission' => (new PaidLeaveCommissionService())->calculate($agent, $this->timeScope),
+                'absence_commission' => (new PaidLeaveCommissionService($this->timeScope))->calculate($agent),
                 'commission_from_quota' => (new TotalQuotaCommissionService($this->timeScope))->calculate($agent),
             ]);
         }
