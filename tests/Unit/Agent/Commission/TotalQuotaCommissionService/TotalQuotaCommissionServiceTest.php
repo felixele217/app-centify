@@ -46,12 +46,16 @@ it('returns the combined quota commissions of all plans of the user for a past t
 
     $agent = Agent::factory()->create();
 
-    $sdrPlan = Plan::factory()->active()
+    $sdrPlan = Plan::factory()
         ->create([
+            'start_date' => $dateInPreviousTimeScope,
+            'end_date' => $dateInPreviousTimeScope->endOfMonth(),
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
-    $aePlan = Plan::factory()->active()
+    $aePlan = Plan::factory()
         ->create([
+            'start_date' => $dateInPreviousTimeScope,
+            'end_date' => $dateInPreviousTimeScope->endOfMonth(),
             'trigger' => TriggerEnum::DEAL_WON->value,
         ]);
 
@@ -67,6 +71,8 @@ it('returns the combined quota commissions of all plans of the user for a past t
 
     $sdrPlan->agents()->attach($agent);
     $aePlan->agents()->attach($agent);
+
+    expect((new TotalQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent))->toBeGreaterThan(0);
 
     expect((new TotalQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent))->toBe(
         (new PlanQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent, $sdrPlan)
