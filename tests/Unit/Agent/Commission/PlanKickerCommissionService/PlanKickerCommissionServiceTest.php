@@ -34,7 +34,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
             'add_time' => $dealAcceptedDate,
         ]);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, $timeScope, $plan->agents()->first()->quota_attainment))->toBe(0);
+    expect((new PlanKickerCommissionService($timeScope))->calculate($plan->agents()->first(), $plan, $plan->agents()->first()->quota_attainment))->toBe(0);
 })->with([
     [TimeScopeEnum::MONTHLY, Carbon::now()->firstOfMonth()->subDays(1)],
     [TimeScopeEnum::QUARTERLY, Carbon::now()->firstOfQuarter()->subDays(1)],
@@ -58,5 +58,5 @@ it('returns null for the kicker commission if the plan has no kicker', function 
             'creator_id' => $admin->id,
         ]);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, 10))->toBeNull();
+    expect((new PlanKickerCommissionService(TimeScopeEnum::QUARTERLY))->calculate($plan->agents()->first(), $plan, 10))->toBeNull();
 });

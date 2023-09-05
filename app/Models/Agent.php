@@ -155,7 +155,7 @@ class Agent extends Authenticatable implements Auditable
             get: function () use ($timeScope) {
                 $quotaCommission = (new TotalQuotaCommissionService($timeScope))->calculate($this);
 
-                $totalKickerCommission = (new TotalKickerCommissionService())->calculate($this, $timeScope);
+                $totalKickerCommission = (new TotalKickerCommissionService($timeScope))->calculate($this);
 
                 $paidLeaveCommission = (new PaidLeaveCommissionService())->calculate($this, $timeScope);
 

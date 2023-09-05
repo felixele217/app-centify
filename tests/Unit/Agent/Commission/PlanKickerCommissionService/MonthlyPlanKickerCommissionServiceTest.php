@@ -27,7 +27,7 @@ it('incorporates the kicker if its target is met within the current month', func
 
     $expectedKickerCommission = ($baseSalary / 4) * ($payoutInPercent / 100);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::MONTHLY, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
+    expect((new PlanKickerCommissionService(TimeScopeEnum::MONTHLY))->calculate($plan->agents()->first(), $plan, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
 })->with([
     6, 7,
 ]);
@@ -51,5 +51,5 @@ it('does not grant the kicker if the target is not reached within the current mo
             'creator_id' => $admin->id,
         ]);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::MONTHLY, 5))->toBe(0);
+    expect((new PlanKickerCommissionService(TimeScopeEnum::MONTHLY))->calculate($plan->agents()->first(), $plan, 5))->toBe(0);
 });

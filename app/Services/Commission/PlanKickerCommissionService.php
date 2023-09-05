@@ -10,7 +10,11 @@ use App\Models\Plan;
 
 class PlanKickerCommissionService
 {
-    public function calculate(Agent $agent, Plan $plan, TimeScopeEnum $timeScope, ?float $quotaAttainmentThisTimeScope): ?int
+    public function __construct(
+        private TimeScopeEnum $timeScope
+    ) {}
+
+    public function calculate(Agent $agent, Plan $plan, ?float $quotaAttainmentThisTimeScope): ?int
     {
         $kicker = $plan?->load('kicker')->kicker;
 
@@ -18,7 +22,7 @@ class PlanKickerCommissionService
             return null;
         }
 
-        $factor = $timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
+        $factor = $this->timeScope === TimeScopeEnum::MONTHLY ? 3 : 1;
 
         $kickerIsMet = $kicker->threshold_factor * $factor <= $quotaAttainmentThisTimeScope;
 

@@ -27,7 +27,7 @@ it('incorporates the kicker if its target is met within the current quarter', fu
 
     $expectedKickerCommission = ($baseSalary / 4) * ($payoutInPercent / 100);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
+    expect((new PlanKickerCommissionService(TimeScopeEnum::QUARTERLY))->calculate($plan->agents()->first(), $plan, $quotaAttainment))->toBe(intval(round($expectedKickerCommission)));
 })->with([
     2, 3,
 ]);
@@ -51,5 +51,5 @@ it('does not grant the kicker if the target is not reached within the current qu
             'creator_id' => $admin->id,
         ]);
 
-    expect((new PlanKickerCommissionService())->calculate($plan->agents()->first(), $plan, TimeScopeEnum::QUARTERLY, 1))->toBe(0);
+    expect((new PlanKickerCommissionService(TimeScopeEnum::QUARTERLY))->calculate($plan->agents()->first(), $plan, 1))->toBe(0);
 });

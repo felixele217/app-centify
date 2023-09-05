@@ -42,7 +42,7 @@ it('freezes the current agent data in payouts', function (TimeScopeEnum $timeSco
     expect(Payout::count())->toBe($agentCount);
     expect(floatval($agents->first()->payouts->first()->quota_attainment_percentage))->toBe($quotaAttainment = (new TotalQuotaAttainmentService($agents->first(), $timeScope))->calculate());
     expect($agents->first()->payouts->first()->commission_from_quota)->toBe((new TotalQuotaCommissionService($timeScope))->calculate($agents->first()));
-    expect($agents->first()->payouts->first()->kicker_commission)->toBe((new TotalKickerCommissionService())->calculate($agents->first(), $timeScope) ?? 0);
+    expect($agents->first()->payouts->first()->kicker_commission)->toBe((new TotalKickerCommissionService($timeScope))->calculate($agents->first()) ?? 0);
     expect($agents->first()->payouts->first()->absence_commission)->toBe((new PaidLeaveCommissionService())->calculate($agents->first(), $timeScope));
     expect($agents->first()->payouts->first()->sick_days)->toBe(count((new PaidLeaveDaysService())->paidLeaveDays($agents->first(), $timeScope, AgentStatusEnum::SICK)));
     expect($agents->first()->payouts->first()->vacation_days)->toBe(count((new PaidLeaveDaysService())->paidLeaveDays($agents->first(), $timeScope, AgentStatusEnum::VACATION)));
