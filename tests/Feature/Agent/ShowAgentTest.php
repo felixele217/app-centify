@@ -30,5 +30,6 @@ it('passes the correct props', function () {
                 ->where('agent.id', $agent->id)
                 ->has('agent.active_paid_leave')
                 ->has('agent.active_plans', $planCount)
+                ->has('agent.quota_attainment')
         );
 });
