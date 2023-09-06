@@ -16,7 +16,7 @@ export default interface Agent {
     base_salary: number | null
     on_target_earning: number | null
     quota_attainment_in_percent?: number
-    quota_attainment_change?: number | null
+    quota_attainment_change_in_percent?: number | null
     commission?: number
     commission_change?: number | null
     status: AgentStatusEnum

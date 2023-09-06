@@ -147,10 +147,10 @@ class Agent extends Authenticatable implements Auditable
         );
     }
 
-    protected function quotaAttainmentChange(): Attribute
+    protected function quotaAttainmentChangeInPercent(): Attribute
     {
         return Attribute::make(
-            get: fn () => (new TotalQuotaAttainmentChangeService())->calculate($this, queryTimeScope())
+            get: fn () => round((new TotalQuotaAttainmentChangeService())->calculate($this, queryTimeScope()) * 100, 2)
         );
     }
 

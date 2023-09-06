@@ -21,7 +21,7 @@ class DashboardController extends Controller
             ]
             )->append([
                 'quota_attainment_in_percent',
-                'quota_attainment_change',
+                'quota_attainment_change_in_percent',
                 'commission',
                 'commission_change',
                 'sick_leaves_days_count',

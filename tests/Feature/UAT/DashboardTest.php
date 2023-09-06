@@ -71,9 +71,9 @@ it('returns the correct values for the agent', function (TimeScopeEnum $timeScop
         ]);
     }
 
-    $expectedQuotaAttainmentChange = (new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope) === 1.0
-        ? 1
-        : (new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope);
+    $expectedQuotaAttainmentChangeInPercent = (new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope) === 1.0
+        ? 100
+        : round((new TotalQuotaAttainmentChangeService())->calculate($agent, $timeScope) * 100, 2);
 
     $this->get(route('dashboard').'?time_scope='.$timeScope->value)
         ->assertInertia(
@@ -82,7 +82,7 @@ it('returns the correct values for the agent', function (TimeScopeEnum $timeScop
                 ->where('agents.0.commission', (new TotalCommissionService($timeScope))->calculate($agent))
                 ->where('agents.0.commission_change', (new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))
                 ->where('agents.0.quota_attainment_in_percent', intval((new TotalQuotaAttainmentService($agent, $timeScope))->calculate() * 100))
-                ->where('agents.0.quota_attainment_change', $expectedQuotaAttainmentChange)
+                ->where('agents.0.quota_attainment_change_in_percent', $expectedQuotaAttainmentChangeInPercent)
         );
 })->with([
     TimeScopeEnum::MONTHLY,

@@ -132,8 +132,8 @@ defineEmits<{
                                     <div class="flex items-center">
                                         <p class="text-900 text-sm">{{ agent.quota_attainment_in_percent! }}%</p>
                                         <ValueChange
-                                            :value="agent.quota_attainment_change!"
-                                            :change="roundFloat(agent.quota_attainment_change! * 100) + '%'"
+                                            :value="agent.quota_attainment_change_in_percent!"
+                                            :change="agent.quota_attainment_change_in_percent! + '%'"
                                         />
                                     </div>
                                 </td>
