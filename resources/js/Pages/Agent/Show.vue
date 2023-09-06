@@ -117,22 +117,6 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     </div>
                 </div>
             </div>
-
-            <div
-                class="mt-6"
-                v-for="plan in props.agent.active_plans"
-            >
-                <p class="text-lg font-semibold">{{ plan.name }}</p>
-
-                <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
-                    <p class>Quota Attainment:</p>
-                    <p class="text-right">{{ plan.quota_attainment_in_percent! }}%</p>
-                    <p>Quota Commission:</p>
-                    <p class="text-right">{{ euroDisplay(plan.quota_commission) }}</p>
-                    <p>Kicker Commission:</p>
-                    <p class="text-right">{{ euroDisplay(plan.kicker_commission) }}</p>
-                </div>
-            </div>
         </Card>
         <div class="flex flex-col items-end">
             <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
