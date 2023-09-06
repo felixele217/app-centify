@@ -16,7 +16,7 @@ const props = defineProps<{
 const rollingQuota = getRollingQuota(queryParamValue('time_scope') as TimeScopeEnum)
 
 const averageAchievedQuotaAttainment = props.agents.length
-    ? sum(props.agents.map((agent) => agent.quota_attainment!)) / props.agents.length / rollingQuota
+    ? sum(props.agents.map((agent) => agent.quota_attainment_in_percent!)) / props.agents.length / rollingQuota
     : 0
 </script>
 
@@ -38,6 +38,6 @@ const averageAchievedQuotaAttainment = props.agents.length
             </div>
         </div>
 
-        <DoughnutChart :quotaAttainment="averageAchievedQuotaAttainment * 100" />
+        <DoughnutChart :quotaAttainment="averageAchievedQuotaAttainment" />
     </Card>
 </template>

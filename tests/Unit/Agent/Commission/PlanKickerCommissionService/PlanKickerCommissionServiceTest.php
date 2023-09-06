@@ -34,7 +34,7 @@ it('does not incorporate the kicker if its target is not met because deals are o
             'add_time' => $dealAcceptedDate,
         ]);
 
-    expect((new PlanKickerCommissionService($timeScope))->calculate($plan->agents()->first(), $plan, $plan->agents()->first()->quota_attainment))->toBe(0);
+    expect((new PlanKickerCommissionService($timeScope))->calculate($plan->agents()->first(), $plan, $plan->agents()->first()->quota_attainment_in_percent))->toBe(0);
 })->with([
     [TimeScopeEnum::MONTHLY, Carbon::now()->firstOfMonth()->subDays(1)],
     [TimeScopeEnum::QUARTERLY, Carbon::now()->firstOfQuarter()->subDays(1)],

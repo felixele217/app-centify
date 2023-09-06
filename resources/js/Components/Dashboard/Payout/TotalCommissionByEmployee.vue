@@ -22,10 +22,6 @@ const props = defineProps<{
 defineEmits<{
     'open-paid-leave-slide-over': [agentId: number, type: AgentStatusEnum]
 }>()
-
-function quotaDisplay(quotaAttainment: number) {
-    return roundFloat(quotaAttainment * 100) + '%'
-}
 </script>
 
 <template>
@@ -134,7 +130,7 @@ function quotaDisplay(quotaAttainment: number) {
 
                                 <td class="whitespace-nowrap px-3 py-5 text-gray-500">
                                     <div class="flex items-center">
-                                        <p class="text-900 text-sm">{{ quotaDisplay(agent.quota_attainment!) }}</p>
+                                        <p class="text-900 text-sm">{{ agent.quota_attainment_in_percent! }}%</p>
                                         <ValueChange
                                             :value="agent.quota_attainment_change!"
                                             :change="roundFloat(agent.quota_attainment_change! * 100) + '%'"

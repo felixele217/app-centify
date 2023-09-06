@@ -15,7 +15,7 @@ export default interface Agent {
     updated_at: string
     base_salary: number | null
     on_target_earning: number | null
-    quota_attainment?: number
+    quota_attainment_in_percent?: number
     quota_attainment_change?: number | null
     commission?: number
     commission_change?: number | null
@@ -39,7 +39,7 @@ export default interface Agent {
     active_plans?: Array<{
         id: number
         name: string
-        quota_attainment: number
+        quota_attainment_in_percent: number
         quota_commission: number
         kicker_commission: number
     }>

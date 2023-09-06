@@ -6,6 +6,8 @@ import DoughnutChart from '@/Components/Dashboard/Payout/DoughnutChart/Content.v
 import Card from '@/Components/Card.vue'
 import roundFloat from '@/utils/roundFloat'
 import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
+import TotalCommission from '@/Components/Dashboard/Payout/TotalCommission.vue'
+import { BanknotesIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps<{
     agent: Agent
@@ -14,8 +16,8 @@ const props = defineProps<{
 
 <template>
     <div class="w-216">
-        <Card class="flex justify-between">
-            <div>
+        <div class="flex justify-between">
+            <Card>
                 <h1>{{ agent.name }}</h1>
 
                 <div class="mt-5">
@@ -27,17 +29,30 @@ const props = defineProps<{
                     <p class="mb-0.5 text-gray-500">On Target Earning</p>
                     <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.on_target_earning) }}</p>
                 </div>
-            </div>
+            </Card>
+
+            <Card class="flex h-full flex-col justify-between">
+                <div>
+                    <h3 class="mb-0.5">Total Commission</h3>
+                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="mb-0.5">Total Quota Attainment</h3>
+                    <p class="text-xl font-semibold text-gray-700">{{ props.agent.quota_attainment_in_percent }}%</p>
+                </div>
+            </Card>
+
             <div>
                 <Filter :reload-url="route('agents.show', props.agent.id)" />
             </div>
-        </Card>
+        </div>
 
         <Card class="mt-5 flex justify-between gap-10">
             <div>
                 <div>
                     <div class="mb-5">
-                        <p class="mb-0.5 text-gray-500">Plans Commission</p>
+                        <p class="mb-0.5 text-gray-500">Plan Commissions</p>
                         <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
                     </div>
 
@@ -59,7 +74,7 @@ const props = defineProps<{
 
                     <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
                         <p class>Quota Attainment:</p>
-                        <p class="text-right">{{ roundFloat(plan.quota_attainment * 100) }}%</p>
+                        <p class="text-right">{{ plan.quota_attainment_in_percent! }}%</p>
                         <p>Quota Commission:</p>
                         <p class="text-right">{{ euroDisplay(plan.quota_commission) }}</p>
                         <p>Kicker Commission:</p>
@@ -72,7 +87,7 @@ const props = defineProps<{
                 <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
                 <DoughnutChart
                     class="mt-5"
-                    :quotaAttainment="agent.quota_attainment! * 100 ?? 0"
+                    :quotaAttainment="agent.quota_attainment_in_percent!"
                 />
             </div>
         </Card>

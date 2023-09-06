@@ -20,7 +20,7 @@ class DashboardController extends Controller
                 'paidLeaves',
             ]
             )->append([
-                'quota_attainment',
+                'quota_attainment_in_percent',
                 'quota_attainment_change',
                 'commission',
                 'commission_change',

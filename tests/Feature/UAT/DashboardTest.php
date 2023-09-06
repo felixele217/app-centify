@@ -81,7 +81,7 @@ it('returns the correct values for the agent', function (TimeScopeEnum $timeScop
                 ->component('Dashboard')
                 ->where('agents.0.commission', (new TotalCommissionService($timeScope))->calculate($agent))
                 ->where('agents.0.commission_change', (new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))
-                ->where('agents.0.quota_attainment', (new TotalQuotaAttainmentService($agent, $timeScope))->calculate())
+                ->where('agents.0.quota_attainment_in_percent', intval((new TotalQuotaAttainmentService($agent, $timeScope))->calculate() * 100))
                 ->where('agents.0.quota_attainment_change', $expectedQuotaAttainmentChange)
         );
 })->with([
