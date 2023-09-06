@@ -20,14 +20,13 @@ const colors = [tailwindToHex['primary-500'], tailwindToHex['primary-300'], tail
 )
 
 const values = computed(() => props.items.map((item) => item.value))
-console.log(values.value)
 
 const data = {
     datasets: [
         {
-            backgroundColor: colors,
+            backgroundColor: [...colors, tailwindToHex['gray-300']],
             data: [...values.value, sum(values.value) >= 100 ? 0 : 100 - sum(values.value)],
-            label: [props.items.map((item) => item.label)],
+            label: [[...props.items.map((item) => item.label), 'Not achieved']],
         },
     ],
 }
@@ -41,7 +40,11 @@ const chartOptions = {
                 label: function (context: any) {
                     const index = context.dataset.data.indexOf(context.raw)
 
-                    return ` ${context.dataset.data[index] * values.value.length}%`
+                    return ` ${
+                        context.dataset.label[0][index] === 'Not achieved'
+                            ? ''
+                            : context.dataset.data[index] * values.value.length + '%'
+                    }`
                 },
                 title: function (context: any) {
                     const index = context[0].dataset.data.indexOf(context[0].raw)
