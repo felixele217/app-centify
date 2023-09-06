@@ -39,7 +39,7 @@ class TestDataSeeder extends Seeder
             ])->id,
         ]);
 
-        $centifyAgent = Agent::create([
+        $centifyAgent = Agent::factory()->create([
             'name' => 'Centify Agent',
             'email' => 'tech@centify.de',
             'email_verified_at' => now(),
@@ -50,7 +50,7 @@ class TestDataSeeder extends Seeder
             'base_salary' => 100_000_00,
         ]);
 
-        $pipedriveAgent1 = Agent::create([
+        $pipedriveAgent1 = Agent::factory()->create([
             'name' => 'Pipedrive Agent 1',
             'email' => 'pipedrive1@centify.de',
             'organization_id' => $admin->organization_id,
@@ -61,7 +61,7 @@ class TestDataSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        $pipedriveAgent2 = Agent::create([
+        $pipedriveAgent2 = Agent::factory()->create([
             'name' => 'Pipedrive Agent 2',
             'email' => 'pipedrive2@centify.de',
             'organization_id' => $admin->organization_id,
@@ -85,7 +85,7 @@ class TestDataSeeder extends Seeder
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ]);
 
-        $dealWonPlan = Plan::create([
+        $dealWonPlan = Plan::factory()->create([
             'organization_id' => $admin->organization_id,
             'creator_id' => $admin->id,
             'name' => 'Deal Won Plan',
