@@ -19,7 +19,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 
 <template>
     <div>
-        <h1>Commission Deep Dive</h1>
+        <h2>Commission Deep Dive</h2>
 
         <div class="my-7">
             <p class="mb-0.5 text-lg text-gray-500">

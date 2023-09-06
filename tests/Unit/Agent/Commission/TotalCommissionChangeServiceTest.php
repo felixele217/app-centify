@@ -1,15 +1,14 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
-use App\Models\Plan;
-use App\Models\Agent;
+use App\Enum\TimeScopeEnum;
 use App\Enum\TriggerEnum;
 use App\Helper\DateHelper;
-use App\Enum\TimeScopeEnum;
-use Inertia\Testing\AssertableInertia;
-use App\Services\Commission\TotalQuotaCommissionService;
+use App\Models\Agent;
+use App\Models\Deal;
+use App\Models\Plan;
 use App\Services\Commission\TotalQuotaCommissionChangeService;
+use App\Services\Commission\TotalQuotaCommissionService;
+use Carbon\Carbon;
 
 it('total commission change is calculated correctly for commission from quota', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();

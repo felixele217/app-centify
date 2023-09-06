@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
 import Agent from '@/types/Agent'
-import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import currentScope from '@/utils/Date/currentScope'
 import euroDisplay from '@/utils/euroDisplay'
-import queryParamValue from '@/utils/queryParamValue'
 
 const props = defineProps<{
     agent: Agent
@@ -13,10 +9,10 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card class="flex justify-between">
+    <div class="flex justify-between">
         <div>
             <div class="flex gap-10">
-                <div class="mr-10">
+                <div class="mr-20">
                     <h1>{{ props.agent.name }}</h1>
                     <p class="mt-1 text-gray-500">{{ props.agent.email }}</p>
                 </div>
@@ -40,5 +36,5 @@ const props = defineProps<{
         <div>
             <Filter :reload-url="route('agents.show', props.agent.id)" />
         </div>
-    </Card>
+    </div>
 </template>

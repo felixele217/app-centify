@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
+use App\Enum\TriggerEnum;
+use App\Models\Agent;
 use App\Models\Deal;
 use App\Models\Plan;
-use App\Models\Agent;
-use App\Enum\TriggerEnum;
+use Carbon\Carbon;
 
 it('computes the active plans correctly', function () {
     $agent = Agent::factory()->has(Plan::factory()->count(3)->sequence([

@@ -168,7 +168,10 @@ function agentPaidLeaveRanges() {
                 :message="(props.form.errors as Record<string, string>)['sum_of_commissions']"
             />
 
-            <div class="mt-2" v-if="props.form.reason === 'sick'">
+            <div
+                class="mt-2"
+                v-if="props.form.reason === 'sick'"
+            >
                 <Tooltip
                     text="Info: If the employee hasn’t been with the company for at least 28 days, he or she is not eligible for any
                 payment by the company (continuation of pay). Instead, he or she has to contact the health insurance provider for payment"

@@ -38,9 +38,13 @@ const averageAchievedQuotaAttainment = props.agents.length
             </div>
         </div>
 
-        <DoughnutChart :items="[{
-            value: roundFloat(averageAchievedQuotaAttainment),
-            label: 'Quota Attainment'
-        }]" />
+        <DoughnutChart
+            :items="[
+                {
+                    value: roundFloat(averageAchievedQuotaAttainment),
+                    label: 'Quota Attainment',
+                },
+            ]"
+        />
     </Card>
 </template>
