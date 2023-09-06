@@ -66,6 +66,13 @@ const props = defineProps<{
                     />
                 </div>
 
+                <div>
+                    <div class="mb-5">
+                        <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
+                        <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
+                    </div>
+                </div>
+
                 <div
                     class="mt-6"
                     v-for="plan in props.agent.active_plans"

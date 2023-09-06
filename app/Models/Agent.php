@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\AgentStatusEnum;
+use App\Services\Commission\PaidLeaveCommissionService;
 use App\Services\Commission\PlanKickerCommissionService;
 use App\Services\Commission\PlanQuotaCommissionService;
 use App\Services\Commission\TotalCommissionService;
@@ -137,6 +138,13 @@ class Agent extends Authenticatable implements Auditable
                     'kicker_commission' => (new PlanKickerCommissionService(queryTimeScope()))->calculate($this, $plan, $quotaAttainmentFactor),
                 ];
             }),
+        );
+    }
+
+    public function paidLeavesCommission(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => (new PaidLeaveCommissionService(queryTimeScope()))->calculate($this),
         );
     }
 

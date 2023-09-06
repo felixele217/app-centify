@@ -31,5 +31,6 @@ it('passes the correct props', function () {
                 ->has('agent.commission')
                 ->has('agent.active_paid_leave')
                 ->has('agent.active_plans', $planCount)
+                ->has('agent.paid_leaves_commission')
         );
 });

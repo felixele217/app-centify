@@ -42,6 +42,7 @@ class AgentController extends Controller
                 'quota_attainment_in_percent',
                 'active_plans',
                 'commission',
+                'paid_leaves_commission',
             ]),
         ]);
     }
