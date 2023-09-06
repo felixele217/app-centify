@@ -21,7 +21,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
     <div>
         <h2>Commission Deep Dive</h2>
 
-        <div class="mt-7">
+        <div class="mt-4">
             <p class="mb-0.5 text-lg text-gray-500">
                 Total Commission in
                 <span class="font-semibold text-gray-700">{{ currentScope(timeScopeFromQuery) }}</span>
@@ -63,7 +63,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                         <SickIcon size="w-5 h-5" />
                         <p>
                             <span class="font-semibold">{{ props.agent.sick_leaves_days_count! }}</span>
-                            days sick
+                            weekdays sick
                         </p>
                     </div>
 
@@ -82,7 +82,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                         <SunIcon class="h-6 w-6" />
                         <p>
                             <span class="font-semibold">{{ props.agent.vacation_leaves_days_count! }}</span>
-                            days on vacation
+                            weekdays on vacation
                         </p>
                     </div>
 

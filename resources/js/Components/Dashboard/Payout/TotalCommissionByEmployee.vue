@@ -146,7 +146,7 @@ defineEmits<{
                                         <span class="font-semibold text-gray-600">{{
                                             agent.sick_leaves_days_count!
                                         }}</span>
-                                        days sick
+                                        weekdays sick
 
                                         <div
                                             class="ml-1 h-3 w-3"
@@ -162,7 +162,7 @@ defineEmits<{
                                         <span class="font-semibold text-gray-600">{{
                                             agent.vacation_leaves_days_count!
                                         }}</span>
-                                        days on vacation
+                                        weekdays on vacation
 
                                         <div class="ml-1 h-3 w-3">
                                             <PencilSquareIcon />

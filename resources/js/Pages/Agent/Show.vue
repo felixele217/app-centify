@@ -25,18 +25,14 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card>
+    <Card class="w-240">
         <Header :agent="props.agent" />
 
         <div class="mt-14">
-            <div class="grid grid-cols-2">
-                <CommissionDeepDive
-                    :agent="props.agent"
-                />
+            <div class="flex gap-20">
+                <CommissionDeepDive :agent="props.agent" />
 
-                <QuotaDeepDive
-                    :agent="props.agent"
-                />
+                <QuotaDeepDive :agent="props.agent" />
             </div>
         </div>
     </Card>

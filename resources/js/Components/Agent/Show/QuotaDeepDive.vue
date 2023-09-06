@@ -22,7 +22,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
     <div>
         <h2>Quota Deep Dive</h2>
 
-        <div class="my-7">
+        <div class="mt-4">
             <p class="mb-0.5 text-lg text-gray-500">
                 Average Quota Attainment in
                 <span class="font-semibold text-gray-700">{{ currentScope(timeScopeFromQuery) }}</span>
