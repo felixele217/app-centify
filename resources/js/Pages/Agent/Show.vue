@@ -17,7 +17,6 @@ const props = defineProps<{
     agent: Agent
 }>()
 
-const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthly')
 const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 </script>
 
@@ -69,57 +68,61 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             </div>
         </Card>
 
-        <Card class="mt-5 flex justify-between gap-10">
+        <Card class="mt-5">
             <div>
-                <div>
-                    <div class="mb-5">
-                        <p class="mb-0.5 text-gray-500">Plan Commissions</p>
-                        <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
+                <h1 class="mb-5">Commission Deep Dive</h1>
+
+                <div class="grid grid-cols-2 gap-10">
+                    <div>
+                        <div class="mb-8">
+                            <p class="mb-0.5 text-gray-500">Plan Commissions</p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ euroDisplay(props.agent.commission!) }}
+                            </p>
+                        </div>
+                        <BarChart
+                            class=""
+                            :items="props.agent.active_plans!.map(plan => ({
+                                label: plan.name,
+                                quotaCommission: plan.quota_commission,
+                                kickerCommission: plan.kicker_commission
+                            }))"
+                        />
                     </div>
 
-                    <BarChart
-                        class=""
-                        :items="props.agent.active_plans!.map(plan => ({
-                            label: plan.name,
-                            quotaCommission: plan.quota_commission,
-                            kickerCommission: plan.kicker_commission
-                        }))"
-                    />
-                </div>
-
-                <div>
-                    <div class="mb-5">
-                        <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
-                        <p class="text-xl font-semibold text-gray-700">
-                            {{ euroDisplay(props.agent.paid_leaves_commission!) }}
-                        </p>
-                    </div>
-                </div>
-
-                <div
-                    class="mt-6"
-                    v-for="plan in props.agent.active_plans"
-                >
-                    <p class="text-lg font-semibold">{{ plan.name }}</p>
-
-                    <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
-                        <p class>Quota Attainment:</p>
-                        <p class="text-right">{{ plan.quota_attainment_in_percent! }}%</p>
-                        <p>Quota Commission:</p>
-                        <p class="text-right">{{ euroDisplay(plan.quota_commission) }}</p>
-                        <p>Kicker Commission:</p>
-                        <p class="text-right">{{ euroDisplay(plan.kicker_commission) }}</p>
+                    <div>
+                        <div class="mb-8">
+                            <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ euroDisplay(props.agent.paid_leaves_commission!) }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col items-end">
-                <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
-                <DoughnutChart
-                    class="mt-5"
-                    :quotaAttainment="agent.quota_attainment_in_percent!"
-                />
+            <div
+                class="mt-6"
+                v-for="plan in props.agent.active_plans"
+            >
+                <p class="text-lg font-semibold">{{ plan.name }}</p>
+
+                <div class="mt-2 grid w-80 grid-cols-2 space-y-0.5 text-gray-600">
+                    <p class>Quota Attainment:</p>
+                    <p class="text-right">{{ plan.quota_attainment_in_percent! }}%</p>
+                    <p>Quota Commission:</p>
+                    <p class="text-right">{{ euroDisplay(plan.quota_commission) }}</p>
+                    <p>Kicker Commission:</p>
+                    <p class="text-right">{{ euroDisplay(plan.kicker_commission) }}</p>
+                </div>
             </div>
         </Card>
+        <div class="flex flex-col items-end">
+            <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
+            <DoughnutChart
+                class="mt-5"
+                :quotaAttainment="agent.quota_attainment_in_percent!"
+            />
+        </div>
     </div>
 </template>
