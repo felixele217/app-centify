@@ -8,45 +8,66 @@ import roundFloat from '@/utils/roundFloat'
 import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
 import TotalCommission from '@/Components/Dashboard/Payout/TotalCommission.vue'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
+import currentScope from '@/utils/Date/currentScope'
+import queryParamValue from '@/utils/queryParamValue'
+import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
+import { computed } from 'vue'
 
 const props = defineProps<{
     agent: Agent
 }>()
+
+const currentTimeScope = computed(() => queryParamValue('time_scope') || 'monthly')
+const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 </script>
 
 <template>
     <div class="w-216">
-        <div class="flex justify-between">
-            <Card>
+        <Card class="flex justify-between">
+            <div>
                 <h1>{{ agent.name }}</h1>
 
-                <div class="mt-5">
-                    <p class="mb-0.5 text-gray-500">Base Salary</p>
-                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.base_salary) }}</p>
-                </div>
+                <div class="flex gap-20">
+                    <div>
+                        <div class="mt-5">
+                            <p class="mb-0.5 text-gray-500">Base Salary</p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ euroDisplay(props.agent.base_salary) }}
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="mb-0.5 text-gray-500">On Target Earning</p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ euroDisplay(props.agent.on_target_earning) }}
+                            </p>
+                        </div>
+                    </div>
 
-                <div class="mt-4">
-                    <p class="mb-0.5 text-gray-500">On Target Earning</p>
-                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.on_target_earning) }}</p>
+                    <div>
+                        <div class="mt-5">
+                            <p class="mb-0.5 text-gray-500">
+                                Total Commission in {{ currentScope(timeScopeFromQuery) }}
+                            </p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ euroDisplay(props.agent.commission!) }}
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="mb-0.5 text-gray-500">
+                                Total Quota Attainment in {{ currentScope(timeScopeFromQuery) }}
+                            </p>
+                            <p class="text-xl font-semibold text-gray-700">
+                                {{ props.agent.quota_attainment_in_percent }}%
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </Card>
-
-            <Card class="flex h-full flex-col justify-between">
-                <div>
-                    <h3 class="mb-0.5">Total Commission</h3>
-                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
-                </div>
-
-                <div class="mt-5">
-                    <h3 class="mb-0.5">Total Quota Attainment</h3>
-                    <p class="text-xl font-semibold text-gray-700">{{ props.agent.quota_attainment_in_percent }}%</p>
-                </div>
-            </Card>
+            </div>
 
             <div>
                 <Filter :reload-url="route('agents.show', props.agent.id)" />
             </div>
-        </div>
+        </Card>
 
         <Card class="mt-5 flex justify-between gap-10">
             <div>
@@ -69,7 +90,9 @@ const props = defineProps<{
                 <div>
                     <div class="mb-5">
                         <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
-                        <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
+                        <p class="text-xl font-semibold text-gray-700">
+                            {{ euroDisplay(props.agent.paid_leaves_commission!) }}
+                        </p>
                     </div>
                 </div>
 
