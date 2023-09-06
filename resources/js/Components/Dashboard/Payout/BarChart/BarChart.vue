@@ -20,7 +20,7 @@ const legendItems = [
 </script>
 
 <template>
-    <div class="mb-5 flex gap-5">
+    <div class="mb-5 flex gap-4">
         <LegendItemVue
             v-for="item in legendItems"
             :color="item.color"
