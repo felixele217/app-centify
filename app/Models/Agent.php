@@ -127,12 +127,14 @@ class Agent extends Authenticatable implements Auditable
     {
         return Attribute::make(
             get: fn () => $this->plans()->active()->get()->map(function (Plan $plan) {
+                $quotaAttainmentFactor = (new PlanQuotaAttainmentService($this, $plan, queryTimeScope()))->calculate();
+
                 return [
                     'id' => $plan->id,
                     'name' => $plan->name,
-                    'quota_attainment_in_percent' => $quotaAttainment = (new PlanQuotaAttainmentService($this, $plan, queryTimeScope()))->calculate(),
+                    'quota_attainment_in_percent' => round($quotaAttainmentFactor * 100, 2),
                     'quota_commission' => (new PlanQuotaCommissionService(queryTimeScope()))->calculate($this, $plan),
-                    'kicker_commission' => (new PlanKickerCommissionService(queryTimeScope()))->calculate($this, $plan, $quotaAttainment),
+                    'kicker_commission' => (new PlanKickerCommissionService(queryTimeScope()))->calculate($this, $plan, $quotaAttainmentFactor),
                 ];
             }),
         );
