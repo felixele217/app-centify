@@ -36,17 +36,24 @@ const chartOptions = {
     cutout: '80%',
     plugins: {
         tooltip: {
+            filter: function (tooltipItem: any) {
+                return tooltipItem.dataIndex !== values.value.length
+            },
             callbacks: {
                 label: function (context: any) {
+                    if (!context) {
+                        return ''
+                    }
+
                     const index = context.dataset.data.indexOf(context.raw)
 
-                    return ` ${
-                        context.dataset.label[0][index] === 'Not achieved'
-                            ? ''
-                            : context.dataset.data[index] * values.value.length + '%'
-                    }`
+                    return ` ${context.dataset.data[index] * values.value.length}%`
                 },
                 title: function (context: any) {
+                    if (!context[0]) {
+                        return ''
+                    }
+
                     const index = context[0].dataset.data.indexOf(context[0].raw)
 
                     return ` ${context[0].dataset.label[0][index]}`
@@ -61,7 +68,7 @@ const chartOptions = {
 <template>
     <div class="relative flex w-40 items-center justify-center">
         <Doughnut
-            :data="data"
+            :data="(data as any)"
             :options="chartOptions"
         />
 
