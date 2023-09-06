@@ -41,6 +41,7 @@ class AgentController extends Controller
             'agent' => $agent->load('activePaidLeave')->append([
                 'quota_attainment',
                 'active_plans',
+                'commission',
             ]),
         ]);
     }

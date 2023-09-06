@@ -28,6 +28,7 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('Agent/Show')
                 ->where('agent.id', $agent->id)
+                ->has('agent.commission')
                 ->has('agent.active_paid_leave')
                 ->has('agent.active_plans', $planCount)
         );

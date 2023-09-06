@@ -1,52 +1,82 @@
-<script lang="ts">
+<script setup lang="ts">
+import euroDisplay from '@/utils/euroDisplay'
 import tailwindToHex from '@/utils/tailwindToHex'
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip } from 'chart.js'
+import { computed } from 'vue'
 import { Bar } from 'vue-chartjs'
+import { KICKER_COMMISSION_COLOR, QUOTA_COMMISSION_COLOR } from './config'
+
+const gc = 'bg-primary-300'
+
+export type BarChartContentItem = {
+    label: string
+    quotaCommission: number
+    kickerCommission: number
+}
+
+const props = defineProps<{
+    items: Array<BarChartContentItem>
+}>()
 
 ChartJS.register(Tooltip, BarElement, CategoryScale, LinearScale)
 
-export default {
-    name: 'BarChart',
-    components: { Bar },
-    data() {
-        return {
-            chartData: {
-                labels: ['JUL', 'AUG', 'SEP'],
-                datasets: [
-                    { data: [1800, 2500, 1500], label: 'Data One', backgroundColor: tailwindToHex['bg-violet-950'] },
-                    { data: [700, 400, 200], label: 'Data Two', backgroundColor: tailwindToHex['bg-gray-950'] },
-                    { data: [200, 500], label: 'Data Three', backgroundColor: tailwindToHex['bg-violet-primary'] },
-                ],
-            },
-            chartOptions: {
-                barThickness: 40,
-                borderRadius: 8,
-                scales: {
-                    x: {
-                        stacked: true,
-                        grid: {
-                            display: false,
-                        },
-                    },
-                    y: {
-                        grid: {
-                            drawBorder: false,
-                        },
-                        stacked: true,
-                        min: 0,
-                        max: 4000,
-                        ticks: {
-                            stepSize: 1000,
-                            callback: function (value: number, index: number, values: Array<number>) {
-                                return value !== 0 ? `${value / 1000}k` : 0
-                            },
-                        },
-                    },
+const chartData = computed(() => ({
+    labels: props.items.map((item) => item.label),
+    datasets: [
+        {
+            data: props.items.map((item) => item.quotaCommission),
+            label: 'Quota Commission',
+            backgroundColor: tailwindToHex[QUOTA_COMMISSION_COLOR],
+        },
+        {
+            data: props.items.map((item) => item.kickerCommission),
+            label: 'Kicker Commission',
+            backgroundColor: tailwindToHex[KICKER_COMMISSION_COLOR],
+        },
+    ],
+}))
+
+const max = Math.max(...props.items.map((item) => item.kickerCommission + item.quotaCommission))
+
+const chartOptions = {
+    barThickness: 40,
+    borderRadius: 8,
+    plugins: {
+        tooltip: {
+            callbacks: {
+                label: function (context: any) {
+                    return ` ${euroDisplay(context.raw)}`
                 },
-                responsive: true,
+                title: function (context: any) {
+                    return ` ${context[0].dataset.label}`
+                },
+                beforeBody: function (context: any) {
+                    return ``
+                },
             },
-        }
+            displayColors: false,
+        },
     },
+    scales: {
+        x: {
+            stacked: true,
+            grid: {
+                display: false,
+            },
+        },
+        y: {
+            stacked: true,
+            min: 0,
+            max: max,
+            ticks: {
+                stepSize: max / 5,
+                callback: function (value: number, index: number, values: Array<number>) {
+                    return value !== 0 ? `${euroDisplay(Math.ceil(value / 5_000_00) * 5_000_00)}` : 0
+                },
+            },
+        },
+    },
+    responsive: true,
 }
 </script>
 
@@ -54,7 +84,7 @@ export default {
     <div class="h-56">
         <Bar
             id="my-chart-id"
-            :options="chartOptions"
+            :options="(chartOptions as any)"
             :data="chartData"
         />
     </div>

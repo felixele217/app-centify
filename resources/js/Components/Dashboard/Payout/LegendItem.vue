@@ -6,7 +6,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
         <div
             class="h-2 w-2 rounded-full"
             :class="props.color"

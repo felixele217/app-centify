@@ -38,7 +38,6 @@ export default {
                 primary: '#4E77F9',
                 'primary-hover': '#6b8ffa',
 
-                'primary-600': '#4E77F9',
                 // hsl(226, 93%, 64%)
                 'primary-500': '#4E77F9',
                 'primary-400': '#6b8ffa',

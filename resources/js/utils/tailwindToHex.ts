@@ -7,6 +7,10 @@ const tailwindToHex = {
 
     'bg-gray-950': '#030712',
     'bg-gray-300': '#d1d5db',
+
+    'bg-primary-500': '#4E77F9',
+    'bg-primary-400': '#6b8ffa',
+    'bg-primary-300': '#6f92fb',
 } as const
 
 export default tailwindToHex

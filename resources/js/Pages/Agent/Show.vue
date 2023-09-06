@@ -9,6 +9,7 @@ import DoughnutChart from '@/Components/Dashboard/Payout/DoughnutChart/Content.v
 import { CurrencyEuroIcon } from '@heroicons/vue/24/outline'
 import Card from '@/Components/Card.vue'
 import roundFloat from '@/utils/roundFloat'
+import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
 
 const props = defineProps<{
     agent: Agent
@@ -25,12 +26,12 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 
                 <div class="mt-5">
                     <p class="mb-0.5 text-gray-500">Base Salary</p>
-                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(agent.base_salary) }}</p>
+                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.base_salary) }}</p>
                 </div>
 
                 <div class="mt-4">
                     <p class="mb-0.5 text-gray-500">On Target Earning</p>
-                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(agent.on_target_earning) }}</p>
+                    <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.on_target_earning) }}</p>
                 </div>
             </div>
             <div>
@@ -40,7 +41,21 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 
         <Card class="mt-5 flex justify-between gap-10">
             <div>
-                <h2 class="mb-4">Commission</h2>
+                <div>
+                    <div class="mb-5">
+                        <p class="mb-0.5 text-gray-500">Total Commission</p>
+                        <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
+                    </div>
+
+                    <BarChart
+                        class=""
+                        :items="props.agent.active_plans!.map(plan => ({
+                            label: plan.name,
+                            quotaCommission: plan.quota_commission,
+                            kickerCommission: plan.kicker_commission
+                        }))"
+                    />
+                </div>
 
                 <div
                     class="mt-6"
@@ -52,9 +67,9 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                         <p class>Quota Attainment:</p>
                         <p class="text-right">{{ roundFloat(plan.quota_attainment * 100) }}%</p>
                         <p>Quota Commission:</p>
-                        <p class="text-right">{{ plan.quota_commission ?? 0 }}€</p>
+                        <p class="text-right">{{ euroDisplay(plan.quota_commission) }}</p>
                         <p>Kicker Commission:</p>
-                        <p class="text-right">{{ plan.kicker_commission ?? 0 }}€</p>
+                        <p class="text-right">{{ euroDisplay(plan.kicker_commission) }}</p>
                     </div>
                 </div>
             </div>
