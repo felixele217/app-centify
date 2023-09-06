@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import Filter from '@/Components/Form/Filter.vue'
 import Agent from '@/types/Agent'
-import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
-import currentScope from '@/utils/Date/currentScope'
 import euroDisplay from '@/utils/euroDisplay'
-import queryParamValue from '@/utils/queryParamValue'
 import DoughnutChart from '@/Components/Dashboard/Payout/DoughnutChart/Content.vue'
-import { CurrencyEuroIcon } from '@heroicons/vue/24/outline'
 import Card from '@/Components/Card.vue'
 import roundFloat from '@/utils/roundFloat'
 import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
@@ -14,8 +10,6 @@ import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
 const props = defineProps<{
     agent: Agent
 }>()
-
-const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 </script>
 
 <template>
@@ -43,7 +37,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             <div>
                 <div>
                     <div class="mb-5">
-                        <p class="mb-0.5 text-gray-500">Total Commission</p>
+                        <p class="mb-0.5 text-gray-500">Plans Commission</p>
                         <p class="text-xl font-semibold text-gray-700">{{ euroDisplay(props.agent.commission!) }}</p>
                     </div>
 
@@ -75,7 +69,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             </div>
 
             <div class="flex flex-col items-end">
-                        <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
+                <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
                 <DoughnutChart
                     class="mt-5"
                     :quotaAttainment="agent.quota_attainment! * 100 ?? 0"
