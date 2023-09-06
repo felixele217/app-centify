@@ -7,13 +7,14 @@ import Card from '@/Components/Card.vue'
 import roundFloat from '@/utils/roundFloat'
 import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
 import TotalCommission from '@/Components/Dashboard/Payout/TotalCommission.vue'
-import { BanknotesIcon } from '@heroicons/vue/24/outline'
+import { BanknotesIcon, SunIcon } from '@heroicons/vue/24/outline'
 import currentScope from '@/utils/Date/currentScope'
 import queryParamValue from '@/utils/queryParamValue'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { computed } from 'vue'
 import PaidLeaveCard from '@/Components/Agent/PaidLeave/PaidLeaveCard.vue'
 import sum from '@/utils/sum'
+import SickIcon from '@/Components/Icon/SickIcon.vue'
 
 const props = defineProps<{
     agent: Agent
@@ -106,11 +107,35 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     </div>
 
                     <div>
-                        <div class="mb-6">
-                            <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
+                        <div class="mb-7 text-gray-500">
+                            <p class="mb-0.5">Paid Leave Commissions</p>
                             <p class="text-xl font-semibold text-gray-700">
                                 {{ euroDisplay(props.agent.paid_leaves_commission!) }}
                             </p>
+                        </div>
+
+                        <div class="mb-3 flex gap-5 text-sm">
+                            <div class="flex items-center gap-1.5 rounded-full bg-purple-100 px-3 py-1 text-purple-700">
+                                <SickIcon
+                                    color="#7e22ce"
+                                    size="w-5 h-5"
+                                />
+                                <p>
+                                    <span class="font-semibold text-purple-800">{{
+                                        props.agent.sick_leaves_days_count!
+                                    }}</span>
+                                    days sick
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1.5 rounded-full bg-yellow-100 px-3 py-1 text-yellow-700">
+                                <SunIcon class="h-6 w-6" />
+                                <p>
+                                    <span class="font-semibold text-yellow-800">{{
+                                        props.agent.vacation_leaves_days_count!
+                                    }}</span>
+                                    days on vacation
+                                </p>
+                            </div>
                         </div>
 
                         <PaidLeaveCard

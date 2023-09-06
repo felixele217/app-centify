@@ -30,6 +30,8 @@ it('passes the correct props', function () {
                 ->where('agent.id', $agent->id)
                 ->has('agent.commission')
                 ->has('agent.paid_leaves')
+                ->has('agent.sick_leaves_days_count')
+                ->has('agent.vacation_leaves_days_count')
                 ->has('agent.active_plans', $planCount)
                 ->has('agent.paid_leaves_commission')
         );

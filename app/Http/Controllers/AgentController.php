@@ -43,6 +43,8 @@ class AgentController extends Controller
                 'active_plans',
                 'commission',
                 'paid_leaves_commission',
+                'sick_leaves_days_count',
+                'vacation_leaves_days_count',
             ]),
         ]);
     }
