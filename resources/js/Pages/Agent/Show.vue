@@ -55,7 +55,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                         </p>
                         <DoughnutChart
                             class="mt-5"
-                            :quotaAttainment="agent.quota_attainment_in_percent!"
+                            :values="props.agent.active_plans!.map(plan => plan.quota_attainment_in_percent / props.agent.active_plans!.length)"
                         />
                     </div>
                     <div>
