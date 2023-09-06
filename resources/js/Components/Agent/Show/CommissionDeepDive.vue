@@ -9,12 +9,20 @@ import BarChart from '@/Components/Dashboard/Payout/BarChart/BarChart.vue'
 import currentScope from '@/utils/Date/currentScope'
 import queryParamValue from '@/utils/queryParamValue'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
+import { computed } from 'vue'
 
 const props = defineProps<{
     agent: Agent
 }>()
 
 const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
+
+const sickPaidLeaves = computed(() => props.agent.paid_leaves.filter((paid_leave) => paid_leave.reason === 'sick'))
+const vacationPaidLeaves = computed(() =>
+    props.agent.paid_leaves.filter((paid_leave) => paid_leave.reason === 'on vacation')
+)
+
+const planCommission = sum(props.agent.active_plans!.map((plan) => plan.kicker_commission + plan.quota_commission))
 </script>
 
 <template>
@@ -32,17 +40,13 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
         </div>
 
         <div class="mb-5 mt-12">
-            <p class="mb-0.5 text-gray-500">Plan Commissions</p>
-            <p class="text-xl font-semibold text-gray-700">
-                {{
-                    euroDisplay(
-                        sum(props.agent.active_plans!.map((plan) => plan.kicker_commission + plan.quota_commission))
-                    )
-                }}
+            <p class="mb-0.5 text-lg text-gray-500">Plan Commissions</p>
+            <p class="text-2xl font-semibold text-gray-700">
+                {{ euroDisplay(planCommission) }}
             </p>
         </div>
         <BarChart
-            v-if="props.agent.commission"
+            v-if="planCommission > 0"
             :items="props.agent.active_plans!.map(plan => ({
                             label: plan.name,
                             quotaCommission: plan.quota_commission,
@@ -52,13 +56,13 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
 
         <div class="mt-12">
             <div class="mb-5 text-gray-500">
-                <p class="mb-0.5">Paid Leave Commissions</p>
-                <p class="text-xl font-semibold text-gray-700">
+                <p class="mb-0.5 text-lg">Paid Leave Commissions</p>
+                <p class="text-2xl font-semibold text-gray-700">
                     {{ euroDisplay(props.agent.paid_leaves_commission!) }}
                 </p>
             </div>
             <div class="flex gap-5">
-                <div>
+                <div v-if="sickPaidLeaves.length > 0">
                     <div class="mb-1 flex items-center gap-1.5">
                         <SickIcon size="w-5 h-5" />
                         <p>
@@ -68,16 +72,14 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     </div>
 
                     <PaidLeaveCard
-                        v-for="paidLeave of props.agent.paid_leaves.filter(
-                            (paid_leave) => paid_leave.reason === 'sick'
-                        )"
+                        v-for="paidLeave of sickPaidLeaves"
                         :key="paidLeave.id"
                         :paid-leave="paidLeave"
                         @deleted-paid-leave="$emit('deleted-paid-leave')"
                     />
                 </div>
 
-                <div>
+                <div v-if="vacationPaidLeaves.length > 0">
                     <div class="mb-1 flex items-center gap-1.5">
                         <SunIcon class="h-6 w-6" />
                         <p>
@@ -87,9 +89,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     </div>
 
                     <PaidLeaveCard
-                        v-for="paidLeave of props.agent.paid_leaves.filter(
-                            (paid_leave) => paid_leave.reason === 'on vacation'
-                        )"
+                        v-for="paidLeave of vacationPaidLeaves"
                         :key="paidLeave.id"
                         :paid-leave="paidLeave"
                         @deleted-paid-leave="$emit('deleted-paid-leave')"
