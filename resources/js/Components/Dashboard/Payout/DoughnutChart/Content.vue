@@ -2,24 +2,32 @@
 import sum from '@/utils/sum'
 import tailwindToHex from '@/utils/tailwindToHex'
 import { ArcElement, Chart as ChartJS, Tooltip } from 'chart.js'
+import { computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 
 const props = defineProps<{
-    values: Array<number>
+    items: Array<{
+        value: number
+        label: string
+    }>
 }>()
 
 ChartJS.register(ArcElement, Tooltip)
 
 const colors = [tailwindToHex['primary-500'], tailwindToHex['primary-300'], tailwindToHex['primary-100']].slice(
     0,
-    props.values.length
+    props.items.length
 )
+
+const values = computed(() => props.items.map((item) => item.value))
+console.log(values.value)
 
 const data = {
     datasets: [
         {
             backgroundColor: colors,
-            data: [...props.values, sum(props.values) >= 100 ? 0 : 100 - sum(props.values)],
+            data: [...values.value, sum(values.value) >= 100 ? 0 : 100 - sum(values.value)],
+            label: [props.items.map((item) => item.label)],
         },
     ],
 }
@@ -29,7 +37,19 @@ const chartOptions = {
     cutout: '80%',
     plugins: {
         tooltip: {
-            enabled: false,
+            callbacks: {
+                label: function (context: any) {
+                    const index = context.dataset.data.indexOf(context.raw)
+
+                    return ` ${context.dataset.data[index] * values.value.length}%`
+                },
+                title: function (context: any) {
+                    const index = context[0].dataset.data.indexOf(context[0].raw)
+
+                    return ` ${context[0].dataset.label[0][index]}`
+                },
+            },
+            displayColors: false,
         },
     },
 }
@@ -42,6 +62,6 @@ const chartOptions = {
             :options="chartOptions"
         />
 
-        <h2 class="absolute -mb-1">{{ sum(props.values).toFixed(0) }}%</h2>
+        <h2 class="absolute -mb-1">{{ sum(values).toFixed(0) }}%</h2>
     </div>
 </template>

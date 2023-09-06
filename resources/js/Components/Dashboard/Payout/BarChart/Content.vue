@@ -50,9 +50,6 @@ const chartOptions = {
                 title: function (context: any) {
                     return ` ${context[0].dataset.label}`
                 },
-                beforeBody: function (context: any) {
-                    return ``
-                },
             },
             displayColors: false,
         },
