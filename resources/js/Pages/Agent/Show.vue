@@ -26,41 +26,46 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
     <div class="w-216">
         <Card class="flex justify-between">
             <div>
-                <h1>{{ agent.name }}</h1>
-
-                <div class="flex gap-20">
-                    <div>
-                        <div class="mt-5">
-                            <p class="mb-0.5 text-gray-500">Base Salary</p>
-                            <p class="text-xl font-semibold text-gray-700">
-                                {{ euroDisplay(props.agent.base_salary) }}
-                            </p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="mb-0.5 text-gray-500">On Target Earning</p>
-                            <p class="text-xl font-semibold text-gray-700">
-                                {{ euroDisplay(props.agent.on_target_earning) }}
-                            </p>
-                        </div>
+                <div class="flex gap-10">
+                    <div class="mr-10">
+                        <h1>{{ props.agent.name }}</h1>
+                        <p class="mt-1 text-gray-500">{{ props.agent.email }}</p>
                     </div>
 
                     <div>
-                        <div class="mt-5">
-                            <p class="mb-0.5 text-gray-500">
-                                Total Commission in {{ currentScope(timeScopeFromQuery) }}
-                            </p>
-                            <p class="text-xl font-semibold text-gray-700">
-                                {{ euroDisplay(props.agent.commission!) }}
-                            </p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="mb-0.5 text-gray-500">
-                                Total Quota Attainment in {{ currentScope(timeScopeFromQuery) }}
-                            </p>
-                            <p class="text-xl font-semibold text-gray-700">
-                                {{ props.agent.quota_attainment_in_percent }}%
-                            </p>
-                        </div>
+                        <p class="mb-0.5 text-sm text-gray-500">Base Salary</p>
+                        <p class="text-lg font-semibold text-gray-700">
+                            {{ euroDisplay(props.agent.base_salary) }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="mb-0.5 text-sm text-gray-500">On Target Earning</p>
+                        <p class="text-lg font-semibold text-gray-700">
+                            {{ euroDisplay(props.agent.on_target_earning) }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex gap-20">
+                    <div>
+                        <p class="mb-0.5 text-lg text-gray-500">
+                            Total Quota Attainment in
+                            <span class="font-semibold text-gray-700">{{ currentScope(timeScopeFromQuery) }}</span>
+                        </p>
+                        <DoughnutChart
+                            class="mt-5"
+                            :quotaAttainment="agent.quota_attainment_in_percent!"
+                        />
+                    </div>
+                    <div>
+                        <p class="mb-0.5 text-lg text-gray-500">
+                            Total Commission in
+                            <span class="font-semibold text-gray-700">{{ currentScope(timeScopeFromQuery) }}</span>
+                        </p>
+                        <p class="mt-3 text-2xl font-semibold text-gray-700">
+                            {{ euroDisplay(props.agent.commission!) }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -118,12 +123,5 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                 </div>
             </div>
         </Card>
-        <div class="flex flex-col items-end">
-            <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
-            <DoughnutChart
-                class="mt-5"
-                :quotaAttainment="agent.quota_attainment_in_percent!"
-            />
-        </div>
     </div>
 </template>
