@@ -13,6 +13,7 @@ import queryParamValue from '@/utils/queryParamValue'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { computed } from 'vue'
 import PaidLeaveCard from '@/Components/Agent/PaidLeave/PaidLeaveCard.vue'
+import sum from '@/utils/sum'
 
 const props = defineProps<{
     agent: Agent
@@ -78,11 +79,19 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                         <div class="mb-8">
                             <p class="mb-0.5 text-gray-500">Plan Commissions</p>
                             <p class="text-xl font-semibold text-gray-700">
-                                {{ euroDisplay(props.agent.commission!) }}
+                                {{
+                                    euroDisplay(
+                                        sum(
+                                            props.agent.active_plans!.map(
+                                                (plan) => plan.kicker_commission + plan.quota_commission
+                                            )
+                                        )
+                                    )
+                                }}
                             </p>
                         </div>
                         <BarChart
-                            class=""
+                            v-if="props.agent.commission"
                             :items="props.agent.active_plans!.map(plan => ({
                                 label: plan.name,
                                 quotaCommission: plan.quota_commission,

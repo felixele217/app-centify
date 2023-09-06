@@ -4,6 +4,7 @@ import SecondaryButton from '../Buttons/SecondaryButton.vue'
 
 const props = defineProps<{
     positiveButtonText: string
+    processing?: boolean
 }>()
 </script>
 
@@ -15,6 +16,7 @@ const props = defineProps<{
         />
 
         <PrimaryButton
+            :processing="props.processing"
             :text="props.positiveButtonText"
             @click="$emit('create-button-clicked')"
         />
