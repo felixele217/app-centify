@@ -29,15 +29,13 @@ const props = defineProps<{
         <Header :agent="props.agent" />
 
         <div class="mt-14">
-            <div class="grid grid-cols-2 divide-x">
+            <div class="grid grid-cols-2">
                 <CommissionDeepDive
                     :agent="props.agent"
-                    class="pr-10"
                 />
 
                 <QuotaDeepDive
                     :agent="props.agent"
-                    class="pl-10"
                 />
             </div>
         </div>
