@@ -12,6 +12,7 @@ import currentScope from '@/utils/Date/currentScope'
 import queryParamValue from '@/utils/queryParamValue'
 import { TimeScopeEnum } from '@/types/Enum/TimeScopeEnum'
 import { computed } from 'vue'
+import PaidLeaveCard from '@/Components/Agent/PaidLeave/PaidLeaveCard.vue'
 
 const props = defineProps<{
     agent: Agent
@@ -91,12 +92,19 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
                     </div>
 
                     <div>
-                        <div class="mb-8">
+                        <div class="mb-6">
                             <p class="mb-0.5 text-gray-500">Paid Leave Commissions</p>
                             <p class="text-xl font-semibold text-gray-700">
                                 {{ euroDisplay(props.agent.paid_leaves_commission!) }}
                             </p>
                         </div>
+
+                        <PaidLeaveCard
+                            v-for="paidLeave of agent?.paid_leaves"
+                            :key="paidLeave.id"
+                            :paid-leave="paidLeave"
+                            @deleted-paid-leave="$emit('deleted-paid-leave')"
+                        />
                     </div>
                 </div>
             </div>

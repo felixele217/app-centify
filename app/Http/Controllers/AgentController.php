@@ -38,7 +38,7 @@ class AgentController extends Controller
     public function show(Agent $agent): Response
     {
         return Inertia::render('Agent/Show', [
-            'agent' => $agent->load('activePaidLeave')->append([
+            'agent' => $agent->load('paidLeaves')->append([
                 'quota_attainment_in_percent',
                 'active_plans',
                 'commission',

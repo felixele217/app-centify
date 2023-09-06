@@ -29,7 +29,7 @@ it('passes the correct props', function () {
                 ->component('Agent/Show')
                 ->where('agent.id', $agent->id)
                 ->has('agent.commission')
-                ->has('agent.active_paid_leave')
+                ->has('agent.paid_leaves')
                 ->has('agent.active_plans', $planCount)
                 ->has('agent.paid_leaves_commission')
         );

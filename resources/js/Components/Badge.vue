@@ -38,7 +38,7 @@ function color() {
 
         <button
             type="button"
-            class="group relative -mr-1 ml-1 h-5 w-5 rounded-sm hover:bg-purple-600/20"
+            class="group relative ml-1 h-5 w-5 rounded-sm hover:bg-purple-600/20"
             v-if="props.withDelete"
             @click="$emit('delete')"
             aria-hidden="true"
