@@ -75,10 +75,7 @@ const timeScopeFromQuery = queryParamValue('time_scope') as TimeScopeEnum | ''
             </div>
 
             <div class="flex flex-col items-end">
-                <h2>
-                    Quota Attainment for
-                    {{ currentScope(timeScopeFromQuery) }}
-                </h2>
+                        <p class="mb-0.5 text-gray-500">Total Quota Attainment</p>
                 <DoughnutChart
                     class="mt-5"
                     :quotaAttainment="agent.quota_attainment! * 100 ?? 0"
