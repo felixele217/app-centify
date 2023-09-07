@@ -13,7 +13,8 @@ import Header from '@/Components/Agent/Show/Header.vue'
 import { watch } from 'vue'
 import CommissionDeepDive from './CommissionDeepDive.vue'
 import QuotaDeepDive from './QuotaDeepDive.vue'
-import Agent from './Agent.vue'
+import AgentVue from './Agent.vue'
+import Agent from '@/types/Agent'
 
 const props = defineProps<{
     isOpen: boolean
