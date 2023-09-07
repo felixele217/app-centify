@@ -63,8 +63,8 @@ const planCommission = sum(props.agent.active_plans!.map((plan) => plan.kicker_c
             </div>
             <div class="flex gap-5">
                 <div v-if="sickPaidLeaves.length > 0">
-                    <div class="mb-1 flex items-center gap-1.5">
-                        <SickIcon size="w-5 h-5" />
+                    <div class="mb-1 flex items-center gap-1.5 text-sm">
+                        <SickIcon size="w-4 h-4" />
                         <p>
                             <span class="font-semibold">{{ props.agent.sick_leaves_days_count! }}</span>
                             weekdays sick
@@ -80,8 +80,8 @@ const planCommission = sum(props.agent.active_plans!.map((plan) => plan.kicker_c
                 </div>
 
                 <div v-if="vacationPaidLeaves.length > 0">
-                    <div class="mb-1 flex items-center gap-1.5">
-                        <SunIcon class="h-6 w-6" />
+                    <div class="mb-1 flex items-center gap-1.5 text-sm">
+                        <SunIcon class="h-5 w-5" />
                         <p>
                             <span class="font-semibold">{{ props.agent.vacation_leaves_days_count! }}</span>
                             weekdays on vacation

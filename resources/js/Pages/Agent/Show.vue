@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Filter from '@/Components/Form/Filter.vue'
-import Agent from '@/types/Agent'
 import euroDisplay from '@/utils/euroDisplay'
 import DoughnutChart from '@/Components/Dashboard/Payout/DoughnutChart/Content.vue'
 import Card from '@/Components/Card.vue'
@@ -18,6 +17,8 @@ import SickIcon from '@/Components/Icon/SickIcon.vue'
 import Header from '@/Components/Agent/Show/Header.vue'
 import CommissionDeepDive from '@/Components/Agent/Show/CommissionDeepDive.vue'
 import QuotaDeepDive from '@/Components/Agent/Show/QuotaDeepDive.vue'
+import AgentVue from '@/Components/Agent/Show/Agent.vue'
+import Agent from '@/types/Agent'
 
 const props = defineProps<{
     agent: Agent
@@ -25,15 +26,5 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card class="w-240">
-        <Header :agent="props.agent" />
-
-        <div class="mt-14">
-            <div class="grid grid-cols-2">
-                <CommissionDeepDive :agent="props.agent" />
-
-                <QuotaDeepDive :agent="props.agent" />
-            </div>
-        </div>
-    </Card>
+    <Card class="w-240"> <AgentVue :agent="props.agent" /> </Card>
 </template>

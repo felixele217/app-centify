@@ -3,16 +3,35 @@ import FormButtons from '@/Components/Form/FormButtons.vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
+export type SlideOverWidth =
+    | 'max-w-xs'
+    | 'max-w-sm'
+    | 'max-w-md'
+    | 'max-w-lg'
+    | 'max-w-xl'
+    | 'max-w-2xl'
+    | 'max-w-3xl'
+    | 'max-w-4xl'
+    | 'max-w-5xl'
+    | 'max-w-6xl'
+    | 'max-w-7xl'
+
+const props = withDefaults(
+    defineProps<{
+        isOpen: boolean
+        title: string
+        description: string
+        buttonText?: string
+        width?: SlideOverWidth
+    }>(),
+    {
+        width: 'max-w-md',
+    }
+)
+
 defineEmits<{
     'close-slide-over': []
     submit: []
-}>()
-
-const props = defineProps<{
-    isOpen: boolean
-    title: string
-    description: string
-    buttonText?: string
 }>()
 </script>
 
@@ -40,7 +59,7 @@ const props = defineProps<{
                             leave-from="translate-x-0"
                             leave-to="translate-x-full"
                         >
-                            <DialogPanel class="pointer-events-auto w-screen max-w-md">
+                            <DialogPanel :class="`pointer-events-auto w-screen ${props.width}`">
                                 <form
                                     class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                                     @submit.prevent="$emit('submit')"

@@ -13,6 +13,8 @@ import roundFloat from '@/utils/roundFloat'
 import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import ValueChange from './ValueChange.vue'
 import { router, usePage } from '@inertiajs/vue3'
+import ShowAgentSlideOver from '@/Components/Agent/Show/ShowAgentSlideOver.vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -22,10 +24,19 @@ const props = defineProps<{
 defineEmits<{
     'open-paid-leave-slide-over': [agentId: number, type: AgentStatusEnum]
 }>()
+
+const currentShownAgent = ref<Agent>()
 </script>
 
 <template>
     <Card>
+        <ShowAgentSlideOver
+            @close-show-agent-slide-over="currentShownAgent = undefined"
+            :is-open="!!currentShownAgent"
+            :agent="currentShownAgent"
+            dusk="upsert-agent-slide-over-modal"
+        />
+
         <PageHeader
             title="Total Commission by Employee"
             description="Overview of your agents' performances."
@@ -106,7 +117,7 @@ defineEmits<{
                                         <AgentNameColumn
                                             :agent="agent"
                                             class="cursor-pointer"
-                                            @click="router.get(route('agents.show', agent.id))"
+                                            @click="currentShownAgent = agent"
                                         />
                                     </HideInProduction>
                                 </td>
