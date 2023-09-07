@@ -38,8 +38,22 @@ export default {
                 primary: '#4E77F9',
                 'primary-hover': '#6b8ffa',
 
+                // hsl(228, 80%, 46%)
+                'primary-900': '#173dd3',
+
+                // hsl(228, 83%, 53%)
+                'primary-800': '#244beb',
+
+                // hsl(227, 85%, 55%)
+                'primary-700': '#2b55ee',
+
+                // hsl(227, 90%, 60%)
+                'primary-600': '#3d65f5',
+
                 // hsl(226, 93%, 64%)
                 'primary-500': '#4E77F9',
+
+                // hsl(225, 93%, 70%)
                 'primary-400': '#6b8ffa',
 
                 // hsl(225, 95%, 71%)
