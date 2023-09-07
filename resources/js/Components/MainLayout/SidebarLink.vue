@@ -11,7 +11,7 @@ const props = defineProps<{
     <a
         :href="props.href"
         :class="[
-            props.current ? 'bg-gray-50 text-primary' : 'text-gray-800 hover:bg-gray-50 hover:text-primary',
+            props.current ? 'bg-gray-50 text-primary-500' : 'text-gray-800 hover:bg-gray-50 hover:text-primary-500',
             'group flex gap-x-3 rounded-md p-2 py-3.5 font-semibold leading-6',
         ]"
     >

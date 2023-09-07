@@ -15,8 +15,8 @@ const props = defineProps<{
         :padding="props.padding"
         :text="props.text"
         :class="`${
-            props.disabled ? 'bg-gray-300 hover:bg-gray-300' : 'bg-primary hover:bg-primary-hover'
-        } text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-hover`"
+            props.disabled ? 'bg-gray-300 hover:bg-gray-300' : 'bg-primary-500 hover:bg-primary-400'
+        } text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-400`"
         :disabled="props.disabled || props.processing"
     >
         <slot />

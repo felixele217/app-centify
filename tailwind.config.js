@@ -35,9 +35,6 @@ export default {
                 ],
             },
             colors: {
-                primary: '#4E77F9',
-                'primary-hover': '#6b8ffa',
-
                 // hsl(228, 80%, 46%)
                 'primary-900': '#173dd3',
 
@@ -50,6 +47,7 @@ export default {
                 // hsl(227, 90%, 60%)
                 'primary-600': '#3d65f5',
 
+                // PRIMARY COLOR
                 // hsl(226, 93%, 64%)
                 'primary-500': '#4E77F9',
 

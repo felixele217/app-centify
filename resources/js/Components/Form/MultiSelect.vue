@@ -3,7 +3,6 @@ import SelectOption from '@/types/SelectOption'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import DeleteIcon from '../Icon/DeleteIcon.vue'
-import { ref } from 'vue'
 
 const emit = defineEmits<{
     'option-clicked': [id: number]
@@ -95,7 +94,7 @@ function handleEnter() {
                         <li
                             @click="$emit('option-clicked', option.id)"
                             :class="[
-                                active ? 'bg-primary text-white' : 'text-gray-900',
+                                active ? 'bg-primary-500 text-white' : 'text-gray-900',
                                 'relative cursor-pointer select-none py-2 pl-8 pr-4',
                             ]"
                         >
@@ -107,7 +106,7 @@ function handleEnter() {
                             <span
                                 v-if="isSelected(option.id)"
                                 :class="[
-                                    active ? 'text-white' : 'text-primary',
+                                    active ? 'text-white' : 'text-primary-500',
                                     'absolute inset-y-0 left-0 flex items-center pl-1.5',
                                 ]"
                             >

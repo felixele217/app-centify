@@ -3,7 +3,6 @@ const tailwindToHex = {
     'indigo-800': '#3730a3',
 
     'violet-950': '#2e1065',
-    'violet-primary': '#6d28d9',
 
     'gray-950': '#030712',
     'gray-300': '#d1d5db',

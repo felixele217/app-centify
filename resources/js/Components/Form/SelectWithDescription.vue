@@ -2,8 +2,7 @@
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 export type SelectOptionWithDescription = {
     title: string
@@ -64,7 +63,7 @@ const current = ref<SelectOptionWithDescription>(props.options.filter((option) =
                 </div>
 
                 <div
-                    class="hover:bg-i inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-50"
+                    class="hover:bg-i focus:ring-primary-500 focus:ring-offset-2 inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-offset-gray-50"
                 >
                     <span class="sr-only">Change published status</span>
 
@@ -100,14 +99,14 @@ const current = ref<SelectOptionWithDescription>(props.options.filter((option) =
                     >
                         <li
                             class="cursor-pointer select-none p-4 text-sm"
-                            :class="active ? 'bg-primary text-white' : 'text-gray-900'"
+                            :class="active ? 'bg-primary-500 text-white' : 'text-gray-900'"
                         >
                             <div class="flex flex-col">
                                 <div class="flex justify-between">
                                     <p :class="selected ? 'font-semibold' : 'font-normal'">{{ option.title }}</p>
                                     <span
                                         v-if="selected"
-                                        :class="active ? 'text-white' : 'text-primary'"
+                                        :class="active ? 'text-white' : 'text-primary-500'"
                                     >
                                         <CheckIcon
                                             class="h-5 w-5"

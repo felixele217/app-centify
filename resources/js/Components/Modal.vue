@@ -106,7 +106,7 @@ const props = defineProps<{
                                     :class="
                                         props.isNegativeAction
                                             ? 'bg-red-600 hover:bg-red-500'
-                                            : 'bg-primary hover:bg-primary-hover'
+                                            : 'bg-primary-500 hover:bg-primary-400'
                                     "
                                     @click="$emit('modal-action')"
                                 >

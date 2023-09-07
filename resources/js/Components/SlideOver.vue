@@ -65,7 +65,7 @@ defineEmits<{
                                     @submit.prevent="$emit('submit')"
                                 >
                                     <div class="flex h-0 flex-1 flex-col overflow-y-auto">
-                                        <div class="bg-primary px-4 py-6 sm:px-6">
+                                        <div class="bg-primary-500 px-4 py-6 sm:px-6">
                                             <div class="flex items-center justify-between">
                                                 <DialogTitle class="text-base font-semibold leading-6 text-white">{{
                                                     props.title
