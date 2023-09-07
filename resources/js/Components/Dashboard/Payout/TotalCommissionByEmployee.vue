@@ -117,6 +117,7 @@ const currentShownAgent = ref<Agent>()
                                             :agent="agent"
                                             class="cursor-pointer"
                                             @click="currentShownAgent = agent"
+                                            dusk="show-agent-slide-over-button"
                                         />
                                     </HideInProduction>
                                 </td>
