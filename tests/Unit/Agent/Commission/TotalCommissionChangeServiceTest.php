@@ -16,13 +16,13 @@ it('total commission change is calculated correctly for commission from quota', 
     [$plan, $agent] = createActivePlanWithAgent($admin->organization->id, 1.3, TriggerEnum::DEMO_SCHEDULED);
 
     Deal::factory()
-        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, DateHelper::dateInPreviousTimeScope($timeScope))
+        ->withAgentDeal($agent->id, TriggerEnum::DEMO_SCHEDULED, $dateInPreviousScope = DateHelper::dateInPreviousTimeScope($timeScope))
         ->create([
             'add_time' => DateHelper::dateInPreviousTimeScope($timeScope),
         ]);
 
+        $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope, $dateInPreviousScope))->calculate($agent);
     $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
-    $commissionPreviousTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
     expect((new TotalQuotaCommissionChangeService())->calculate($agent, $timeScope))->toBe(
         intval($commissionThisTimeScope - $commissionPreviousTimeScope)

@@ -13,13 +13,13 @@ class TotalQuotaCommissionChangeService
 {
     public function calculate(Agent $agent, TimeScopeEnum $timeScope): ?int
     {
-        $quotaAttainmentLastTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, DateHelper::dateInPreviousTimeScope($timeScope)))->calculate();
+        $quotaAttainmentLastTimeScope = (new TotalQuotaAttainmentService($agent, $timeScope, $dateInPreviousTimeScope = DateHelper::dateInPreviousTimeScope($timeScope)))->calculate();
 
         if ($quotaAttainmentLastTimeScope === floatval(0)) {
             return null;
         }
 
-        $commissionLastTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
+        $commissionLastTimeScope = (new TotalQuotaCommissionService($timeScope, $dateInPreviousTimeScope))->calculate($agent);
         $commissionThisTimeScope = (new TotalQuotaCommissionService($timeScope))->calculate($agent);
 
         return intval($commissionThisTimeScope - $commissionLastTimeScope);
