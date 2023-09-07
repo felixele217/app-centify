@@ -27,6 +27,11 @@ class RenderSlideOversTest extends DuskTestCase
                 'expectedText' => 'Manage Plans',
             ],
             route('dashboard') => [
+                'awaitedText' => '+ Add Plan',
+                'elementPrefix' => 'manage-paid-leaves-slide-over',
+                'expectedText' => 'Manage Plans',
+            ],
+            route('dashboard') => [
                 'awaitedText' => 'days on vacation',
                 'elementPrefix' => 'manage-paid-leaves-slide-over',
                 'expectedText' => 'Continuation of pay based on..',
