@@ -1,20 +1,8 @@
 <script setup lang="ts">
-import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import InputError from '@/Components/Form/InputError.vue'
-import InputLabel from '@/Components/Form/InputLabel.vue'
-import TextInput from '@/Components/Form/TextInput.vue'
-import InfoIcon from '@/Components/Icon/InfoIcon.vue'
-import SlideOver, { SlideOverWidth } from '@/Components/SlideOver.vue'
-import euroDisplay from '@/utils/euroDisplay'
-import notify from '@/utils/notify'
-import { useForm } from '@inertiajs/vue3'
-import Header from '@/Components/Agent/Show/Header.vue'
+import SlideOver from '@/Components/SlideOver.vue'
 
-import { watch } from 'vue'
-import CommissionDeepDive from './CommissionDeepDive.vue'
-import QuotaDeepDive from './QuotaDeepDive.vue'
-import AgentVue from './Agent.vue'
 import Agent from '@/types/Agent'
+import AgentDeepDive from './AgentDeepDive.vue'
 
 const props = defineProps<{
     isOpen: boolean
@@ -32,9 +20,8 @@ const emit = defineEmits(['close-show-agent-slide-over'])
         :description="`Gain a complete overview about the performance of ${props.agent?.name} including detailed commission and quota calculations.`"
         width="max-w-4xl"
     >
-        <Agent
-            v-if="agent"
-            :agent="props.agent"
-        />
+        <div v-if="props.agent">
+            <AgentDeepDive :agent="props.agent" />
+        </div>
     </SlideOver>
 </template>
