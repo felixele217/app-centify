@@ -5,7 +5,6 @@ import Modal from '@/Components/Modal.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import TableWrapper from '@/Components/TableWrapper.vue'
 import Agent from '@/types/Agent'
-import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import Plan from '@/types/Plan/Plan'
 import euroDisplay from '@/utils/euroDisplay'
 import notify from '@/utils/notify'
@@ -49,7 +48,7 @@ const agentIdBeingDeleted = ref<number | null>()
     <upsert-agent-slide-over
         @close-upsert-agent-slide-over="closeUpsertAgentSlideOver"
         :is-open="!!isUpsertingAgent"
-        dusk="upsert-agent-slide-over-modal"
+        dusk="upsert-agent-slide-over"
         :agent="agentBeingEdited"
     />
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import HeaderWithDetailButton from './HeaderWithDetailButton.vue'
-import TopDeals from './TopDeals.vue'
 </script>
 
 <template>

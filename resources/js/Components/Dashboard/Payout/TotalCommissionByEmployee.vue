@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ActivePlans from '@/Components/Agent/ActivePlans.vue'
+import ShowAgentSlideOver from '@/Components/Agent/Show/ShowAgentSlideOver.vue'
 import AgentNameColumn from '@/Components/AgentNameColumn.vue'
 import Card from '@/Components/Card.vue'
 import Filter from '@/Components/Form/Filter.vue'
@@ -9,12 +10,10 @@ import Agent from '@/types/Agent'
 import { AgentStatusEnum } from '@/types/Enum/AgentStatusEnum'
 import Plan from '@/types/Plan/Plan'
 import euroDisplay from '@/utils/euroDisplay'
-import roundFloat from '@/utils/roundFloat'
 import { FolderArrowDownIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
-import ValueChange from './ValueChange.vue'
-import { router, usePage } from '@inertiajs/vue3'
-import ShowAgentSlideOver from '@/Components/Agent/Show/ShowAgentSlideOver.vue'
+import { usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import ValueChange from './ValueChange.vue'
 
 const props = defineProps<{
     agents: Array<Agent>
@@ -34,7 +33,7 @@ const currentShownAgent = ref<Agent>()
             @close-show-agent-slide-over="currentShownAgent = undefined"
             :is-open="!!currentShownAgent"
             :agent="currentShownAgent"
-            dusk="upsert-agent-slide-over-modal"
+            dusk="show-agent-slide-over"
         />
 
         <PageHeader

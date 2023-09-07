@@ -31,6 +31,11 @@ class RenderSlideOversTest extends DuskTestCase
                 'elementPrefix' => 'manage-paid-leaves-slide-over',
                 'expectedText' => 'Continuation of pay based on..',
             ],
+            route('dashboard') => [
+                'awaitedText' => Agent::first()->name,
+                'elementPrefix' => 'show-agent-slide-over',
+                'expectedText' => 'Deep Dive',
+            ],
         ];
 
         foreach ($urlsToText as $url => $assertData) {

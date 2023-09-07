@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue'
 import CurrencyInput from '@/Components/Form/CurrencyInput.vue'
-import DateInput from '@/Components/Form/DateInput.vue'
 import FormButtons from '@/Components/Form/FormButtons.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import InputLabel from '@/Components/Form/InputLabel.vue'
@@ -28,14 +27,12 @@ import { router, useForm, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import UpsertAgentSlideOver from '../Agent/Index/UpsertAgentSlideOver.vue'
 import CardOptions, { CardOptionsOption } from '../CardOptions.vue'
+import MonthInput from '../Form/MonthInput.vue'
 import PercentageInput from '../Form/PercentageInput.vue'
 import SectionWithDescription from '../Form/SectionWithDescription.vue'
 import InfoIcon from '../Icon/InfoIcon.vue'
 import KickerForm from './KickerForm.vue'
 import PlanDescription from './PlanDescription.vue'
-import roundFloat from '@/utils/roundFloat'
-import MonthInput from '../Form/MonthInput.vue'
-import HideInProduction from '../System/HideInProduction.vue'
 
 export interface AdditionalField {
     id: number
@@ -169,7 +166,7 @@ const isUpsertingAgent = ref(false)
     <UpsertAgentSlideOver
         @close-upsert-agent-slide-over="closeSlideOver"
         :is-open="!!isUpsertingAgent"
-        dusk="upsert-agent-slide-over-modal"
+        dusk="upsert-agent-slide-over"
     />
 
     <div class="flex justify-center gap-20">
