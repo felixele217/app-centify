@@ -21,6 +21,13 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(Admin::class)->ignore($this->user()->id),
                 Rule::unique(Agent::class)->ignore($this->user()->id),
             ],
+            'auto_accept_demo_scheduled' => [
+                'boolean',
+            ],
+
+            'auto_accept_deal_won' => [
+                'boolean',
+            ],
         ];
     }
 }

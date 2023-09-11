@@ -12,4 +12,6 @@ export default interface Organization {
     agents?: Array<Agent>
     plans?: Array<Plan>
     integrations?: Array<Integration | null>
+    auto_accept_demo_scheduled: boolean
+    auto_accept_deal_won: boolean
 }

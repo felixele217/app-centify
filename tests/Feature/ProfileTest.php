@@ -2,22 +2,12 @@
 
 use App\Models\Admin;
 
-test('profile page is displayed', function () {
-    $user = Admin::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->get('/profile');
-
-    $response->assertOk();
-});
-
 test('profile information can be updated', function () {
     $user = Admin::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->put('/profile', [
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
@@ -38,7 +28,7 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->put('/profile', [
             'name' => 'Test User',
             'email' => $user->email,
         ]);

@@ -14,23 +14,21 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function edit(): Response
     {
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => request()->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'organization' => Auth::user()->organization,
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->user()->fill($request->safe()->only([
+            'name',
+            'email',
+        ]));
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -38,12 +36,14 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        $request->user()->organization->update($request->safe()->only([
+            'auto_accept_demo_scheduled',
+            'auto_accept_deal_won',
+        ]));
+
         return Redirect::route('profile.edit');
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(): RedirectResponse
     {
         request()->validate([

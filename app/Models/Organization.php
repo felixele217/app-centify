@@ -16,6 +16,11 @@ class Organization extends Model implements Auditable
 
     protected $guarded = [];
 
+    protected $casts = [
+        'auto_accept_demo_scheduled' => 'boolean',
+        'auto_accept_deal_won' => 'boolean',
+    ];
+
     public function plans(): HasMany
     {
         return $this->hasMany(Plan::class);

@@ -31,7 +31,7 @@ const toggleColor =
 <template>
     <SwitchGroup
         as="div"
-        class="flex items-center justify-between"
+        class="flex gap-5 items-center justify-between"
     >
         <span class="flex flex-grow flex-col">
             <SwitchLabel
