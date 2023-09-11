@@ -42,7 +42,7 @@
         "files": [
             "app/Helper/queryTimeScope.php"
         ],
-        
+
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
@@ -74,8 +74,7 @@
         "test-local": "composer pest-local && composer vitest && composer dusk-local",
         "pest-local": "vendor/bin/pest --group=feature,unit,architecture",
         "vitest": "npm run test",
-        "dusk-local": "bash ./scripts/killViteProcess.sh && npm run build && sail dusk",
-        "stan": "vendor/bin/phpstan analyse --memory-limit=2G"
+        "dusk-local": "bash ./scripts/killViteProcess.sh && npm run build && sail dusk"
     },
     "extra": {
         "laravel": {
