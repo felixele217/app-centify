@@ -24,10 +24,14 @@ class UpsertSplitRequest extends FormRequest
                 'exists:agents,id',
             ],
 
-            'partners.*.deal_percentage' => [
-                'required',
+            'partners.*.demo_scheduled_deal_percentage' => [
+                'nullable',
                 'integer',
-                'gt:0',
+            ],
+
+            'partners.*.deal_won_deal_percentage' => [
+                'nullable',
+                'integer',
             ],
         ];
     }
@@ -36,8 +40,6 @@ class UpsertSplitRequest extends FormRequest
     {
         return [
             'partners.*.id.required' => "The partners' identifier field is required.",
-            'partners.*.deal_percentage.required' => "The partners' shared percentage field is required.",
-            'partners.*.deal_percentage.gt' => "The partners' shared percentage must be greater than 0.",
         ];
     }
 }

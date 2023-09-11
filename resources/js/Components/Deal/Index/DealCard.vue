@@ -112,8 +112,12 @@ const agentThatTriggeredDeal = computed(() => {
 
 const shareholdersCount = computed(
     () =>
-        Object.keys(props.deal.demo_scheduled_shareholders!).length +
-        Object.keys(props.deal.deal_won_shareholders!).length
+        [
+            ...new Set([
+                ...Object.values(props.deal.demo_scheduled_shareholders!).map((agent) => agent.id),
+                ...Object.values(props.deal.deal_won_shareholders!).map((agent) => agent.id),
+            ]),
+        ].length
 )
 
 function dealPercentages(trigger: TriggerEnum) {
@@ -124,9 +128,9 @@ function dealPercentages(trigger: TriggerEnum) {
     }
 
     return (
-        (trigger === 'Demo scheduled' ? 'Splits for Demo scheduled:\n' : 'Splits for Deal won:\n') +
+        (trigger === 'Demo scheduled' ? 'SAO Splits:\n' : 'ARR Splits:\n') +
         agentsWithTrigger.map((agent) => '\t' + agent.name + ': ' + agent.pivot.deal_percentage + '%').join('\n') +
-        '\n'
+        '\n\n'
     )
 }
 </script>

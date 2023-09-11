@@ -13,32 +13,46 @@ class SplitRepository
 {
     public static function upsert(Deal $deal, UpsertSplitRequest $request): void
     {
-        $requestPartnerIds = [];
-
-        $trigger = $deal->ae ? TriggerEnum::DEAL_WON : TriggerEnum::DEMO_SCHEDULED;
+        $requestDemoScheduledPartners = [];
+        $requestDealWonPartners = [];
 
         foreach ($request->validated('partners') as $partner) {
-            AgentDeal::updateOrCreate([
-                'deal_id' => $deal->id,
-                'agent_id' => $partner['id'],
-                'triggered_by' => $trigger,
-            ], ['deal_percentage' => $partner['deal_percentage']]);
+            if (isset($partner['demo_scheduled_deal_percentage']) && $partner['demo_scheduled_deal_percentage'] !== 0) {
+                AgentDeal::updateOrCreate([
+                    'deal_id' => $deal->id,
+                    'agent_id' => $partner['id'],
+                    'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value,
+                ], ['deal_percentage' => $partner['demo_scheduled_deal_percentage']]);
 
-            $requestPartnerIds[] = $partner['id'];
-        }
+                $requestDemoScheduledPartners[] = $partner['id'];
+            }
 
-        $shareholders = $trigger === TriggerEnum::DEAL_WON ? $deal->dealWonShareholders : $deal->demoScheduledShareholders;
+            if (isset($partner['deal_won_deal_percentage']) && $partner['deal_won_deal_percentage'] !== 0) {
+                AgentDeal::updateOrCreate([
+                    'deal_id' => $deal->id,
+                    'agent_id' => $partner['id'],
+                    'triggered_by' => TriggerEnum::DEAL_WON->value,
+                ], ['deal_percentage' => $partner['deal_won_deal_percentage']]);
 
-        foreach ($shareholders as $agentDeal) {
-            if (! in_array($agentDeal->pivot->agent_id, $requestPartnerIds)) {
-                $agentDeal->pivot->delete();
+                $requestDealWonPartners[] = $partner['id'];
             }
         }
 
+        foreach ($deal->demoScheduledShareholders as $shareholder) {
+            if (! in_array($shareholder->id, $requestDemoScheduledPartners)) {
+                $shareholder->pivot->delete();
+            }
+        }
+
+        foreach ($deal->dealWonShareholders as $shareholder) {
+            if (! in_array($shareholder->id, $requestDealWonPartners)) {
+                $shareholder->pivot->delete();
+            }
+        }
+
+        $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['demo_scheduled_deal_percentage'], $request->validated('partners'))))]);
         if ($deal->ae) {
-            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
-        } else {
-            $deal->sdr?->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['deal_percentage'], $request->validated('partners'))))]);
+            $deal->ae->pivot->update(['deal_percentage' => (100 - array_sum(array_map(fn (array $partner) => $partner['deal_won_deal_percentage'], $request->validated('partners'))))]);
         }
     }
 }

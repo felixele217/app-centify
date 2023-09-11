@@ -11,9 +11,8 @@ beforeEach(function () {
 
     $this->deal = Deal::factory()
         ->withAgentDeal(Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id, TriggerEnum::DEAL_WON)
-        ->create([
-            'won_time' => Carbon::yesterday(),
-        ]);
+        ->won(Carbon::yesterday())
+        ->create();
 });
 
 it('can store a split for a deal that is won', function () {
@@ -21,11 +20,13 @@ it('can store a split for a deal that is won', function () {
         'partners' => [
             [
                 'id' => $agentId = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'deal_percentage' => $dealPercentage = 50,
+                'deal_won_deal_percentage' => $dealPercentage = 50,
+                'demo_scheduled_deal_percentage' => 0,
             ],
             [
                 'id' => $agentId2 = Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
-                'deal_percentage' => $dealPercentage2 = 20,
+                'deal_won_deal_percentage' => $dealPercentage2 = 20,
+                'demo_scheduled_deal_percentage' => 0,
             ],
         ],
     ]);
@@ -46,12 +47,14 @@ it('updates the splits correctly if there already were some', function () {
     $this->put(route('deals.splits.upsert', $this->deal), [
         'partners' => [
             [
-                'deal_percentage' => $newSharedPercentage = 50,
                 'id' => $existingAgentId,
+                'deal_won_deal_percentage' => $newSharedPercentage = 50,
+                'demo_scheduled_deal_percentage' => 0,
             ],
             [
-                'deal_percentage' => 20,
                 'id' => Agent::factory()->ofOrganization($this->admin->organization_id)->create()->id,
+                'deal_won_deal_percentage' => 20,
+                'demo_scheduled_deal_percentage' => 0,
             ],
         ],
     ]);
@@ -60,12 +63,26 @@ it('updates the splits correctly if there already were some', function () {
     expect($agentDeal->fresh()->deal_factor)->toBe($newSharedPercentage / 100);
 });
 
-it('removes the split if it is not present in the request', function () {
-    AgentDeal::factory()->create(['deal_id' => $this->deal->id, 'triggered_by' => TriggerEnum::DEAL_WON->value]);
-
-    $this->put(route('deals.splits.upsert', $this->deal), [
-        'partners' => [],
+it('removes the split if it is set to 0', function () {
+    $demoScheduledAgentDeal = AgentDeal::factory()->create([
+        'deal_id' => $this->deal->id,
+        'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value,
+    ]);
+    AgentDeal::factory()->create([
+        'deal_id' => $this->deal->id,
+        'agent_id' => $demoScheduledAgentDeal->agent_id,
+        'triggered_by' => TriggerEnum::DEAL_WON->value,
     ]);
 
-    expect(AgentDeal::count())->toBe(1);
+    $this->put(route('deals.splits.upsert', $this->deal), [
+        'partners' => [
+            [
+                'demo_scheduled_deal_percentage' => 20,
+                'deal_won_deal_percentage' => 0,
+                'id' => $demoScheduledAgentDeal->agent_id,
+            ],
+        ],
+    ]);
+
+    expect(AgentDeal::count())->toBe(2);
 });

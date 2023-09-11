@@ -17,7 +17,8 @@ import AgentDealShare from './AgentDealShare.vue'
 type Partner = {
     id: number | null
     name: string
-    deal_percentage: number | null
+    demo_scheduled_deal_percentage: number | null
+    deal_won_deal_percentage: number | null
 }
 
 const emit = defineEmits<{
@@ -34,8 +35,10 @@ const newPartner = () =>
     ({
         name: '',
         id: null,
-        deal_percentage: null,
+        demo_scheduled_deal_percentage: null,
+        deal_won_deal_percentage: null,
     } as Partner)
+
 const agentNamesToIds = computed(() => usePage().props.agents as Record<string, number>)
 
 const form = useForm({
@@ -53,14 +56,30 @@ watch(
     }
 )
 
-function loadExistingAgentsFromSplits() {
-    const shareholders =
-        props.deal.status === 'won' ? props.deal.deal_won_shareholders : props.deal.demo_scheduled_shareholders
+function loadExistingAgentsFromSplits(): Array<Partner> {
+    const shareholderIds = [
+        ...new Set([
+            ...Object.values(props.deal.demo_scheduled_shareholders!).map((agent) => agent.id),
+            ...Object.values(props.deal.deal_won_shareholders!).map((agent) => agent.id),
+        ]),
+    ]
 
-    return Object.values(shareholders!).map((agent) => ({
-        name: agent.name,
-        id: agent.id,
-        deal_percentage: agent.pivot.deal_percentage,
+    return shareholderIds.map((agentId) => ({
+        name:
+            Object.values(props.deal.demo_scheduled_shareholders!).filter(
+                (demoScheduledAgent) => demoScheduledAgent.id === agentId
+            )[0]?.name ||
+            Object.values(props.deal.demo_scheduled_shareholders!).filter(
+                (demoScheduledAgent) => demoScheduledAgent.id === agentId
+            )[0]?.name,
+        id: agentId,
+        demo_scheduled_deal_percentage:
+            Object.values(props.deal.demo_scheduled_shareholders!).filter(
+                (demoScheduledAgent) => demoScheduledAgent.id === agentId
+            )[0]?.pivot.deal_percentage || null,
+        deal_won_deal_percentage:
+            Object.values(props.deal.deal_won_shareholders!).filter((dealWonAgent) => dealWonAgent.id === agentId)[0]
+                ?.pivot.deal_percentage || null,
     }))
 }
 
@@ -96,15 +115,18 @@ function removePartner(index: number) {
     form.partners = partners
 }
 
-function handlePercentageChange(newValue: number, partnerIndex: number): void {
-    form.partners[partnerIndex].deal_percentage = newValue
+function handlePercentageChange(newValue: number, forPercentage: 'SAO' | 'ARR', partnerIndex: number): void {
+    const attributeName = forPercentage === 'SAO' ? 'demo_scheduled_deal_percentage' : 'deal_won_deal_percentage'
+
+    form.partners[partnerIndex][attributeName] = newValue
+
     const thisPartnersName = form.partners[partnerIndex].name
 
     const otherPartners = form.partners.filter((partner) => partner.id !== form.partners[partnerIndex].id)
     const equalPercentageForOtherPartners = Math.floor((100 - newValue) / otherPartners.length)
 
-    if (sum(otherPartners.map((partner) => partner.deal_percentage ?? 0)) + newValue > 100) {
-        otherPartners.forEach((partner) => (partner.deal_percentage = equalPercentageForOtherPartners))
+    if (sum(otherPartners.map((partner) => partner[attributeName] ?? 0)) + newValue > 100) {
+        otherPartners.forEach((partner) => (partner[attributeName] = equalPercentageForOtherPartners))
         form.partners.forEach((partner) =>
             partner.name === thisPartnersName ? newValue : equalPercentageForOtherPartners
         )
@@ -124,8 +146,11 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
         <div class="text-gray-700">
             <AgentDealShare
                 :agent-name="props.agentThatTriggeredDeal.name"
-                :agent-share-percentage="100 - sum(form.partners.map((partner) => partner.deal_percentage || 0))"
-            />
+                :demo-scheduled-percentage="
+                    100 - sum(form.partners.map((partner) => partner.demo_scheduled_deal_percentage || 0))
+                "
+                :deal-won-percentage="100 - sum(form.partners.map((partner) => partner.deal_won_deal_percentage || 0))"
+                :with-arr="!!props.deal.a_e" />
 
             <div
                 v-for="partner in form.partners"
@@ -134,7 +159,9 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                 <AgentDealShare
                     v-if="partner.name"
                     :agent-name="partner.name"
-                    :agent-share-percentage="partner.deal_percentage || 0"
+                    :demo-scheduled-percentage="partner.demo_scheduled_deal_percentage || 0"
+                    :deal-won-percentage="partner.deal_won_deal_percentage || 0"
+                    :with-arr="!!props.deal.a_e"
                 />
             </div>
         </div>
@@ -175,23 +202,67 @@ function handlePercentageChange(newValue: number, partnerIndex: number): void {
                     :message="(form.errors as Record<string, string>)[`partners.${index}.id`]"
                 />
             </div>
-            <div>
+
+            <div v-if="!props.deal.a_e">
                 <InputLabel
                     for="deal_percentage"
-                    value="Shared Percentage"
+                    value="SAO Percentage"
                     required
                 />
 
                 <PercentageInput
-                    v-model="partner.deal_percentage"
+                    v-model="partner.demo_scheduled_deal_percentage"
                     :maximum="100"
-                    @update:model-value="(newValue) => handlePercentageChange(newValue, index)"
+                    @update:model-value="(newValue) => handlePercentageChange(newValue, 'SAO', index)"
                 />
 
                 <InputError
                     class="mt-2"
-                    :message="(form.errors as Record<string, string>)[`partners.${index}.deal_percentage`]"
+                    :message="(form.errors as Record<string, string>)[`partners.${index}.demo_scheduled_deal_percentage`]"
                 />
+            </div>
+
+            <div
+                class="flex justify-between gap-5"
+                v-else
+            >
+                <div>
+                    <InputLabel
+                        for="deal_percentage"
+                        value="SAO Percentage"
+                        required
+                    />
+
+                    <PercentageInput
+                        v-model="partner.demo_scheduled_deal_percentage"
+                        :maximum="100"
+                        @update:model-value="(newValue) => handlePercentageChange(newValue, 'SAO', index)"
+                    />
+
+                    <InputError
+                        class="mt-2"
+                        :message="(form.errors as Record<string, string>)[`partners.${index}.demo_scheduled_deal_percentage`]"
+                    />
+                </div>
+
+                <div>
+                    <InputLabel
+                        for="deal_percentage"
+                        value="ARR Percentage"
+                        required
+                    />
+
+                    <PercentageInput
+                        v-model="partner.deal_won_deal_percentage"
+                        :maximum="100"
+                        @update:model-value="(newValue) => handlePercentageChange(newValue, 'ARR', index)"
+                    />
+
+                    <InputError
+                        class="mt-2"
+                        :message="(form.errors as Record<string, string>)[`partners.${index}.deal_won_deal_percentage`]"
+                    />
+                </div>
             </div>
         </div>
 

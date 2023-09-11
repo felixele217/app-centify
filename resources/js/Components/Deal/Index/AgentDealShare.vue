@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const props = defineProps<{
     agentName: string
-    agentSharePercentage: number
+    demoScheduledPercentage: number
+    dealWonPercentage: number
+    withArr: boolean
 }>()
 </script>
 
@@ -11,7 +13,13 @@ const props = defineProps<{
             {{ props.agentName }}
         </span>
         retains
-        <span class="font-semibold"> {{ props.agentSharePercentage }}% </span>
-        of the deal.
+        <span class="font-semibold"> {{ props.demoScheduledPercentage }}% SAO</span>
+
+        <span v-if="props.withArr">
+            ,
+            <span class="font-semibold"> {{ props.dealWonPercentage }}% ARR</span>.
+        </span>
+
+        <span v-else>.</span>
     </p>
 </template>
