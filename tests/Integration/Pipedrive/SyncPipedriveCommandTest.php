@@ -10,7 +10,6 @@ use App\Models\Integration;
 use Illuminate\Support\Facades\Artisan;
 
 it('sync correctly using the command', function () {
-
     $admin = signInAdmin();
 
     $integration = Integration::factory()->create([
