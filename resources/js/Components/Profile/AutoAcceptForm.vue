@@ -21,7 +21,6 @@ const handleSubmit = () => form.put(route('profile.update'))
     <div class="w-128">
         <Toggle
             color="indigo"
-            class="mt-5"
             title="Auto Accept SAOs"
             description="You can choose to automatically accept SAOs as soon as they are synced from your Integrations due to their trigger."
             v-model="form.auto_accept_demo_scheduled"
