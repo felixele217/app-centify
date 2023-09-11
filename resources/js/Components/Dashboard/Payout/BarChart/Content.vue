@@ -5,6 +5,7 @@ import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip } fro
 import { computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { KICKER_COMMISSION_COLOR, QUOTA_COMMISSION_COLOR } from './config'
+import roundFloat from '@/utils/roundFloat'
 
 const gc = 'bg-primary-300'
 
@@ -68,7 +69,11 @@ const chartOptions = {
             ticks: {
                 stepSize: max / 5,
                 callback: function (value: number, index: number, values: Array<number>) {
-                    return value !== 0 ? `${euroDisplay(Math.ceil(value / 5_000_00) * 5_000_00)}` : 0
+                    const euroDigitCount = max.toString().length - 2
+
+                    const roundedValue = roundFloat(value / 10 ** (euroDigitCount - 1), 0) * 10 ** (euroDigitCount - 1)
+
+                    return euroDisplay(roundedValue)
                 },
             },
         },
