@@ -26,7 +26,7 @@ const props = defineProps<{
                 @click="$emit('option-clicked', option)"
                 :class="[
                     option.selected
-                        ? 'ring-primary-600 bg-primary-100 ring-2'
+                        ? 'bg-primary-100 ring-2 ring-primary-600'
                         : 'border border-gray-300 bg-white hover:bg-primary-50',
                     'relative flex cursor-pointer justify-center rounded-md py-2 shadow-sm focus:outline-none',
                 ]"

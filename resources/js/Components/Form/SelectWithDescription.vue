@@ -63,7 +63,7 @@ const current = ref<SelectOptionWithDescription>(props.options.filter((option) =
                 </div>
 
                 <div
-                    class="hover:bg-i focus:ring-primary-500 focus:ring-offset-2 inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-offset-gray-50"
+                    class="hover:bg-i inline-flex items-center rounded-l-none rounded-r-md p-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
                     <span class="sr-only">Change published status</span>
 

@@ -34,7 +34,7 @@ const props = defineProps<{
                 >
                     <Cog6ToothIcon
                         @click="router.get(route('integrations.custom-fields.index', props.activeIntegration.id))"
-                        class="-mb-1.5 h-6 w-6 cursor-pointer hover:text-primary"
+                        class="hover:text-primary -mb-1.5 h-6 w-6 cursor-pointer"
                         v-if="props.activeIntegration"
                     />
 
