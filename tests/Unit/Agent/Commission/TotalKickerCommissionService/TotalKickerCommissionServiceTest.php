@@ -129,7 +129,7 @@ it('returns test the combined kicker commissions of all plans of the user for a 
     [TimeScopeEnum::QUARTERLY, 1],
 ]);
 
-it('returns null for the kicker commission if user has no plans', function (TimeScopeEnum $timeScope) {
+it('returns 0 for the kicker commission if user has no plans', function (TimeScopeEnum $timeScope) {
     $admin = signInAdmin();
 
     $agent = Agent::factory()->create([
