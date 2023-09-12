@@ -12,7 +12,7 @@ class CapFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber() + 1,
+            'id' => uniqueIdWith6Digits(),
             'value' => fake()->randomElement([100_000_00, 200_000_00]),
             'plan_id' => Plan::factory()->create(),
         ];

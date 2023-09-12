@@ -13,7 +13,7 @@ class AgentPlanFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber() + 1,
+            'id' => uniqueIdWith6Digits(),
             'agent_id' => Agent::factory()->create(),
             'plan_id' => Plan::factory()->create(),
             'share_of_variable_pay' => 100,

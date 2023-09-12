@@ -13,7 +13,7 @@ class AgentDealFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber() + 1,
+            'id' => uniqueIdWith6Digits(),
             'agent_id' => Agent::factory()->create(),
             'deal_id' => Deal::factory()->create(),
             'deal_percentage' => 100,

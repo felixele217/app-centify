@@ -11,7 +11,7 @@ class OrganizationFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber() + 2,
+            'id' => uniqueIdWith6Digits(),
             'name' => fake()->word().' Organization',
         ];
     }
