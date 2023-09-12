@@ -108,6 +108,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'agent_id' => Agent::whereEmail($email)->first()?->id,
                         'deal_id' => $deal->id,
                         'triggered_by' => TriggerEnum::DEMO_SCHEDULED->value,
+                    ], [
                         'accepted_at' => $this->organization->auto_accept_demo_scheduled ? Carbon::now() : null,
                     ]);
                 }
@@ -117,6 +118,7 @@ class PipedriveIntegrationService implements IntegrationServiceContract
                         'agent_id' => Agent::whereEmail($email)->first()?->id,
                         'deal_id' => $deal->id,
                         'triggered_by' => TriggerEnum::DEAL_WON->value,
+                    ], [
                         'accepted_at' => $this->organization->auto_accept_deal_won ? Carbon::now() : null,
                     ]);
                 }
