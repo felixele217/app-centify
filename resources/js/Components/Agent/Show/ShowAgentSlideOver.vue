@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SlideOver from '@/Components/SlideOver.vue'
-
 import Agent from '@/types/Agent'
 import AgentDeepDive from './AgentDeepDive.vue'
 
@@ -9,7 +8,7 @@ const props = defineProps<{
     agent?: Agent
 }>()
 
-const emit = defineEmits(['close-show-agent-slide-over'])
+defineEmits(['close-show-agent-slide-over'])
 </script>
 
 <template>
@@ -18,10 +17,10 @@ const emit = defineEmits(['close-show-agent-slide-over'])
         @close-slide-over="$emit('close-show-agent-slide-over')"
         :title="props.agent?.name ?? ''"
         :description="`Gain a complete overview about the performance of ${props.agent?.name} including detailed commission and quota calculations.`"
-        width="max-w-4xl"
     >
-        <div v-if="props.agent">
-            <AgentDeepDive :agent="props.agent" />
-        </div>
+        <AgentDeepDive
+            v-if="props.agent"
+            :agent="props.agent"
+        />
     </SlideOver>
 </template>

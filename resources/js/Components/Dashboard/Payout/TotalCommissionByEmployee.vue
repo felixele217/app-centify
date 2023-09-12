@@ -31,9 +31,10 @@ const currentShownAgent = ref<Agent>()
     <Card>
         <ShowAgentSlideOver
             @close-show-agent-slide-over="currentShownAgent = undefined"
-            :is-open="!!currentShownAgent"
+            :is-open="!! currentShownAgent"
             :agent="currentShownAgent"
             dusk="show-agent-slide-over"
+            width="w-216"
         />
 
         <PageHeader

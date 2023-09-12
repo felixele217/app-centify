@@ -16,7 +16,6 @@ class DashboardController extends Controller
     {
         return Inertia::render('Dashboard', [
             'agents' => Auth::user()->organization->agents->load([
-                'deals',
                 'paidLeaves',
             ]
             )->append([

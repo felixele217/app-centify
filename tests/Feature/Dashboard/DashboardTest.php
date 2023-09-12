@@ -2,6 +2,7 @@
 
 use App\Enum\TriggerEnum;
 use App\Models\Agent;
+use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
 use Carbon\Carbon;
@@ -28,7 +29,6 @@ it('passes the correct props', function () {
             fn (AssertableInertia $page) => $page
                 ->component('Dashboard')
                 ->has('agents', $agentCount)
-                ->has('agents.1.deals')
                 ->has('agents.1.active_plans')
                 ->has('agents.1.quota_attainment_in_percent')
                 ->has('agents.1.quota_attainment_change_in_percent')
