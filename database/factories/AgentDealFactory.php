@@ -14,8 +14,8 @@ class AgentDealFactory extends Factory
     {
         return [
             'id' => uniqueIdWith6Digits(),
-            'agent_id' => Agent::factory()->create(),
-            'deal_id' => Deal::factory()->create(),
+            'agent_id' => Agent::factory(),
+            'deal_id' => Deal::factory(),
             'deal_percentage' => 100,
             'triggered_by' => null,
         ];

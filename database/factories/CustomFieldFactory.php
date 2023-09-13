@@ -17,7 +17,7 @@ class CustomFieldFactory extends Factory
             'id' => uniqueIdWith6Digits(),
             'name' => fake()->randomElement(CustomFieldEnum::cases())->value,
             'api_key' => Str::random(40),
-            'integration_id' => Integration::factory()->create()->id,
+            'integration_id' => Integration::factory(),
         ];
     }
 

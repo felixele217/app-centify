@@ -23,7 +23,7 @@ class PlanFactory extends Factory
             'target_amount_per_month' => 5_000_00,
             'target_variable' => TargetVariableEnum::DEAL_VALUE->value,
             'plan_cycle' => PlanCycleEnum::MONTHLY->value,
-            'organization_id' => Organization::factory()->create(),
+            'organization_id' => Organization::factory(),
             'creator_id' => Admin::factory()->create(),
             'trigger' => TriggerEnum::DEMO_SCHEDULED->value,
         ];

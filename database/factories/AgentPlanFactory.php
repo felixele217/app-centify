@@ -14,8 +14,8 @@ class AgentPlanFactory extends Factory
     {
         return [
             'id' => uniqueIdWith6Digits(),
-            'agent_id' => Agent::factory()->create(),
-            'plan_id' => Plan::factory()->create(),
+            'agent_id' => Agent::factory(),
+            'plan_id' => Plan::factory(),
             'share_of_variable_pay' => 100,
         ];
     }

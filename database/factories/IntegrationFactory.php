@@ -20,7 +20,7 @@ class IntegrationFactory extends Factory
             'refresh_token' => 'some token',
             'expires_at' => Carbon::parse('+10 minutes'),
             'subdomain' => null,
-            'organization_id' => Organization::factory()->create()->id,
+            'organization_id' => Organization::factory(),
             'last_synced_at' => null,
         ];
     }

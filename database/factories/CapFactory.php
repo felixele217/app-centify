@@ -14,7 +14,7 @@ class CapFactory extends Factory
         return [
             'id' => uniqueIdWith6Digits(),
             'value' => fake()->randomElement([100_000_00, 200_000_00]),
-            'plan_id' => Plan::factory()->create(),
+            'plan_id' => Plan::factory(),
         ];
     }
 }

@@ -15,7 +15,7 @@ class RejectionFactory extends Factory
             'id' => uniqueIdWith6Digits(),
             'reason' => fake()->text(40),
             'is_permanent' => false,
-            'deal_id' => Deal::factory()->create(),
+            'deal_id' => Deal::factory(),
         ];
     }
 }

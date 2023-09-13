@@ -59,7 +59,7 @@ class TestDataSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-        ]);
+    ]);
 
         $pipedriveAgent2 = Agent::factory()->create([
             'name' => 'Pipedrive Agent 2',
@@ -72,7 +72,6 @@ class TestDataSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        // dd('hi');
         $demoScheduledPlan = Plan::create([
             'id' => 1,
             'organization_id' => $admin->organization_id,
