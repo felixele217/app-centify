@@ -16,7 +16,7 @@ const props = defineProps<{
         <div class="grid grid-cols-2">
             <CommissionDeepDive :agent="props.agent" />
 
-            <!-- <QuotaDeepDive :agent="props.agent" /> -->
+            <QuotaDeepDive :agent="props.agent" />
         </div>
     </div>
 </template>
