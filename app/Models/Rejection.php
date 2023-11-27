@@ -13,8 +13,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Rejection extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 

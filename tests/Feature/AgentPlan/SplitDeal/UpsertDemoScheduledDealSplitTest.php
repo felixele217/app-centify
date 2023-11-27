@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Deal;
-use App\Models\Agent;
 use App\Enum\TriggerEnum;
+use App\Models\Agent;
 use App\Models\AgentDeal;
+use App\Models\Deal;
+use Carbon\Carbon;
 
 beforeEach(function () {
     $this->admin = signInAdmin();

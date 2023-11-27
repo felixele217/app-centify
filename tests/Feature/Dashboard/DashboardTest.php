@@ -2,7 +2,6 @@
 
 use App\Enum\TriggerEnum;
 use App\Models\Agent;
-use App\Models\AgentDeal;
 use App\Models\Deal;
 use App\Models\Plan;
 use Carbon\Carbon;

@@ -12,8 +12,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Payout extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 

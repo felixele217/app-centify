@@ -14,8 +14,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Admin extends Authenticatable implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasApiTokens, HasFactory, Notifiable;
+    use \OwenIt\Auditing\Auditable;
 
     protected string $guard = 'admin';
 

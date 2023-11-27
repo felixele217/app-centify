@@ -14,9 +14,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class PaidLeave extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
-    use HasFactory;
     use HasActiveScope;
+    use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 

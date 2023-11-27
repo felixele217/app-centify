@@ -21,8 +21,8 @@ class PipedriveHelper
         }
 
         return gettype($deal[$demoSetByApiKey]['email']) === 'string'
-        ? $deal[$demoSetByApiKey]['email']
-        : $deal[$demoSetByApiKey]['email'][0]['value'];
+            ? $deal[$demoSetByApiKey]['email']
+            : $deal[$demoSetByApiKey]['email'][0]['value'];
     }
 
     public static function ownerEmail(array $deal): string

@@ -37,7 +37,7 @@ it('can store a complex split scenario correctly', function () {
     expect($this->deal->ae->pivot->fresh()->deal_factor)->toBe((100 - $agent1DealWonPercentage - $agent2DealWonPercentage) / 100);
 
     expect($this->deal->fresh()->demoScheduledShareholders->first()->pivot->deal_factor)->toBe($agent1DemoScheduledPercentage / 100);
-    expect($this->deal->fresh()->demoScheduledShareholders->last()->pivot->deal_factor)->toBe($agent2DemoScheduledPercentage/ 100);
+    expect($this->deal->fresh()->demoScheduledShareholders->last()->pivot->deal_factor)->toBe($agent2DemoScheduledPercentage / 100);
 
     expect($this->deal->fresh()->dealWonShareholders->first()->pivot->deal_factor)->toBe($agent1DealWonPercentage / 100);
     expect($this->deal->fresh()->dealWonShareholders->last()->pivot->deal_factor)->toBe($agent2DealWonPercentage / 100);
