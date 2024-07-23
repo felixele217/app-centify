@@ -23,6 +23,7 @@ it('agent status is active when no paid leave for the current timeframe exists',
     ]);
 
     expect($agent->status->value)->toBe(AgentStatusEnum::ACTIVE->value);
+expect(5)->toBeEnum();
 });
 
 it('agent status is reason of paid leave when there is an active paid leave', function (string $reason) {

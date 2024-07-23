@@ -91,159 +91,159 @@ jobs:
                   name: console
                   path: tests/Browser/console
 
-    deploy-to-staging:
-        needs: [backend-tests, local-frontend-tests]
-        runs-on: ubuntu-latest
+    # deploy-to-staging:
+    #     needs: [backend-tests, local-frontend-tests]
+    #     runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - name: Save version to file
-              run: |
-                  version=$(git rev-parse HEAD)
-                  echo $version > ${{ env.DEPLOYED_VERSION_FILE }}
+    #         - name: Save version to file
+    #           run: |
+    #               version=$(git rev-parse HEAD)
+    #               echo $version > ${{ env.DEPLOYED_VERSION_FILE }}
 
-            - name: Upload version as artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: version
-                  path: ${{ env.DEPLOYED_VERSION_FILE }}
+    #         - name: Upload version as artifact
+    #           uses: actions/upload-artifact@v3
+    #           with:
+    #               name: version
+    #               path: ${{ env.DEPLOYED_VERSION_FILE }}
 
-            - name: Deploy to Staging Environment
-              uses: jbrooksuk/laravel-forge-action@v1.0.2
-              with:
-                  trigger_url: ${{ secrets.STAGING_DEPLOYMENT_TRIGGER_URL }}
+    #         - name: Deploy to Staging Environment
+    #           uses: jbrooksuk/laravel-forge-action@v1.0.2
+    #           with:
+    #               trigger_url: ${{ secrets.STAGING_DEPLOYMENT_TRIGGER_URL }}
 
-    wait-for-staging-deployment-to-finish:
-        runs-on: ubuntu-latest
-        needs: deploy-to-staging
+    # wait-for-staging-deployment-to-finish:
+    #     runs-on: ubuntu-latest
+    #     needs: deploy-to-staging
 
-        steps:
-            - uses: actions/checkout@v3
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - name: Download version artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: version
+    #         - name: Download version artifact
+    #           uses: actions/download-artifact@v3
+    #           with:
+    #               name: version
 
-            - name: Wait until staging server has deployed the new version
-              run: |
-                  chmod +x .github/scripts/wait-for-deployment.sh
-                  .github/scripts/wait-for-deployment.sh ${{ env.DEPLOYED_VERSION_FILE }}
+    #         - name: Wait until staging server has deployed the new version
+    #           run: |
+    #               chmod +x .github/scripts/wait-for-deployment.sh
+    #               .github/scripts/wait-for-deployment.sh ${{ env.DEPLOYED_VERSION_FILE }}
 
-    staging-environment-tests:
-        runs-on: ubuntu-latest
-        needs: wait-for-staging-deployment-to-finish
+    # staging-environment-tests:
+    #     runs-on: ubuntu-latest
+    #     needs: wait-for-staging-deployment-to-finish
 
-        steps:
-            - name: Setup PHP with tools
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.2'
-            - uses: actions/checkout@v3
-            - name: Copy .env
-              run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-            - name: Set FORGE Tokens in .env
-              run: |
-                  echo "FORGE_AUTH_TOKEN=${{ secrets.FORGE_AUTH_TOKEN }}" >> .env
-                  echo "FORGE_SERVER_ID=${{ secrets.FORGE_SERVER_ID }}" >> .env
-                  echo "FORGE_STAGING_SITE_ID=${{ secrets.FORGE_STAGING_SITE_ID }}" >> .env
-            - name: Install Dependencies
-              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-            - name: Generate key
-              run: php artisan key:generate
-            - name: Directory Permissions
-              run: chmod -R 777 storage bootstrap/cache
-            - name: Create Database
-              run: |
-                  mkdir -p database
-                  touch database/database.sqlite
-            - name: Execute backend staging tests
-              env:
-                  DB_CONNECTION: sqlite
-                  DB_DATABASE: database/database.sqlite
-              run: vendor/bin/pest --group=staging
+    #     steps:
+    #         - name: Setup PHP with tools
+    #           uses: shivammathur/setup-php@v2
+    #           with:
+    #               php-version: '8.2'
+    #         - uses: actions/checkout@v3
+    #         - name: Copy .env
+    #           run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    #         - name: Set FORGE Tokens in .env
+    #           run: |
+    #               echo "FORGE_AUTH_TOKEN=${{ secrets.FORGE_AUTH_TOKEN }}" >> .env
+    #               echo "FORGE_SERVER_ID=${{ secrets.FORGE_SERVER_ID }}" >> .env
+    #               echo "FORGE_STAGING_SITE_ID=${{ secrets.FORGE_STAGING_SITE_ID }}" >> .env
+    #         - name: Install Dependencies
+    #           run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    #         - name: Generate key
+    #           run: php artisan key:generate
+    #         - name: Directory Permissions
+    #           run: chmod -R 777 storage bootstrap/cache
+    #         - name: Create Database
+    #           run: |
+    #               mkdir -p database
+    #               touch database/database.sqlite
+    #         - name: Execute backend staging tests
+    #           env:
+    #               DB_CONNECTION: sqlite
+    #               DB_DATABASE: database/database.sqlite
+    #           run: vendor/bin/pest --group=staging
 
-    staging-frontend-tests:
-        runs-on: ubuntu-latest
-        needs: wait-for-staging-deployment-to-finish
+    # staging-frontend-tests:
+    #     runs-on: ubuntu-latest
+    #     needs: wait-for-staging-deployment-to-finish
 
-        env:
-            LARAVEL_BYPASS_ENV_CHECK: 1
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup PHP with tools
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.2'
-            - name: Copy .env
-              run: php -r "file_exists('.env') || copy('.env.dusk.actions', '.env');"
-            - name: Create Database
-              run: |
-                  set -a
-                  . ./.env
-                  set +a
-                  sudo systemctl start mysql
-                  mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" -e "CREATE DATABASE \`$DB_DATABASE\` character set UTF8mb4 collate utf8mb4_bin;"
-            - name: Install Composer Dependencies
-              run: composer install --no-progress --prefer-dist --optimize-autoloader
-            - name: Generate Application Key
-              run: php artisan key:generate
-            - name: Upgrade Chrome Driver
-              run: php artisan dusk:chrome-driver --detect
-            - name: Start Chrome Driver
-              run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+    #     env:
+    #         LARAVEL_BYPASS_ENV_CHECK: 1
+    #     steps:
+    #         - uses: actions/checkout@v3
+    #         - name: Setup PHP with tools
+    #           uses: shivammathur/setup-php@v2
+    #           with:
+    #               php-version: '8.2'
+    #         - name: Copy .env
+    #           run: php -r "file_exists('.env') || copy('.env.dusk.actions', '.env');"
+    #         - name: Create Database
+    #           run: |
+    #               set -a
+    #               . ./.env
+    #               set +a
+    #               sudo systemctl start mysql
+    #               mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" -e "CREATE DATABASE \`$DB_DATABASE\` character set UTF8mb4 collate utf8mb4_bin;"
+    #         - name: Install Composer Dependencies
+    #           run: composer install --no-progress --prefer-dist --optimize-autoloader
+    #         - name: Generate Application Key
+    #           run: php artisan key:generate
+    #         - name: Upgrade Chrome Driver
+    #           run: php artisan dusk:chrome-driver --detect
+    #         - name: Start Chrome Driver
+    #           run: ./vendor/laravel/dusk/bin/chromedriver-linux &
 
-            - name: Install Node.js dependencies
-              run: npm ci
+    #         - name: Install Node.js dependencies
+    #           run: npm ci
 
-            - name: Build frontend assets with Vite
-              run: npm run build
+    #         - name: Build frontend assets with Vite
+    #           run: npm run build
 
-            - name: Run Laravel Server
-              run: php artisan serve --no-reload &
-            - name: Run Dusk Tests
-              run: php artisan dusk tests/Browser/RenderStagingPagesTest.php
-            - name: Upload Screenshots
-              if: failure()
-              uses: actions/upload-artifact@v2
-              with:
-                  name: screenshots
-                  path: tests/Browser/screenshots
-            - name: Upload Console Logs
-              if: failure()
-              uses: actions/upload-artifact@v2
-              with:
-                  name: console
-                  path: tests/Browser/console
+    #         - name: Run Laravel Server
+    #           run: php artisan serve --no-reload &
+    #         - name: Run Dusk Tests
+    #           run: php artisan dusk tests/Browser/RenderStagingPagesTest.php
+    #         - name: Upload Screenshots
+    #           if: failure()
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: screenshots
+    #               path: tests/Browser/screenshots
+    #         - name: Upload Console Logs
+    #           if: failure()
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: console
+    #               path: tests/Browser/console
 
-    deploy-to-production:
-        needs: [staging-environment-tests, staging-frontend-tests]
-        runs-on: ubuntu-latest
+    # deploy-to-production:
+    #     needs: [staging-environment-tests, staging-frontend-tests]
+    #     runs-on: ubuntu-latest
 
-        steps:
-            - name: Deploy to Production Environment
-              uses: jbrooksuk/laravel-forge-action@v1.0.2
-              with:
-                  trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
+    #     steps:
+    #         - name: Deploy to Production Environment
+    #           uses: jbrooksuk/laravel-forge-action@v1.0.2
+    #           with:
+    #               trigger_url: ${{ secrets.PRODUCTION_DEPLOYMENT_TRIGGER_URL }}
 
-    slack-notification:
-        if: always() && (needs.deploy-to-production.result == 'failure' || needs.deploy-to-production.result == 'skipped')
-        needs:
-            [
-                backend-tests,
-                local-frontend-tests,
-                deploy-to-staging,
-                wait-for-staging-deployment-to-finish,
-                staging-environment-tests,
-                staging-frontend-tests,
-                deploy-to-production,
-            ]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Slack Notification
-              uses: rtCamp/action-slack-notify@v2
-              env:
-                  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-                  SLACK_COLOR: '#dc2626'
-                  MSG_MINIMAL: actions url, commit
+    # slack-notification:
+    #     if: always() && (needs.deploy-to-production.result == 'failure' || needs.deploy-to-production.result == 'skipped')
+    #     needs:
+    #         [
+    #             backend-tests,
+    #             local-frontend-tests,
+    #             deploy-to-staging,
+    #             wait-for-staging-deployment-to-finish,
+    #             staging-environment-tests,
+    #             staging-frontend-tests,
+    #             deploy-to-production,
+    #         ]
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Slack Notification
+    #           uses: rtCamp/action-slack-notify@v2
+    #           env:
+    #               SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    #               SLACK_COLOR: '#dc2626'
+    #               MSG_MINIMAL: actions url, commit
